@@ -40,6 +40,7 @@ export function createGitHubSource(options: GitHubSourceOptions = {}): ResearchS
     label: "GitHub (watched repositories)",
     async fetchRecent(fetchOptions = {}) {
       const limit = fetchOptions.limit ?? repos.length;
+      const since = fetchOptions.since;
       const items: RawResearchItem[] = [];
 
       for (const repo of repos.slice(0, limit)) {
@@ -73,9 +74,12 @@ export function createGitHubSource(options: GitHubSourceOptions = {}): ResearchS
         }
       }
 
-      return items;
+      return since
+        ? items.filter((item) => !item.publishedAt || item.publishedAt >= since)
+        : items;
     },
   };
 }
 
 export const githubSource = createGitHubSource();
+

@@ -25,8 +25,9 @@ const zh = {
     topics: { title: "研究方向", desc: "AI4Math 的活跃研究方向，附事件计数与趋势。" },
     map: { title: "研究地图", desc: "AI4Math 研究版图的可视化：方向、子方向与血缘关系。" },
     search: { title: "搜索", desc: "全站搜索：研究事件、论文、方向、模型与 Benchmark。" },
-    about: { title: "关于", desc: "AI4Math 研究进展追踪平台的工作方式：数据模型、管线与限制。" },
+    about: { title: "关于", desc: "AI4Math 生态雷达的工作方式：六类数据模型、手动同步管线与限制。" },
     methodology: { title: "方法论——如何阅读这些标签", desc: "本平台如何把核验状态、证据等级与来源层级彼此分开。" },
+    sources: { title: "来源同步", desc: "手动同步 arXiv 与 GitHub，查看来源状态、增量游标和待审核事件。" },
   },
 
   /** Shared count phrases; pair with `countText()` for singular/plural. */
@@ -262,6 +263,23 @@ const zh = {
     seeAlsoC: "（按时间顺序的视图）。",
   },
 
+  /** app/sources/page.tsx */
+  sources: {
+    title: "来源同步",
+    subtitle: "不使用定时任务：点击同步按钮手动拉取增量内容，并查看每个来源的成功、失败和游标状态。",
+    pending: "待审核事件",
+    sync: "同步",
+    syncing: "同步中…",
+    never: "从未记录",
+    lastSuccess: "最近成功",
+    lastAttempt: "最近尝试",
+    cursor: "增量游标",
+    result: "最近结果",
+    error: "错误",
+    success: "成功",
+    idle: "未同步",
+  },
+
   /** app/not-found.tsx — title/body/backHome come from the core `notFound`. */
   notFound: {
     latestProgress: "最新进展",
@@ -278,6 +296,7 @@ const en = {
     search: { title: "Search", desc: "Full-site search across research events, papers, topics, models and benchmarks." },
     about: { title: "About", desc: "How the AI4Math Ecosystem Radar works: six-class data model, pipeline and limitations." },
     methodology: { title: "Methodology — how to read the labels", desc: "How this tracker keeps verification status, evidence level and source tier separate." },
+    sources: { title: "Source synchronization", desc: "Manually sync arXiv and GitHub, inspect source freshness, incremental cursors and pending events." },
   },
 
   count: {
@@ -287,9 +306,9 @@ const en = {
   },
 
   latest: {
-    label: "Research feed",
-    title: "Latest AI4Math Progress",
-    sub: "Every entry is a Research Event — what happened, why it matters, and where to read the original work. Filter by area, and search across titles, summaries, models and benchmarks.",
+    label: "Ecosystem feed",
+    title: "Latest AI4Math Ecosystem Events",
+    sub: "Every entry is an ecosystem event — what happened, who is moving the field, why it matters, and where to read the source. Filter by class and area, and search titles, summaries, models and benchmarks.",
   },
 
   timeline: {
@@ -515,6 +534,23 @@ const en = {
     seeAlsoC: " for the chronological view.",
   },
 
+  sources: {
+    title: "Source synchronization",
+    subtitle:
+      "No scheduler: trigger incremental pulls manually and inspect success, failure and cursor state for each source.",
+    pending: "Pending events",
+    sync: "Sync",
+    syncing: "Syncing…",
+    never: "Never recorded",
+    lastSuccess: "Last success",
+    lastAttempt: "Last attempt",
+    cursor: "Incremental cursor",
+    result: "Last result",
+    error: "Error",
+    success: "Success",
+    idle: "Never synced",
+  },
+
   notFound: {
     latestProgress: "Latest progress",
   },
@@ -532,6 +568,8 @@ export type PagesDict = (typeof pagesDict)["zh"];
 export function countText(p: PagesDict, n: number, kind: keyof PagesDict["count"]): string {
   return fill(n === 1 ? p.count[kind].one : p.count[kind].many, { n });
 }
+
+
 
 
 

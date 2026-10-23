@@ -39,6 +39,10 @@ export function windowStartDate(window: TimeWindow, now = new Date()): string {
 
 export type SourceType = "arxiv" | "blog" | "conference" | "github" | "demo";
 
+/** Human review state for automated/manual ecosystem events. */
+export const REVIEW_STATUSES = ["pending", "approved", "rejected"] as const;
+export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
+
 /**
  * Trust-model fields describe how well a claim is corroborated and where its
  * evidence comes from — deliberately objective, observable properties. Any
@@ -199,6 +203,8 @@ export interface ResearchEvent {
   importanceNote?: string;
   /** "curated" = hand-verified entry; "automated" = produced by the ingest pipeline. */
   provenance?: "curated" | "automated";
+  /** pending = automated item awaiting human confirmation; curated defaults to approved. */
+  reviewStatus?: ReviewStatus;
   /** ISO timestamps of the last automated sync, when provenance is automated. */
   lastSyncedAt?: string;
 
@@ -242,5 +248,6 @@ export interface RawResearchItem {
   authors?: string[];
   githubUrl?: string;
 }
+
 
 

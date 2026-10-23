@@ -16,6 +16,7 @@ export const dict = {
       timeline: "时间线",
       topics: "研究方向",
       map: "研究地图",
+      sources: "来源同步",
       about: "关于",
       menu: "菜单",
       brand: "AI4Math 生态雷达",
@@ -34,6 +35,7 @@ export const dict = {
       source: "来源",
       github: "代码",
       demo: "示例",
+      pending: "待审核",
       automated: "自动抓取",
       automatedHint: "由抓取管线生成，尚未人工复核",
       empty: "没有匹配的结果",
@@ -176,6 +178,7 @@ export const dict = {
       topics: "研究方向",
       map: "研究地图",
       methodology: "标签方法论",
+      sources: "来源同步",
       about: "关于与数据政策",
       disclaimer:
         "本站是生态追踪工具，不是期刊。核验、证据与来源层级保持客观；重要度分数明确标注为主观评估。",
@@ -193,6 +196,7 @@ export const dict = {
       timeline: "Timeline",
       topics: "Topics",
       map: "Research Map",
+      sources: "Sources",
       about: "About",
       menu: "Menu",
       brand: "AI4Math Ecosystem Radar",
@@ -211,6 +215,7 @@ export const dict = {
       source: "Source",
       github: "GitHub",
       demo: "demo",
+      pending: "pending",
       automated: "automated",
       automatedHint: "Produced by the ingest pipeline; not yet hand-reviewed",
       empty: "No matching results",
@@ -360,6 +365,7 @@ export const dict = {
       topics: "Topics",
       map: "Research Map",
       methodology: "Methodology & labels",
+      sources: "Source sync",
       about: "About & data policy",
       disclaimer:
         "This site is an ecosystem tracker, not a journal. Verification, evidence and source tier stay objective; importance scores are explicitly subjective.",
@@ -373,6 +379,8 @@ export const dict = {
 } as const;
 
 export type Dict = (typeof dict)["zh"];
+
+
 
 
 

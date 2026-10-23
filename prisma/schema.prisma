@@ -66,6 +66,8 @@ model ResearchEvent {
   importanceNote     String?
   /// curated (hand-verified) | automated (ingest pipeline)
   provenance         String  @default("curated")
+  /// pending | approved | rejected (automated records default to pending).
+  reviewStatus       String  @default("approved")
   lastSyncedAt       DateTime?
 
   createdAt DateTime @default(now())
@@ -183,4 +185,5 @@ model VerificationRecord {
 
   @@index([eventId])
 }
+
 

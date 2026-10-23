@@ -109,6 +109,7 @@ async function main() {
         importanceScore: e.importanceScore,
         importanceNote: e.importanceNote,
         provenance: e.provenance ?? "curated",
+        reviewStatus: e.reviewStatus ?? (e.provenance === "automated" ? "pending" : "approved"),
         verificationRecords: {
           create: (e.verificationHistory ?? []).map((r) => ({
             date: toUtcDate(r.date),
@@ -177,5 +178,6 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
 
 

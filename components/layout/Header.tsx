@@ -15,6 +15,7 @@ export function Header() {
     { href: "/timeline", label: t.nav.timeline },
     { href: "/topics", label: t.nav.topics },
     { href: "/research-map", label: t.nav.map },
+    { href: "/sources", label: t.nav.sources },
     { href: "/about", label: t.nav.about },
   ];
 
@@ -72,3 +73,4 @@ export function Header() {
     </header>
   );
 }
+

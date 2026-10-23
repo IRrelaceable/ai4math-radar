@@ -40,6 +40,7 @@ export function appendIngestedEvents(events: ResearchEvent[]): {
     else added += 1;
     bySlug.set(event.slug, {
       ...event,
+      reviewStatus: previous?.reviewStatus ?? event.reviewStatus ?? "pending",
       createdAt: previous?.createdAt ?? event.createdAt,
       updatedAt: event.updatedAt,
     });
@@ -49,3 +50,4 @@ export function appendIngestedEvents(events: ResearchEvent[]): {
   fs.writeFileSync(INGESTED_FILE, JSON.stringify(next, null, 2), "utf8");
   return { added, updated, total: next.length };
 }
+

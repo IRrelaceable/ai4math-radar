@@ -47,6 +47,11 @@ export function EventCard({ event }: { event: ResearchEvent }) {
             {event.importanceScore}/100
           </span>
         )}
+        {event.reviewStatus === "pending" && (
+          <span className="chip border-amber-200 bg-amber-50 text-amber-800">
+            {t.common.pending}
+          </span>
+        )}
         {event.provenance === "automated" && (
           <span className="chip border-violet-200 bg-violet-50 text-violet-700" title={t.common.automatedHint}>
             {t.common.automated}
@@ -94,4 +99,5 @@ export function EventCard({ event }: { event: ResearchEvent }) {
     </article>
   );
 }
+
 

@@ -11,8 +11,8 @@ import { githubSource } from "./github";
 export interface ResearchSource {
   id: string;
   label: string;
-  /** Returns unprocessed items newest first. */
-  fetchRecent(options?: { limit?: number }): Promise<RawResearchItem[]>;
+  /** Returns unprocessed items newest first; `since` enables incremental manual sync. */
+  fetchRecent(options?: { limit?: number; since?: string }): Promise<RawResearchItem[]>;
 }
 
 const MOCK_RAW_ITEMS: RawResearchItem[] = [
@@ -73,3 +73,4 @@ export const liveResearchSources = {
 } as const satisfies Record<string, ResearchSource>;
 
 export type LiveSourceId = keyof typeof liveResearchSources;
+

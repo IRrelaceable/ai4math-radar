@@ -96,6 +96,7 @@ export function createArxivSource(options: ArxivSourceOptions = {}): ResearchSou
     label: "arXiv (cs.LO / math.LO / cs.AI)",
     async fetchRecent(fetchOptions = {}) {
       const limit = fetchOptions.limit ?? 25;
+      const since = fetchOptions.since;
       const url =
         `${ARXIV_API}?search_query=${encodeURIComponent(query)}` +
         `&start=0&max_results=${limit}&sortBy=submittedDate&sortOrder=descending`;
@@ -117,9 +118,12 @@ export function createArxivSource(options: ArxivSourceOptions = {}): ResearchSou
 
         const xml = await response.text();
         const entries = xml.match(/<entry>[\s\S]*?<\/entry>/g) ?? [];
-        return entries
+        const items = entries
           .map(parseArxivEntry)
           .filter((item): item is RawResearchItem => item !== null);
+        return since
+          ? items.filter((item) => !item.publishedAt || item.publishedAt >= since)
+          : items;
       }
 
       throw new Error(
@@ -130,3 +134,4 @@ export function createArxivSource(options: ArxivSourceOptions = {}): ResearchSou
 }
 
 export const arxivSource = createArxivSource();
+

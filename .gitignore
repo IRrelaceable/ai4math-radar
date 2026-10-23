@@ -29,3 +29,6 @@ next-env.d.ts.bak
 
 # runtime data produced by the ingest pipeline
 data/ingested/events.json
+
+data/ingested/source-status.json
+

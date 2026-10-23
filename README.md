@@ -68,6 +68,7 @@ names, authors, area names — stays in the original English on purpose.
 | `/topics/[topic]` | Topic detail: recent progress, quantity, time trend, papers, models, benchmarks |
 | `/research/[slug]` | Ecosystem Event detail: type-specific metadata, What happened / Why it matters / source / related works / verification history |
 | `/research-map` | Six ecosystem classes × research-area map with recorded lineage |
+| `/sources` | Manual source status, incremental cursor, sync results and pending-review count |
 | `/search` | Full-site search (events, papers, topics, models, benchmarks) |
 | `/methodology` | How to read the trust labels (verification / evidence / source tier / event type) |
 | `/about` | Data model, pipeline, data policy, roadmap |
@@ -80,6 +81,7 @@ per research area, compared with the previous window.
 | endpoint | purpose |
 | --- | --- |
 | `GET /api/events?type=&area=&sort=&q=&limit=` | list ecosystem events (`sort=date|importance`) |
+| `GET /api/sources` | source registry, last sync state and pending-review count |
 | `GET /api/events/[slug]` | one ecosystem event |
 | `GET /api/topics` | topic statistics |
 | `GET /api/topics/[slug]` | topic statistics + its events |
@@ -140,7 +142,7 @@ ai4math-tracker/
 ├── agents/researchTracker/    # tracker.ts · classifier.ts · summarizer.ts
 ├── data/seed/events.ts        # 87 sourced events + 11 labelled ecosystem demos (98 total)
 ├── data/seed/ecosystem.ts     # synthetic scenarios for People/Institutions/Funding/Education/Policy
-├── data/ingested/             # pipeline cache (git-ignored), written by /api/agents/ingest
+├── data/ingested/             # pipeline cache + source-status.json (git-ignored)
 ├── prisma/schema.prisma       # PostgreSQL schema
 ├── prisma/seed.ts             # database seeder
 ├── types/                     # domain types
@@ -174,7 +176,7 @@ ResearchEvent
 ├── title · slug · summary · significance · date
 ├── eventType (six classes) → researchArea → subArea
 ├── researchEventType · metadata · importanceScore (subjective)
-├── verificationStatus · evidenceLevel · sourceTier
+├── verificationStatus · evidenceLevel · sourceTier · reviewStatus
 ├── sourceType · sourceUrl · paperUrl · githubUrl
 ├── problem · keyContributions[]
 ├── authors[] · institution · models[] · benchmarks[] · datasets[]
@@ -187,6 +189,19 @@ Tables: `ResearchEvent`, `ResearchArea`, `Paper`, `Author`, `Institution`,
 `Model`, `Benchmark`, `Dataset`, `ResearchEventPaper`, `ResearchEventAuthor`,
 `ResearchEventRelatedWork`.
 
+### Manual source synchronization
+
+There is no scheduler. Open `/sources` (or `GET /api/sources`) to inspect each
+source's last success, last error and incremental cursor, then trigger a manual
+`POST /api/agents/ingest` with:
+
+```json
+{ "source": "arxiv", "since": "2026-10-01", "persist": true }
+```
+
+arXiv and GitHub filter fetched items by `since`; accepted events are merged by
+slug, so overlapping dates are safe. Automated records start as
+`reviewStatus: "pending"` and remain visibly marked until reviewed.
 ### Importance scores are explicitly subjective
 
 `importanceScore` is optional. When present it is a 0–100 **AI-assisted
@@ -324,4 +339,6 @@ follow-ups: the `relatedWorks(relation: previous | followup | related)` field
 already records the edges a graph view needs, and a model-backed classifier
 would replace the keyword rules for live sources. An `en/zh` locale switch and
 a corrections workflow (GitHub-issue based) come next.
+
+
 

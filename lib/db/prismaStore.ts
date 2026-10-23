@@ -69,6 +69,7 @@ function mapEvent(row: any): ResearchEvent {
     importanceScore: row.importanceScore ?? undefined,
     importanceNote: row.importanceNote ?? undefined,
     provenance: row.provenance ?? "curated",
+    reviewStatus: row.reviewStatus ?? (row.provenance === "automated" ? "pending" : "approved"),
     verificationHistory: (row.verificationRecords ?? []).map((r: any) => ({
       date: toIsoDate(r.date),
       status: r.status,
@@ -178,5 +179,6 @@ export class PrismaStore implements ResearchStore {
     return searchEvents(await this.allEvents(), query);
   }
 }
+
 
 

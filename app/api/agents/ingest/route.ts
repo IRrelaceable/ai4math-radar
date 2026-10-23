@@ -4,6 +4,7 @@ import { liveResearchSources, mockResearchSource } from "@/lib/sources";
 import { createArxivSource } from "@/lib/sources/arxiv";
 import { createGitHubSource } from "@/lib/sources/github";
 import { appendIngestedEvents } from "@/lib/db/ingested";
+import { updateSourceStatus } from "@/lib/db/sourceStatus";
 import type { RawResearchItem } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,7 @@ const LIVE_DEFAULT_LIMIT = 250;
  *   { "items": RawResearchItem[] }  - custom items
  *   { "source": "mock" | "arxiv" | "github" }   - default "mock" (offline)
  *   { "query": "..." }              - arXiv search query override
+ *   { "since": "2026-10-01" }        - incremental lower bound (YYYY-MM-DD)
  *   { "limit": 250 }                - max candidates per source
  *                                     (default: 250 live / all mock items)
  *   { "persist": true|false }       - write accepted events to data/ingested
@@ -40,6 +42,7 @@ export async function POST(request: Request) {
   let source = "mock";
   let query: string | undefined;
   let limit: number | undefined;
+  let since: string | undefined;
   let persist: boolean | undefined;
 
   if (request.headers.get("content-type")?.includes("application/json")) {
@@ -49,12 +52,14 @@ export async function POST(request: Request) {
         source?: string;
         query?: string;
         limit?: number;
+        since?: string;
         persist?: boolean;
       };
       if (Array.isArray(body.items)) items = body.items;
       if (typeof body.source === "string") source = body.source;
       if (typeof body.query === "string" && body.query.trim()) query = body.query.trim();
       if (Number.isFinite(body.limit)) limit = Number(body.limit);
+      if (typeof body.since === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.since)) since = body.since;
       if (typeof body.persist === "boolean") persist = body.persist;
     } catch {
       // malformed body -> fall back to the mock source
@@ -74,6 +79,7 @@ export async function POST(request: Request) {
   try {
     const result = await runPipeline(items, sources, {
       limit: limit ?? (isLive ? LIVE_DEFAULT_LIMIT : undefined),
+      since,
     });
 
     let persisted: { added: number; updated: number; total: number } | undefined;
@@ -81,8 +87,32 @@ export async function POST(request: Request) {
       persisted = appendIngestedEvents(result.accepted);
     }
 
+    let sourceStatus;
+    if (isLive) {
+      const latestDate = result.accepted
+        .map((event) => event.date)
+        .sort()
+        .pop();
+      const liveSource = liveResearchSources[source as keyof typeof liveResearchSources];
+      sourceStatus = updateSourceStatus(source, {
+        label: liveSource.label,
+        status: "success",
+        lastAttemptAt: new Date().toISOString(),
+        lastSuccessAt: new Date().toISOString(),
+        lastError: undefined,
+        accepted: result.accepted.length,
+        added: persisted?.added ?? 0,
+        updated: persisted?.updated ?? 0,
+        rejected: result.rejected.length,
+        total: persisted?.total,
+        ...(latestDate ? { cursor: latestDate } : {}),
+      });
+    }
+
     return NextResponse.json({
       source: items ? "custom" : source,
+      since,
+      sourceStatus,
       accepted: result.accepted,
       rejectedCount: result.rejected.length,
       rejected: result.rejected.map((r) => ({ title: r.item.title, reason: r.reason })),
@@ -94,9 +124,18 @@ export async function POST(request: Request) {
         : "Mock pipeline output — offline demo items; persisted only if 'persist' is set.",
     });
   } catch (error) {
+    if (isLive) {
+      updateSourceStatus(source, {
+        status: "error",
+        lastAttemptAt: new Date().toISOString(),
+        lastError: String(error),
+      });
+    }
     return NextResponse.json(
       { error: String(error), source },
       { status: 502 }
     );
   }
 }
+
+

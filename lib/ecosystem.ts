@@ -34,6 +34,9 @@ export function normalizeEcosystemEvent(event: ResearchEvent): ResearchEvent {
     ...event,
     eventType: primary,
     researchEventType,
+    reviewStatus:
+      event.reviewStatus ??
+      (event.provenance === "automated" ? "pending" : "approved"),
     importanceScore:
       typeof event.importanceScore === "number" &&
       Number.isFinite(event.importanceScore)
@@ -41,3 +44,4 @@ export function normalizeEcosystemEvent(event: ResearchEvent): ResearchEvent {
         : undefined,
   };
 }
+

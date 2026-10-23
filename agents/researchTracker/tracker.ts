@@ -27,13 +27,25 @@ export interface PipelineResult {
 export async function runPipeline(
   items?: RawResearchItem[],
   sources: ResearchSource[] = researchSources,
-  options: { limit?: number } = {}
+  options: { limit?: number; since?: string } = {}
 ): Promise<PipelineResult> {
   const raw: RawResearchItem[] =
-    items ?? (await Promise.all(sources.map((s) => s.fetchRecent({ limit: options.limit })))).flat();
+    items ??
+      (
+        await Promise.all(
+          sources.map((s) =>
+            s.fetchRecent({ limit: options.limit, since: options.since })
+          )
+        )
+      ).flat();
 
   const trace: PipelineStepResult[] = [
-    { step: "ingest", detail: `received ${raw.length} raw research items` },
+    {
+      step: "ingest",
+      detail:
+        `received ${raw.length} raw research items` +
+        (options.since ? ` since ${options.since}` : ""),
+    },
   ];
   const accepted: ResearchEvent[] = [];
   const rejected: { item: RawResearchItem; reason: string }[] = [];
@@ -122,4 +134,5 @@ function toEvent(
 
 export { classifyItem } from "./classifier";
 export { summarize } from "./summarizer";
+
 
