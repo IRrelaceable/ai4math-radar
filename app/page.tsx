@@ -8,6 +8,7 @@ import { TrendPanel } from "@/components/topics/TrendPanel";
 import { PipelineStrip } from "@/components/research/PipelineStrip";
 import { EVENT_TYPES } from "@/types";
 import { getLang, t } from "@/lib/i18n/server";
+import { localizeEvents } from "@/lib/i18n/localize";
 
 export const revalidate = 0;
 
@@ -126,7 +127,7 @@ export default async function HomePage() {
             {d.common.viewAll} →
           </Link>
         </div>
-        <EventGrid events={latest.slice(0, 6)} />
+        <EventGrid events={localizeEvents(latest.slice(0, 6), lang)} />
       </section>
 
       {/* Topics (computed from the data itself) */}

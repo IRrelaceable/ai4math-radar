@@ -13,13 +13,15 @@ import {
 import { LineageTimeline } from "@/components/research/LineageTimeline";
 import { EventCard } from "@/components/research/EventCard";
 import { getLang, t } from "@/lib/i18n/server";
+import { localizeEvent, localizeEvents } from "@/lib/i18n/localize";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const lang = getLang();
   const event = await getStore().getEventBySlug(params.slug);
-  return { title: event ? event.title : "Ecosystem event" };
+  return { title: event ? localizeEvent(event, lang).title : "Ecosystem event" };
 }
 
 export default async function ResearchDetailPage({
@@ -31,11 +33,15 @@ export default async function ResearchDetailPage({
   const lang = getLang();
   const d = t(lang);
   const p = pagesDict[lang];
-  const event = await store.getEventBySlug(params.slug);
-  if (!event) notFound();
+  const found = await store.getEventBySlug(params.slug);
+  if (!found) notFound();
+  const event = localizeEvent(found, lang);
 
-  const siblings = (await store.listEvents({ area: event.researchArea, limit: 10 })).filter(
-    (e) => e.slug !== event.slug
+  const siblings = localizeEvents(
+    (await store.listEvents({ area: event.researchArea, limit: 10 })).filter(
+      (e) => e.slug !== event.slug
+    ),
+    lang
   );
   // Related events: same area, newest first (no importance ranking).
   const relatedEvents = siblings.slice(0, 3);

@@ -13,6 +13,7 @@ import {
 import { FeedControls } from "@/components/research/FeedControls";
 import { EventGrid } from "@/components/research/EventGrid";
 import { getLang } from "@/lib/i18n/server";
+import { localizeEvents } from "@/lib/i18n/localize";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 
 export const dynamic = "force-dynamic";
@@ -113,7 +114,7 @@ export default async function LatestPage({
       </Suspense>
 
       <div className="mt-6">
-        <EventGrid events={events} />
+        <EventGrid events={localizeEvents(events, lang)} />
       </div>
     </div>
   );

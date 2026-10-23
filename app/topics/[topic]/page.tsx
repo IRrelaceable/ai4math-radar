@@ -5,6 +5,7 @@ import { formatDate, matchesQuery, slugify } from "@/lib/utils";
 import { EventGrid } from "@/components/research/EventGrid";
 import { TrendChart } from "@/components/topics/TrendChart";
 import { getLang, t } from "@/lib/i18n/server";
+import { localizeEvents } from "@/lib/i18n/localize";
 import { countText, fill, pagesDict } from "@/lib/i18n/dict.pages";
 
 export const dynamic = "force-dynamic";
@@ -152,7 +153,7 @@ export default async function TopicDetailPage({
             </button>
           </form>
         </div>
-        <EventGrid events={filtered} />
+        <EventGrid events={localizeEvents(filtered, lang)} />
       </section>
 
       <p className="mt-6 text-xs text-ink-400">

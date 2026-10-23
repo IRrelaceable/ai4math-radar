@@ -46,14 +46,21 @@ Other scripts:
 ## 1.5 Language / 语言
 
 界面默认**简体中文**，右上角有 `中文 / EN` 开关（写入 `lang` cookie，服务端渲染随请求切换）。
-UI chrome —— 导航、栏目标题、按钮、标签词典、方法论与关于页 —— 均已双语；研究内容
-（事件标题、摘要、论文名、作者、领域名）**保留英文原文**，这是研究记录的惯例，也避免
-机器翻译改变技术断言的强度。词典在 `lib/i18n/`（`dict.ts` 核心键 + `dict.pages.ts` +
-`dict.components.ts`），新增界面文案时在 zh/en 两侧同时补键。
+UI chrome —— 导航、栏目标题、按钮、标签词典、方法论与关于页 —— 均已双语；研究事件的正文
+（标题、摘要、意义、问题、关键贡献）在 `zh` 模式下渲染 `data/i18n/` 中按 slug 键控的中文
+覆盖层，缺字段时逐字段回退英文原文。**专名刻意保留英文**：论文标题、作者、模型 / 基准 /
+数据集名、领域分类名、URL 与日期 —— 它们参与检索键、筛选与信任模型，翻译会破坏一致性。
+词典在 `lib/i18n/`（`dict.ts` 核心键 + `dict.pages.ts` + `dict.components.ts`），新增界面
+文案时在 zh/en 两侧同时补键；内容翻译在 `data/i18n/`（`events.part1-6.ts` + `phrases.ts`），
+由 `lib/i18n/localize.ts` 的 `localizeEvents()` 在页面层叠加，覆盖完整性由
+`data/i18n/i18n.test.ts` 保证。
 
 The UI defaults to Simplified Chinese with a `中文 / EN` toggle in the header (a `lang`
-cookie read on every server render). Research content — event titles, summaries, paper
-names, authors, area names — stays in the original English on purpose.
+cookie read on every server render). Event prose — title, summary, significance, problem,
+key contributions — renders from a slug-keyed Chinese overlay in `data/i18n/` when the
+language is `zh`, falling back to the English source field-by-field. Proper nouns stay in
+the original English on purpose (paper titles, author / model / benchmark / dataset names,
+area taxonomy, URLs, dates): they feed search keys, filters and the trust model.
 
 ---
 

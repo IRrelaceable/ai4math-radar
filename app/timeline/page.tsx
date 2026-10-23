@@ -6,6 +6,7 @@ import { EventTypePill, VerificationBadge } from "@/components/ui/TrustBadges";
 import { TimelineControls } from "@/components/research/TimelineControls";
 import { SOURCE_TIERS, type ResearchEvent, type SourceTier } from "@/types";
 import { getLang, t } from "@/lib/i18n/server";
+import { localizeEvents } from "@/lib/i18n/localize";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +21,7 @@ export default async function TimelinePage({
 }: {
   searchParams: { type?: string; tier?: string };
 }) {
-  const events = await getStore().listEvents({ limit: 300 });
+  const events = localizeEvents(await getStore().listEvents({ limit: 300 }), getLang());
   const lang = getLang();
   const d = t(lang);
   const p = pagesDict[lang];

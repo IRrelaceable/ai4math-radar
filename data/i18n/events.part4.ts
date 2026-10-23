@@ -1,0 +1,255 @@
+import type { EventZh } from "./types";
+
+/** zh translations for .i18n-src/batch-4.json */
+export const eventsPart4: Record<string, EventZh> = {
+  "aide-ai-driven-exploration-space-of-code": {
+    title: "AIDE：代码空间中的 AI 驱动探索",
+    summary: "AIDE 将机器学习工程构建为代码优化问题，把试错过程建模为在候选解空间上的树搜索，并对有希望的分支进行策略性复用与改进；在其 Kaggle 评测、OpenAI 的 MLE-Bench 以及 METR 的 RE-Bench 上均报告了当前最优结果。",
+    significance: "表明单个由大语言模型驱动的搜索智能体可以接管经验实验循环中的大部分环节，以算力换取性能，并成为智能体化研究工程的标准基线。",
+    problem: "构建机器学习模型的工程师与科学家把大量时间耗费在劳动与算力密集的试错上，而非构思创新方案或研究假设。",
+    keyContributions: [
+      "将机器学习工程构建为代码空间上的树搜索",
+      "对有希望的解进行策略性复用与改进，以算力换取性能",
+      "在 Kaggle 评测、MLE-Bench 与 RE-Bench 上取得当前最优结果",
+    ],
+  },
+  "goedel-prover-open-source-frontier-prover": {
+    title: "Goedel-Prover：面向开源自动定理证明的前沿模型",
+    summary: "一个开源 Lean 4 证明器，与其完整数据流水线一同发布：Goedel-Pset-v1（1.64M 条自动形式化命题）与 Goedel-Pset-v1-solved（800K+ 条带证明），通过迭代训练证明器并收集其能解出的题目不断扩充。",
+    significance: "针对大规模形式化命题与证明稀缺问题的攻坚：SFT 后在 miniF2F 上 pass@32 达 57.6%（较此前开源领先者高 7.6），RL 后超过 60%，另解出 7 道 PutnamBench 题目，并发布了 29.7K 条 Lean Workbook 证明。",
+    problem: "开源证明器落后于闭源系统，主要原因是开源的形式化训练数据此前并不存在。",
+    keyContributions: [
+      "面向形式化语料库的“训练→求解→再训练”迭代数据飞轮",
+      "miniF2F 上 pass@32 达 57.6%，RL 后超过 60%",
+      "开源发布模型、数据流水线与 29.7K 条 Lean Workbook 证明",
+    ],
+  },
+  "agent-laboratory-llm-agents-research-assistants": {
+    title: "Agent Laboratory：将大语言模型智能体用作研究助手",
+    summary: "一个自主的大语言模型智能体框架，将人类的研究想法贯穿文献调研、实验与报告撰写全流程，并在每个阶段接受人类反馈；由 o1-preview 驱动的配置表现最佳，相较此前的自主研究方法将研究成本降低 84%。",
+    significance: "将智能体定位为助手而非替代者：研究者把精力投入想法构思与反馈，而非底层编码与写作，同时获得可量化的成本与周期缩减。",
+    problem: "自主研究系统成本高、速度慢，且难以在项目中途进行引导。",
+    keyContributions: [
+      "分阶段的智能体流水线：文献调研→实验→写作",
+      "在每个阶段设置人类反馈注入点",
+      "相较此前的自主研究方法成本降低 84%",
+    ],
+  },
+  "geox-formalized-vision-language-geometry": {
+    title: "GeoX：通过统一的形式化视觉-语言预训练求解几何问题",
+    summary: "GeoX 是专为几何构建的多模态模型：专用的图形编码器与符号解码器先进行单模态预训练，再通过几何-语言对齐预训练与语言对齐，并以 Generator-And-Sampler Transformer 加视觉指令微调进一步精化，从而以几何图像与问题为输入、输出可验证的解答；在 GeoQA、UniGeo、Geometry3K 与 PGPS9k 上超越通用模型与几何专用模型。",
+    significance: "它在架构层面直接处理了自然图像-文本预训练与几何图形-符号输入之间的错配，推动多模态几何求解走向可验证、符号感知的解答，而非自由形式的答案。",
+    problem: "多模态大语言模型在几何求解上表现吃力：它们基于自然图像与文本预训练、推理过程中缺乏自动验证，而现有几何专用模型又过于任务特定、难以泛化。",
+    keyContributions: [
+      "对几何图形编码器与符号解码器进行单模态预训练",
+      "几何-语言对齐，弥合几何输入的模态鸿沟",
+      "用 Generator-And-Sampler Transformer（GS-Former）处理判别式几何查询",
+      "视觉指令微调，在四个标准 GPS 基准测试上产出可验证解答",
+    ],
+  },
+  "re-bench-frontier-ai-rd-vs-human-experts": {
+    title: "RE-Bench：将语言模型智能体的前沿 AI 研发能力与人类专家对比评测",
+    summary: "RE-Bench 提供七个具有挑战性的开放式机器学习研究工程环境，配有 61 位人类专家 71 次、每次八小时尝试的数据；在同为 2 小时的预算下，最佳 AI 智能体得分是人类专家的 4 倍，但在 8 小时时人类以微弱优势超过最佳智能体得分，32 小时时达到最佳智能体得分的 2 倍；还有一个智能体写出了比任何人类专家都更快的自定义 Triton 内核。",
+    significance: "首个与人类专家直接对比的高度真实 AI 研发基准测试，量化了在短时间预算下智能体 AI 已在哪些方面超过研究者，以及在哪些方面持续的人类努力仍然占优。",
+    problem: "前沿 AI 安全政策需要预判 AI 智能体将 AI 研发本身自动化的可能，但此前鲜有评测兼具真实环境与对人类表现的直接比较。",
+    keyContributions: [
+      "七个开放式机器学习研究工程环境，配有大量人类专家基线",
+      "2 小时预算下最佳 AI 智能体得分为人类专家的 4 倍；8 与 32 小时下人类胜出",
+      "一个智能体产出了比任何人类专家都更快的自定义 Triton 内核",
+      "开源了环境、人类数据、分析代码与智能体轨迹",
+    ],
+  },
+  "frontiermath-benchmark-advanced-mathematical-reasoning": {
+    title: "FrontierMath：评测 AI 高级数学推理能力的基准测试",
+    summary: "Epoch AI 推出一个基准测试，包含数百道由专业数学家撰写并审核的原创、极难题目，覆盖数论、实分析、代数几何与范畴论；题目保密以限制污染。",
+    significance: "标准数学基准测试正趋于饱和并泄露进训练数据；FrontierMath 衡量真正的研究级推理能力，前沿模型最初只能解出其中一小部分题目。",
+    problem: "公开数学基准测试会饱和并污染训练语料库，因而不再能衡量真实能力。",
+    keyContributions: [
+      "专家撰写的原创研究级题目",
+      "保密的评测集以抵抗污染",
+      "难度针对当前前沿模型校准",
+    ],
+  },
+  "cyc-researcher-automated-research-review": {
+    title: "CycleResearcher：通过自动评审改进自动化研究",
+    summary: "一个迭代式偏好训练框架，将执行从文献调研到论文撰写全流程的 CycleResearcher 与模拟同行评审的 CycleReviewer 配对；在新提出的 Review-5k 与 Research-14k 数据集上训练后，CycleReviewer 在预测论文分数上的平均绝对误差相较单个人类评审者降低了 26.89%，而 CycleResearcher 产出的论文在模拟评审中得分 5.36，人类专家预印本为 5.24。",
+    significance: "以开源模型闭合了自动化研究与自动化评审之间的环路，并定量展示大语言模型评审在真实评审动态上正在接近人类评审者的准确度。",
+    problem: "用开源大语言模型自动化整个研究流程——包括面对模拟的同行评审过程——在很大程度上仍属未被探索的领域。",
+    keyContributions: [
+      "用开源后训练大语言模型实现全流程自动化研究与评审",
+      "CycleReviewer 将论文分数预测的平均绝对误差较单个人类评审者降低 26.89%",
+      "反映真实机器学习研究与同行评审的 Review-5k 与 Research-14k 数据集",
+      "被 ICLR 2025 接收",
+    ],
+  },
+  "coqpilot-llm-based-coq-proof-generation-plugin": {
+    title: "CoqPilot：一个基于大语言模型的证明生成插件",
+    summary: "CoqPilot 是一个面向 Coq 的 VS Code 扩展，收集由 admit 策略标记的证明空洞，结合大语言模型与非机器学习方法生成证明候选项，将每个候选项交由证明助手检验，并在候选项成功时替换空洞。",
+    significance: "为 Coq 生态提供了开箱即用的一体化大语言模型证明补全工具，并内置用于比较 Coq 生成方法的基准测试系统——这是对当时以 Lean 为中心的工具生态的重要平衡（发表于 ASE 2024 Tool Demonstrations Track）。",
+    problem: "开展基于大语言模型的 Coq 证明生成实验，需要把模型、经典自动化方法与证明检查器拼接起来，每个研究组都不得不从零搭建这套环境。",
+    keyContributions: [
+      "通过结合大语言模型与非机器学习证明生成方法来填补 admit 空洞的 VS Code 扩展",
+      "每个生成的候选项在替换空洞前都经 Coq 检验",
+      "内置用于 Coq 证明生成方法的基准测试系统，并已用于发表的实验",
+    ],
+  },
+  "omni-math-olympiad-benchmark-llm": {
+    title: "Omni-MATH：面向大语言模型的通用奥林匹克级别数学基准测试",
+    summary: "该论文提出 Omni-MATH，一个奥林匹克级别的基准测试，包含 4,428 道经严格人工标注的竞赛级题目，划分为 33 个以上子领域、覆盖 10 个以上难度级别。即使先进的推理模型在其最难题目上也表现吃力：OpenAI o1-mini 与 o1-preview 准确率分别仅为 60.54% 与 52.55%。",
+    significance: "在 GSM8K 与 MATH 趋于饱和之际（o1 在 MATH 上达到 94.8%），Omni-MATH 成为更难、粒度更细的奥林匹克级别基准测试，距离被解决仍很遥远，为该领域在竞赛级推理上提供了持久的目标。",
+    problem: "GSM8K 与 MATH 等现有基准测试已被高准确率解决，不再对前沿模型构成挑战。",
+    keyContributions: [
+      "4,428 道严格标注的竞赛级题目，覆盖 33 个以上子领域与 10 个以上难度级别",
+      "评测显示 o1-mini 为 60.54%、o1-preview 为 52.55%，远未饱和",
+      "对奥林匹克级别数学推理中失败模式的深入分析",
+    ],
+  },
+  "internlm25-stepprover-critic-guided-search": {
+    title: "InternLM2.5-StepProver：通过评判器引导搜索推进自动定理证明",
+    summary: "一个 7B 的 Lean 4 证明器，通过利用每条已生成策略中自带的偏好信息执行评判器引导的搜索，而非将策略得分当作简单的最佳优先排序。",
+    significance: "表明评判器的排序信号包含的信息多于单一标量得分：在搜索中利用它，可让小型开源证明器在 miniF2F 上与规模大得多的模型竞争。",
+    problem: "最佳优先的策略搜索丢弃了评判器对策略的评估中所含的排序信息。",
+    keyContributions: [
+      "利用策略内部偏好信息的评判器引导策略搜索",
+      "开源的 7B Lean 4 证明器，代码已发布",
+      "在小模型规模下取得有竞争力的 miniF2F 结果",
+    ],
+  },
+  "lasr-symbolic-regression-learned-concept-library": {
+    title: "基于习得概念库的符号回归",
+    summary: "LaSR 通过归纳出一个由大语言模型以零样本查询发现并演化的抽象文本概念库，来增强遗传算法符号回归；以这些概念为条件，交替执行进化步骤与大语言模型引导步骤。在 Feynman 方程组与合成任务上，它大幅超越当前最优的符号回归方法，并被用于发现一个关于大语言模型的新缩放律。",
+    significance: "它表明由大语言模型驱动的概念抽象层能使符号回归更强也更可解释，且该方法能够产出真正的科学发现——一条新的大语言模型缩放律——而不局限于基准测试本身。",
+    problem: "经典的遗传程序设计符号回归纯粹在语法层面搜索，导致组合爆炸、过拟合与难以解释的表达式，并且没有可复用抽象概念的概念。",
+    keyContributions: [
+      "通过大语言模型零样本查询归纳并演化的概念库",
+      "以发现的概念为条件，交替执行进化搜索步骤与大语言模型引导步骤",
+      "在 Feynman 方程组上超越深度学习与进化符号回归基线",
+      "发现一个新颖且强大的大语言模型缩放律",
+    ],
+  },
+  "sciagents-multi-agent-graph-reasoning-discovery": {
+    title: "SciAgents：通过多智能体图推理自动化科学发现",
+    summary: "SciAgents 结合大规模本体知识图谱、配备数据检索工具的一组大语言模型，以及具备在位学习能力的多智能体系统，自主生成并完善研究假设；应用于受生物启发的材料研究时，它揭示了作者称此前被认为互不相关的跨学科关联。",
+    significance: "证明多智能体大语言模型系统能够在结构化科学知识上进行推理，提出机制层面的假设与设计原则，这一模式被后来的 AI for Science 智能体沿用。",
+    keyContributions: [
+      "将本体知识图谱与多智能体大语言模型推理相结合",
+      "结合在位学习，自主生成并完善研究假设",
+      "在受生物启发的材料上的案例研究，揭示了出人意料的性质机理",
+    ],
+  },
+  "qwen25-math-self-improvement-math-expert-model": {
+    title: "Qwen2.5-Math 技术报告：通过自我改进迈向数学专家模型",
+    summary: "一系列数学专用模型（1.5B/7B/72B Instruct 以及一个奖励模型），通过在整个流水线——预训练数据合成、后训练与推理——上应用自我改进构建而成。",
+    significance: "在 MATH、GSM8K 与 AIME 上将开源权重的竞赛数学推理推至领先开源模型的水平，并附带发布了数学奖励模型，而非仅有对话模型。",
+    problem: "在竞赛数学上，开源通用模型落后于专用系统。",
+    keyContributions: [
+      "贯穿数据合成、训练与推理的自我改进循环",
+      "开源数学模型家族，外加专用数学奖励模型",
+      "发布时在 MATH、GSM8K 与 AIME 上取得领先的开源模型成绩",
+    ],
+  },
+  "deepseek-ai-deepseek-prover-v1-5-repository-update": {
+    title: "deepseek-ai/DeepSeek-Prover-V1.5 代码仓库更新",
+    summary: "公开代码仓库 deepseek-ai/DeepSeek-Prover-V1.5（Python），588 stars。作为可供查证的 AI4Math 相关产物记录；最近一次推送为 2024-08-16。",
+    significance: "归类于 Theorem Proving → Lean。自动采集——引用前请核对所链接的来源。",
+  },
+  "ai-scientist-automated-open-ended-discovery": {
+    title: "The AI Scientist：迈向完全自动化的开放式科学发现",
+    summary: "Sakana AI 提出一个框架，其中大语言模型智能体自主生成研究想法、编写并执行代码、分析结果并产出完整论文——每篇论文成本约 $15——另配有一个自动论文评审器。",
+    significance: "首个端到端自主论文生成的综合开源框架，将争论从“AI 能否写论文”转向此类系统应如何被评测与评审。",
+    problem: "完整的研究循环（想法→实验→写作）即使在狭窄领域内也昂贵而缓慢。",
+    keyContributions: [
+      "端到端循环：想法构思、实现、实验、写作",
+      "针对生成论文的自动评审器",
+      "每篇论文成本极低，使规模化实验成为可能",
+    ],
+  },
+  "deepseek-prover-v1-5-rl-and-mcts": {
+    title: "DeepSeek-Prover-V1.5：利用证明助手反馈进行强化学习与蒙特卡洛树搜索",
+    summary: "一个开源 Lean 4 证明器，采用基于证明助手反馈的强化学习（RLPAF）训练，并结合 RMaxTS——一种探索多样证明路径的内在奖励蒙特卡洛树搜索。",
+    significance: "把证明助手本身变成奖励信号，并与探索驱动的搜索结合：发布时在 miniF2F-test 上达到 63.5%、在 ProofNet 上达到 25.3%，相较 DeepSeek-Prover-V1 明显提升。",
+    problem: "仅有监督训练会陷入平台期，而树搜索会收敛到单一狭窄的证明路径。",
+    keyContributions: [
+      "基于证明助手反馈的强化学习（RLPAF）用于证明器训练",
+      "RMaxTS：用于多样证明探索的内在奖励 MCTS",
+      "发布时 miniF2F-test 63.5% / ProofNet 25.3%",
+    ],
+  },
+  "internlm2-stepprover-putnam-sota": {
+    title: "InternLM2-Step-Prover（Shanghai AI Lab）在 miniF2F、ProofNet 与 Putnam 上报告 SOTA",
+    summary: "Shanghai AI Laboratory 的书生·浦语（InternLM）团队发布了 InternLM2-Step-Prover 以及 LEAN-GitHub——一个从 GitHub 上几乎全部 Lean 4 代码仓库汇编而成的 Lean 4 语料库。根据官方代码仓库的发布说明（2024-07-25），该流水线——在 Lean-Github 与 Lean-Workbook 上微调 InternLM-math-plus——在 miniF2F-test（54.5%）与 ProofNet（18.1%）上达到 SOTA，并解出 5 道 Putnam 题目；配套论文报告在 64 passes 下 miniF2F-test 达 54.5%，超过此前 52% 的 SOTA。Lean-Workbook 提供 57K 组形式化-非形式化题目对，其中包括 21 道新的 IMO 题目。",
+    significance: "2024 年公开记录中中国实验室最强的定理证明里程碑：一个开源 7B 证明器在标准 Lean 4 基准测试上达到 SOTA 并解出 Putnam 题目，其训练语料库（Lean-Github、Lean-Workbook）也发布供社区复用。这种语料库挖掘方法——从现有代码仓库中提取形式化命题而非手写——成为后来开源证明器沿用的范式。",
+    problem: "形式化定理证明数据稀缺：数百个 GitHub 代码仓库中人工编写的 Lean 4 代码并未被复用为训练信号。",
+    keyContributions: [
+      "LEAN-GitHub：从 GitHub 上近乎全部 Lean 4 代码仓库挖掘出的语料库",
+      "54.5% miniF2F-test（64 passes）、18.1% ProofNet、解出 5 道 Putnam 题目——发布方报告",
+      "Lean-Workbook：57K 组形式化-非形式化题目对，含 21 道新的 IMO 题目",
+    ],
+  },
+  "alphaproof-imo-silver-medal-standard": {
+    title: "AI 解答国际数学奥林匹克题目达到银牌水平",
+    summary: "DeepMind 宣布 AlphaProof——一个在 Lean 4 中陈述并证明数学命题的强化学习系统；它与 AlphaGeometry2 一起解出 IMO 2024 六道题目中的四道，得分 28/42，达到银牌标准。",
+    significance: "首个在完整官方 IMO 题集上达到奖牌水平、并经 Lean 机器检验验证的 AI 成绩：经 RL 训练的证明能力覆盖代数、数论与组合，而不仅限于几何。",
+    problem: "奥林匹克题目不限于几何，且非形式化陈述难以自动验证。",
+    keyContributions: [
+      "产出机器检验 Lean 4 证明的 RL 系统",
+      "在 IMO 2024 六道题目上取得 28/42（银牌标准）",
+      "命题生成与证明搜索相结合",
+    ],
+  },
+  "numinamath-aimo-progress-prize-1": {
+    title: "NuminaMath 赢得首届 AIMO Progress Prize",
+    summary: "Numina 发布了一个开源的竞赛级题目与解答合集，NuminaMath-7B / NuminaMath-7B-TIR 于 2024 年 7 月在 Kaggle 赢得首届 AIMO Progress Prize。",
+    significance: "证明开源权重模型可以在与数千名参赛者角逐的重大公开数学竞赛中获胜，并把高质量的奥林匹克级别训练语料库带入开源生态。",
+    problem: "开源模型此前没有同等水平、公开可得的奥林匹克级别训练资源。",
+    keyContributions: [
+      "开源的奥林匹克级别题目/解答语料库",
+      "AIMO Progress Prize 1 的开源权重获奖者",
+      "面向竞赛求解的工具集成变体（TIR）",
+    ],
+  },
+  "putnambench-neural-theorem-provers-putnam": {
+    title: "PutnamBench：在 Putnam 数学竞赛上评测神经定理证明器",
+    summary: "对 William Lowell Putnam 数学竞赛中 640 个定理人工构建的 1,692 个形式化版本，涵盖 Lean 4 与 Isabelle，其中相当一部分另有 Coq 版本；受评测的证明器仅解出寥寥数个。",
+    significance: "现有形式化数学基准测试在教材水平上已接近饱和；PutnamBench 重新确立了竞赛级形式化问题求解作为神经定理证明的困难开放挑战。",
+    problem: "形式化基准测试不再能区分强证明器与弱证明器。",
+    keyContributions: [
+      "在 Lean 4、Isabelle 与 Coq 中形式化的 Putnam 题目",
+      "在真实竞赛难度下的跨系统评测",
+      "揭示证明器尚存差距的基线结果",
+    ],
+  },
+  "lean-workbook-large-scale-lean-problem-set": {
+    title: "Lean Workbook：从自然语言数学问题形式化而来的大规模 Lean 题集",
+    summary: "InternLM 发布了 Lean Workbook，其构建流水线迭代生成并过滤合成数据，在自然语言数学问题与 Lean 4 命题之间相互翻译；最终数据集包含约 57K 组形式化-非形式化问题对（配有从数学竞赛论坛检索到的证明），以及 21 道新的 IMO 题目。",
+    significance: "直接针对形式化语言训练数据的稀缺——论文指出这是 Lean 上大语言模型定理证明的瓶颈——发布了开放、大规模的形式化-非形式化数据集，后来的证明器工作（如 InternLM2.5-StepProver、Goedel-Prover）将其用作共享的训练与评测材料。",
+    problem: "大语言模型在 Lean 等形式化语言中的定理证明能力较弱，很大程度上是因为这些语言的训练数据稀缺。",
+    keyContributions: [
+      "在自然语言数学问题与 Lean 4 命题之间双向翻译并过滤的迭代式合成数据流水线",
+      "约 57K 组形式化-非形式化问题对，外加从数学竞赛论坛检索的证明与 21 道新的 IMO 题目",
+      "开源代码（InternLM/InternLM-Math）与数据（Hugging Face 上的 InternLM/Lean-Workbook）",
+    ],
+  },
+  "leaneuclid-autoformalizing-euclidean-geometry": {
+    title: "欧几里得几何的自动形式化（LeanEuclid 基准测试）",
+    summary: "一个神经-符号自动形式化流水线——由 SMT 求解器补全图形带来的空缺，使语言模型只需形式化显式的文本步骤——以及 LeanEuclid：一个将 Euclid's Elements 与 UniGeo 题目在 Lean 中形式化的基准测试。",
+    significance: "首个专门基于 Lean 的欧几里得几何自动形式化基准测试：它提供了一个受控领域，使非形式化几何证明与机器检验之间的差距可以被实际度量（配有 GPT-4 与 GPT-4V 基线）。",
+    problem: "非形式化几何证明依赖图形，留下语言模型无法直接形式化的文本空缺。",
+    keyContributions: [
+      "SMT 求解器补全图形步骤，使大语言模型仅需形式化文本",
+      "LeanEuclid 基准测试，对命题进行自动语义评测",
+      "GPT-4 / GPT-4V 基线，记录当前能力与局限",
+    ],
+  },
+  "deepseek-prover-large-scale-synthetic-data": {
+    title: "DeepSeek-Prover：通过大规模合成数据推进大语言模型中的定理证明",
+    summary: "DeepSeek 大规模形式化竞赛题目，生成 800 万条带证明的 Lean 4 命题，随后在其上微调 DeepSeekMath-7B 以生成完整证明。",
+    significance: "以合成语料库应对形式化训练数据的稀缺：在 miniF2F-test（Lean 4）上完整证明的累积准确率达 52%，超过 GPT-4 的 23.0% 与一种树搜索 RL 方法的 41.0%，另解出 5 道 FIMO 题目，而 GPT-4 一题未解。",
+    problem: "与大语言模型的数据需求相比，形式化证明语料库规模极小。",
+    keyContributions: [
+      "从竞赛题目产出 8M 条带证明形式化命题的流水线",
+      "miniF2F-test（Lean 4）上 52% 的累积完整证明准确率",
+      "证明了 5 道 FIMO 题目，而 GPT-4 一题未证",
+    ],
+  },
+};

@@ -1,0 +1,78 @@
+import type { EcosystemMetadata, ResearchEvent } from "@/types";
+import type { Lang } from "./dict";
+import { EVENT_ZH } from "@/data/i18n/events";
+import { PHRASE_ZH } from "@/data/i18n/phrases";
+
+/**
+ * Content localization overlay.
+ *
+ * Seed and ingested research prose is stored in English only; `data/i18n/`
+ * carries a slug-keyed Chinese overlay. When the UI language is `zh`, every
+ * prose field is replaced by its translation when one exists and falls back to
+ * the English source field-by-field — never mutating the stored event.
+ *
+ * Taxonomy, names, URLs and dates are intentionally NOT overlaid (see
+ * `data/i18n/types.ts`), so slugs, filters and trust metadata are untouched.
+ */
+
+/** Exact-match phrase lookup for boilerplate prose (notes, roles, labels). */
+export function phrase(text?: string): string | undefined {
+  if (!text) return text;
+  return PHRASE_ZH[text] ?? text;
+}
+
+/** Localize one event for display. Returns the event unchanged unless lang is zh. */
+export function localizeEvent<T extends ResearchEvent>(event: T, lang: Lang): T {
+  if (lang !== "zh") return event;
+  const zh = EVENT_ZH[event.slug];
+  const kc = zh?.keyContributions;
+  const contributions = kc && event.keyContributions && kc.length === event.keyContributions.length
+    ? kc
+    : event.keyContributions;
+  return {
+    ...event,
+    title: zh?.title ?? event.title,
+    summary: zh?.summary ?? event.summary,
+    significance: zh?.significance ?? event.significance,
+    problem: zh?.problem ?? event.problem,
+    keyContributions: contributions,
+    importanceNote: phrase(event.importanceNote),
+    verificationHistory: event.verificationHistory?.map((r) => ({ ...r, note: phrase(r.note) ?? r.note })),
+    relatedWorks: event.relatedWorks?.map((w) => ({ ...w, note: phrase(w.note) ?? w.note })),
+    metadata: event.metadata ? localizeMetadata(event.metadata) : event.metadata,
+  };
+}
+
+/** Localize the prose fields inside ecosystem metadata (roles, initiatives …). */
+function localizeMetadata(m: EcosystemMetadata): EcosystemMetadata {
+  return {
+    ...m,
+    people: m.people?.map((person) => ({
+      ...person,
+      role: phrase(person.role) ?? person.role,
+      viewpoint: phrase(person.viewpoint) ?? person.viewpoint,
+    })),
+    initiatives: m.initiatives?.map((x) => phrase(x) ?? x),
+    projects: m.projects?.map((x) => phrase(x) ?? x),
+    funding: m.funding
+      ? { ...m.funding, amountDisclosure: phrase(m.funding.amountDisclosure) ?? m.funding.amountDisclosure }
+      : m.funding,
+    education: m.education
+      ? { ...m.education, description: phrase(m.education.description) ?? m.education.description }
+      : m.education,
+    policy: m.policy
+      ? {
+          ...m.policy,
+          kind: phrase(m.policy.kind) ?? m.policy.kind,
+          issue: phrase(m.policy.issue) ?? m.policy.issue,
+          community: phrase(m.policy.community) ?? m.policy.community,
+        }
+      : m.policy,
+  };
+}
+
+/** Localize a list of events for display. */
+export function localizeEvents<T extends ResearchEvent>(events: T[], lang: Lang): T[] {
+  if (lang !== "zh") return events;
+  return events.map((e) => localizeEvent(e, lang));
+}
