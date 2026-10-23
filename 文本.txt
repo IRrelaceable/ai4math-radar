@@ -1,0 +1,995 @@
+你现在需要从零开发一个 **AI4Math Research Progress Tracker** 网站。
+
+## 一、项目目标
+
+开发一个面向 AI4Math（AI for Mathematics）领域的研究进展追踪平台。
+
+网站的核心目标不是简单展示论文，而是帮助研究人员快速回答：
+
+1. 最近 AI4Math 领域发生了什么重要进展？
+2. 哪些研究方向最近比较活跃？
+3. 某一项研究进展具体解决了什么问题？
+4. 它与之前哪些工作有关？
+5. 论文、代码、模型、Benchmark、数据集之间有什么关系？
+
+第一版先做成一个 **可运行、可交互的 MVP**，重点是把网站整体框架和核心数据流跑通。
+
+不要为了追求功能数量而把项目复杂化。
+
+---
+
+# 二、总体技术方案
+
+推荐使用：
+
+- Frontend：Next.js + React + TypeScript
+- UI：Tailwind CSS
+- Backend：优先使用 Next.js API Routes / Route Handlers
+- Database：PostgreSQL
+- ORM：Prisma
+- AI：预留 LLM API 接口
+- Deployment：结构上兼容 Vercel
+- Package manager：npm 或 pnpm
+
+如果当前环境已经存在成熟的项目模板或技术约束，可以合理调整，但必须保持：
+
+> 前端 → API → 数据层 → Research Event
+
+这条主线清晰。
+
+---
+
+# 三、第一版必须实现的功能
+
+## 1. 首页 Dashboard
+
+设计一个现代、简洁、偏科研工具风格的首页。
+
+首页包含：
+
+### Header
+
+显示：
+
+AI4Math Research Tracker
+
+导航：
+
+- Latest
+- Topics
+- Research Map
+- About
+
+右侧提供搜索入口。
+
+---
+
+### Hero 区域
+
+显示类似：
+
+AI4Math Research Tracker
+
+Track the latest progress in AI for Mathematics.
+
+下面提供搜索框：
+
+Search AI4Math research...
+
+支持用户搜索：
+
+- theorem proving
+- mathematical reasoning
+- geometry
+- formal mathematics
+- mathematical agents
+- benchmarks
+- Lean
+- mathematical discovery
+
+---
+
+### Latest Research Progress
+
+显示最近的 Research Events。
+
+每个 Event 使用 Card 展示：
+
+- 标题
+- 日期
+- Research Area
+- Importance
+- 简短摘要
+- 相关论文
+- GitHub（如果存在）
+- View Details
+
+不要只展示论文标题。
+
+重点展示：
+
+> What happened?
+
+以及：
+
+> Why does it matter?
+
+---
+
+# 四、核心数据模型
+
+非常重要：
+
+不要把 Paper 直接作为平台唯一的数据单位。
+
+核心对象应该是：
+
+## ResearchEvent
+
+一个 ResearchEvent 表示：
+
+> AI4Math 领域发生的一项值得追踪的研究进展。
+
+例如：
+
+```text
+ResearchEvent
+│
+├── title
+├── summary
+├── significance
+├── date
+├── researchArea
+├── subArea
+├── importanceScore
+├── source
+├── paper
+├── github
+├── authors
+├── institution
+├── models
+├── benchmarks
+├── datasets
+└── relatedWorks
+```
+
+---
+
+# 五、ResearchEvent 数据结构
+
+至少包含：
+
+```text
+id
+title
+slug
+summary
+significance
+date
+researchArea
+subArea
+importanceScore
+sourceType
+sourceUrl
+paperUrl
+githubUrl
+authors
+institution
+model
+benchmark
+dataset
+relatedWorks
+createdAt
+updatedAt
+```
+
+其中：
+
+### researchArea
+
+第一版可以使用：
+
+```text
+Mathematical Reasoning
+Theorem Proving
+Formal Mathematics
+Mathematical Discovery
+Geometry
+Symbolic Mathematics
+Mathematical Agents
+LLM for Mathematics
+Benchmarks & Datasets
+AI-assisted Research
+```
+
+允许未来扩展。
+
+---
+
+# 六、Research Event 和 Paper 必须区分
+
+例如：
+
+一篇论文可能只是普通论文。
+
+而 Research Event 是：
+
+> 一项真正值得关注的研究进展。
+
+所以应该允许：
+
+```text
+ResearchEvent
+      │
+      ├── Paper
+      ├── GitHub
+      ├── Model
+      ├── Benchmark
+      ├── Dataset
+      └── Related Works
+```
+
+一个 Event 可以对应多篇论文。
+
+一篇论文也可能参与多个 Event。
+
+因此数据库结构尽量考虑未来的多对多关系。
+
+---
+
+# 七、Research Feed
+
+实现一个 `/latest` 页面。
+
+提供：
+
+```text
+Latest AI4Math Progress
+```
+
+支持筛选：
+
+```text
+All
+Theorem Proving
+Mathematical Reasoning
+Formal Mathematics
+Geometry
+Mathematical Discovery
+Agents
+Benchmarks
+```
+
+支持：
+
+- 按日期排序
+- 按重要程度排序
+- 搜索
+- 分类过滤
+
+每个 Event 显示：
+
+```text
+[Research Area]
+
+Title
+
+Short summary
+
+Why it matters
+
+Date
+
+Importance: ★★★★☆
+
+Paper
+GitHub
+Details →
+```
+
+---
+
+# 八、Research Detail 页面
+
+点击一个 Research Event 后进入：
+
+```text
+/research/[slug]
+```
+
+页面至少包含：
+
+## 标题
+
+## What happened?
+
+详细介绍该研究进展。
+
+## Why does it matter?
+
+解释它的重要性。
+
+## Research Area
+
+例如：
+
+Theorem Proving → Lean
+
+## Key Contribution
+
+列出主要贡献。
+
+## Related Paper
+
+显示论文信息。
+
+## Code
+
+如果存在 GitHub，提供入口。
+
+## Authors / Institution
+
+显示作者和机构。
+
+## Related Works
+
+显示相关研究。
+
+## Timeline
+
+如果可以，根据已有数据展示：
+
+```text
+Previous Work
+      ↓
+This Work
+      ↓
+Follow-up Work
+```
+
+---
+
+# 九、Topics 页面
+
+创建：
+
+```text
+/topics
+```
+
+展示 AI4Math 当前研究方向。
+
+例如：
+
+```text
+Theorem Proving
+
+125 research events
+██████████████████
+
+Mathematical Reasoning
+
+98 research events
+██████████████
+
+Formal Mathematics
+
+76 research events
+███████████
+
+Mathematical Agents
+
+54 research events
+████████
+```
+
+数据不要写死，应该从数据库统计。
+
+点击 Topic 后进入：
+
+```text
+/topics/[topic]
+```
+
+展示：
+
+- 最近进展
+- 研究数量
+- 时间趋势
+- 相关论文
+- 相关模型
+- 相关 Benchmark
+
+---
+
+# 十、Research Map
+
+创建：
+
+```text
+/research-map
+```
+
+第一版不需要实现复杂的知识图谱算法。
+
+可以先做一个视觉化的 Research Map。
+
+例如：
+
+```text
+AI4Math
+│
+├── Mathematical Reasoning
+│
+├── Theorem Proving
+│   ├── Lean
+│   ├── Isabelle
+│   └── Coq
+│
+├── Formal Mathematics
+│
+├── Mathematical Discovery
+│
+├── Geometry
+│
+└── Mathematical Agents
+```
+
+如果实现图结构，优先使用简单可靠的方案。
+
+不要为了图谱引入复杂依赖。
+
+---
+
+# 十一、搜索
+
+实现全站搜索。
+
+用户可以输入：
+
+```text
+Lean theorem proving
+```
+
+或者：
+
+```text
+mathematical agents
+```
+
+搜索：
+
+- Research Events
+- Papers
+- Topics
+- Models
+- Benchmarks
+
+第一版可以使用 PostgreSQL 的基础搜索能力。
+
+不要一开始就强制引入向量数据库。
+
+---
+
+# 十二、AI Agent 接口
+
+第一版必须给未来 Agent 留出清晰接口，但不要为了 MVP 实现一个复杂的 Multi-Agent System。
+
+建立类似：
+
+```text
+src/
+  agents/
+    researchTracker/
+      tracker.ts
+      classifier.ts
+      summarizer.ts
+```
+
+或者合理的等价结构。
+
+Agent 的职责未来包括：
+
+```text
+1. 获取新论文
+2. 获取 GitHub 项目
+3. 判断是否属于 AI4Math
+4. 判断 Research Area
+5. 判断是否构成真正的 Research Progress
+6. 提取 Research Event
+7. 判断重要程度
+8. 生成摘要
+9. 提取 Paper / Code / Model / Benchmark
+10. 查找 Related Works
+```
+
+第一版可以只实现：
+
+```text
+Raw Research Item
+       ↓
+AI4Math Classifier
+       ↓
+Research Event
+```
+
+并且使用 mock data / mock LLM provider，让网站不依赖真实 API 也可以运行。
+
+---
+
+# 十三、数据获取
+
+第一版不要直接构建复杂的爬虫系统。
+
+建立一个统一的数据输入接口：
+
+```text
+ResearchSource
+```
+
+未来支持：
+
+```text
+arXiv
+GitHub
+Conference
+Project Website
+Research Lab
+Blog
+```
+
+接口类似：
+
+```text
+Source
+   ↓
+RawResearchItem
+   ↓
+Normalizer
+   ↓
+Classifier
+   ↓
+ResearchEvent
+```
+
+第一版可以提供 mock source：
+
+```text
+mockResearchSource
+```
+
+预置 20～50 条具有代表性的 AI4Math Research Events。
+
+注意：
+
+不要伪造真实研究成果。
+
+如果使用真实研究数据，必须保留 source URL。
+
+如果暂时无法联网获取数据，则使用明确标记为 Demo / Example 的数据。
+
+---
+
+# 十四、重要程度评分
+
+为 ResearchEvent 设计：
+
+```text
+importanceScore: 0 ~ 100
+```
+
+第一版可以先使用简单规则或 mock 值。
+
+未来考虑：
+
+```text
+Novelty
+Impact
+Community Attention
+Technical Significance
+Evidence Quality
+```
+
+最终形成：
+
+```text
+Importance Score
+```
+
+页面显示：
+
+```text
+Importance
+82 / 100
+```
+
+但不要把这个分数伪装成客观科学指标。
+
+页面上应该明确它是：
+
+> AI-assisted importance assessment
+
+---
+
+# 十五、UI 风格
+
+整体设计：
+
+> Modern Research Tool / Academic Intelligence Platform
+
+参考方向：
+
+- Linear
+- Vercel
+- OpenAI research tools
+- GitHub
+- arXiv
+- modern academic dashboards
+
+要求：
+
+- 简洁
+- 信息密度适中
+- 不要花哨
+- 不要大面积渐变
+- 不要做成普通 AI Chatbot
+- 卡片层级清晰
+- Typography 清楚
+- Desktop 优先，同时兼容移动端
+
+重点突出：
+
+```text
+Research Event
+Research Area
+Date
+Importance
+Why it matters
+```
+
+---
+
+# 十六、页面结构
+
+至少创建：
+
+```text
+/
+├── 首页 Dashboard
+│
+├── /latest
+│   └── Research Feed
+│
+├── /topics
+│   └── Topic List
+│
+├── /topics/[topic]
+│   └── Topic Detail
+│
+├── /research/[slug]
+│   └── Research Event Detail
+│
+├── /research-map
+│   └── Research Map
+│
+└── /about
+```
+
+---
+
+# 十七、项目目录
+
+建议结构：
+
+```text
+ai4math-tracker/
+│
+├── app/
+│   ├── page.tsx
+│   ├── latest/
+│   ├── topics/
+│   ├── research/
+│   ├── research-map/
+│   ├── about/
+│   └── api/
+│
+├── components/
+│   ├── layout/
+│   ├── research/
+│   ├── topics/
+│   ├── search/
+│   └── ui/
+│
+├── lib/
+│   ├── db/
+│   ├── search/
+│   └── utils/
+│
+├── agents/
+│   └── researchTracker/
+│
+├── data/
+│   └── seed/
+│
+├── prisma/
+│   └── schema.prisma
+│
+├── public/
+│
+├── types/
+│
+└── README.md
+```
+
+可以根据实际 Next.js 版本合理调整。
+
+---
+
+# 十八、数据库
+
+使用 Prisma + PostgreSQL。
+
+至少设计：
+
+```text
+ResearchEvent
+ResearchArea
+Paper
+Author
+Institution
+Model
+Benchmark
+Dataset
+ResearchEventPaper
+ResearchEventAuthor
+ResearchEventRelatedWork
+```
+
+如果第一版为了简单可以适当减少表数量，但必须考虑未来扩展。
+
+---
+
+# 十九、开发要求
+
+请不要只生成 UI mockup。
+
+必须真正：
+
+1. 创建项目
+2. 安装依赖
+3. 创建数据库 Schema
+4. 创建 Seed 数据
+5. 实现 API
+6. 实现页面
+7. 实现页面之间的跳转
+8. 实现搜索
+9. 实现筛选
+10. 实现 Research Detail
+11. 实现 Topic 页面
+12. 实现基础 Research Map
+13. 让项目可以本地启动
+
+最终执行：
+
+```bash
+npm run dev
+```
+
+或者项目实际使用的等价命令。
+
+确保没有明显 TypeScript / build error。
+
+---
+
+# 二十、第一版不要做
+
+暂时不要实现：
+
+- 用户注册
+- 社交系统
+- 评论
+- 点赞
+- 复杂推荐算法
+- 多 Agent 协作
+- 向量数据库
+- RAG
+- 自动爬取整个互联网
+- 自动发送邮件
+- 复杂权限系统
+- 支付
+- 移动 App
+
+这些留到后续版本。
+
+---
+
+# 二十一、最重要的产品原则
+
+整个项目不要做成：
+
+> “一个 AI 帮你总结论文的网站”。
+
+而应该做成：
+
+> **“一个帮助研究人员理解 AI4Math 研究进展的 Research Intelligence Platform。”**
+
+因此所有页面都应该围绕：
+
+```text
+What happened?
+Why does it matter?
+What problem does it address?
+What did it improve?
+What came before it?
+What came after it?
+Where can I read the original work?
+```
+
+这些问题设计。
+
+---
+
+# 二十二、开发顺序
+
+请按照下面顺序执行：
+
+### Phase 1
+
+搭建 Next.js 项目。
+
+### Phase 2
+
+实现整体 UI 和页面路由。
+
+### Phase 3
+
+设计 Prisma Schema。
+
+### Phase 4
+
+添加 Demo Research Events。
+
+### Phase 5
+
+实现 Latest Feed。
+
+### Phase 6
+
+实现 Research Detail。
+
+### Phase 7
+
+实现 Topics。
+
+### Phase 8
+
+实现 Search。
+
+### Phase 9
+
+实现 Research Map。
+
+### Phase 10
+
+建立 Agent 接口和 mock pipeline。
+
+### Phase 11
+
+运行测试并修复问题。
+
+### Phase 12
+
+完善 README，说明：
+
+- 如何安装
+- 如何启动
+- 如何配置数据库
+- 如何配置 LLM API
+- 项目结构
+- 后续如何加入真实 Research Source
+- Agent 如何扩展
+
+---
+
+# 二十三、最终验收标准
+
+当你完成后，我应该能够：
+
+```text
+npm install
+
+npm run dev
+```
+
+然后打开网站。
+
+我可以：
+
+1. 看到 AI4Math Dashboard
+2. 浏览最新 Research Events
+3. 按领域筛选
+4. 搜索研究
+5. 点击进入 Research Detail
+6. 浏览 Topic
+7. 查看 Research Map
+8. 查看论文和代码链接
+9. 看到 Research Event 的重要程度
+10. 看到 Why it matters
+11. 看到相关研究
+12. 看到未来 Agent 数据处理接口
+
+整个网站应该是一个真正可以继续开发的工程，而不是一次性的 HTML Demo。
+
+---
+
+# 二十四、后续版本方向
+
+完成 MVP 后，不要立即自行添加大量功能。
+
+下一阶段重点考虑：
+
+```text
+V1
+Research Feed
+      ↓
+V2
+自动获取 arXiv / GitHub
+      ↓
+V3
+AI4Math Research Agent
+      ↓
+V4
+Research Event 自动生成
+      ↓
+V5
+Research Timeline
+      ↓
+V6
+Research Graph
+      ↓
+V7
+Research Trend Detection
+      ↓
+V8
+Research Question Tracking
+      ↓
+V9
+AI4Math Research Intelligence Platform
+```
+
+其中尤其关注：
+
+> **Research Trend Detection**
+
+以及：
+
+> **Research Lineage / Research Graph**
+
+这两个功能可能成为平台区别于普通论文聚合网站的核心。
+
+---
+
+## 现在开始执行
+
+请先检查当前开发环境和已有项目，不要假设项目为空。
+
+如果是空目录，就从零初始化。
+
+如果已经存在项目，则先理解现有结构，再在现有基础上开发。
+
+开发过程中优先保证：
+
+**可运行 > 功能完整 > 架构复杂**
+
+不要为了“看起来高级”引入没有必要的技术。
+
+完成后向我汇报：
+
+1. 已完成哪些功能
+2. 当前项目结构
+3. 使用了哪些技术
+4. 如何运行
+5. 当前有哪些限制
+6. 下一步最值得开发的功能
+
+然后停止，不要擅自继续扩大项目范围。

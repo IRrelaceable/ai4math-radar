@@ -1,0 +1,186 @@
+// Prisma schema for the AI4Math Research Progress Tracker.
+//
+// Primary data unit = ResearchEvent (a trackable research progress item),
+// with Paper / Model / Benchmark / Dataset / RelatedWork attached to it.
+//
+// Provider is PostgreSQL. The application still runs without a database:
+// when DATABASE_URL is not set, lib/db falls back to the bundled demo store
+// built from data/seed/events.ts (see README).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ResearchEvent {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  summary   String
+  significance String
+
+  /// Day-precision date of the event.
+  date DateTime @db.Date
+
+  researchAreaId String
+  researchArea   ResearchArea @relation(fields: [researchAreaId], references: [id])
+  subArea        String?
+
+  sourceType String
+  sourceUrl  String
+  paperUrl   String?
+  githubUrl  String?
+  problem    String?
+  keyContributions String[]
+
+  institutionId String?
+  institution   Institution? @relation(fields: [institutionId], references: [id])
+
+  /// Denormalized display lists (kept for simple, fast feed queries).
+  modelNames     String[]
+  benchmarkNames String[]
+  datasetNames   String[]
+
+  /// Demo/example content flag - see README "Demo data".
+  isDemo Boolean @default(false)
+
+  /// Trust model — objective, observable corroboration labels.
+  /// claimed | paper_released | under_verification | partially_verified | ...
+  verificationStatus String  @default("claimed")
+  /// E0..E4 - maturity of the public evidence
+  evidenceLevel      String  @default("E2")
+  /// S1..S5 - where the evidence comes from
+  sourceTier         String  @default("S1")
+  /// Primary ecosystem class: Research | People | Institutions | Funding | Education | PolicyCommunity.
+  eventType          String?
+  /// Legacy research subtype: Discovery | Proof | Formalization | Benchmark | ...
+  researchEventType  String?
+  /// Type-specific ecosystem details (people, grant, course, policy, ...).
+  metadata           Json?
+  /// Optional 0-100 AI-assisted subjective assessment; never objective.
+  importanceScore    Int?
+  importanceNote     String?
+  /// curated (hand-verified) | automated (ingest pipeline)
+  provenance         String  @default("curated")
+  lastSyncedAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  eventPapers  ResearchEventPaper[]
+  eventAuthors ResearchEventAuthor[]
+  relatedWorks ResearchEventRelatedWork[]
+  verificationRecords VerificationRecord[]
+
+  models     Model[]
+  benchmarks Benchmark[]
+  datasets   Dataset[]
+
+  @@index([date])
+  @@index([researchAreaId])
+}
+
+model ResearchArea {
+  id          String @id @default(cuid())
+  name        String @unique
+  slug        String @unique
+  description String?
+  events      ResearchEvent[]
+}
+
+model Paper {
+  id    String @id @default(cuid())
+  title String
+  url   String?
+  venue String?
+  year  Int?
+
+  events ResearchEventPaper[]
+}
+
+model Author {
+  id   String @id @default(cuid())
+  name String @unique
+
+  events ResearchEventAuthor[]
+}
+
+model Institution {
+  id     String @id @default(cuid())
+  name   String @unique
+  events ResearchEvent[]
+}
+
+model Model {
+  id    String @id @default(cuid())
+  name  String @unique
+  events ResearchEvent[]
+}
+
+model Benchmark {
+  id     String @id @default(cuid())
+  name   String @unique
+  events ResearchEvent[]
+}
+
+model Dataset {
+  id     String @id @default(cuid())
+  name   String @unique
+  events ResearchEvent[]
+}
+
+/// Many-to-many: one event can cite several papers, one paper can back several events.
+model ResearchEventPaper {
+  eventId String
+  paperId String
+  event   ResearchEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  paper   Paper         @relation(fields: [paperId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, paperId])
+}
+
+/// Many-to-many: one event can have many authors, one author appears in many events.
+model ResearchEventAuthor {
+  eventId  String
+  authorId String
+  event    ResearchEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  author   Author        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, authorId])
+}
+
+/// Lineage links between events: previous work -> this work -> follow-up work.
+model ResearchEventRelatedWork {
+  id         String        @id @default(cuid())
+  eventId    String
+  event      ResearchEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title      String
+  url        String?
+  /// previous | followup | related
+  relation   String        @default("related")
+  note       String?
+  /// Optional link to another tracked event (when the target is already in the platform).
+  toEventId  String?
+
+  @@index([eventId])
+}
+
+/// Append-only trail of how an event's corroboration state changed over time.
+model VerificationRecord {
+  id            String        @id @default(cuid())
+  eventId       String
+  event         ResearchEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  date          DateTime      @db.Date
+  /// claimed | paper_released | under_verification | ...
+  status        String
+  /// E0..E4
+  evidenceLevel String
+  note          String?
+
+  @@index([eventId])
+}
+
