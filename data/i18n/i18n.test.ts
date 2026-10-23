@@ -52,6 +52,18 @@ describe("Chinese event overlay (EVENT_ZH)", () => {
     expect(localizeEvents([event], "zh")[0].summary).not.toBe(before);
     expect(localizeEvents([event], "en")[0]).toBe(event);
   });
+
+  it("renders inline LaTeX to Unicode in both languages", () => {
+    const synthetic = {
+      ...seedEvents[0],
+      slug: "math-render-check",
+      summary: "We prove that for every open $ U \\subseteq \\mathbb R^n $ the bound $\\varepsilon^{-2}$ holds.",
+    };
+    const rendered = localizeEvent(synthetic, "en").summary;
+    expect(rendered).toContain("U ⊆ ℝⁿ");
+    expect(rendered).toContain("ε⁻²");
+    expect(rendered).not.toContain("$");
+  });
 });
 
 describe("Chinese boilerplate map (PHRASE_ZH)", () => {
