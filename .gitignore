@@ -35,3 +35,6 @@ data/ingested/source-status.json
 # derived inputs for the i18n translation pipeline (regenerable via extract.mjs)
 .i18n-src/
 
+# local working notes (requirements draft), not source
+文本.txt
+

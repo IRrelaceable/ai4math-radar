@@ -1,77 +1,72 @@
-# AI4Math Ecosystem Radar
+# AI4Math Ecosystem Radar · AI4Math 生态雷达
 
-An ecosystem intelligence platform for **AI for Mathematics (AI4Math)**. Instead of
-just listing papers, it tracks six classes of ecosystem events — **Research · People ·
-Institutions · Funding · Education · Policy & Community** — and answers what happened,
-who is moving the field, why it matters, and how it connects to earlier work.
+[English](README.en.md) · **中文**
 
-Built with **Next.js (App Router) + React + TypeScript + Tailwind CSS**. Ships with a
-bundled dataset so it runs with zero configuration; Prisma + PostgreSQL is the optional
-production data layer.
+一个面向 **AI for Mathematics(AI4Math)** 的生态情报平台。它不只是罗列论文,而是追踪六类
+生态事件——**研究 · 人物 · 机构 · 资金 · 教育 · 政策与社区**——回答发生了什么、谁在推动这个
+领域、为何重要、以及它如何与既往工作相连。
 
-## Quick start
+技术栈为 **Next.js(App Router)+ React + TypeScript + Tailwind CSS**;内置一份数据集,可
+**零配置**直接运行;生产环境的数据层则选用 Prisma + PostgreSQL。
+
+## 快速开始
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>. Without a database it serves the bundled demo dataset
-through the same store interface the API uses.
+打开 <http://localhost:3000>。没有数据库时,应用通过与 API 相同的 store 接口提供内置演示数据。
 
-To run against PostgreSQL:
+如需连接 PostgreSQL:
 
 ```bash
-cp .env.example .env     # set DATABASE_URL
-npm run db:push          # create tables
-npm run db:seed          # load data/seed/events.ts
+cp .env.example .env     # 设置 DATABASE_URL
+npm run db:push          # 建表
+npm run db:seed          # 从 data/seed/events.ts 导入数据
 npm run dev
 ```
 
-> The UI defaults to Simplified Chinese with a `中文 / EN` toggle in the header.
+> 界面默认为**简体中文**,右上角有 `中文 / EN` 切换开关。
 
-## What's inside
+## 核心特性
 
-- **Six-class event model** — Research is one class among six, not the whole schema.
-  Papers, models, grants, courses and policy docs attach to events; they are never
-  primary classes.
-- **Trust model** — three separate labels on every event, never conflated:
-  `verificationStatus` (claimed → independently verified / disputed / retracted),
-  `evidenceLevel` (E0–E4), and `sourceTier` (S1–S5), plus an append-only
-  `verificationHistory` trail. Glossary on `/methodology`.
-- **Curated + automated data** — 98 bundled events (87 sourced + 11 labelled demos),
-  plus a live ingest pipeline (`arXiv` / `GitHub`) whose output is tagged `automated`
-  and merged by slug.
-- **Research map, topics, timeline, trends** — lineage between events, per-topic
-  stats, and a 90-day momentum panel.
-- **Math-aware rendering** — inline LaTeX in prose is rendered to Unicode on the
-  server, so no client-side math bundle is shipped.
+- **六类事件模型** —— 研究只是六类之一,而非全部。论文、模型、基金、课程、政策文件都挂在事件
+  之下,绝不作为一级分类。
+- **信任模型** —— 每个事件有三个彼此独立、绝不混同的标签:`verificationStatus`
+  (声称 → 独立验证 / 存疑 / 撤回)、`evidenceLevel`(E0–E4)、`sourceTier`(S1–S5),外加一份
+  只增不改的 `verificationHistory` 溯源记录。术语表见 `/methodology`。
+- **精选 + 自动采集** —— 内置 98 个事件(87 个有来源 + 11 个标注为 demo),并有一条实时采集
+  管线(`arXiv` / `GitHub`),其产出标记为 `automated`,按 slug 去重合并。
+- **研究地图 / 话题 / 时间线 / 趋势** —— 事件间的血缘关系、按话题统计,以及一个 90 天活跃度面板。
+- **数学公式渲染** —— 正文中的行内 LaTeX 在服务端渲染为 Unicode,因此无需向客户端打包任何
+  数学库。
 
-## Routes
+## 路由
 
-| route | purpose |
+| 路由 | 用途 |
 | --- | --- |
-| `/` | Dashboard: six-class overview, latest events, momentum, pipeline |
-| `/latest` | Event feed with class/area/status filters, search, sort |
-| `/timeline` | Chronological view grouped by year |
-| `/topics` · `/topics/[topic]` | Topic list and detail (progress, trends, papers) |
-| `/research/[slug]` | Event detail: what happened, why it matters, sources, verification history |
-| `/research-map` | Six classes × research areas with recorded lineage |
-| `/sources` | Manual source sync status, cursors, pending-review count |
-| `/search` · `/methodology` · `/about` | Full-site search, trust-label glossary, data policy |
+| `/` | 仪表盘:六类概览、最新事件、活跃度、采集管线 |
+| `/latest` | 事件流,支持分类 / 领域 / 状态筛选、搜索、排序 |
+| `/timeline` | 按年分组的时间线视图 |
+| `/topics` · `/topics/[topic]` | 话题列表与详情(进展、趋势、论文) |
+| `/research/[slug]` | 事件详情:发生了什么、为何重要、来源、验证历史 |
+| `/research-map` | 六类 × 研究领域地图,含已记录的血缘关系 |
+| `/sources` | 手动数据源同步状态、游标、待审核数 |
+| `/search` · `/methodology` · `/about` | 全站搜索、信任标签术语表、数据政策 |
 
 ## API
 
-| endpoint | purpose |
+| 接口 | 用途 |
 | --- | --- |
-| `GET /api/events?type=&area=&sort=&q=&limit=` | list events |
-| `GET /api/events/[slug]` | one event |
-| `GET /api/topics` · `GET /api/topics/[slug]` | topic statistics |
-| `GET /api/search?q=` | full-site search |
-| `GET /api/research-map` | map nodes/edges |
-| `GET /api/trends?windowDays=90` | recent vs. previous activity per area |
-| `GET /api/sources` | source registry + last sync + pending count |
-| `POST /api/agents/ingest` | run the ingest pipeline (`source: "arxiv" \| "github" \| mock`) |
+| `GET /api/events?type=&area=&sort=&q=&limit=` | 事件列表 |
+| `GET /api/events/[slug]` | 单个事件 |
+| `GET /api/topics` · `GET /api/topics/[slug]` | 话题统计 |
+| `GET /api/search?q=` | 全站搜索 |
+| `GET /api/research-map` | 地图节点 / 边 |
+| `GET /api/trends?windowDays=90` | 各领域近期与上一周期的活跃对比 |
+| `GET /api/sources` | 数据源注册表 + 最近同步 + 待审数 |
+| `POST /api/agents/ingest` | 运行采集管线(`source: "arxiv" \| "github" \| mock`) |
 
 ```bash
 curl "http://localhost:3000/api/events?area=Theorem%20Proving&limit=5"
@@ -79,47 +74,44 @@ curl -X POST http://localhost:3000/api/agents/ingest \
      -H "content-type: application/json" -d '{ "source": "arxiv", "limit": 20 }'
 ```
 
-## Project structure
+## 项目结构
 
 ```text
-app/                  # routes + API route handlers
-components/           # layout, research, topics, search, ui
+app/                  # 路由 + API 路由处理器
+components/           # 布局、研究、话题、搜索、UI 组件
 lib/
-  db/                 # ResearchStore contract · SeedStore · PrismaStore
-  i18n/               # zh/en dictionaries + localize()
-  math.ts             # server-side LaTeX → Unicode
-  verification.ts     # trust model (status / evidence / tier)
-  sources/            # ResearchSource: mock · arXiv · GitHub
+  db/                 # ResearchStore 契约 · SeedStore · PrismaStore
+  i18n/               # 中英文词典 + localize()
+  math.ts             # 服务端 LaTeX → Unicode
+  verification.ts     # 信任模型(状态 / 证据 / 层级)
+  sources/            # ResearchSource:mock · arXiv · GitHub
 agents/researchTracker/   # tracker · classifier · summarizer
-data/seed/            # bundled events + ecosystem scenarios
-prisma/               # schema + seeder
-types/                # domain types
+data/seed/            # 内置事件 + 生态场景
+prisma/               # schema + 种子脚本
+types/                # 领域类型
 ```
 
-The data line is:
+数据流是:
 
 ```text
-front-end → API (route handlers) → ResearchStore → ecosystem ResearchEvent
+前端 → API(路由处理器)→ ResearchStore → 生态 ResearchEvent
 ```
 
-`lib/db/index.ts` picks the store: `DATABASE_URL` set → `PrismaStore`, unset →
-`SeedStore`. Both implement the same `ResearchStore` interface, so pages and routes
-never care which is active.
+`lib/db/index.ts` 负责选择 store:设置了 `DATABASE_URL` → `PrismaStore`,未设置 →
+`SeedStore`。两者实现同一个 `ResearchStore` 接口,因此页面和路由无需关心当前用的是哪个。
 
-## Data policy
+## 数据政策
 
-- No invented results, arXiv IDs or URLs — an unverifiable field is left empty, and an
-  item whose source URL could not be confirmed is dropped rather than shipped with a
-  broken link.
-- Publisher-reported results stay labelled as claims, with denominators preserved.
-- `importanceScore` is an optional, explicitly subjective 0–100 AI-assisted assessment,
-  always shown with a note and never confused with the trust labels. Date is the
-  default sort.
-- Synthetic demo scenarios are flagged `isDemo` and rendered with a `demo` tag.
+- 不编造结果、arXiv ID 或 URL——无法核实的字段留空;来源 URL 无法确认的条目直接丢弃,绝不带
+  着坏链接上线。
+- 发布方自报的结果始终标注为"声称",并保留分母(样本量)。
+- `importanceScore` 是可选的、明确主观的 0–100 AI 辅助评估,展示时始终附带说明,且绝不与信任
+  标签混为一谈。默认按时间排序。
+- 合成的演示场景标记为 `isDemo`,渲染时带 `demo` 徽标。
 
-## Extending
+## 扩展
 
-Implement one interface to add a live source:
+实现一个接口即可接入新的实时数据源:
 
 ```ts
 export interface ResearchSource {
@@ -129,9 +121,8 @@ export interface ResearchSource {
 }
 ```
 
-Register it in `liveResearchSources` (`lib/sources/index.ts`) and
-`POST /api/agents/ingest` will run the pipeline
-`Source → RawResearchItem → Normalizer → Classifier → ResearchEvent`.
+在 `liveResearchSources`(`lib/sources/index.ts`)中注册后,
+`POST /api/agents/ingest` 就会运行管线
+`Source → RawResearchItem → Normalizer → Classifier → ResearchEvent`。
 
-The classifier is keyword-based today; swap in an LLM call behind the same contract via
-`getLLMProvider()`.
+分类器目前基于关键词;可通过 `getLLMProvider()` 在同一契约背后换成大模型调用。
