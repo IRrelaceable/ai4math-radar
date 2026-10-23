@@ -1,294 +1,127 @@
 # AI4Math Ecosystem Radar
 
-An ecosystem intelligence platform for **AI for Mathematics (AI4Math)**: instead of
-listing papers, it tracks six primary **AI4Math Ecosystem Events** — Research,
-People, Institutions, Funding, Education and Policy & Community — and answers what
-happened, who is moving the field, why it matters, and how it connects to earlier work.
+An ecosystem intelligence platform for **AI for Mathematics (AI4Math)**. Instead of
+just listing papers, it tracks six classes of ecosystem events — **Research · People ·
+Institutions · Funding · Education · Policy & Community** — and answers what happened,
+who is moving the field, why it matters, and how it connects to earlier work.
 
-Built with **Next.js (App Router) + React + TypeScript + Tailwind CSS**, with
-**Prisma + PostgreSQL** as the production data layer and a bundled demo store so the
-site runs with zero configuration.
+Built with **Next.js (App Router) + React + TypeScript + Tailwind CSS**. Ships with a
+bundled dataset so it runs with zero configuration; Prisma + PostgreSQL is the optional
+production data layer.
 
----
-
-## 1. Quick start
+## Quick start
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>. That's it — without a database the app serves the
-bundled demo dataset through the same store interface the API uses.
+Open <http://localhost:3000>. Without a database it serves the bundled demo dataset
+through the same store interface the API uses.
 
-Optional, to run against PostgreSQL:
+To run against PostgreSQL:
 
 ```bash
-cp .env.example .env            # set DATABASE_URL
-npx prisma db push              # create tables
-npm run db:seed                 # load data/seed/events.ts
+cp .env.example .env     # set DATABASE_URL
+npm run db:push          # create tables
+npm run db:seed          # load data/seed/events.ts
 npm run dev
 ```
 
-Other scripts:
+> The UI defaults to Simplified Chinese with a `中文 / EN` toggle in the header.
 
-| script | purpose |
-| --- | --- |
-| `npm run dev` | development server |
-| `npm run build` / `npm start` | production build / serve |
-| `npm run typecheck` | TypeScript check (`tsc --noEmit`) |
-| `npm run db:generate` | regenerate the Prisma client |
-| `npm run db:push` | sync `prisma/schema.prisma` to the database |
-| `npm run db:seed` | seed the database from `data/seed/events.ts` |
+## What's inside
 
----
+- **Six-class event model** — Research is one class among six, not the whole schema.
+  Papers, models, grants, courses and policy docs attach to events; they are never
+  primary classes.
+- **Trust model** — three separate labels on every event, never conflated:
+  `verificationStatus` (claimed → independently verified / disputed / retracted),
+  `evidenceLevel` (E0–E4), and `sourceTier` (S1–S5), plus an append-only
+  `verificationHistory` trail. Glossary on `/methodology`.
+- **Curated + automated data** — 98 bundled events (87 sourced + 11 labelled demos),
+  plus a live ingest pipeline (`arXiv` / `GitHub`) whose output is tagged `automated`
+  and merged by slug.
+- **Research map, topics, timeline, trends** — lineage between events, per-topic
+  stats, and a 90-day momentum panel.
+- **Math-aware rendering** — inline LaTeX in prose is rendered to Unicode on the
+  server, so no client-side math bundle is shipped.
 
-## 1.5 Language / 语言
-
-界面默认**简体中文**，右上角有 `中文 / EN` 开关（写入 `lang` cookie，服务端渲染随请求切换）。
-UI chrome —— 导航、栏目标题、按钮、标签词典、方法论与关于页 —— 均已双语；研究事件的正文
-（标题、摘要、意义、问题、关键贡献）在 `zh` 模式下渲染 `data/i18n/` 中按 slug 键控的中文
-覆盖层，缺字段时逐字段回退英文原文。**专名刻意保留英文**：论文标题、作者、模型 / 基准 /
-数据集名、领域分类名、URL 与日期 —— 它们参与检索键、筛选与信任模型，翻译会破坏一致性。
-词典在 `lib/i18n/`（`dict.ts` 核心键 + `dict.pages.ts` + `dict.components.ts`），新增界面
-文案时在 zh/en 两侧同时补键；内容翻译在 `data/i18n/`（`events.part1-6.ts` + `phrases.ts`），
-由 `lib/i18n/localize.ts` 的 `localizeEvents()` 在页面层叠加，覆盖完整性由
-`data/i18n/i18n.test.ts` 保证。
-
-The UI defaults to Simplified Chinese with a `中文 / EN` toggle in the header (a `lang`
-cookie read on every server render). Event prose — title, summary, significance, problem,
-key contributions — renders from a slug-keyed Chinese overlay in `data/i18n/` when the
-language is `zh`, falling back to the English source field-by-field. Proper nouns stay in
-the original English on purpose (paper titles, author / model / benchmark / dataset names,
-area taxonomy, URLs, dates): they feed search keys, filters and the trust model.
-
----
-
-## 2. Routes
+## Routes
 
 | route | purpose |
 | --- | --- |
-| `/` | Ecosystem Radar: six-class overview, latest events, active areas, momentum and pipeline |
-| `/latest` | Ecosystem feed: six primary class chips, secondary area filter, search, date/importance sort |
-| `/timeline` | Chronological view grouped by year, with year jump links and event-type filter |
-| `/topics` | Topic list with event counts computed from the store |
-| `/topics/[topic]` | Topic detail: recent progress, quantity, time trend, papers, models, benchmarks |
-| `/research/[slug]` | Ecosystem Event detail: type-specific metadata, What happened / Why it matters / source / related works / verification history |
-| `/research-map` | Six ecosystem classes × research-area map with recorded lineage |
-| `/sources` | Manual source status, incremental cursor, sync results and pending-review count |
-| `/search` | Full-site search (events, papers, topics, models, benchmarks) |
-| `/methodology` | How to read the trust labels (verification / evidence / source tier / event type) |
-| `/about` | Data model, pipeline, data policy, roadmap |
+| `/` | Dashboard: six-class overview, latest events, momentum, pipeline |
+| `/latest` | Event feed with class/area/status filters, search, sort |
+| `/timeline` | Chronological view grouped by year |
+| `/topics` · `/topics/[topic]` | Topic list and detail (progress, trends, papers) |
+| `/research/[slug]` | Event detail: what happened, why it matters, sources, verification history |
+| `/research-map` | Six classes × research areas with recorded lineage |
+| `/sources` | Manual source sync status, cursors, pending-review count |
+| `/search` · `/methodology` · `/about` | Full-site search, trust-label glossary, data policy |
 
-The dashboard also carries a **Momentum** panel: recorded events in the last 90 days
-per research area, compared with the previous window.
-
-## 3. API routes
+## API
 
 | endpoint | purpose |
 | --- | --- |
-| `GET /api/events?type=&area=&sort=&q=&limit=` | list ecosystem events (`sort=date|importance`) |
-| `GET /api/sources` | source registry, last sync state and pending-review count |
-| `GET /api/events/[slug]` | one ecosystem event |
-| `GET /api/topics` | topic statistics |
-| `GET /api/topics/[slug]` | topic statistics + its events |
+| `GET /api/events?type=&area=&sort=&q=&limit=` | list events |
+| `GET /api/events/[slug]` | one event |
+| `GET /api/topics` · `GET /api/topics/[slug]` | topic statistics |
 | `GET /api/search?q=` | full-site search |
 | `GET /api/research-map` | map nodes/edges |
-| `GET /api/trends?windowDays=90` | recent-vs-previous activity per research area |
-| `POST /api/agents/ingest` | agent pipeline: `Source → RawResearchItem → classifier → ResearchEvent` (mock offline by default; `source: "arxiv"` / `"github"` for live runs) |
-
-Example:
+| `GET /api/trends?windowDays=90` | recent vs. previous activity per area |
+| `GET /api/sources` | source registry + last sync + pending count |
+| `POST /api/agents/ingest` | run the ingest pipeline (`source: "arxiv" \| "github" \| mock`) |
 
 ```bash
 curl "http://localhost:3000/api/events?area=Theorem%20Proving&limit=5"
-curl "http://localhost:3000/api/trends?windowDays=90"
-
-# offline demo pipeline
 curl -X POST http://localhost:3000/api/agents/ingest \
-     -H "content-type: application/json" \
-     -d '{ "useMockSource": true }'
-
-# live pipeline (hits the public arXiv API / GitHub API, persists accepted events)
-curl -X POST http://localhost:3000/api/agents/ingest \
-     -H "content-type: application/json" \
-     -d '{ "source": "arxiv", "limit": 20 }'
+     -H "content-type: application/json" -d '{ "source": "arxiv", "limit": 20 }'
 ```
 
----
-
-## 4. Project structure
+## Project structure
 
 ```text
-ai4math-tracker/
-├── app/
-│   ├── page.tsx               # Dashboard (+ Momentum / trend panel)
-│   ├── latest/                # Research feed
-│   ├── timeline/              # Chronological view with year anchors
-│   ├── topics/                # Topic list + [topic] detail
-│   ├── research/[slug]        # Research Event detail (+ verification history)
-│   ├── research-map/          # Visual research map
-│   ├── search/
-│   ├── methodology/           # Trust-label glossary and data policy
-│   ├── about/
-│   └── api/                   # Route handlers (events, topics, search, map, trends, agents)
-├── components/
-│   ├── layout/                # Header, Footer
-│   ├── research/              # EventCard, EventGrid, FeedControls, TimelineControls, Pipeline
-│   ├── topics/                # TopicBar, TrendChart, TrendPanel
-│   ├── research-map/          # ResearchMapTree
-│   ├── search/                # SearchBox, SearchResults
-│   └── ui/                    # AreaBadge, TrustBadges
-├── lib/
-│   ├── db/                    # store contract, SeedStore, PrismaStore, ingested-file cache
-│   ├── ecosystem.ts           # six-class normalization boundary
-│   ├── llm/provider.ts        # LLM API interface (mock + openai-compatible)
-│   ├── sources/               # ResearchSource + mock / arXiv / GitHub sources
-│   ├── trends.ts              # windowed activity trends
-│   ├── verification.ts        # trust model: status, evidence level, source tier, type
-│   └── utils.ts
-├── agents/researchTracker/    # tracker.ts · classifier.ts · summarizer.ts
-├── data/seed/events.ts        # 87 sourced events + 11 labelled ecosystem demos (98 total)
-├── data/seed/ecosystem.ts     # synthetic scenarios for People/Institutions/Funding/Education/Policy
-├── data/ingested/             # pipeline cache + source-status.json (git-ignored)
-├── prisma/schema.prisma       # PostgreSQL schema
-├── prisma/seed.ts             # database seeder
-├── types/                     # domain types
-└── README.md
+app/                  # routes + API route handlers
+components/           # layout, research, topics, search, ui
+lib/
+  db/                 # ResearchStore contract · SeedStore · PrismaStore
+  i18n/               # zh/en dictionaries + localize()
+  math.ts             # server-side LaTeX → Unicode
+  verification.ts     # trust model (status / evidence / tier)
+  sources/            # ResearchSource: mock · arXiv · GitHub
+agents/researchTracker/   # tracker · classifier · summarizer
+data/seed/            # bundled events + ecosystem scenarios
+prisma/               # schema + seeder
+types/                # domain types
 ```
 
-### Main line of the project
+The data line is:
 
 ```text
-front-end → API (route handlers) → data layer (ResearchStore) → ecosystem ResearchEvent
+front-end → API (route handlers) → ResearchStore → ecosystem ResearchEvent
 ```
 
-`lib/db/index.ts` picks the data source:
+`lib/db/index.ts` picks the store: `DATABASE_URL` set → `PrismaStore`, unset →
+`SeedStore`. Both implement the same `ResearchStore` interface, so pages and routes
+never care which is active.
 
-* `DATABASE_URL` set → `PrismaStore` (PostgreSQL via Prisma)
-* `DATABASE_URL` unset → `SeedStore` (bundled demo data)
+## Data policy
 
-Both implement the same `ResearchStore` interface (`lib/db/store.ts`), so pages and
-API routes never care which one is active.
+- No invented results, arXiv IDs or URLs — an unverifiable field is left empty, and an
+  item whose source URL could not be confirmed is dropped rather than shipped with a
+  broken link.
+- Publisher-reported results stay labelled as claims, with denominators preserved.
+- `importanceScore` is an optional, explicitly subjective 0–100 AI-assisted assessment,
+  always shown with a note and never confused with the trust labels. Date is the
+  default sort.
+- Synthetic demo scenarios are flagged `isDemo` and rendered with a `demo` tag.
 
----
+## Extending
 
-## 5. Data model
-
-The database entity remains `ResearchEvent` for compatibility, but its primary
-`eventType` is now one of six ecosystem classes. Papers, models, grants, courses
-and policy documents are attached content — never primary event classes.
-
-```text
-ResearchEvent
-├── title · slug · summary · significance · date
-├── eventType (six classes) → researchArea → subArea
-├── researchEventType · metadata · importanceScore (subjective)
-├── verificationStatus · evidenceLevel · sourceTier · reviewStatus
-├── sourceType · sourceUrl · paperUrl · githubUrl
-├── problem · keyContributions[]
-├── authors[] · institution · models[] · benchmarks[] · datasets[]
-├── papers[]        (ResearchEventPaper  join)
-├── authors[]       (ResearchEventAuthor join)
-└── relatedWorks[]  (ResearchEventRelatedWork: previous | followup | related)
-```
-
-Tables: `ResearchEvent`, `ResearchArea`, `Paper`, `Author`, `Institution`,
-`Model`, `Benchmark`, `Dataset`, `ResearchEventPaper`, `ResearchEventAuthor`,
-`ResearchEventRelatedWork`.
-
-### Manual source synchronization
-
-There is no scheduler. Open `/sources` (or `GET /api/sources`) to inspect each
-source's last success, last error and incremental cursor, then trigger a manual
-`POST /api/agents/ingest` with:
-
-```json
-{ "source": "arxiv", "since": "2026-10-01", "persist": true }
-```
-
-arXiv and GitHub filter fetched items by `since`; accepted events are merged by
-slug, so overlapping dates are safe. Automated records start as
-`reviewStatus: "pending"` and remain visibly marked until reviewed.
-### Importance scores are explicitly subjective
-
-`importanceScore` is optional. When present it is a 0–100 **AI-assisted
-subjective assessment**, always displayed with an explanatory note and never
-confused with verification/evidence/source-tier labels. Date is the default
-sort; importance is only available as an explicit user choice. Events without
-a score are never given an invented number.
-
-### Trust model (three separate labels)
-
-Every event carries three labels, kept deliberately separate (glossary in
-`/methodology`, derivation in `lib/verification.ts`):
-
-| field | meaning |
-| --- | --- |
-| `verificationStatus` | claimed · paper_released · under_verification · partially_verified · independently_verified · disputed · corrected · retracted |
-| `evidenceLevel` | E0 none · E1 primary claim · E2 research record · E3 inspectable artifact · E4 independent check |
-| `sourceTier` | S1 primary research · S2 official announcement · S3 independent · S4 media · S5 community |
-| `eventType` | Research · People · Institutions · Funding · Education · Policy & Community |
-| `researchEventType` | optional legacy Research subtype: Discovery · Proof · Formalization · Competition · System · Benchmark · Dataset · Infrastructure · Controversy |
-| `verificationHistory[]` | append-only trail of how the corroboration state changed |
-
-Curated events set these explicitly where the derived rule would mislead
-(e.g. graded competition announcements stay `claimed`); automated pipeline
-output derives them from the source type and is tagged `provenance: "automated"`.
-
-### Data: curated events + automated ingest
-
-`data/seed/events.ts` ships **98 bundled events**: **87 sourced entries** across
-all 10 research areas plus **11 clearly-labelled demo scenarios** used to
-exercise every ecosystem class. The sourced entries were compiled from primary sources that
-was fetched and confirmed during curation (arXiv abs pages, the official
-`nature.com` article, Anthropic research posts, or the `openai/math` repository's
-own `history.md`). The 2026 wave — OpenAI's manuscript collection, Claude's FLT
-formalization, the Riemann-zeta lower bound, the Navier–Stokes autoformalization
-dispute, DeepMind's Aletheia and AI co-mathematician — is recorded with its
-corrections and denominators (e.g. 722 manuscripts released → 3 withdrawn →
-719 remaining), not as "722 proven theorems".
-
-On top of that, `POST /api/agents/ingest {"source": "arxiv" | "github"}` runs the
-live pipeline and writes accepted events to `data/ingested/events.json`. They are
-merged into the store by slug, shown with an `automated` tag, and carry
-`provenance: "automated"` until reviewed. Delete that file to reset.
-
-Rules applied while building the curated dataset:
-
-* no invented results, arXiv IDs or URLs — a field that could not be verified is
-  left empty, and an item whose **source URL could not be confirmed was dropped
-  entirely** rather than shipped with a broken link;
-* publisher-reported results stay labelled as claims, with denominators preserved;
-* synthetic examples used by the mock agent pipeline are flagged
-  `isDemo: true` and rendered with a `demo` tag on the page.
-
-> Operational note: `next dev` and `next build` share the `.next` directory —
-> don't run them at the same time (stop one first, or delete `.next`).
-
----
-
-## 6. Configuring the LLM API
-
-`lib/llm/provider.ts` defines the interface; the default provider is offline.
-
-```bash
-LLM_PROVIDER=openai-compatible
-LLM_API_URL=https://api.openai.com/v1/chat/completions
-LLM_API_KEY=sk-...
-LLM_MODEL=gpt-4o-mini
-```
-
-Any OpenAI-compatible chat-completions endpoint works. The summarizer falls back to
-deterministic text if the call fails, so the site never depends on the API.
-
----
-
-## 7. Adding a real Research Source (V2)
-
-Implement one interface and register it:
+Implement one interface to add a live source:
 
 ```ts
-// lib/sources/index.ts
 export interface ResearchSource {
   id: string;
   label: string;
@@ -296,56 +129,9 @@ export interface ResearchSource {
 }
 ```
 
-1. Add `conferenceSource`, `openreviewSource`, … implementing it.
-2. Register it in `liveResearchSources` (`lib/sources/index.ts`).
-3. `POST /api/agents/ingest {"source": "..."}` already runs the pipeline
-   `Source → RawResearchItem → Normalizer → Classifier → ResearchEvent`
-   and persists accepted events to `data/ingested/events.json`
-   (or to PostgreSQL when you wire the Prisma store in).
+Register it in `liveResearchSources` (`lib/sources/index.ts`) and
+`POST /api/agents/ingest` will run the pipeline
+`Source → RawResearchItem → Normalizer → Classifier → ResearchEvent`.
 
-The bundled live sources:
-
-| source | what it does |
-| --- | --- |
-| `arxiv` | public arXiv API, default scope `cat:cs.LO OR cat:math.LO OR ti:math* OR ti:proof* OR ti:lean* OR ti:conjecture*` (override with `"query"`) |
-| `github` | a short curated repository watch-list via the public GitHub API |
-| `mock` | offline synthetic items, the default — keeps `npm run dev` network-free |
-
-### Extending the agent
-
-| file | responsibility |
-| --- | --- |
-| `agents/researchTracker/tracker.ts` | pipeline orchestration + trace |
-| `agents/researchTracker/classifier.ts` | “is it AI4Math?”, research area |
-| `agents/researchTracker/summarizer.ts` | summary / significance text |
-
-Replace the rule-based classifier with an LLM call by using the same
-input/output contract and `getLLMProvider()`.
-
----
-
-## 8. Current limitations
-
-* The classifier is keyword-based: live arXiv items are screened by strong
-  math + AI signals and most noise is rejected, but some papers are still
-  misfiled — which is why pipeline output is labelled `automated` and shown
-  separately from curated entries.
-* Ingested events live in a JSON file cache (`data/ingested/`); move them to
-  PostgreSQL (or dedupe against the store) when a database is configured.
-* Search is plain text matching — no vector database, no RAG (by design).
-* Research Map is a tree with lineage entries, not a graph layout (V6).
-* Trend detection counts events; it says nothing about correctness — read it
-  together with the verification labels.
-* No accounts, comments, recommendations, permissions or mobile app (V1 scope).
-
-## 9. Suggested next step
-
-**Research Lineage / Research Graph (V6)** and an **LLM-backed classifier**
-(`getLLMProvider()` behind the same contract) are the two highest-value
-follow-ups: the `relatedWorks(relation: previous | followup | related)` field
-already records the edges a graph view needs, and a model-backed classifier
-would replace the keyword rules for live sources. An `en/zh` locale switch and
-a corrections workflow (GitHub-issue based) come next.
-
-
-
+The classifier is keyword-based today; swap in an LLM call behind the same contract via
+`getLLMProvider()`.
