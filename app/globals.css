@@ -46,6 +46,35 @@ body {
     @apply hover:border-ink-300 hover:bg-ink-50;
   }
 
+  /* Two-column event card: a body column plus a narrow meta rail. Driven by a
+     native CSS container query (`@container` is a browser feature — Tailwind's
+     CSS pipeline passes it through untouched; it is NOT a Tailwind utility and
+     Tailwind 3.4 does not ship one in core, so this is plain CSS, not
+     `@container`/`@md:` classes). The split keys off the CARD's own width, so
+     it appears only when a grid cell is wide enough and collapses to a single
+     stacked column otherwise. */
+  .event-card-container {
+    container-type: inline-size;
+  }
+
+  .event-card-body {
+    @apply flex flex-col gap-4;
+  }
+
+  .event-card-rail {
+    @apply flex shrink-0 flex-col gap-3;
+  }
+
+  @container (min-width: 26rem) {
+    .event-card-body {
+      @apply flex-row gap-6;
+    }
+
+    .event-card-rail {
+      @apply w-44 border-l border-ink-100 pl-5;
+    }
+  }
+
   .link-quiet {
     @apply text-ink-600 underline-offset-4 hover:text-accent-600 hover:underline;
   }
