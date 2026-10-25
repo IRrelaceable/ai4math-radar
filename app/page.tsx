@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getStore } from "@/lib/db";
-import { formatDate, sortEvents, slugify } from "@/lib/utils";
+import { sortEvents, slugify } from "@/lib/utils";
 import { SearchBox } from "@/components/search/SearchBox";
 import { EventGrid } from "@/components/research/EventGrid";
 import { TopicBar } from "@/components/topics/TopicBar";

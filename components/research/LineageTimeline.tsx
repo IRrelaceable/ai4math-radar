@@ -22,7 +22,7 @@ export function LineageTimeline({ event }: { event: ResearchEvent }) {
       <div className="rounded-md border border-accent-300 bg-accent-50 px-4 py-3">
         <div className="mono-label text-accent-700">{c.lineage.thisWork}</div>
         <div className="mt-1 text-sm font-medium text-ink-900">{event.title}</div>
-        <div className="mt-1 font-mono text-xs text-ink-500">{formatDate(event.date)}</div>
+        <div className="mt-1 font-mono text-xs text-ink-500">{formatDate(event.date, lang)}</div>
       </div>
       <Connector />
       <Stage label={c.lineage.followupWork} items={followup} />

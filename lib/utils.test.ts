@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   clamp,
   formatDate,
+  formatDateLong,
   matchesQuery,
   monthKey,
   slugify,
@@ -45,12 +46,38 @@ describe("slugify", () => {
 });
 
 describe("date helpers", () => {
-  it("formatDate renders month precision", () => {
-    expect(formatDate("2024-07-25")).toBe("Jul 2024");
+  it("formatDate renders day precision in English", () => {
+    expect(formatDate("2024-07-25", "en")).toBe("Jul 25, 2024");
+  });
+
+  it("formatDate renders day precision in Chinese", () => {
+    expect(formatDate("2024-07-25", "zh")).toBe("2024年7月25日");
+  });
+
+  it("formatDateLong renders full month in English", () => {
+    expect(formatDateLong("2024-07-25", "en")).toBe("July 25, 2024");
+  });
+
+  it("formatDateLong renders day precision in Chinese", () => {
+    expect(formatDateLong("2024-07-25", "zh")).toBe("2024年7月25日");
+  });
+
+  it("defaults to Chinese when no lang is passed", () => {
+    expect(formatDate("2024-07-25")).toBe("2024年7月25日");
+  });
+
+  it("parses from the string, avoiding the UTC rollback", () => {
+    // new Date("2024-07-25") is UTC midnight → July 24 in negative-offset zones.
+    expect(formatDate("2024-07-25", "en")).toContain("25");
   });
 
   it("formatDate passes through invalid months", () => {
-    expect(formatDate("2024-13-01")).toBe("2024-13-01");
+    expect(formatDate("2024-13-01", "en")).toBe("2024-13-01");
+  });
+
+  it("formatDate passes through malformed input untouched", () => {
+    expect(formatDate("2024-07", "en")).toBe("2024-07");
+    expect(formatDateLong("", "en")).toBe("");
   });
 
   it("yearOf and monthKey slice the ISO string", () => {

@@ -40,7 +40,7 @@ export function TopicBar({
       {showMeta && (
         <div className="mono-label mt-1 normal-case tracking-normal">
           {c.topic.latestPrefix}
-          {formatDate(stat.latestDate)}
+          {formatDate(stat.latestDate, lang)}
         </div>
       )}
     </Link>

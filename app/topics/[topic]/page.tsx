@@ -66,7 +66,7 @@ export default async function TopicDetailPage({
           <p className="mt-2 text-sm text-ink-600">
             {fill(p.topic.statSub, {
               count: countText(p, stat.count, "researchEvent"),
-              date: formatDate(stat.latestDate),
+              date: formatDate(stat.latestDate, lang),
               code: codeCount,
             })}
           </p>

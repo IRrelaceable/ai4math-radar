@@ -69,7 +69,7 @@ export default async function ResearchDetailPage({
           <div className="flex flex-wrap items-center gap-2">
             {event.eventType && <EventTypePill type={event.eventType} />}
             <AreaBadge area={event.researchArea} subArea={event.subArea} />
-            <span className="font-mono text-xs text-ink-500">{formatDateLong(event.date)}</span>
+            <span className="font-mono text-xs text-ink-500">{formatDateLong(event.date, lang)}</span>
             {event.isDemo && (
               <span className="chip border-dashed border-ink-300 text-ink-400">
                 {p.detail.demoEntry}
@@ -226,7 +226,7 @@ export default async function ResearchDetailPage({
                   <li key={`${r.date}-${i}`} className="relative">
                     <span className="absolute -left-[1.9rem] top-2 h-2 w-2 rounded-full bg-accent-500" />
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-xs text-ink-500">{formatDateLong(r.date)}</span>
+                      <span className="font-mono text-xs text-ink-500">{formatDateLong(r.date, lang)}</span>
                       <VerificationBadge status={r.status} />
                       <EvidenceLevelPill level={r.evidenceLevel} />
                     </div>

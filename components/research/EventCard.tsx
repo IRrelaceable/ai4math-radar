@@ -18,7 +18,7 @@ import { useT } from "@/lib/i18n/context";
  * title.
  */
 export function EventCard({ event }: { event: ResearchEvent }) {
-  const { t } = useT();
+  const { t, lang } = useT();
   const primaryUrl = event.paperUrl || event.sourceUrl;
 
   return (
@@ -50,7 +50,7 @@ export function EventCard({ event }: { event: ResearchEvent }) {
         {/* Meta rail: date, taxonomy, trust labels, source links */}
         <div className="event-card-rail">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs text-ink-500">{formatDate(event.date)}</span>
+            <span className="font-mono text-xs text-ink-500">{formatDate(event.date, lang)}</span>
             {event.isDemo && (
               <span className="chip border-dashed border-ink-300 text-ink-400">{t.common.demo}</span>
             )}

@@ -106,7 +106,7 @@ export default async function TimelinePage({
                   <span className="absolute -left-[5px] top-6 h-2 w-2 rounded-full border-2 border-white bg-accent-500" />
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span className="w-20 shrink-0 font-mono text-xs text-ink-500">
-                      {formatDate(event.date)}
+                      {formatDate(event.date, lang)}
                     </span>
                     <Link
                       href={`/research/${event.slug}`}

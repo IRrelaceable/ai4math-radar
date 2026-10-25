@@ -55,7 +55,7 @@ export default async function TopicsPage() {
             </div>
             <div className="mt-3 flex items-center justify-between">
               <span className="mono-label normal-case tracking-normal">
-                {p.topics.latestLabel} {formatDate(topic.latestDate)}
+                {p.topics.latestLabel} {formatDate(topic.latestDate, lang)}
               </span>
               <Link
                 href={`/topics/${topic.slug}`}

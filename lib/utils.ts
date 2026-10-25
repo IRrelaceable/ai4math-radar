@@ -1,4 +1,5 @@
 import type { ResearchEvent } from "@/types";
+import type { Lang } from "@/lib/i18n/dict";
 
 /** Lowercase, ascii-safe, hyphenated identifier used in URLs. */
 export function slugify(input: string): string {
@@ -9,27 +10,43 @@ export function slugify(input: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/** "2024-07-01" -> "Jul 2024" (demo data uses month precision). */
-export function formatDate(iso: string): string {
-  const [y, m] = iso.split("-");
-  const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-  ];
-  const idx = Number(m) - 1;
-  if (Number.isNaN(idx) || idx < 0 || idx > 11) return iso;
-  return `${months[idx]} ${y}`;
+const MONTHS_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+const MONTHS_LONG = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+/**
+ * Parse "YYYY-MM-DD" straight from the string. Deliberately avoids
+ * `new Date(iso)`, which parses as UTC midnight and rolls the day back in
+ * negative-offset timezones (e.g. "2024-07-25" → July 24 in UTC-5).
+ */
+function parseYmd(iso: string): { y: string; m: number; d: number } | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!match) return null;
+  const m = Number(match[2]);
+  const d = Number(match[3]);
+  if (m < 1 || m > 12 || d < 1 || d > 31) return null;
+  return { y: match[1], m, d };
 }
 
-/** Full date for detail pages. */
-export function formatDateLong(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+/** "2024-07-25" -> "Jul 25, 2024" (en) / "2024年7月25日" (zh). Day precision. */
+export function formatDate(iso: string, lang: Lang = "zh"): string {
+  const p = parseYmd(iso);
+  if (!p) return iso;
+  if (lang === "zh") return `${p.y}年${p.m}月${p.d}日`;
+  return `${MONTHS_SHORT[p.m - 1]} ${p.d}, ${p.y}`;
+}
+
+/** Full date for detail pages: "July 25, 2024" (en) / "2024年7月25日" (zh). */
+export function formatDateLong(iso: string, lang: Lang = "zh"): string {
+  const p = parseYmd(iso);
+  if (!p) return iso;
+  if (lang === "zh") return `${p.y}年${p.m}月${p.d}日`;
+  return `${MONTHS_LONG[p.m - 1]} ${p.d}, ${p.y}`;
 }
 
 export function yearOf(iso: string): string {

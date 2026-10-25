@@ -55,7 +55,7 @@ export function TrendChart({ events }: { events: ResearchEvent[] }) {
         {c.trendChart.activeMonths.replace("{n}", String(series.length))} ·{" "}
         {c.trendChart.peakMonth.replace("{max}", String(max))} ·{" "}
         {c.trendChart.latestPrefix}
-        {formatDate(events[0].date)}
+        {formatDate(events[0].date, lang)}
       </div>
     </div>
   );
