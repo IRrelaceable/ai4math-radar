@@ -24,10 +24,12 @@ export async function summarize(
   const fallbackSummary =
     base ?? `${item.title} was reported by ${item.source}.`;
 
-  const fallbackSignificance =
-    `Filed under ${classification.researchArea}` +
-    `${classification.subArea ? ` → ${classification.subArea}` : ""}. ` +
-    "Automated ingest — check the linked source before citing.";
+  // Auto-ingested items have no curated "why it matters": the taxonomy and the
+  // automated provenance are already surfaced by the area badge and the trust
+  // badges, so leaving significance blank is more honest than echoing that
+  // boilerplate into the prose. Card and detail views skip the section when it
+  // is blank.
+  const fallbackSignificance = "";
 
   if (provider.id !== "mock") {
     try {

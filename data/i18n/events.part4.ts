@@ -151,7 +151,6 @@ export const eventsPart4: Record<string, EventZh> = {
   "deepseek-ai-deepseek-prover-v1-5-repository-update": {
     title: "deepseek-ai/DeepSeek-Prover-V1.5 代码仓库更新",
     summary: "公开代码仓库 deepseek-ai/DeepSeek-Prover-V1.5（Python），588 stars。作为可供查证的 AI4Math 相关产物记录；最近一次推送为 2024-08-16。",
-    significance: "归类于 Theorem Proving → Lean。自动采集——引用前请核对所链接的来源。",
   },
   "ai-scientist-automated-open-ended-discovery": {
     title: "The AI Scientist：迈向完全自动化的开放式科学发现",

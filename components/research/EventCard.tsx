@@ -36,10 +36,15 @@ export function EventCard({ event }: { event: ResearchEvent }) {
               card never stretches its whole grid row. */}
           <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-ink-600">{event.summary}</p>
 
-          <div className="mt-3 border-l-2 border-accent-200 pl-3">
-            <div className="mono-label mb-0.5">{t.common.whyItMatters}</div>
-            <p className="line-clamp-3 text-sm leading-relaxed text-ink-700">{event.significance}</p>
-          </div>
+          {/* Auto-ingested events carry no curated significance; skip the block
+              rather than echo a boilerplate disclaimer already shown by the
+              trust badges. */}
+          {event.significance?.trim() && (
+            <div className="mt-3 border-l-2 border-accent-200 pl-3">
+              <div className="mono-label mb-0.5">{t.common.whyItMatters}</div>
+              <p className="line-clamp-3 text-sm leading-relaxed text-ink-700">{event.significance}</p>
+            </div>
+          )}
         </div>
 
         {/* Meta rail: date, taxonomy, trust labels, source links */}

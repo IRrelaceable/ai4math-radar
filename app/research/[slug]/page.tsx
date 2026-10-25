@@ -92,12 +92,14 @@ export default async function ResearchDetailPage({
             )}
           </section>
 
-          <section className="mt-7">
-            <SectionTitle>{d.detail.whyMatters}</SectionTitle>
-            <div className="mt-2 border-l-2 border-accent-400 pl-4">
-              <p className="text-[15px] leading-relaxed text-ink-700">{event.significance}</p>
-            </div>
-          </section>
+          {event.significance?.trim() && (
+            <section className="mt-7">
+              <SectionTitle>{d.detail.whyMatters}</SectionTitle>
+              <div className="mt-2 border-l-2 border-accent-400 pl-4">
+                <p className="text-[15px] leading-relaxed text-ink-700">{event.significance}</p>
+              </div>
+            </section>
+          )}
 
           {event.keyContributions && event.keyContributions.length > 0 && (
             <section className="mt-7">
