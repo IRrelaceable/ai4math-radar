@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { applyTrustModel, deriveResearchEventType } from "@/lib/verification";
+import { pagesDict } from "@/lib/i18n/dict.pages";
 import type { ResearchEvent } from "@/types";
 
 function makeEvent(overrides: Partial<ResearchEvent> = {}): ResearchEvent {
@@ -96,5 +97,49 @@ describe("deriveResearchEventType", () => {
 
   it("unknown areas fall back to System", () => {
     expect(deriveResearchEventType({ researchArea: "Geometry", title: "Anything" })).toBe("System");
+  });
+});
+
+/**
+ * Guard: the derivation rules published on /methodology must stay in lockstep
+ * with applyTrustModel. Each documented rule is paired with a representative
+ * event; if the derivation logic changes without a matching copy update, this
+ * fails, so the site never describes rules it no longer applies.
+ */
+describe("/methodology derivation copy matches applyTrustModel", () => {
+  const m = pagesDict.zh.methodology;
+
+  it("evidence-level rules yield exactly the documented codes", () => {
+    const cases: [Partial<ResearchEvent>, string][] = [
+      [{ githubUrl: "https://github.com/x/y" }, "E3"], // GitHub → E3
+      [{ paperUrl: "https://arxiv.org/abs/1" }, "E2"], // paper → E2
+      [{ sourceUrl: "https://example.com/claim" }, "E1"], // source only → E1
+      [{ sourceUrl: "" }, "E0"], // no links at all → E0
+    ];
+    for (const [overrides, expected] of cases) {
+      expect(applyTrustModel(makeEvent(overrides)).evidenceLevel).toBe(expected);
+    }
+    // codes appear in the documented table, in ascending order
+    expect(m.deriveEvidence.map((r) => r.code)).toEqual(["E3", "E2", "E1", "E0"]);
+  });
+
+  it("source-tier rules yield exactly the documented codes", () => {
+    expect(applyTrustModel(makeEvent({ sourceType: "arxiv" })).sourceTier).toBe("S1");
+    expect(applyTrustModel(makeEvent({ sourceType: "github" })).sourceTier).toBe("S1");
+    expect(applyTrustModel(makeEvent({ sourceType: "conference" })).sourceTier).toBe("S1");
+    expect(applyTrustModel(makeEvent({ sourceType: "blog" })).sourceTier).toBe("S2");
+    expect(applyTrustModel(makeEvent({ sourceType: "demo" })).sourceTier).toBe("S2");
+    expect(m.deriveTier.map((r) => r.code)).toEqual(["S1", "S2"]);
+  });
+
+  it("verification-status rules tie evidence level to status", () => {
+    expect(applyTrustModel(makeEvent({ paperUrl: "https://arxiv.org/abs/1" })).verificationStatus).toBe(
+      "paper_released"
+    );
+    expect(applyTrustModel(makeEvent({ githubUrl: "https://github.com/x/y" })).verificationStatus).toBe(
+      "paper_released"
+    );
+    expect(applyTrustModel(makeEvent()).verificationStatus).toBe("claimed");
+    expect(m.deriveStatus.map((r) => r.code)).toEqual(["paper_released", "claimed"]);
   });
 });

@@ -250,6 +250,36 @@ const zh = {
       Education: "Education — courses, training and teaching resources",
       PolicyCommunity: "Policy & Community — policies, declarations and community action",
     },
+    derivationTitle: "评级是怎么来的",
+    derivationIntro:
+      "上面的图例说明每个标签的含义，但没说系统如何给一条事件定级。下面是自动派生的完整规则——每条记录先按可核查的事实套用这些规则得出默认评级；人工整理的字段永远优先，规则会误导之处再用手工覆写修正。",
+    deriveEvidenceTitle: "证据等级的判定",
+    deriveTierTitle: "来源层级的判定",
+    deriveStatusTitle: "核验状态的判定",
+    condLabel: "触发条件",
+    resultLabel: "评级",
+    deriveEvidence: [
+      { cond: "带有 GitHub 仓库链接——代码、证明或数据可被检验", code: "E3" },
+      { cond: "带有论文链接或关联论文列表——存在公开研究记录", code: "E2" },
+      { cond: "仅有来源链接——发布方自己的公开主张", code: "E1" },
+      { cond: "以上都没有", code: "E0" },
+    ],
+    deriveTier: [
+      { cond: "来源为 arXiv、会议论文或 GitHub 仓库", code: "S1" },
+      { cond: "来源为博客、演示或其他渠道", code: "S2" },
+    ],
+    deriveStatus: [
+      { cond: "证据等级为 E2 或 E3——有研究记录或可检验产物", code: "paper_released" },
+      { cond: "证据等级为 E0 或 E1——尚无公开研究记录", code: "claimed" },
+    ],
+    deriveNotesTitle: "两条例外",
+    deriveNote1A: "优先级：",
+    deriveNote1B:
+      "手工覆写 ＞ 人工整理字段 ＞ 自动派生。一条事件若已显式标注了等级或状态，派生规则不会覆盖它。",
+    deriveNote2A: "规则会误导处使用手工覆写：",
+    deriveNote2B: "例如竞赛成绩由主办方口径给出、并非论文证据，因而保持",
+    deriveNote2C:
+      "（单方宣称、一级主张）。这类覆写记录在代码的 OVERRIDES 表中，只在必要时使用。",
     dataPolicyTitle: "数据政策",
     policy1:
       "每条人工整理的条目都保留其原始来源 URL。候选条目的来源若无法确认，宁可剔除，也不发布没有链接的记录。",
@@ -520,6 +550,37 @@ const en = {
       Education: "Education — courses, training and teaching resources",
       PolicyCommunity: "Policy & Community — policies, declarations and community action",
     },
+    derivationTitle: "How the ratings are assigned",
+    derivationIntro:
+      "The legends above say what each label means, but not how a rating is decided. Below is the full derivation: every record is first scored against these rules from its verifiable facts; curated fields always win, and manual overrides correct the cases where the rules would mislead.",
+    deriveEvidenceTitle: "Evidence level",
+    deriveTierTitle: "Source tier",
+    deriveStatusTitle: "Verification status",
+    condLabel: "Trigger",
+    resultLabel: "Rating",
+    deriveEvidence: [
+      { cond: "Has a GitHub repository link — code, proofs or data can be inspected", code: "E3" },
+      { cond: "Has a paper link or a list of associated papers — a research record exists", code: "E2" },
+      { cond: "Has only a source link — the originating party's own public claim", code: "E1" },
+      { cond: "None of the above", code: "E0" },
+    ],
+    deriveTier: [
+      { cond: "Source is arXiv, a conference paper or a GitHub repository", code: "S1" },
+      { cond: "Source is a blog, a demo or any other channel", code: "S2" },
+    ],
+    deriveStatus: [
+      { cond: "Evidence level is E2 or E3 — a research record or inspectable artifact", code: "paper_released" },
+      { cond: "Evidence level is E0 or E1 — no public research record yet", code: "claimed" },
+    ],
+    deriveNotesTitle: "Two exceptions",
+    deriveNote1A: "Precedence: ",
+    deriveNote1B:
+      "manual override > curated field > automatic derivation. If an event already states a level or status explicitly, the derivation rules never overwrite it.",
+    deriveNote2A: "Manual overrides cover the cases where the rules mislead: ",
+    deriveNote2B:
+      "a competition result, for example, is a grading claim from the contest side rather than evidence in a paper, so it stays ",
+    deriveNote2C:
+      " (claimed, primary claim). Such overrides live in the code's OVERRIDES table and are used only where needed.",
     dataPolicyTitle: "Data policy",
     policy1:
       "Every curated entry keeps its original source URL. If a candidate's source could not be confirmed, it was dropped rather than shipped without a link.",
