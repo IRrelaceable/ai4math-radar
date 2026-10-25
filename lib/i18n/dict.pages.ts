@@ -145,6 +145,36 @@ const zh = {
     importanceStrong: "重要度是明确标注的 AI 辅助主观评估，不是客观科学指标。",
     importanceB:
       "核验状态、证据等级与来源层级保持客观且彼此独立。可选的 0–100 分数只表示编辑性的重要度判断，必须结合旁边的主观说明阅读；未评估事件不会被虚构分数。默认按日期排序，也可显式切换为重要度排序。",
+    trustTitle: "全部评级是怎么来的",
+    trustIntro:
+      "每条记录的三个客观维度——核验状态、证据等级、来源层级——都不是主观打分，而是从可核查的事实自动派生出来的：系统读取条目里有哪些链接，套用下面这套保守规则得出默认评级。更高、更强的档位（独立复核 E4、独立学术佐证 S3、媒体 S4、社区线索 S5，以及“核验中/部分核验/独立核验/争议/更正/撤回”等状态）从不自动授予，只能由人工复核后写入。人工整理的字段永远优先；规则会误导之处再用手工覆写修正。",
+    condLabel: "触发条件",
+    resultLabel: "评级",
+    deriveEvidenceTitle: "证据等级的判定（自动）",
+    deriveTierTitle: "来源层级的判定（自动）",
+    deriveStatusTitle: "核验状态的判定（自动）",
+    deriveEvidence: [
+      { cond: "带有 GitHub 仓库链接——代码、证明或数据可被检验", code: "E3" },
+      { cond: "带有论文链接或关联论文列表——存在公开研究记录", code: "E2" },
+      { cond: "仅有来源链接——发布方自己的公开主张", code: "E1" },
+      { cond: "以上都没有", code: "E0" },
+    ],
+    deriveTier: [
+      { cond: "来源为 arXiv、会议论文或 GitHub 仓库", code: "S1" },
+      { cond: "来源为博客、演示或其他渠道", code: "S2" },
+    ],
+    deriveStatus: [
+      { cond: "证据等级为 E2 或 E3——有研究记录或可检验产物", code: "paper_released" },
+      { cond: "证据等级为 E0 或 E1——尚无公开研究记录", code: "claimed" },
+    ],
+    deriveNotesTitle: "两条例外",
+    deriveNote1A: "优先级：",
+    deriveNote1B:
+      "手工覆写 ＞ 人工整理字段 ＞ 自动派生。一条事件若已显式标注了等级或状态，派生规则不会覆盖它——这也正是 E4、S3–S5 与各种核验/争议状态得以存在的机制。",
+    deriveNote2A: "规则会误导处使用手工覆写：",
+    deriveNote2B: "例如竞赛成绩由主办方口径给出、并非论文证据，因而保持",
+    deriveNote2C:
+      "（单方宣称、一级主张）。这类覆写记录在代码的 OVERRIDES 表中，只在必要时使用。",
     dataPolicyTitle: "数据政策",
     policy1A: "默认构建内置一份",
     policy1Strong: "演示数据集",
@@ -443,6 +473,37 @@ const en = {
     importanceStrong: "Importance is an explicitly labelled AI-assisted subjective assessment, not an objective scientific metric.",
     importanceB:
       "Verification status, evidence level and source tier remain objective and separate. Any optional 0–100 score records an editorial judgement and must be read with its subjective note; unassessed events are never given invented scores. Date is the default order, with importance available only as an explicit choice.",
+    trustTitle: "How every rating is assigned",
+    trustIntro:
+      "The three objective dimensions of each record — verification status, evidence level and source tier — are not subjective scores. They are derived automatically from verifiable facts: the system reads which links a record carries and applies the conservative rules below to reach a default rating. The higher, stronger grades (independent check E4, scholarly corroboration S3, media S4, community signal S5, and statuses such as under verification / partially verified / independently verified / disputed / corrected / retracted) are never granted automatically — a human must review and write them in. A curated field always wins; manual overrides correct the cases where the rules would mislead.",
+    condLabel: "Trigger",
+    resultLabel: "Rating",
+    deriveEvidenceTitle: "Evidence level (automatic)",
+    deriveTierTitle: "Source tier (automatic)",
+    deriveStatusTitle: "Verification status (automatic)",
+    deriveEvidence: [
+      { cond: "Has a GitHub repository link — code, proofs or data can be inspected", code: "E3" },
+      { cond: "Has a paper link or associated papers — a research record exists", code: "E2" },
+      { cond: "Has only a source link — the originating party's own public claim", code: "E1" },
+      { cond: "None of the above", code: "E0" },
+    ],
+    deriveTier: [
+      { cond: "Source is arXiv, a conference paper or a GitHub repository", code: "S1" },
+      { cond: "Source is a blog, a demo or any other channel", code: "S2" },
+    ],
+    deriveStatus: [
+      { cond: "Evidence level is E2 or E3 — research record or inspectable artifact", code: "paper_released" },
+      { cond: "Evidence level is E0 or E1 — no public research record yet", code: "claimed" },
+    ],
+    deriveNotesTitle: "Two exceptions",
+    deriveNote1A: "Precedence: ",
+    deriveNote1B:
+      "manual override > curated field > automatic derivation. If an event already states a level or status explicitly, the derivation rules never overwrite it — which is exactly how E4, S3–S5 and the various verification/dispute statuses come to exist.",
+    deriveNote2A: "Manual overrides cover the cases where the rules mislead: ",
+    deriveNote2B:
+      "a competition result, for example, is a grading claim from the contest side rather than evidence in a paper, so it stays ",
+    deriveNote2C:
+      " (claimed, primary claim). Such overrides live in the code's OVERRIDES table and are used only where needed.",
     dataPolicyTitle: "Data policy",
     policy1A: "The default build ships a ",
     policy1Strong: "demo dataset",

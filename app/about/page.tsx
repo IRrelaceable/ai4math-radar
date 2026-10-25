@@ -100,6 +100,45 @@ export default function AboutPage() {
         </p>
       </section>
 
+      {/* How every verification status / rating is assigned */}
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold tracking-tight">{p.trustTitle}</h2>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-600">{p.trustIntro}</p>
+        <div className="mt-5 space-y-6">
+          <DeriveTable
+            title={p.deriveEvidenceTitle}
+            condLabel={p.condLabel}
+            resultLabel={p.resultLabel}
+            rows={p.deriveEvidence}
+          />
+          <DeriveTable
+            title={p.deriveTierTitle}
+            condLabel={p.condLabel}
+            resultLabel={p.resultLabel}
+            rows={p.deriveTier}
+          />
+          <DeriveTable
+            title={p.deriveStatusTitle}
+            condLabel={p.condLabel}
+            resultLabel={p.resultLabel}
+            rows={p.deriveStatus}
+          />
+        </div>
+        <div className="mt-6 max-w-3xl rounded-md border border-ink-200 bg-ink-50 p-4 text-sm leading-relaxed text-ink-700">
+          <p className="font-semibold">{p.deriveNotesTitle}</p>
+          <p className="mt-2">
+            <strong>{p.deriveNote1A}</strong>
+            {p.deriveNote1B}
+          </p>
+          <p className="mt-2">
+            {p.deriveNote2A}
+            {p.deriveNote2B}
+            <span className="chip border-amber-200 bg-amber-50 text-amber-700">claimed</span>
+            {p.deriveNote2C}
+          </p>
+        </div>
+      </section>
+
       {/* Data policy */}
       <section className="mt-10">
         <h2 className="text-xl font-semibold tracking-tight">{p.dataPolicyTitle}</h2>
@@ -154,6 +193,42 @@ export default function AboutPage() {
           {p.roadmapNoteC}
         </p>
       </section>
+    </div>
+  );
+}
+
+/** A derivation rule table: condition (in priority order) → the rating it yields. */
+function DeriveTable({
+  title,
+  condLabel,
+  resultLabel,
+  rows,
+}: {
+  title: string;
+  condLabel: string;
+  resultLabel: string;
+  rows: { cond: string; code: string }[];
+}) {
+  return (
+    <div>
+      <h3 className="text-[15px] font-semibold tracking-tight">{title}</h3>
+      <div className="mt-2 max-w-3xl overflow-hidden rounded-md border border-ink-200">
+        <div className="flex gap-4 border-b border-ink-200 bg-ink-50 px-4 py-2">
+          <span className="mono-label flex-1">{condLabel}</span>
+          <span className="mono-label w-20 shrink-0">{resultLabel}</span>
+        </div>
+        {rows.map((r, i) => (
+          <div
+            key={r.code}
+            className={`flex items-center gap-4 px-4 py-2.5 text-sm ${
+              i % 2 === 1 ? "bg-white" : "bg-ink-50/40"
+            } ${i < rows.length - 1 ? "border-b border-ink-100" : ""}`}
+          >
+            <span className="flex-1 text-ink-700">{r.cond}</span>
+            <span className="w-20 shrink-0 font-mono font-medium text-ink-800">{r.code}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

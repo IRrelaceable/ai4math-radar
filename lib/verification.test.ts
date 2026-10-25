@@ -101,13 +101,13 @@ describe("deriveResearchEventType", () => {
 });
 
 /**
- * Guard: the derivation rules published on /methodology must stay in lockstep
+ * Guard: the derivation rules published on /about must stay in lockstep
  * with applyTrustModel. Each documented rule is paired with a representative
  * event; if the derivation logic changes without a matching copy update, this
  * fails, so the site never describes rules it no longer applies.
  */
-describe("/methodology derivation copy matches applyTrustModel", () => {
-  const m = pagesDict.zh.methodology;
+describe("/about derivation copy matches applyTrustModel", () => {
+  const m = pagesDict.zh.about;
 
   it("evidence-level rules yield exactly the documented codes", () => {
     const cases: [Partial<ResearchEvent>, string][] = [

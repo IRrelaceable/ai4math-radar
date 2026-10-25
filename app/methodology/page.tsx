@@ -45,46 +45,6 @@ export default function MethodologyPage() {
       <Legend title={m.legendTier} entries={SOURCE_TIERS.map((s) => [s, m.tierDesc[s]])} />
       <Legend title={m.legendType} entries={EVENT_TYPES.map((s) => [s, m.typeDesc[s]])} />
 
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold tracking-tight">{m.derivationTitle}</h2>
-        <p className="mt-3 text-[15px] leading-relaxed text-ink-600">{m.derivationIntro}</p>
-        <div className="mt-5 space-y-6">
-          <DeriveTable
-            title={m.deriveEvidenceTitle}
-            condLabel={m.condLabel}
-            resultLabel={m.resultLabel}
-            rows={m.deriveEvidence}
-          />
-          <DeriveTable
-            title={m.deriveTierTitle}
-            condLabel={m.condLabel}
-            resultLabel={m.resultLabel}
-            rows={m.deriveTier}
-          />
-          <DeriveTable
-            title={m.deriveStatusTitle}
-            condLabel={m.condLabel}
-            resultLabel={m.resultLabel}
-            rows={m.deriveStatus}
-          />
-        </div>
-        <div className="mt-6 rounded-md border border-ink-200 bg-ink-50 p-4 text-sm leading-relaxed text-ink-700">
-          <p className="font-semibold">{m.deriveNotesTitle}</p>
-          <p className="mt-2">
-            <strong>{m.deriveNote1A}</strong>
-            {m.deriveNote1B}
-          </p>
-          <p className="mt-2">
-            {m.deriveNote2A}
-            {m.deriveNote2B}
-            <span className="chip border-amber-200 bg-amber-50 text-amber-700">
-              {m.statusDesc.claimed}
-            </span>
-            {m.deriveNote2C}
-          </p>
-        </div>
-      </section>
-
       <section className="mt-10">
         <h2 className="text-lg font-semibold tracking-tight">{m.dataPolicyTitle}</h2>
         <ul className="mt-3 space-y-2 text-[15px] leading-relaxed text-ink-700">
@@ -138,41 +98,5 @@ function Legend({ title, entries }: { title: string; entries: [string, string][]
         ))}
       </dl>
     </section>
-  );
-}
-
-/** A derivation rule table: condition (in priority order) → the rating it yields. */
-function DeriveTable({
-  title,
-  condLabel,
-  resultLabel,
-  rows,
-}: {
-  title: string;
-  condLabel: string;
-  resultLabel: string;
-  rows: { cond: string; code: string }[];
-}) {
-  return (
-    <div>
-      <h3 className="text-[15px] font-semibold tracking-tight">{title}</h3>
-      <div className="mt-2 overflow-hidden rounded-md border border-ink-200">
-        <div className="flex gap-4 border-b border-ink-200 bg-ink-50 px-4 py-2">
-          <span className="mono-label w-2/3">{condLabel}</span>
-          <span className="mono-label w-16 shrink-0">{resultLabel}</span>
-        </div>
-        {rows.map((r, i) => (
-          <div
-            key={r.code}
-            className={`flex gap-4 px-4 py-2.5 text-sm ${
-              i % 2 === 1 ? "bg-white" : "bg-ink-50/40"
-            } ${i < rows.length - 1 ? "border-b border-ink-100" : ""}`}
-          >
-            <span className="w-2/3 text-ink-700">{r.cond}</span>
-            <span className="w-16 shrink-0 font-mono font-medium text-ink-800">{r.code}</span>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
