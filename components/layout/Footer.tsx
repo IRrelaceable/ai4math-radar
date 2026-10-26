@@ -19,7 +19,6 @@ export function Footer() {
             <li><Link className="link-quiet" href="/latest">{t.footer.latest}</Link></li>
             <li><Link className="link-quiet" href="/timeline">{t.footer.timeline}</Link></li>
             <li><Link className="link-quiet" href="/topics">{t.footer.topics}</Link></li>
-            <li><Link className="link-quiet" href="/research-map">{t.footer.map}</Link></li>
             <li><Link className="link-quiet" href="/sources">{t.footer.sources}</Link></li>
             <li><Link className="link-quiet" href="/methodology">{t.footer.methodology}</Link></li>
             <li><Link className="link-quiet" href="/about">{t.footer.about}</Link></li>

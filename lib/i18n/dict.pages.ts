@@ -22,8 +22,7 @@ const zh = {
   meta: {
     latest: { title: "最新 AI4Math 生态事件", desc: "AI for Mathematics 的研究、人物、机构与教育、资助与政策共同体事件，可按五类筛选。" },
     timeline: { title: "时间线", desc: "已记录的 AI4Math 研究事件按时间顺序排列，逐年分组。" },
-    topics: { title: "研究方向", desc: "AI4Math 的活跃研究方向，附事件计数与趋势。" },
-    map: { title: "研究地图", desc: "AI4Math 研究版图的可视化：方向、子方向与血缘关系。" },
+    topics: { title: "研究方向", desc: "AI4Math 的活跃研究方向，附事件计数、子方向与趋势。" },
     search: { title: "搜索", desc: "全站搜索：研究事件、论文、方向、模型与 Benchmark。" },
     about: { title: "关于", desc: "AI4Math 生态雷达的工作方式：五类数据模型、手动同步管线与限制。" },
     methodology: { title: "方法论——如何阅读这些标签", desc: "本平台如何把核验状态、证据等级与来源层级彼此分开。" },
@@ -53,11 +52,16 @@ const zh = {
 
   /** app/topics/page.tsx */
   topics: {
-    sub: "当前 AI4Math 研究方向，从研究事件库实时聚合——{events} 条事件，覆盖 {areas} 个方向。",
+    sub: "当前 AI4Math 研究方向，从研究事件库实时聚合——{events} 条事件，覆盖 {areas} 个方向，含各方向子方向、五类事件分布与已记录的血缘。",
     modelsLabel: "模型",
     benchmarksLabel: "Benchmark",
     latestLabel: "最近",
     openTopic: "打开方向",
+    subAreasLabel: "子方向",
+    subAreaTitle: "{count} 条事件 · {name}",
+    eventClasses: "生态事件类别",
+    recordedLineage: "已记录的血缘",
+    lineageEmpty: "尚未记录血缘关联。血缘会显示在每个事件的详情页（前作 → 本作 → 后续）。",
   },
 
   /** app/topics/[topic]/page.tsx */
@@ -82,8 +86,7 @@ const zh = {
     searchBtn: "搜索",
     slugA: "方向 slug：",
     slugB: " ——用于",
-    slugC: " 和",
-    slugD: "。",
+    slugC: " 页面。",
   },
 
   /** app/research/[slug]/page.tsx — extras beyond the core `detail.*` keys. */
@@ -93,16 +96,6 @@ const zh = {
     venueMissing: "未记录发表信息",
     howToReadLabels: "如何阅读这些标签",
     noPaperSuffix: " 来源。",
-  },
-
-  /** app/research-map/page.tsx */
-  map: {
-    label: "全景",
-    sub: "AI4Math 生态版图：五类一级事件 × 研究方向，同时保留各方向的子方向与前后工作关联。刻意保持简单——不用图数据库，不引入重型依赖。",
-    eventClasses: "生态事件类别",
-    areasGlance: "研究方向一览",
-    recordedLineage: "已记录的血缘",
-    lineageEmpty: "尚未记录血缘关联。血缘会显示在每个事件的详情页（前作 → 本作 → 后续）。",
   },
 
   /** app/search/page.tsx */
@@ -139,7 +132,7 @@ const zh = {
     pipelineBody:
       "各来源先被规范化、判定是否属于 AI4Math、映射到研究方向，并汇总成一个 ResearchEvent。v1 运行在模拟来源与模拟 LLM Provider 之上，因此站点可以离线使用。试试：",
     inspectApi: "查看 /api 下的 GET 响应",
-    openMap: "打开研究地图",
+    openTopics: "打开研究方向",
     importanceLabel: "如何阅读重要度分级",
     importanceA: "",
     importanceStrong: "重要度是明确标注的编辑性主观分级，不是客观科学指标。",
@@ -359,8 +352,7 @@ const en = {
   meta: {
     latest: { title: "Latest AI4Math Ecosystem Events", desc: "Research, people, institutions & education, funding and policy events in AI for Mathematics, filterable by class." },
     timeline: { title: "Timeline", desc: "Chronological view of recorded AI4Math research events, year by year." },
-    topics: { title: "Topics", desc: "Active research areas in AI4Math, with event counts and trends." },
-    map: { title: "Research Map", desc: "A visual map of the AI4Math research landscape: areas, sub areas and lineage." },
+    topics: { title: "Topics", desc: "Active research areas in AI4Math, with event counts, sub areas and trends." },
     search: { title: "Search", desc: "Full-site search across research events, papers, topics, models and benchmarks." },
     about: { title: "About", desc: "How the AI4Math Ecosystem Radar works: five-class data model, pipeline and limitations." },
     methodology: { title: "Methodology — how to read the labels", desc: "How this tracker keeps verification status, evidence level and source tier separate." },
@@ -386,11 +378,17 @@ const en = {
   },
 
   topics: {
-    sub: "Current AI4Math research directions, aggregated live from the Research Event store — {events} events across {areas} areas.",
+    sub: "Current AI4Math research directions, aggregated live from the Research Event store — {events} events across {areas} areas, with each area's sub areas, the five-class event mix and recorded lineage.",
     modelsLabel: "Models",
     benchmarksLabel: "Benchmarks",
     latestLabel: "latest",
     openTopic: "Open topic",
+    subAreasLabel: "Sub areas",
+    subAreaTitle: "{count} events · {name}",
+    eventClasses: "Ecosystem event classes",
+    recordedLineage: "Recorded lineage",
+    lineageEmpty:
+      "No lineage links recorded yet. They appear on each event's detail page (Previous → This → Follow-up).",
   },
 
   topic: {
@@ -414,8 +412,7 @@ const en = {
     searchBtn: "Search",
     slugA: "Topic slug:",
     slugB: " — used by",
-    slugC: " and the ",
-    slugD: ".",
+    slugC: " page.",
   },
 
   detail: {
@@ -424,16 +421,6 @@ const en = {
     venueMissing: "Publication details not recorded",
     howToReadLabels: "How to read these labels",
     noPaperSuffix: " source.",
-  },
-
-  map: {
-    label: "Landscape",
-    sub: "A first-pass visualization of the AI4Math landscape: research areas, their sub areas and how events link to earlier and later work. Deliberately simple — no graph database, no heavy dependencies (see README for the V6 Research Graph roadmap).",
-    eventClasses: "Ecosystem event classes",
-    areasGlance: "Research areas at a glance",
-    recordedLineage: "Recorded lineage",
-    lineageEmpty:
-      "No lineage links recorded yet. They appear on each event's detail page (Previous → This → Follow-up).",
   },
 
   search: {
@@ -475,7 +462,7 @@ const en = {
     pipelineBody:
       "Sources are normalized, classified as AI4Math or not, mapped to a research area, and summarized into a ResearchEvent. In v1 this runs on a mock source and a mock LLM provider so the site works offline. Try it:",
     inspectApi: "Inspect GET responses under /api",
-    openMap: "Open the Research Map",
+    openTopics: "Open the research directions",
     importanceLabel: "How to read importance tiers",
     importanceA: "",
     importanceStrong: "Importance is an explicitly labelled editorial subjective tier, not an objective scientific metric.",

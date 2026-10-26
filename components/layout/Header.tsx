@@ -14,7 +14,6 @@ export function Header() {
     { href: "/latest", label: t.nav.latest },
     { href: "/timeline", label: t.nav.timeline },
     { href: "/topics", label: t.nav.topics },
-    { href: "/research-map", label: t.nav.map },
     { href: "/sources", label: t.nav.sources },
     { href: "/about", label: t.nav.about },
   ];

@@ -84,8 +84,8 @@ export default function AboutPage() {
           <Link href="/api/agents/ingest" className="btn-ghost">
             {p.inspectApi}
           </Link>
-          <Link href="/research-map" className="btn-ghost">
-            {p.openMap}
+          <Link href="/topics" className="btn-ghost">
+            {p.openTopics}
           </Link>
         </div>
       </section>

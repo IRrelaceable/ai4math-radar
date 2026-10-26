@@ -80,13 +80,6 @@ const zh = {
     howToRead: "如何解读",
   },
 
-  // components/research-map/ResearchMapTree.tsx
-  map: {
-    eventsMapped: "条事件已映射",
-    subAreas: "子方向",
-    subAreaTitle: "{count} 条事件 · {name}",
-  },
-
   // components/search/SearchBox.tsx
   search: {
     heroPlaceholder: "搜索 AI4Math 研究…",
@@ -186,13 +179,6 @@ const en: ComponentsDict = {
     legendNote:
       "Grey = previous {days} days, colored = current window. Counts of tracked events.",
     howToRead: "How to read this",
-  },
-
-  // components/research-map/ResearchMapTree.tsx
-  map: {
-    eventsMapped: "events mapped",
-    subAreas: "sub areas",
-    subAreaTitle: "{count} events in {name}",
   },
 
   // components/search/SearchBox.tsx

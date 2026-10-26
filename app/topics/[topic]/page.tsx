@@ -162,8 +162,6 @@ export default async function TopicDetailPage({
         {p.topic.slugB}
         <span className="font-mono"> /topics/{slugify(stat.topic)}</span>
         {p.topic.slugC}
-        {d.nav.map}
-        {p.topic.slugD}
       </p>
     </div>
   );
