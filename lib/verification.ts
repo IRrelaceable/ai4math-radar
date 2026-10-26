@@ -58,9 +58,8 @@ export const TIER_LABELS: Record<SourceTier, string> = {
 export const EVENT_TYPE_LABELS: Record<EventType, string> = {
   Research: "Research — technical and mathematical knowledge progress",
   People: "People — public statements, talks and researcher movements",
-  Institutions: "Institutions — organizational initiatives and collaborations",
+  Institutions: "Institutions & Education — initiatives, collaborations, courses and training",
   Funding: "Funding — grants, awards and resource commitments",
-  Education: "Education — courses, training and teaching resources",
   PolicyCommunity: "Policy & Community — policies, declarations and community action",
 };
 

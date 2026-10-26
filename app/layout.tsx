@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     template: "%s · AI4Math Ecosystem Radar",
   },
   description:
-    "追踪 AI for Mathematics 的六类生态事件：研究、人物、机构、资助、教育与政策共同体。" +
-    " Track six ecosystem classes across AI for Mathematics: research, people, institutions, funding, education and policy.",
+    "追踪 AI for Mathematics 的五类生态事件：研究、人物、机构与教育、资助与政策共同体。" +
+    " Track five ecosystem classes across AI for Mathematics: research, people, institutions & education, funding and policy.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

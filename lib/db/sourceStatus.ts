@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import type { EventType, SourceTier } from "@/types";
+import { SOURCE_TIERS } from "@/types";
 import { liveResearchSources } from "@/lib/sources";
 import { getStore } from "@/lib/db";
 
@@ -61,6 +63,9 @@ export function updateSourceStatus(
 export interface SourceView {
   id: string;
   label: string;
+  category: EventType;
+  /** Editorial evidence tier; sources are grouped into S1-S5 sync boards. */
+  sourceTier: SourceTier;
   status: SourceSyncState;
   lastAttemptAt?: string;
   lastSuccessAt?: string;
@@ -73,6 +78,12 @@ export interface SourceView {
   total?: number;
 }
 
+/** One sync board: all sources sharing an editorial evidence tier. */
+export interface TierBoard {
+  tier: SourceTier;
+  sources: SourceView[];
+}
+
 /**
  * Source registry + statuses + exact pending-review count.
  *
@@ -80,8 +91,12 @@ export interface SourceView {
  * the two can never drift. The pending count calls `listEvents()` with no
  * limit — both stores return the complete list when `limit` is undefined, so
  * the count stays exact past any page size.
+ *
+ * `boards` always contains all five tiers (S1-S5) in order, even when a tier
+ * has no sources, so the sync UI renders a stable five-board layout.
  */
 export async function loadSourceOverview(): Promise<{
+  boards: TierBoard[];
   sources: SourceView[];
   pending: number;
 }> {
@@ -94,6 +109,10 @@ export async function loadSourceOverview(): Promise<{
     return {
       id,
       label: source.label,
+      category: source.defaultEventType ?? "Research",
+      // Every registry source declares a tier; default to official (S2) if a
+      // hand-added source forgets one so it still lands on a board.
+      sourceTier: source.sourceTier ?? "S2",
       status: stored?.status ?? "idle",
       lastAttemptAt: stored?.lastAttemptAt,
       lastSuccessAt: stored?.lastSuccessAt,
@@ -107,6 +126,12 @@ export async function loadSourceOverview(): Promise<{
     };
   });
 
-  return { sources, pending };
+  const boards: TierBoard[] = SOURCE_TIERS.map((tier) => ({
+    tier,
+    sources: sources.filter((source) => source.sourceTier === tier),
+  }));
+
+  return { boards, sources, pending };
 }
+
 

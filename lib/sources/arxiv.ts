@@ -94,6 +94,7 @@ export function createArxivSource(options: ArxivSourceOptions = {}): ResearchSou
   return {
     id: "arxiv",
     label: "arXiv (cs.LO / math.LO / cs.AI)",
+    sourceTier: "S1",
     async fetchRecent(fetchOptions = {}) {
       const limit = fetchOptions.limit ?? 25;
       const since = fetchOptions.since;

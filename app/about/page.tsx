@@ -58,7 +58,7 @@ export default function AboutPage() {
         <pre className="mt-4 overflow-x-auto rounded-lg border border-ink-200 bg-ink-50 p-4 font-mono text-xs leading-relaxed text-ink-700">
 {`ResearchEvent
 ├── title · summary · significance · date
-├── eventType (six classes) → researchArea → subArea
+├── eventType (five classes) → researchArea → subArea
 ├── researchEventType · metadata · importanceTier H1/H2/H3 (subjective)
 ├── verificationStatus · evidenceLevel · sourceTier
 ├── sourceType · sourceUrl · paperUrl · githubUrl

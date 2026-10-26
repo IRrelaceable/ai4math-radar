@@ -91,15 +91,17 @@ export const IMPORTANCE_TIERS = ["H1", "H2", "H3"] as const;
 export type ImportanceTier = (typeof IMPORTANCE_TIERS)[number];
 
 /**
- * The six primary ecosystem event classes. Research subtypes such as
+ * The five primary ecosystem event classes. Research subtypes such as
  * Discovery / Proof / Benchmark remain available as `researchEventType`.
+ * Legacy `Education` records normalize into `Institutions` (see
+ * normalizeEventType), so education events remain a distinct branch of
+ * institution metadata rather than their own top-level class.
  */
 export const EVENT_TYPES = [
   "Research",
   "People",
   "Institutions",
   "Funding",
-  "Education",
   "PolicyCommunity",
 ] as const;
 export type EventType = (typeof EVENT_TYPES)[number];
@@ -119,7 +121,7 @@ export const RESEARCH_EVENT_TYPES = [
 ] as const;
 export type ResearchEventType = (typeof RESEARCH_EVENT_TYPES)[number];
 
-/** Primary feed chips: All + the six ecosystem classes. */
+/** Primary feed chips: All + the five ecosystem classes. */
 export const FEED_FILTERS = ["All", ...EVENT_TYPES] as const;
 export type FeedFilter = (typeof FEED_FILTERS)[number];
 

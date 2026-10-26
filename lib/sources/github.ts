@@ -38,6 +38,7 @@ export function createGitHubSource(options: GitHubSourceOptions = {}): ResearchS
   return {
     id: "github",
     label: "GitHub (watched repositories)",
+    sourceTier: "S1",
     async fetchRecent(fetchOptions = {}) {
       const limit = fetchOptions.limit ?? repos.length;
       const since = fetchOptions.since;

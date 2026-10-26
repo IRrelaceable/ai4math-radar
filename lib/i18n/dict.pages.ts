@@ -20,12 +20,12 @@ export function fill(template: string, vars: Record<string, string | number>): s
 const zh = {
   /** Browser tab metadata (used by each page's `generateMetadata`). */
   meta: {
-    latest: { title: "最新 AI4Math 生态事件", desc: "AI for Mathematics 的研究、人物、机构、资助、教育与政策共同体事件，可按六类筛选。" },
+    latest: { title: "最新 AI4Math 生态事件", desc: "AI for Mathematics 的研究、人物、机构与教育、资助与政策共同体事件，可按五类筛选。" },
     timeline: { title: "时间线", desc: "已记录的 AI4Math 研究事件按时间顺序排列，逐年分组。" },
     topics: { title: "研究方向", desc: "AI4Math 的活跃研究方向，附事件计数与趋势。" },
     map: { title: "研究地图", desc: "AI4Math 研究版图的可视化：方向、子方向与血缘关系。" },
     search: { title: "搜索", desc: "全站搜索：研究事件、论文、方向、模型与 Benchmark。" },
-    about: { title: "关于", desc: "AI4Math 生态雷达的工作方式：六类数据模型、手动同步管线与限制。" },
+    about: { title: "关于", desc: "AI4Math 生态雷达的工作方式：五类数据模型、手动同步管线与限制。" },
     methodology: { title: "方法论——如何阅读这些标签", desc: "本平台如何把核验状态、证据等级与来源层级彼此分开。" },
     sources: { title: "来源同步", desc: "手动同步 arXiv 与 GitHub，查看来源状态、增量游标和待审核事件。" },
   },
@@ -41,12 +41,12 @@ const zh = {
   latest: {
     label: "生态信息流",
     title: "最新 AI4Math 生态事件",
-    sub: "每条记录都是一个生态事件——发生了什么、谁在推动、为什么重要、去哪里读原始来源。可按六类事件与研究方向筛选。",
+    sub: "每条记录都是一个生态事件——发生了什么、谁在推动、为什么重要、去哪里读原始来源。可按五类事件与研究方向筛选。",
   },
 
   /** app/timeline/page.tsx */
   timeline: {
-    sub: "全部已记录的生态事件按时间顺序排列，并按年份分组。用六类一级事件筛选，Research 事件还可通过研究子类型识别；打开任一条目可查看完整证据记录。",
+    sub: "全部已记录的生态事件按时间顺序排列，并按年份分组。用五类一级事件筛选，Research 事件还可通过研究子类型识别；打开任一条目可查看完整证据记录。",
     feedLink: "带方向筛选的信息流视图",
     empty: "没有事件符合该筛选。",
   },
@@ -98,7 +98,7 @@ const zh = {
   /** app/research-map/page.tsx */
   map: {
     label: "全景",
-    sub: "AI4Math 生态版图：六类一级事件 × 研究方向，同时保留各方向的子方向与前后工作关联。刻意保持简单——不用图数据库，不引入重型依赖。",
+    sub: "AI4Math 生态版图：五类一级事件 × 研究方向，同时保留各方向的子方向与前后工作关联。刻意保持简单——不用图数据库，不引入重型依赖。",
     eventClasses: "生态事件类别",
     areasGlance: "研究方向一览",
     recordedLineage: "已记录的血缘",
@@ -275,9 +275,8 @@ const zh = {
     typeDesc: {
       Research: "Research — technical and mathematical progress",
       People: "People — statements, talks and researcher movements",
-      Institutions: "Institutions — initiatives, teams and collaborations",
+      Institutions: "Institutions & Education — initiatives, collaborations, courses and training",
       Funding: "Funding — grants, awards and disclosed resource commitments",
-      Education: "Education — courses, training and teaching resources",
       PolicyCommunity: "Policy & Community — policies, declarations and community action",
     },
     derivationTitle: "评级是怎么来的",
@@ -326,7 +325,7 @@ const zh = {
   /** app/sources/page.tsx */
   sources: {
     title: "来源同步",
-    subtitle: "不使用定时任务：点击同步按钮手动拉取增量内容，并查看每个来源的成功、失败和游标状态。",
+    subtitle: "不使用定时任务：来源按五个证据层级（S1–S5）分板块，点击板块上的同步按钮即依次拉取该层全部来源的增量内容，并查看每源的成功、失败和游标状态。",
     pending: "待审核事件",
     sync: "同步",
     syncing: "同步中…",
@@ -338,6 +337,15 @@ const zh = {
     error: "错误",
     success: "成功",
     idle: "未同步",
+    syncCount: "{n} 个来源",
+    empty: "该层级暂无已登记的来源。",
+    tiers: {
+      S1: { name: "一手研究", blurb: "论文、产物与官方仓库：arXiv、GitHub 等可直接检验的一手来源。" },
+      S2: { name: "官方公告", blurb: "实验室、高校、会议与资助方的官方新闻与公告。" },
+      S3: { name: "独立评论", blurb: "研究者的独立博客与评论，代表个人而非机构立场。" },
+      S4: { name: "媒体报道", blurb: "可信的科技媒体，提供第三方报道与背景。" },
+      S5: { name: "社区线索", blurb: "社区声明、倡议与发现线索，需谨慎对待。" },
+    },
   },
 
   /** app/not-found.tsx — title/body/backHome come from the core `notFound`. */
@@ -349,12 +357,12 @@ const zh = {
 const en = {
   /** Browser tab metadata (used by each page's `generateMetadata`). */
   meta: {
-    latest: { title: "Latest AI4Math Ecosystem Events", desc: "Research, people, institution, funding, education and policy events in AI for Mathematics, filterable by class." },
+    latest: { title: "Latest AI4Math Ecosystem Events", desc: "Research, people, institutions & education, funding and policy events in AI for Mathematics, filterable by class." },
     timeline: { title: "Timeline", desc: "Chronological view of recorded AI4Math research events, year by year." },
     topics: { title: "Topics", desc: "Active research areas in AI4Math, with event counts and trends." },
     map: { title: "Research Map", desc: "A visual map of the AI4Math research landscape: areas, sub areas and lineage." },
     search: { title: "Search", desc: "Full-site search across research events, papers, topics, models and benchmarks." },
-    about: { title: "About", desc: "How the AI4Math Ecosystem Radar works: six-class data model, pipeline and limitations." },
+    about: { title: "About", desc: "How the AI4Math Ecosystem Radar works: five-class data model, pipeline and limitations." },
     methodology: { title: "Methodology — how to read the labels", desc: "How this tracker keeps verification status, evidence level and source tier separate." },
     sources: { title: "Source synchronization", desc: "Manually sync arXiv and GitHub, inspect source freshness, incremental cursors and pending events." },
   },
@@ -372,7 +380,7 @@ const en = {
   },
 
   timeline: {
-    sub: "Every recorded ecosystem event in chronological order, grouped by year. Use the six-class filter to narrow to research, people, institutions, funding, education or policy; open an entry for its full evidence record.",
+    sub: "Every recorded ecosystem event in chronological order, grouped by year. Use the five-class filter to narrow to research, people, institutions & education, funding or policy; open an entry for its full evidence record.",
     feedLink: "Feed view with area filters",
     empty: "No events match this filter.",
   },
@@ -606,9 +614,8 @@ const en = {
     typeDesc: {
       Research: "Research — technical and mathematical progress",
       People: "People — statements, talks and researcher movements",
-      Institutions: "Institutions — initiatives, teams and collaborations",
+      Institutions: "Institutions & Education — initiatives, collaborations, courses and training",
       Funding: "Funding — grants, awards and disclosed resource commitments",
-      Education: "Education — courses, training and teaching resources",
       PolicyCommunity: "Policy & Community — policies, declarations and community action",
     },
     derivationTitle: "How the ratings are assigned",
@@ -659,7 +666,7 @@ const en = {
   sources: {
     title: "Source synchronization",
     subtitle:
-      "No scheduler: trigger incremental pulls manually and inspect success, failure and cursor state for each source.",
+      "No scheduler: sources are grouped into five evidence-tier boards (S1–S5). Trigger a board to pull every source on that tier incrementally, and inspect success, failure and cursor state per source.",
     pending: "Pending events",
     sync: "Sync",
     syncing: "Syncing…",
@@ -671,6 +678,15 @@ const en = {
     error: "Error",
     success: "Success",
     idle: "Never synced",
+    syncCount: "{n} sources",
+    empty: "No sources registered on this tier yet.",
+    tiers: {
+      S1: { name: "Primary research", blurb: "Papers, artifacts and official repositories: directly inspectable primary sources such as arXiv and GitHub." },
+      S2: { name: "Official announcements", blurb: "Official news and announcements from labs, universities, venues and funders." },
+      S3: { name: "Independent commentary", blurb: "Researchers' personal blogs and commentary, speaking for themselves rather than an institution." },
+      S4: { name: "Media coverage", blurb: "Reputable science/tech media providing third-party reporting and context." },
+      S5: { name: "Community signals", blurb: "Community declarations, initiatives and discovery signals — treat with caution." },
+    },
   },
 
   notFound: {

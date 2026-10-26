@@ -1,16 +1,22 @@
-import type { RawResearchItem } from "@/types";
+import type { EventType, RawResearchItem, ResearchArea, SourceTier } from "@/types";
 import { arxivSource } from "./arxiv";
 import { githubSource } from "./github";
+import { OFFICIAL_SOURCE_DEFINITIONS, createOfficialSource } from "./catalog";
 
 /**
  * Unified data-input interface (ResearchSource).
  *
- * MVP ships a mock source only - no crawlers. Adding arXiv / GitHub later
- * means implementing this interface and registering it in `sources`.
+ * The offline mock remains the default pipeline source. Live arXiv, GitHub and
+ * official catalog sources are opt-in through the manual sync endpoint.
  */
 export interface ResearchSource {
   id: string;
   label: string;
+  /** Source-level fallback classification used when the generic classifier rejects a category-specific item. */
+  defaultEventType?: EventType;
+  defaultResearchArea?: ResearchArea;
+  /** Editorial evidence tier this source belongs to; the sync UI groups sources into S1-S5 boards. */
+  sourceTier?: SourceTier;
   /** Returns unprocessed items newest first; `since` enables incremental manual sync. */
   fetchRecent(options?: { limit?: number; since?: string }): Promise<RawResearchItem[]>;
 }
@@ -63,14 +69,16 @@ export const mockResearchSource: ResearchSource = {
 export const researchSources: ResearchSource[] = [mockResearchSource];
 
 /**
- * Live sources (V2). They hit the public internet, so they are opt-in via
- * `POST /api/agents/ingest {"source": "arxiv" | "github"}` and never part of
- * the default pipeline run.
+ * Live sources hit the public internet, so they remain opt-in through the
+ * manual `/sources` page or POST /api/agents/ingest. No scheduler is implied.
  */
-export const liveResearchSources = {
+const officialSources = OFFICIAL_SOURCE_DEFINITIONS.map(createOfficialSource);
+
+export const liveResearchSources: Record<string, ResearchSource> = {
   arxiv: arxivSource,
   github: githubSource,
-} as const satisfies Record<string, ResearchSource>;
+  ...Object.fromEntries(officialSources.map((source) => [source.id, source])),
+};
 
-export type LiveSourceId = keyof typeof liveResearchSources;
+export type LiveSourceId = string;
 

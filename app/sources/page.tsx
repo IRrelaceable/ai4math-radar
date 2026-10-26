@@ -11,12 +11,12 @@ export async function generateMetadata() {
 }
 
 export default async function SourcesPage() {
-  const { sources, pending } = await loadSourceOverview();
+  const { boards, pending } = await loadSourceOverview();
 
   return (
     <div className="container-page py-10">
       <SourceSyncPanel
-        initialSources={sources}
+        boards={boards}
         pending={pending}
         labels={pagesDict[getLang()].sources}
       />

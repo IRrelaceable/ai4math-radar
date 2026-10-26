@@ -196,7 +196,7 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     id: "evt-demo-education-course",
     title: "Demo scenario: a university adds an AI for Mathematics course",
     slug: "demo-education-university-ai-for-mathematics-course",
-    eventType: "Education",
+    eventType: "Institutions",
     summary:
       "An example Education event records institution, department, course name, code, instructor, semester and learning outcomes from the public catalogue.",
     significance:
@@ -231,7 +231,7 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     id: "evt-demo-education-summer-school",
     title: "Demo scenario: an AI4Math summer school opens applications",
     slug: "demo-education-ai4math-summer-school",
-    eventType: "Education",
+    eventType: "Institutions",
     summary:
       "An example Education event records organizer, audience, curriculum, period and application source for a summer training program.",
     significance:
@@ -263,7 +263,7 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     id: "evt-demo-education-textbook",
     title: "Demo scenario: a community releases an open AI4Math teaching resource",
     slug: "demo-education-open-ai4math-teaching-resource",
-    eventType: "Education",
+    eventType: "Institutions",
     summary:
       "An example Education event records an open textbook or teaching resource, its maintainers, intended learners, release date and canonical URL.",
     significance:

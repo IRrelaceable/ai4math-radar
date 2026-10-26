@@ -1,12 +1,15 @@
 import type { EventType, ImportanceTier, ResearchEvent, ResearchEventType } from "@/types";
 import { EVENT_TYPES, IMPORTANCE_TIERS, RESEARCH_EVENT_TYPES } from "@/types";
 
-/** Map legacy and malformed values onto the six primary ecosystem classes. */
+/** Map legacy and malformed values onto the five primary ecosystem classes. */
 export function normalizeEventType(value?: string): EventType | undefined {
   if (!value) return undefined;
   if ((EVENT_TYPES as readonly string[]).includes(value)) return value as EventType;
   // Legacy `Commentary` is ecosystem policy/community; research subtypes stay Research.
   if (value === "Commentary") return "PolicyCommunity";
+  // Legacy `Education` is folded into `Institutions` (education is a branch of
+  // institution metadata, not its own top-level class).
+  if (value === "Education") return "Institutions";
   if ((RESEARCH_EVENT_TYPES as readonly string[]).includes(value)) return "Research";
   return undefined;
 }
