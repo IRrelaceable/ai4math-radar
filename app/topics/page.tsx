@@ -26,7 +26,7 @@ export default async function TopicsPage() {
   // (slugify(researchArea)). Absorbs the research-map tree's only unique axis.
   const subAreasByTopic = new Map<string, { name: string; count: number }[]>();
   for (const e of events) {
-    if (!e.subArea) continue;
+    if (!e.researchArea || !e.subArea) continue;
     const key = slugify(e.researchArea);
     const list = subAreasByTopic.get(key) ?? [];
     const hit = list.find((s) => s.name === e.subArea);

@@ -21,6 +21,29 @@ export const RESEARCH_AREAS = [
 
 export type ResearchArea = (typeof RESEARCH_AREAS)[number];
 
+/**
+ * Controlled sub-area vocabulary, per research area.
+ *
+ * Sub-areas used to be free text, which fragmented one concept across many
+ * one-off labels (four variants of "autoformalization", "Lean" vs "Lean 4",
+ * "premise selection" vs "premise selection tooling"). Each governed area now
+ * declares a small closed set; the seed-integrity test asserts every event's
+ * `subArea` is one of them. An area absent from this map is not yet governed
+ * and keeps free-form sub-areas until it is migrated.
+ */
+export const CONTROLLED_SUB_AREAS: Partial<Record<ResearchArea, readonly string[]>> = {
+  "Theorem Proving": [
+    "Proof search",
+    "Prover tooling & interaction",
+    "Agent-based proving",
+  ],
+  "Formal Mathematics": [
+    "Autoformalization",
+    "Formal corpora & libraries",
+    "Proof assistant tooling",
+  ],
+};
+
 
 /**
  * Relative time windows offered by the feed's time filter. The dropdown also
@@ -188,7 +211,12 @@ export interface ResearchEvent {
   significance: string;
   /** ISO date, YYYY-MM-DD (day precision; month precision is stored as YYYY-MM-01). */
   date: string;
-  researchArea: ResearchArea;
+  /**
+   * Research direction (one of RESEARCH_AREAS). Optional: ecosystem events
+   * (People / Institutions / Funding / PolicyCommunity) record an event class
+   * instead of a research direction, so they carry no `researchArea`.
+   */
+  researchArea?: ResearchArea;
   subArea?: string;
   sourceType: SourceType;
   sourceUrl: string;

@@ -37,12 +37,16 @@ export default async function ResearchDetailPage({
   if (!found) notFound();
   const event = localizeEvent(found, lang);
 
-  const siblings = localizeEvents(
-    (await store.listEvents({ area: event.researchArea, limit: 10 })).filter(
-      (e) => e.slug !== event.slug
-    ),
-    lang
-  );
+  // Ecosystem events carry no research direction, so there is no "same area"
+  // sibling set to link to; leave it empty and hide the related section.
+  const siblings = event.researchArea
+    ? localizeEvents(
+        (await store.listEvents({ area: event.researchArea, limit: 10 })).filter(
+          (e) => e.slug !== event.slug
+        ),
+        lang
+      )
+    : [];
   // Related events: same area, newest first (no importance ranking).
   const relatedEvents = siblings.slice(0, 3);
 
@@ -55,10 +59,14 @@ export default async function ResearchDetailPage({
         <Link href="/latest" className="link-quiet">
           {d.nav.latest}
         </Link>
-        <span className="mx-2 text-ink-300">/</span>
-        <Link href={`/topics/${slugify(event.researchArea)}`} className="link-quiet">
-          {event.researchArea}
-        </Link>
+        {event.researchArea && (
+          <>
+            <span className="mx-2 text-ink-300">/</span>
+            <Link href={`/topics/${slugify(event.researchArea)}`} className="link-quiet">
+              {event.researchArea}
+            </Link>
+          </>
+        )}
         <span className="mx-2 text-ink-300">/</span>
         <span className="text-ink-700">{p.detail.crumbEvent}</span>
       </div>
@@ -237,39 +245,43 @@ export default async function ResearchDetailPage({
             </section>
           )}
 
-          <section className="mt-9 border-t border-ink-200 pt-7">
-            <h2 className="text-lg font-semibold tracking-tight">
-              {d.detail.moreIn} {event.researchArea}
-            </h2>
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              {relatedEvents.slice(0, 3).map((e) => (
-                <EventCard key={e.id} event={e} />
-              ))}
-            </div>
-            {relatedEvents.length === 0 && (
-              <p className="mt-3 text-sm text-ink-500">
-                {d.detail.noOtherEvents}
-              </p>
-            )}
-          </section>
+          {event.researchArea && (
+            <section className="mt-9 border-t border-ink-200 pt-7">
+              <h2 className="text-lg font-semibold tracking-tight">
+                {d.detail.moreIn} {event.researchArea}
+              </h2>
+              <div className="mt-4 grid gap-4 md:grid-cols-3">
+                {relatedEvents.slice(0, 3).map((e) => (
+                  <EventCard key={e.id} event={e} />
+                ))}
+              </div>
+              {relatedEvents.length === 0 && (
+                <p className="mt-3 text-sm text-ink-500">
+                  {d.detail.noOtherEvents}
+                </p>
+              )}
+            </section>
+          )}
         </div>
 
         {/* Sidebar */}
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-          <div className="card p-4">
-            <div className="mono-label mb-2">{d.detail.researchArea}</div>
-            <div className="text-sm font-medium">
-              <Link href={`/topics/${slugify(event.researchArea)}`} className="hover:text-accent-700">
-                {event.researchArea}
-              </Link>
-              {event.subArea && (
-                <>
-                  <span className="mx-1.5 text-ink-400">→</span>
-                  <span className="text-ink-600">{event.subArea}</span>
-                </>
-              )}
+          {event.researchArea && (
+            <div className="card p-4">
+              <div className="mono-label mb-2">{d.detail.researchArea}</div>
+              <div className="text-sm font-medium">
+                <Link href={`/topics/${slugify(event.researchArea)}`} className="hover:text-accent-700">
+                  {event.researchArea}
+                </Link>
+                {event.subArea && (
+                  <>
+                    <span className="mx-1.5 text-ink-400">→</span>
+                    <span className="text-ink-600">{event.subArea}</span>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="card p-4">
             <div className="mono-label mb-2">{d.detail.importance}</div>

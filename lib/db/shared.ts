@@ -5,6 +5,9 @@ import { eventSearchText, matchesQuery, slugify, sortEvents } from "@/lib/utils"
 export function buildTopicStats(events: ResearchEvent[]): TopicStat[] {
   const map = new Map<string, TopicStat>();
   for (const e of events) {
+    // Ecosystem events carry an event class instead of a research direction;
+    // they belong on the timeline/feed but not under a topic.
+    if (!e.researchArea) continue;
     const slug = slugify(e.researchArea);
     let stat = map.get(slug);
     if (!stat) {
@@ -40,7 +43,9 @@ export function searchEvents(events: ResearchEvent[], rawQuery: string): SearchR
       groups.push({
         kind: "event",
         title: e.title,
-        subtitle: `${e.eventType ?? "Research"} · ${e.researchArea} · ${e.date}`,
+        subtitle: [e.eventType ?? "Research", e.researchArea, e.date]
+          .filter(Boolean)
+          .join(" · "),
         href: `/research/${e.slug}`,
       });
     }

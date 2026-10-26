@@ -1,6 +1,6 @@
 // Relative import on purpose: this module is shared with prisma/seed.ts, which
 // runs under `tsx` without the Next.js path aliases.
-import { EVIDENCE_LEVELS } from "../types";
+import { CONTROLLED_SUB_AREAS, EVIDENCE_LEVELS } from "../types";
 import type {
   EvidenceLevel,
   EventType,
@@ -180,4 +180,30 @@ export function applyTrustModel(event: ResearchEvent): ResearchEvent {
 }
 
 export const EVIDENCE_ORDER = EVIDENCE_LEVELS as readonly EvidenceLevel[];
+
+/**
+ * Validate that every `subArea` falls inside the controlled vocabulary for its
+ * research area. Sub-areas used to be free text, which let one concept shatter
+ * into many one-off labels ("Lean 4", "premise selection", "in-context
+ * learning agent"); `CONTROLLED_SUB_AREAS` now pins each governed area to a
+ * small closed set. Areas absent from that map are not yet governed and are
+ * skipped, so the remaining directions can be migrated incrementally.
+ *
+ * Relative import on purpose (same reason as above): shared with prisma/seed.ts.
+ */
+export function validateSubAreas(events: readonly ResearchEvent[]): string[] {
+  const problems: string[] = [];
+  for (const e of events) {
+    const sub = e.subArea;
+    if (!e.researchArea || !sub) continue; // ungoverned area, or no sub-area set
+    const allowed = CONTROLLED_SUB_AREAS[e.researchArea];
+    if (!allowed) continue; // area not governed yet
+    if (!allowed.includes(sub)) {
+      problems.push(
+        `${e.slug}: subArea "${sub}" is not in CONTROLLED_SUB_AREAS["${e.researchArea}"]`
+      );
+    }
+  }
+  return problems;
+}
 

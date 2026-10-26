@@ -83,7 +83,8 @@ async function main() {
         summary: e.summary,
         significance: e.significance,
         date: toUtcDate(e.date),
-        researchAreaId: areas.get(e.researchArea)!,
+        // Ecosystem events carry an event class, not a research direction.
+        researchAreaId: e.researchArea ? (areas.get(e.researchArea) ?? null) : null,
         subArea: e.subArea,
         sourceType: e.sourceType,
         sourceUrl: e.sourceUrl,

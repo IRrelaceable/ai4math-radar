@@ -20,10 +20,13 @@ export function AreaBadge({
   subArea,
   link = true,
 }: {
-  area: ResearchArea;
+  area?: ResearchArea;
   subArea?: string;
   link?: boolean;
 }) {
+  // Ecosystem events (People / Institutions / Funding / PolicyCommunity) carry
+  // no research direction, so there is nothing to badge here.
+  if (!area) return null;
   const tone = TONE[area] ?? "border-ink-200 bg-ink-50 text-ink-700";
   const label = subArea ? `${area} → ${subArea}` : area;
   const className = `chip ${tone} font-medium`;

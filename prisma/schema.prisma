@@ -26,8 +26,8 @@ model ResearchEvent {
   /// Day-precision date of the event.
   date DateTime @db.Date
 
-  researchAreaId String
-  researchArea   ResearchArea @relation(fields: [researchAreaId], references: [id])
+  researchAreaId String?
+  researchArea   ResearchArea? @relation(fields: [researchAreaId], references: [id])
   subArea        String?
 
   sourceType String

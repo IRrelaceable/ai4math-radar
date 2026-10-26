@@ -21,8 +21,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Shows how the platform separates an AI-written summary from the speaker's original statement and keeps the primary source one click away.",
     date: "2026-02-01",
-    researchArea: "AI-assisted Research",
-    subArea: "public viewpoint",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example Researcher"],
@@ -54,8 +52,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Demonstrates that people movements are tracked as ecosystem events while papers and models remain attached entities.",
     date: "2026-03-01",
-    researchArea: "AI-assisted Research",
-    subArea: "researcher movement",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example Mathematician"],
@@ -82,8 +78,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Shows the institution-level view needed to see whether universities are turning isolated AI-math projects into durable programs.",
     date: "2026-01-15",
-    researchArea: "AI-assisted Research",
-    subArea: "institutional initiative",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example University"],
@@ -110,8 +104,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Demonstrates how the radar exposes institutional coordination that would be invisible in a paper-only feed.",
     date: "2026-04-01",
-    researchArea: "AI-assisted Research",
-    subArea: "cross-institution collaboration",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example University", "Example AI Lab"],
@@ -138,8 +130,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Shows how capital commitments can be tracked separately from the technical results they eventually produce.",
     date: "2026-05-01",
-    researchArea: "AI-assisted Research",
-    subArea: "research grant",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example Foundation"],
@@ -171,8 +161,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Demonstrates the rule that funding amounts are never guessed when an official source does not publish them.",
     date: "2026-05-20",
-    researchArea: "AI-assisted Research",
-    subArea: "public research funding",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example Public Agency"],
@@ -202,8 +190,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Shows whether AI4Math is moving from research workshops into credit-bearing curricula.",
     date: "2025-09-01",
-    researchArea: "AI-assisted Research",
-    subArea: "credit-bearing course",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example University"],
@@ -237,8 +223,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Demonstrates the training-program branch of Education without confusing it with a research workshop or community policy event.",
     date: "2025-11-01",
-    researchArea: "AI-assisted Research",
-    subArea: "summer school",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example Organizing Consortium"],
@@ -269,8 +253,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Shows how durable educational infrastructure is distinguished from a one-off research release.",
     date: "2026-06-01",
-    researchArea: "AI-assisted Research",
-    subArea: "open teaching resource",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example Open Education Community"],
@@ -300,8 +282,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Demonstrates how formal rules around AI-assisted proofs and manuscripts enter the radar without being mistaken for research results.",
     date: "2026-07-01",
-    researchArea: "AI-assisted Research",
-    subArea: "publication policy",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example Mathematical Journal"],
@@ -332,8 +312,6 @@ export const ecosystemDemoEvents: ResearchEvent[] = [
     significance:
       "Shows community coordination as an ecosystem event in its own right, distinct from any individual paper or institution.",
     date: "2026-08-01",
-    researchArea: "AI-assisted Research",
-    subArea: "community initiative",
     sourceType: "demo",
     sourceUrl: "https://example.org/",
     authors: ["Example AI4Math Community"],

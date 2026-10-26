@@ -40,6 +40,8 @@ export function buildTrends(
   const byArea = new Map<string, { recent: ResearchEvent[]; previous: ResearchEvent[] }>();
 
   for (const event of events) {
+    // Trends track research directions; ecosystem events have none.
+    if (!event.researchArea) continue;
     const t = Date.parse(event.date);
     if (Number.isNaN(t)) continue;
     const entry = byArea.get(event.researchArea) ?? { recent: [], previous: [] };
