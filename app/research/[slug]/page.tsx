@@ -132,6 +132,14 @@ export default async function ResearchDetailPage({
           )}
         </section>
 
+        {/* Key facts — derived purely from existing structured fields.
+            Short auto-ingested entries leave the narrative thin, so this
+            section surfaces everything the record already knows: the event
+            class, the research subtype, where it came from, when it was
+            recorded, and what would count as checking it. No new prose is
+            generated; every row points at a real field. */}
+        <KeyFactsSection event={event} />
+
         {/* Why it matters */}
         {event.significance?.trim() && (
           <section className="mt-7">
@@ -363,6 +371,93 @@ function MetaRow({
       <dt className="mono-label normal-case tracking-normal">{label}</dt>
       <dd className="mt-1 text-ink-800">{children}</dd>
     </div>
+  );
+}
+
+/**
+ * "Key facts" — a structured restatement of what the record already knows.
+ *
+ * Auto-ingested entries often have only a short summary and no significance
+ * or key contributions, which leaves the narrative column looking empty. This
+ * section fills that gap without inventing any prose: every row is a real
+ * field on the event (class, research subtype, source, record date, authors,
+ * and what the trust model says would count as checking it). It renders
+ * nothing when there is nothing to say, so curated events with a full
+ * narrative are unaffected.
+ */
+function KeyFactsSection({ event }: { event: ResearchEvent }) {
+  const lang = getLang();
+  const d = t(lang);
+  const facts: { label: string; value: React.ReactNode }[] = [];
+
+  // What this is: the research subtype when present (e.g. Proof, Benchmark).
+  if (event.researchEventType) {
+    facts.push({
+      label: d.detail.keyFactsSubtype,
+      value: <span className="text-ink-800">{event.researchEventType}</span>,
+    });
+  }
+
+  // Where it came from, with the source type spelled out.
+  if (event.sourceType || event.sourceUrl) {
+    facts.push({
+      label: d.detail.keyFactsWho,
+      value: event.sourceUrl ? (
+        <a
+          href={event.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-quiet text-ink-800"
+        >
+          {event.sourceType ?? new URL(event.sourceUrl).hostname}
+        </a>
+      ) : (
+        <span className="text-ink-800">{event.sourceType}</span>
+      ),
+    });
+  }
+
+  // When it entered the tracker.
+  facts.push({
+    label: d.detail.keyFactsRecord,
+    value: (
+      <span className="text-ink-800">
+        {formatDateLong(event.lastSyncedAt ?? event.createdAt ?? event.date, lang)}
+      </span>
+    ),
+  });
+
+  // What would count as checking this: the evidence level's own definition,
+  // stated in plain terms so a reader knows what the badge means.
+  if (event.evidenceLevel) {
+    facts.push({
+      label: d.detail.keyFactsCheck,
+      value: <span className="text-ink-800">{d.trust.evidence[event.evidenceLevel]}</span>,
+    });
+  }
+
+  // People or orgs attached to the event, when the record names them.
+  if (event.authors.length > 0) {
+    facts.push({
+      label: d.detail.keyFactsAuthors,
+      value: <span className="text-ink-800">{event.authors.join("、")}</span>,
+    });
+  }
+
+  if (facts.length === 0) return null;
+
+  return (
+    <section className="mt-7">
+      <SectionTitle>{d.detail.keyFacts}</SectionTitle>
+      <dl className="mt-3 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+        {facts.map((f) => (
+          <div key={f.label} className="min-w-0">
+            <dt className="mono-label normal-case tracking-normal">{f.label}</dt>
+            <dd className="mt-0.5 text-sm leading-relaxed text-ink-700">{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
 
