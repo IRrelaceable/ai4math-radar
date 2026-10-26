@@ -41,10 +41,12 @@ export const dict = {
       loading: "加载中…",
       whyItMatters: "为什么重要",
       searchEvents: "搜索事件…",
+      evidenceShort: "证据",
     },
     home: {
       heroLabel: "AI4Math Ecosystem Radar",
       heroSubtitle: "追踪 AI for Mathematics 的研究、人物、机构、资助、教育与政策共同体动态。",
+      heroTagline: "一站追踪 AI4Math 的研究进展、生态动态与信任信号。",
       statsEvents: "生态事件",
       statsAreas: "研究方向",
       statsPapers: "关联论文",
@@ -59,6 +61,8 @@ export const dict = {
         PolicyCommunity: "政策、声明、组织倡议与社区争论",
       },      latestTitle: "最新生态事件",
       latestSub: "最近发生了什么，谁在推动，以及它为什么重要——不只是论文标题。",
+      browseByType: "按类别浏览",
+      viewLatest: "查看最新",
       areasTitle: "活跃方向",
       areasSub: "统计自数据本身，而非写死。",
       allTopics: "全部方向",
@@ -76,6 +80,8 @@ export const dict = {
       keyContribution: "核心贡献",
       relatedPaper: "相关论文",
       readOriginal: "阅读原始来源",
+      showMoreRelated: "显示更多",
+      showLess: "收起",
       noPaper: "暂无论文——该事件来自",
       papersInRepo: "该事件的论文与相关材料收录在其 GitHub 仓库中，可从下方「阅读原始来源」进入查看。",
       paperIsSource: "该事件的论文即下方「阅读原始来源」链接的原始文献。",
@@ -96,9 +102,6 @@ export const dict = {
       sourceTier: "来源层级",
       eventType: "事件类型",
       researchSubtype: "研究子类型",
-      importance: "重要度评估",
-      importanceNotAssessed: "未评估",
-      importanceSubjective: "AI 辅助的主观评估——不是客观科学指标。",
       ecosystemDetails: "生态事件详情",
       lastSynced: "最近同步",
       howToRead: "这些标签描述主张被佐证的程度——客观可观察的属性，不涉及主观重要性。",
@@ -152,11 +155,6 @@ export const dict = {
         E4: "独立复核",
       },
       tier: { S1: "一手研究", S2: "官方公告", S3: "独立佐证", S4: "媒体报道", S5: "社区线索" },
-      importance: {
-        H1: "历史里程碑",
-        H2: "领域里程碑",
-        H3: "背景事件",
-      },
       type: {
         Research: "科研进展",
         People: "人物动态",
@@ -172,7 +170,7 @@ export const dict = {
       navigate: "导航",
       dataNoteTitle: "数据说明",
       dataNote:
-        "默认构建使用内置数据集，全部条目均保留原始来源链接。核验标签保持客观；如显示重要度分数，会明确标注为 AI 辅助的主观评估。",
+        "默认构建使用内置数据集，全部条目均保留原始来源链接。核验状态、证据等级与来源层级分别标注，保持客观可核查。",
       explore: "浏览",
       project: "项目",
       latest: "最新生态事件",
@@ -182,7 +180,7 @@ export const dict = {
       sources: "来源同步",
       about: "关于与数据政策",
       disclaimer:
-        "本站是生态追踪工具，不是期刊。核验、证据与来源层级保持客观；重要度分数明确标注为主观评估。",
+        "本站是生态追踪工具，不是期刊。核验、证据与来源层级分别标注，保持客观可核查。",
     },
     notFound: {
       title: "页面不存在",
@@ -222,10 +220,12 @@ export const dict = {
       loading: "Loading…",
       whyItMatters: "Why it matters",
       searchEvents: "Search events...",
+      evidenceShort: "Evidence",
     },
     home: {
       heroLabel: "AI4Math Ecosystem Radar",
       heroSubtitle: "Track research, people, institutions, funding, education and policy across AI for Mathematics.",
+      heroTagline: "One place for AI4Math research progress, ecosystem moves, and trust signals.",
       statsEvents: "Ecosystem events",
       statsAreas: "Research areas",
       statsPapers: "Linked papers",
@@ -241,6 +241,8 @@ export const dict = {
       },
       latestTitle: "Latest Ecosystem Events",
       latestSub: "What happened, who is moving the field, and why it matters — not just paper titles.",
+      browseByType: "Browse by class",
+      viewLatest: "View latest",
       areasTitle: "Active areas",
       areasSub: "Counts computed from the data, not hard-coded.",
       allTopics: "All topics",
@@ -260,6 +262,8 @@ export const dict = {
       keyContribution: "Key Contribution",
       relatedPaper: "Related Paper",
       readOriginal: "Read the original source",
+      showMoreRelated: "Show more",
+      showLess: "Show less",
       noPaper: "No paper attached — this event comes from a",
       papersInRepo:
         "Papers and related material for this event are hosted in its GitHub repository — open “Read the original source” below to inspect them.",
@@ -283,13 +287,10 @@ export const dict = {
       sourceTier: "Source",
       eventType: "Event type",
       researchSubtype: "Research subtype",
-      importance: "Importance assessment",
-      importanceNotAssessed: "Not assessed",
-      importanceSubjective: "AI-assisted subjective assessment — not an objective scientific metric.",
       ecosystemDetails: "Ecosystem details",
       lastSynced: "Last synced",
       howToRead:
-        "Verification, evidence and source tier are objective observable labels. Any importance score is shown separately as an explicitly subjective AI-assisted assessment.",
+        "Verification, evidence and source tier are separate, objective observable labels.",
       methodology: "Methodology",
       researchArea: "Research Area",
       readTheWork: "Read the work",
@@ -340,11 +341,6 @@ export const dict = {
         E4: "Independent check",
       },
       tier: { S1: "Primary research", S2: "Official announcement", S3: "Independent", S4: "Media", S5: "Community" },
-      importance: {
-        H1: "Historical milestone",
-        H2: "Field milestone",
-        H3: "Context event",
-      },
       type: {
         Research: "Research",
         People: "People",
@@ -360,7 +356,7 @@ export const dict = {
       navigate: "Navigate",
       dataNoteTitle: "Data note",
       dataNote:
-        "The default build serves a bundled dataset compiled from public sources; every entry keeps its original source link. Verification labels remain objective, while any importance score is explicitly marked as a subjective AI-assisted assessment.",
+        "The default build serves a bundled dataset compiled from public sources; every entry keeps its original source link. Verification, evidence and source-tier labels remain separate and objective.",
       explore: "Explore",
       project: "Project",
       latest: "Latest ecosystem events",
@@ -370,7 +366,7 @@ export const dict = {
       sources: "Source sync",
       about: "About & data policy",
       disclaimer:
-        "This site is an ecosystem tracker, not a journal. Verification, evidence and source tier stay objective; importance scores are explicitly subjective.",
+        "This site is an ecosystem tracker, not a journal. Verification, evidence and source tier stay separate and objective.",
     },
     notFound: {
       title: "Page not found",
@@ -381,6 +377,8 @@ export const dict = {
 } as const;
 
 export type Dict = (typeof dict)["zh"];
+
+
 
 
 

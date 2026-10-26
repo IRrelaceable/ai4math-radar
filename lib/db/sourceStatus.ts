@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { EventType, SourceTier } from "@/types";
-import { SOURCE_TIERS } from "@/types";
+import { EVENT_TYPES } from "@/types";
 import { liveResearchSources } from "@/lib/sources";
 import { getStore } from "@/lib/db";
 
@@ -78,9 +78,14 @@ export interface SourceView {
   total?: number;
 }
 
-/** One sync board: all sources sharing an editorial evidence tier. */
-export interface TierBoard {
-  tier: SourceTier;
+/**
+ * One sync board: all sources sharing an event class. Grouped by event class
+ * rather than by editorial tier so a reader can tell "which sources feed the
+ * Funding feed" without understanding S1–S5; the tier survives as a per-source
+ * label.
+ */
+export interface CategoryBoard {
+  category: EventType;
   sources: SourceView[];
 }
 
@@ -92,11 +97,12 @@ export interface TierBoard {
  * limit — both stores return the complete list when `limit` is undefined, so
  * the count stays exact past any page size.
  *
- * `boards` always contains all five tiers (S1-S5) in order, even when a tier
- * has no sources, so the sync UI renders a stable five-board layout.
+ * `boards` always contains all five event classes in EVENT_TYPES order, even
+ * when a class has no sources, so the sync UI renders a stable five-board
+ * layout.
  */
 export async function loadSourceOverview(): Promise<{
-  boards: TierBoard[];
+  boards: CategoryBoard[];
   sources: SourceView[];
   pending: number;
 }> {
@@ -126,9 +132,9 @@ export async function loadSourceOverview(): Promise<{
     };
   });
 
-  const boards: TierBoard[] = SOURCE_TIERS.map((tier) => ({
-    tier,
-    sources: sources.filter((source) => source.sourceTier === tier),
+  const boards: CategoryBoard[] = EVENT_TYPES.map((category) => ({
+    category,
+    sources: sources.filter((source) => source.category === category),
   }));
 
   return { boards, sources, pending };

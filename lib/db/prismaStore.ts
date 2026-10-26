@@ -1,5 +1,5 @@
 import type { ResearchEvent, RelatedWork, SearchResult, TopicStat } from "@/types";
-import { sortEvents, sortEventsByImportance } from "@/lib/utils";
+import { sortEvents } from "@/lib/utils";
 import { normalizeEcosystemEvent } from "@/lib/ecosystem";
 import type { ListEventsOptions, ResearchStore, TopicDetail } from "./store";
 import { buildTopicStats, searchEvents } from "./shared";
@@ -66,8 +66,6 @@ function mapEvent(row: any): ResearchEvent {
     eventType: row.eventType ?? undefined,
     researchEventType: row.researchEventType ?? undefined,
     metadata: (row.metadata ?? undefined) as ResearchEvent["metadata"],
-    importanceTier: row.importanceTier ?? undefined,
-    importanceNote: row.importanceNote ?? undefined,
     provenance: row.provenance ?? "curated",
     reviewStatus: row.reviewStatus ?? (row.provenance === "automated" ? "pending" : "approved"),
     verificationHistory: (row.verificationRecords ?? []).map((r: any) => ({
@@ -103,7 +101,7 @@ export class PrismaStore implements ResearchStore {
   }
 
   async listEvents(options: ListEventsOptions = {}): Promise<ResearchEvent[]> {
-    const { eventType, area, q, status, evidence, tier, model, benchmark, dataset, since, year, sort, limit } =
+    const { eventType, area, q, status, evidence, tier, model, benchmark, dataset, since, year, limit } =
       options;
     const rows = await this.client.researchEvent.findMany({
       where: {
@@ -145,8 +143,7 @@ export class PrismaStore implements ResearchStore {
       orderBy: { date: "desc" },
     });
     const mapped = rows.map(mapEvent);
-    const ordered =
-      sort === "importance" ? sortEventsByImportance(mapped) : sortEvents(mapped);
+    const ordered = sortEvents(mapped);
     return limit && limit > 0 ? ordered.slice(0, limit) : ordered;
   }
 
@@ -179,6 +176,7 @@ export class PrismaStore implements ResearchStore {
     return searchEvents(await this.allEvents(), query);
   }
 }
+
 
 
 

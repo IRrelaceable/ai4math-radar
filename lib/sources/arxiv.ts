@@ -69,6 +69,7 @@ export function parseArxivEntry(block: string): RawResearchItem | null {
     url: `https://arxiv.org/abs/${arxivId}`,
     githubUrl: extractGithub(tag(block, "summary") ?? ""),
     source: "arXiv",
+    sourceTier: "S1",
     publishedAt: published.slice(0, 10) || undefined,
     authors,
   };
@@ -135,4 +136,3 @@ export function createArxivSource(options: ArxivSourceOptions = {}): ResearchSou
 }
 
 export const arxivSource = createArxivSource();
-

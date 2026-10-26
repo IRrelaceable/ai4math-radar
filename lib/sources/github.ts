@@ -67,6 +67,7 @@ export function createGitHubSource(options: GitHubSourceOptions = {}): ResearchS
             url: data.html_url,
             githubUrl: data.html_url,
             source: "GitHub",
+            sourceTier: "S1",
             publishedAt: data.pushed_at.slice(0, 10),
             authors: [data.full_name.split("/")[0]],
           });
@@ -83,4 +84,3 @@ export function createGitHubSource(options: GitHubSourceOptions = {}): ResearchS
 }
 
 export const githubSource = createGitHubSource();
-

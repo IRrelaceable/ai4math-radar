@@ -133,11 +133,6 @@ const zh = {
       "各来源先被规范化、判定是否属于 AI4Math、映射到研究方向，并汇总成一个 ResearchEvent。v1 运行在模拟来源与模拟 LLM Provider 之上，因此站点可以离线使用。试试：",
     inspectApi: "查看 /api 下的 GET 响应",
     openTopics: "打开研究方向",
-    importanceLabel: "如何阅读重要度分级",
-    importanceA: "",
-    importanceStrong: "重要度是明确标注的编辑性主观分级，不是客观科学指标。",
-    importanceB:
-      "核验状态、证据等级与来源层级保持客观且彼此独立。重要度刻意只用三级——H1 历史里程碑、H2 领域里程碑、H3 背景事件——而不使用 0–100 分，因为没人能有理有据地说某个事件是 86 分而非 89 分。分级必须结合旁边的主观说明阅读；未评估事件不会被虚构分级。默认按日期排序，也可显式切换为重要度排序。",
     trustTitle: "全部评级是怎么来的",
     trustIntro:
       "每条记录的三个客观维度——核验状态、证据等级、来源层级——都不是主观打分，而是从可核查的事实自动派生出来的：系统读取条目里有哪些链接，套用下面这套保守规则得出默认评级。更高、更强的档位（独立复核 E4、独立学术佐证 S3、媒体 S4、社区线索 S5，以及“核验中/部分核验/独立核验/争议/更正/撤回”等状态）从不自动授予，只能由人工复核后写入。人工整理的字段永远优先；规则会误导之处再用手工覆写修正。",
@@ -331,7 +326,23 @@ const zh = {
     success: "成功",
     idle: "未同步",
     syncCount: "{n} 个来源",
-    empty: "该层级暂无已登记的来源。",
+    empty: "该类别暂无已登记的来源。",
+    healthOverview: "健康概览",
+    totalSources: "来源总数",
+    healthySources: "正常来源",
+    failedSources: "失败来源",
+    syncCategory: "同步此分类",
+    syncAll: "同步全部",
+    upToDate: "已是最新",
+    upToDateHint: "成功但无新增内容",
+    tierLabel: "层级",
+    categories: {
+      Research: "研究",
+      People: "人物",
+      Institutions: "机构与教育",
+      Funding: "资助",
+      PolicyCommunity: "政策与社区",
+    },
     tiers: {
       S1: { name: "一手研究", blurb: "论文、产物与官方仓库：arXiv、GitHub 等可直接检验的一手来源。" },
       S2: { name: "官方公告", blurb: "实验室、高校、会议与资助方的官方新闻与公告。" },
@@ -443,7 +454,7 @@ const en = {
       { q: "What problem does it address?", a: "Recorded on the detail page for each event." },
       {
         q: "What did it improve?",
-        a: "Importance assessment plus linked models/benchmarks.",
+        a: "Significance plus linked models/benchmarks.",
       },
       { q: "What came before it?", a: "Lineage: previous work in the event timeline." },
       { q: "What came after it?", a: "Follow-up work when it has been recorded." },
@@ -463,11 +474,6 @@ const en = {
       "Sources are normalized, classified as AI4Math or not, mapped to a research area, and summarized into a ResearchEvent. In v1 this runs on a mock source and a mock LLM provider so the site works offline. Try it:",
     inspectApi: "Inspect GET responses under /api",
     openTopics: "Open the research directions",
-    importanceLabel: "How to read importance tiers",
-    importanceA: "",
-    importanceStrong: "Importance is an explicitly labelled editorial subjective tier, not an objective scientific metric.",
-    importanceB:
-      "Verification status, evidence level and source tier remain objective and separate. Importance deliberately uses only three tiers — H1 historical milestone, H2 field milestone, H3 context event — rather than a 0–100 score, because no one can defend \"86 rather than 89\" for an event. Tiers must be read with their subjective note; unassessed events are never given invented tiers. Date is the default order, with importance available only as an explicit choice.",
     trustTitle: "How every rating is assigned",
     trustIntro:
       "The three objective dimensions of each record — verification status, evidence level and source tier — are not subjective scores. They are derived automatically from verifiable facts: the system reads which links a record carries and applies the conservative rules below to reach a default rating. The higher, stronger grades (independent check E4, scholarly corroboration S3, media S4, community signal S5, and statuses such as under verification / partially verified / independently verified / disputed / corrected / retracted) are never granted automatically — a human must review and write them in. A curated field always wins; manual overrides correct the cases where the rules would mislead.",
@@ -666,7 +672,23 @@ const en = {
     success: "Success",
     idle: "Never synced",
     syncCount: "{n} sources",
-    empty: "No sources registered on this tier yet.",
+    empty: "No sources registered in this category yet.",
+    healthOverview: "Health overview",
+    totalSources: "Total sources",
+    healthySources: "Healthy",
+    failedSources: "Failed",
+    syncCategory: "Sync this category",
+    syncAll: "Sync all",
+    upToDate: "Already up to date",
+    upToDateHint: "Succeeded with no new content",
+    tierLabel: "Tier",
+    categories: {
+      Research: "Research",
+      People: "People",
+      Institutions: "Institutions & Education",
+      Funding: "Funding",
+      PolicyCommunity: "Policy & Community",
+    },
     tiers: {
       S1: { name: "Primary research", blurb: "Papers, artifacts and official repositories: directly inspectable primary sources such as arXiv and GitHub." },
       S2: { name: "Official announcements", blurb: "Official news and announcements from labs, universities, venues and funders." },
@@ -693,6 +715,9 @@ export type PagesDict = (typeof pagesDict)["zh"];
 export function countText(p: PagesDict, n: number, kind: keyof PagesDict["count"]): string {
   return fill(n === 1 ? p.count[kind].one : p.count[kind].many, { n });
 }
+
+
+
 
 
 

@@ -59,7 +59,6 @@ export default function AboutPage() {
 {`ResearchEvent
 ├── title · summary · significance · date
 ├── eventType (five classes) → researchArea → subArea
-├── researchEventType · metadata · importanceTier H1/H2/H3 (subjective)
 ├── verificationStatus · evidenceLevel · sourceTier
 ├── sourceType · sourceUrl · paperUrl · githubUrl
 ├── papers[] · authors[] · institution
@@ -87,55 +86,6 @@ export default function AboutPage() {
           <Link href="/topics" className="btn-ghost">
             {p.openTopics}
           </Link>
-        </div>
-      </section>
-
-      {/* Why importance scores must be read as subjective */}
-      <section className="mt-10 rounded-lg border border-amber-200 bg-amber-50 p-5">
-        <div className="mono-label mb-1 text-amber-700">{p.importanceLabel}</div>
-        <p className="text-sm leading-relaxed text-ink-700">
-          {p.importanceA}
-          <strong>{p.importanceStrong}</strong>
-          {p.importanceB}
-        </p>
-      </section>
-
-      {/* How every verification status / rating is assigned */}
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold tracking-tight">{p.trustTitle}</h2>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-600">{p.trustIntro}</p>
-        <div className="mt-5 space-y-6">
-          <DeriveTable
-            title={p.deriveEvidenceTitle}
-            condLabel={p.condLabel}
-            resultLabel={p.resultLabel}
-            rows={p.deriveEvidence}
-          />
-          <DeriveTable
-            title={p.deriveTierTitle}
-            condLabel={p.condLabel}
-            resultLabel={p.resultLabel}
-            rows={p.deriveTier}
-          />
-          <DeriveTable
-            title={p.deriveStatusTitle}
-            condLabel={p.condLabel}
-            resultLabel={p.resultLabel}
-            rows={p.deriveStatus}
-          />
-        </div>
-        <div className="mt-6 max-w-3xl rounded-md border border-ink-200 bg-ink-50 p-4 text-sm leading-relaxed text-ink-700">
-          <p className="font-semibold">{p.deriveNotesTitle}</p>
-          <p className="mt-2">
-            <strong>{p.deriveNote1A}</strong>
-            {p.deriveNote1B}
-          </p>
-          <p className="mt-2">
-            {p.deriveNote2A}
-            {p.deriveNote2B}
-            <span className="chip border-amber-200 bg-amber-50 text-amber-700">claimed</span>
-            {p.deriveNote2C}
-          </p>
         </div>
       </section>
 
@@ -232,4 +182,6 @@ function DeriveTable({
     </div>
   );
 }
+
+
 

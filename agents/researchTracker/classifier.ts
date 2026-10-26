@@ -213,7 +213,7 @@ export function classifyItem(item: RawResearchItem): Classification {
 
   // Area = most matched keywords, tie-broken by the rule's base score.
   // The rule score only arbitrates between candidate areas; it is not exposed
-  // as an event-level "importance" number.
+  // as an event-level editorial ranking.
   const primary = hits.reduce((best, h) =>
     h.matched.length > best.matched.length ||
     (h.matched.length === best.matched.length && h.rule.score > best.rule.score)
@@ -236,3 +236,4 @@ export function classifyItem(item: RawResearchItem): Classification {
 export function isKnownArea(value: string): value is ResearchArea {
   return (RESEARCH_AREAS as readonly string[]).includes(value);
 }
+

@@ -63,8 +63,81 @@ export function SourceTierPill({ tier }: { tier: SourceTier }) {
 
 export function EventTypePill({ type }: { type: EventType }) {
   const { t } = useT();
-  const code = type === "PolicyCommunity" ? "P&C" : type.slice(0, 3).toUpperCase();
-  return <TrustPill code={code} label={t.trust.type[type]} title={EVENT_TYPE_LABELS[type]} />;
+  return <TrustPill code={EVENT_TYPE_CODES[type]} label={t.trust.type[type]} title={EVENT_TYPE_LABELS[type]} />;
+}
+
+/** Single-letter/short codes for the five ecosystem classes, fixed here so the
+ *  card badge, the /latest chips and the /sources grouping never drift apart. */
+export const EVENT_TYPE_CODES: Record<EventType, string> = {
+  Research: "RES",
+  People: "PPL",
+  Institutions: "INS",
+  Funding: "FND",
+  PolicyCommunity: "P&C",
+};
+
+/**
+ * Card trust budget — the single source of truth for what a card may show.
+ *
+ * A card may show AT MOST:
+ *   - 1 event-type badge (the only "what class is this" signal)
+ *   - 1 status badge: the trust summary, or a state marker when the trust
+ *     summary is not meaningful yet
+ *   - 1 primary link (paper/source OR github, never both)
+ *
+ * The detailed verification / evidence / tier breakdown lives on the detail
+ * page, where there is room to explain what each dimension means. Evidence
+ * and tier collapse to a compact "E2 · S2" string; verification only earns a
+ * badge when it is something a reader must act on (disputed / retracted /
+ * corrected), because a green "independently verified" chip on every card is
+ * noise, not signal.
+ */
+export type CardTrustSummary = {
+  /** e.g. "E2 · S2" — evidence level and source tier in one string. */
+  evidence: string;
+  /** Optional badge; undefined when trust is routine and needs no flag. */
+  statusBadge?: { label: string; tone: string; title: string };
+  /** True when the entry was machine-ingested and not yet human-reviewed. */
+  needsReview: boolean;
+};
+
+/** Verification states that always deserve a visible card badge. */
+const ACTIONABLE_STATUS: Partial<Record<VerificationStatus, string>> = {
+  disputed: "Disputed",
+  retracted: "Retracted",
+  corrected: "Corrected",
+  under_verification: "Under review",
+};
+
+export function cardTrustSummary(
+  event: ResearchEvent,
+  t: { trust: { status: Record<VerificationStatus, string> }; common: { pending: string } }
+): CardTrustSummary {
+  const evidence =
+    event.evidenceLevel && event.sourceTier
+      ? `${event.evidenceLevel} · ${event.sourceTier}`
+      : event.evidenceLevel ?? event.sourceTier ?? "";
+
+  const status = event.verificationStatus;
+  const actionable = status ? ACTIONABLE_STATUS[status] : undefined;
+  const isPending = event.reviewStatus === "pending";
+
+  let statusBadge: CardTrustSummary["statusBadge"];
+  if (actionable && status) {
+    statusBadge = {
+      label: t.trust.status[status],
+      tone: STATUS_TONE[status],
+      title: STATUS_LABELS[status],
+    };
+  } else if (isPending) {
+    statusBadge = {
+      label: t.common.pending,
+      tone: "border-amber-200 bg-amber-50 text-amber-800",
+      title: "Awaiting human review",
+    };
+  }
+
+  return { evidence, statusBadge, needsReview: isPending };
 }
 
 export function provenanceOf(event: ResearchEvent): "curated" | "automated" {

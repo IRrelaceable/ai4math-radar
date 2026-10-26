@@ -37,7 +37,6 @@ function presentProse<T extends ResearchEvent>(event: T): T {
   const problem = event.problem === undefined ? undefined : renderMath(event.problem);
   const kc = event.keyContributions;
   const keyContributions = kc?.map((c) => renderMath(c));
-  const importanceNote = event.importanceNote === undefined ? undefined : renderMath(event.importanceNote);
 
   const unchanged =
     title === event.title &&
@@ -45,11 +44,10 @@ function presentProse<T extends ResearchEvent>(event: T): T {
     significance === event.significance &&
     problem === event.problem &&
     (keyContributions === kc ||
-      (keyContributions !== undefined && kc !== undefined && keyContributions.every((c, i) => c === kc[i]))) &&
-    importanceNote === event.importanceNote;
+      (keyContributions !== undefined && kc !== undefined && keyContributions.every((c, i) => c === kc[i])));
   if (unchanged) return event;
 
-  return { ...event, title, summary, significance, problem, keyContributions, importanceNote };
+  return { ...event, title, summary, significance, problem, keyContributions };
 }
 
 /** Localize one event for display: zh overlay (when lang is zh) + math rendering. */
@@ -67,7 +65,6 @@ export function localizeEvent<T extends ResearchEvent>(event: T, lang: Lang): T 
     significance: zh?.significance ?? event.significance,
     problem: zh?.problem ?? event.problem,
     keyContributions: contributions,
-    importanceNote: phrase(event.importanceNote),
     verificationHistory: event.verificationHistory?.map((r) => ({ ...r, note: phrase(r.note) ?? r.note })),
     relatedWorks: event.relatedWorks?.map((w) => ({ ...w, note: phrase(w.note) ?? w.note })),
     metadata: event.metadata ? localizeMetadata(event.metadata) : event.metadata,
@@ -107,3 +104,4 @@ export function localizeEvents<T extends ResearchEvent>(events: T[], lang: Lang)
   if (lang !== "zh") return events;
   return events.map((e) => localizeEvent(e, lang));
 }
+

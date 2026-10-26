@@ -42,7 +42,6 @@ export default async function LatestPage({
     benchmark?: string;
     dataset?: string;
     time?: string;
-    sort?: string;
   };
 }) {
   const store = getStore();
@@ -73,7 +72,6 @@ export default async function LatestPage({
       dataset: searchParams.dataset,
       since: window ? windowStartDate(window) : undefined,
       year,
-      sort: searchParams.sort === "importance" ? "importance" : "date",
     }),
     store.listEvents(),
   ]);
@@ -121,4 +119,5 @@ export default async function LatestPage({
     </div>
   );
 }
+
 

@@ -3,7 +3,7 @@ import type { ResearchEvent } from "@/types";
 /**
  * Trend detection: where is the recorded activity concentrating right now?
  *
- * This is a count of tracked events, not a claim about scientific importance —
+ * This is a count of tracked events, not a claim about scientific significance —
  * pair it with the verification labels before drawing conclusions.
  */
 export interface AreaTrend {
@@ -82,3 +82,4 @@ export function buildTrends(
     all,
   };
 }
+

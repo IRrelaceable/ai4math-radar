@@ -2688,7 +2688,7 @@ const curatedEvents: ResearchEvent[] = [
  * subtype is intentionally not retained as a Research subtype for these rows.
  */
 const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
-  "eventType" | "researchEventType" | "metadata" | "importanceTier" | "importanceNote"
+  "eventType" | "researchEventType" | "metadata"
 >>> = {
   "tao-math-2-0-caltech-lecture": {
     eventType: "People",
@@ -2700,8 +2700,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
         viewpoint: "Public lecture describing a Math 2.0 vision for AI tools that sustain the mathematical community; consult the linked original lecture post for exact wording.",
       }],
     },
-    importanceTier: "H1",
-    importanceNote: "AI-assisted subjective assessment: public prominence, originality of the ecosystem proposal and community reach; not an objective scientific metric.",
   },
   "fields-medallists-misalignment-declaration": {
     eventType: "PolicyCommunity",
@@ -2714,8 +2712,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
         participants: ["28 Fields Medal laureates"],
       },
     },
-    importanceTier: "H1",
-    importanceNote: "AI-assisted subjective assessment: breadth of signatories, public reach and policy relevance; not an objective scientific metric.",
   },
   "ahm-statement-openai-math-release": {
     eventType: "PolicyCommunity",
@@ -2728,8 +2724,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
         participants: ["Association for Human Mathematics"],
       },
     },
-    importanceTier: "H2",
-    importanceNote: "AI-assisted subjective assessment: community reach and practical implications; not an objective scientific metric.",
   },
   "sair-open-math-os-release": {
     eventType: "Institutions",
@@ -2738,8 +2732,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
       initiatives: ["Open Math OS"],
       projects: ["Collaborative mathematical research on open frontier models"],
     },
-    importanceTier: "H2",
-    importanceNote: "AI-assisted subjective assessment: institutional commitment, openness and potential community reach; not an objective scientific metric.",
   },
   "simons-foundation-15m-ai-mathematics-effort": {
     eventType: "Funding",
@@ -2753,8 +2745,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
         amountDisclosure: "Amount disclosed in the official announcement",
       },
     },
-    importanceTier: "H1",
-    importanceNote: "AI-assisted subjective assessment: amount, funder reach and program scope; not an objective scientific metric.",
   },
 };
 
@@ -2772,6 +2762,8 @@ export const events: ResearchEvent[] = [
     ...ecosystemOverrides[event.slug],
   })
 );
+
+
 
 
 

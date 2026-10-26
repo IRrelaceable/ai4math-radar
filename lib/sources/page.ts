@@ -90,6 +90,7 @@ export function createPageSource(options: PageSourceOptions): ResearchSource {
         url,
         source: label,
         sourceType,
+        sourceTier,
         eventType: defaultEventType,
         researchArea: defaultResearchArea,
         allowNonAI4Math,
@@ -99,5 +100,3 @@ export function createPageSource(options: PageSourceOptions): ResearchSource {
     },
   };
 }
-
-

@@ -9,7 +9,7 @@ import { componentsDict } from "@/lib/i18n/dict.components";
 
 /**
  * Momentum panel: recorded activity in the last N days vs the previous window.
- * Counts of tracked events only — pair with the importance/verification labels.
+ * Counts of tracked events only — pair with the verification labels.
  */
 export function TrendPanel({
   events,
@@ -94,3 +94,4 @@ export function TrendPanel({
     </div>
   );
 }
+

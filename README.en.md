@@ -54,7 +54,7 @@ npm run dev
 | route | purpose |
 | --- | --- |
 | `/` | Dashboard: six-class overview, latest events, momentum, pipeline |
-| `/latest` | Event feed with class/area/status filters, search, sort |
+| `/latest` | Event feed with class/area/status filters and search |
 | `/timeline` | Chronological view grouped by year |
 | `/topics` · `/topics/[topic]` | Topic list and detail (progress, trends, papers) |
 | `/research/[slug]` | Event detail: what happened, why it matters, sources, verification history |
@@ -66,7 +66,7 @@ npm run dev
 
 | endpoint | purpose |
 | --- | --- |
-| `GET /api/events?type=&area=&sort=&q=&limit=` | list events |
+| `GET /api/events?type=&area=&q=&limit=` | list events |
 | `GET /api/events/[slug]` | one event |
 | `GET /api/topics` · `GET /api/topics/[slug]` | topic statistics |
 | `GET /api/search?q=` | full-site search |
@@ -114,9 +114,7 @@ never care which is active.
   item whose source URL could not be confirmed is dropped rather than shipped with a
   broken link.
 - Publisher-reported results stay labelled as claims, with denominators preserved.
-- `importanceScore` is an optional, explicitly subjective 0–100 AI-assisted assessment,
-  always shown with a note and never confused with the trust labels. Date is the
-  default sort.
+
 - Synthetic demo scenarios are flagged `isDemo` and rendered with a `demo` tag.
 
 ## Extending
@@ -137,3 +135,6 @@ Register it in `liveResearchSources` (`lib/sources/index.ts`) and
 
 The classifier is keyword-based today; swap in an LLM call behind the same contract via
 `getLLMProvider()`.
+
+
+

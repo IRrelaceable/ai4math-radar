@@ -42,7 +42,6 @@ export async function GET(request: Request) {
     since:
       sinceRaw && /^\d{4}-\d{2}-\d{2}$/.test(sinceRaw) ? sinceRaw : undefined,
     year: yearRaw && /^\d{4}$/.test(yearRaw) ? yearRaw : undefined,
-    sort: searchParams.get("sort") === "importance" ? "importance" : "date",
     limit: Number.isFinite(limitParam) && limitParam > 0 ? limitParam : undefined,
   };
 
@@ -53,4 +52,5 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
+
 

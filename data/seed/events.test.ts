@@ -4,7 +4,6 @@ import { applyTrustModel, validateSubAreas } from "@/lib/verification";
 import {
   EVIDENCE_LEVELS,
   EVENT_TYPES,
-  IMPORTANCE_TIERS,
   RESEARCH_AREAS,
   RESEARCH_EVENT_TYPES,
   SOURCE_TIERS,
@@ -66,17 +65,6 @@ describe("seed data integrity", () => {
     }
   });
 
-  it("importance tiers stay within H1/H2/H3 and carry a subjective note", () => {
-    for (const e of events) {
-      if (e.importanceTier !== undefined) {
-        expect(
-          IMPORTANCE_TIERS as readonly string[],
-          `${e.slug} tier`
-        ).toContain(e.importanceTier);
-        expect(e.importanceNote, `${e.slug} tier note`).toBeTruthy();
-      }
-    }
-  });
 
   it("demo events are fully flagged; real events never use example.org", () => {
     for (const e of events) {
@@ -113,3 +101,4 @@ describe("seed data integrity", () => {
     expect(problems, problems.join("\n")).toEqual([]);
   });
 });
+

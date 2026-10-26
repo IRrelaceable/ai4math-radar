@@ -19,13 +19,10 @@ import type {
  *   evidence level   = how mature the public evidence is
  *   source tier      = where the evidence comes from
  *
- * Importance remains separate from this model. When a score is present it is
- * explicitly labelled as a subjective AI-assisted assessment, never as an
- * objective scientific metric.
- *
+
  * Significance ≠ Verification: a historically big claim can still be
  * `claimed`, and a machine-checked artifact does not equal independent
- * verification. Never merge these into one score.
+ * verification. Never merge them into a single ranking.
  */
 
 export const STATUS_LABELS: Record<VerificationStatus, string> = {
@@ -206,4 +203,6 @@ export function validateSubAreas(events: readonly ResearchEvent[]): string[] {
   }
   return problems;
 }
+
+
 

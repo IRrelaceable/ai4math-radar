@@ -30,6 +30,12 @@ function stripHtml(value: string): string {
   return decodeEntities(value.replace(/<[^>]+>/g, " "));
 }
 
+function safeDate(value?: string): string | undefined {
+  if (!value) return undefined;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString().slice(0, 10);
+}
+
 function tag(block: string, name: string): string | undefined {
   const match = block.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`, "i"));
   return match?.[1].trim();
@@ -65,7 +71,7 @@ export function parseFeedBlock(block: string): {
     id: tag(block, "guid") ?? link,
     title: rawTitle ? stripHtml(rawTitle) : undefined,
     url: link ? decodeEntities(link) : undefined,
-    publishedAt: date ? new Date(date).toISOString().slice(0, 10) : undefined,
+    publishedAt: safeDate(date),
     summary: summary ? stripHtml(summary) : undefined,
   };
 }
@@ -117,6 +123,7 @@ export function createRssSource(options: RssSourceOptions): ResearchSource {
           url: parsed.url,
           source: label,
           sourceType,
+          sourceTier,
           eventType: defaultEventType,
           researchArea: defaultResearchArea,
           allowNonAI4Math,
@@ -129,5 +136,3 @@ export function createRssSource(options: RssSourceOptions): ResearchSource {
     },
   };
 }
-
-

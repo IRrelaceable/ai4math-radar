@@ -85,7 +85,6 @@ export function eventSearchText(e: ResearchEvent): string {
     ...(e.dataset ?? []),
     ...(e.papers ?? []).map((p) => p.title),
     ...(e.relatedWorks ?? []).map((w) => w.title),
-    e.importanceNote ?? "",
     JSON.stringify(e.metadata ?? {}),
   ].join(" ");
 }
@@ -93,26 +92,5 @@ export function eventSearchText(e: ResearchEvent): string {
 /** Default ordering: newest first. */
 export function sortEvents(events: ResearchEvent[]): ResearchEvent[] {
   return [...events].sort((a, b) => b.date.localeCompare(a.date));
-}
-
-/** Rank for importance sorting: H1 (top) first, unassessed last. */
-const IMPORTANCE_RANK: Record<string, number> = { H1: 0, H2: 1, H3: 2 };
-
-/**
- * Explicitly assessed events first, highest tier first (H1 > H2 > H3). Unassessed
- * events follow newest-first so the optional ranking never invents a tier. Ties
- * within a tier break by date (newest first).
- */
-export function sortEventsByImportance(events: ResearchEvent[]): ResearchEvent[] {
-  return [...events].sort((a, b) => {
-    const aRank = a.importanceTier !== undefined ? IMPORTANCE_RANK[a.importanceTier] : undefined;
-    const bRank = b.importanceTier !== undefined ? IMPORTANCE_RANK[b.importanceTier] : undefined;
-    if (aRank !== undefined && bRank !== undefined) {
-      return aRank - bRank || b.date.localeCompare(a.date);
-    }
-    if (aRank !== undefined) return -1;
-    if (bRank !== undefined) return 1;
-    return b.date.localeCompare(a.date);
-  });
 }
 

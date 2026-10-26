@@ -119,8 +119,6 @@ export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
 /**
  * Trust-model fields describe how well a claim is corroborated and where its
  * evidence comes from — deliberately objective, observable properties. Any
- * optional importance score stays outside this model and must be labelled as
- * a subjective AI-assisted assessment.
  */
 
 /** How far the core event description is corroborated right now. */
@@ -144,15 +142,6 @@ export type EvidenceLevel = (typeof EVIDENCE_LEVELS)[number];
 export const SOURCE_TIERS = ["S1", "S2", "S3", "S4", "S5"] as const;
 export type SourceTier = (typeof SOURCE_TIERS)[number];
 
-/**
- * Editorial importance, deliberately coarse so it never fakes precision.
- * Three tiers — a historical turning point, a field milestone, or context —
- * rather than a 0-100 number, because no one can defend "86 rather than 89".
- * This stays OUTSIDE the objective trust model and is always labelled
- * subjective; absent tier means "not assessed", never a default rank.
- */
-export const IMPORTANCE_TIERS = ["H1", "H2", "H3"] as const;
-export type ImportanceTier = (typeof IMPORTANCE_TIERS)[number];
 
 /**
  * The five primary ecosystem event classes. Research subtypes such as
@@ -288,9 +277,6 @@ export interface ResearchEvent {
   researchEventType?: ResearchEventType;
   /** Type-specific ecosystem details; represented as JSON by Prisma. */
   metadata?: EcosystemMetadata;
-  /** Optional editorial importance tier (H1/H2/H3), subjective — never an objective metric. */
-  importanceTier?: ImportanceTier;
-  importanceNote?: string;
   /** "curated" = hand-verified entry; "automated" = produced by the ingest pipeline. */
   provenance?: "curated" | "automated";
   /** pending = automated item awaiting human confirmation; curated defaults to approved. */
@@ -333,6 +319,7 @@ export interface RawResearchItem {
   sourceId?: string;
   externalId?: string;
   sourceType?: SourceType;
+  sourceTier?: SourceTier;
   eventType?: EventType;
   researchArea?: ResearchArea;
   /** Explicitly opt a source-specific item out of the generic AI4Math gate. */
@@ -346,8 +333,6 @@ export interface RawResearchItem {
   authors?: string[];
   githubUrl?: string;
 }
-
-
 
 
 

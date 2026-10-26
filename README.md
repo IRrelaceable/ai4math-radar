@@ -37,7 +37,7 @@ npm run dev
   (声称 → 独立验证 / 存疑 / 撤回)、`evidenceLevel`(E0–E4)、`sourceTier`(S1–S5),外加一份
   只增不改的 `verificationHistory` 溯源记录。术语表见 `/methodology`。
 - **精选 + 自动采集** —— 内置 98 个事件(87 个有来源 + 11 个标注为 demo),并有一条实时采集
-  管线(`arXiv` / `GitHub`),其产出标记为 `automated`,按 slug 去重合并。
+  管线(`arXiv` / `GitHub` 及官方 RSS / 页面来源),其产出标记为 `automated`,按 slug 去重合并。
 - **研究地图 / 话题 / 时间线 / 趋势** —— 事件间的血缘关系、按话题统计,以及一个 90 天活跃度面板。
 - **数学公式渲染** —— 正文中的行内 LaTeX 在服务端渲染为 Unicode,因此无需向客户端打包任何
   数学库。
@@ -59,14 +59,14 @@ npm run dev
 
 | 接口 | 用途 |
 | --- | --- |
-| `GET /api/events?type=&area=&sort=&q=&limit=` | 事件列表 |
+| `GET /api/events?type=&area=&q=&limit=` | 事件列表 |
 | `GET /api/events/[slug]` | 单个事件 |
 | `GET /api/topics` · `GET /api/topics/[slug]` | 话题统计 |
 | `GET /api/search?q=` | 全站搜索 |
 | `GET /api/research-map` | 地图节点 / 边 |
 | `GET /api/trends?windowDays=90` | 各领域近期与上一周期的活跃对比 |
 | `GET /api/sources` | 数据源注册表 + 最近同步 + 待审数 |
-| `POST /api/agents/ingest` | 运行采集管线(`source: "arxiv" \| "github" \| mock`) |
+| `POST /api/agents/ingest` | 运行采集管线(`source` 可为注册表中的任意来源,支持 `since` 增量同步) |
 
 ```bash
 curl "http://localhost:3000/api/events?area=Theorem%20Proving&limit=5"
@@ -84,7 +84,7 @@ lib/
   i18n/               # 中英文词典 + localize()
   math.ts             # 服务端 LaTeX → Unicode
   verification.ts     # 信任模型(状态 / 证据 / 层级)
-  sources/            # ResearchSource:mock · arXiv · GitHub
+  sources/            # ResearchSource:mock · arXiv · GitHub · 官方 RSS / 页面目录
 agents/researchTracker/   # tracker · classifier · summarizer
 data/seed/            # 内置事件 + 生态场景
 prisma/               # schema + 种子脚本
@@ -100,13 +100,22 @@ types/                # 领域类型
 `lib/db/index.ts` 负责选择 store:设置了 `DATABASE_URL` → `PrismaStore`,未设置 →
 `SeedStore`。两者实现同一个 `ResearchStore` 接口,因此页面和路由无需关心当前用的是哪个。
 
+## 已登记的官方来源
+
+来源目录见 `lib/sources/catalog.ts`,全部通过 `/sources` 手动同步,不依赖定时任务:
+
+- 官方实验室 / 公司 News RSS:OpenAI、Anthropic、Google DeepMind、Google AI
+- 大学与研究机构 News:MIT News、Stanford HAI
+- 基金与资助:Simons Foundation、NSF
+- 教育与训练:AIMO、Mathematics in Lean
+- 人物与公开观点:Terence Tao's blog、Timothy Gowers' blog、Scott Aaronson's blog、Quanta Mathematics
+- 政策与共同体:Math & AI declarations、Association for Human Mathematics statements、IMO
 ## 数据政策
 
 - 不编造结果、arXiv ID 或 URL——无法核实的字段留空;来源 URL 无法确认的条目直接丢弃,绝不带
   着坏链接上线。
 - 发布方自报的结果始终标注为"声称",并保留分母(样本量)。
-- `importanceScore` 是可选的、明确主观的 0–100 AI 辅助评估,展示时始终附带说明,且绝不与信任
-  标签混为一谈。默认按时间排序。
+
 - 合成的演示场景标记为 `isDemo`,渲染时带 `demo` 徽标。
 
 ## 扩展
@@ -117,7 +126,7 @@ types/                # 领域类型
 export interface ResearchSource {
   id: string;
   label: string;
-  fetchRecent(options?: { limit?: number }): Promise<RawResearchItem[]>;
+  fetchRecent(options?: { limit?: number; since?: string }): Promise<RawResearchItem[]>;
 }
 ```
 
@@ -126,3 +135,5 @@ export interface ResearchSource {
 `Source → RawResearchItem → Normalizer → Classifier → ResearchEvent`。
 
 分类器目前基于关键词;可通过 `getLLMProvider()` 在同一契约背后换成大模型调用。
+
+

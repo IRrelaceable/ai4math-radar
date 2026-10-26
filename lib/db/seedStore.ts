@@ -1,6 +1,6 @@
 import { events } from "@/data/seed/events";
 import type { ResearchEvent, SearchResult, TopicStat } from "@/types";
-import { matchesQuery, sortEvents, sortEventsByImportance, eventSearchText } from "@/lib/utils";
+import { matchesQuery, sortEvents, eventSearchText } from "@/lib/utils";
 import { normalizeEcosystemEvent } from "@/lib/ecosystem";
 import { applyTrustModel } from "@/lib/verification";
 import type { ListEventsOptions, ResearchStore, TopicDetail } from "./store";
@@ -20,13 +20,16 @@ export class SeedStore implements ResearchStore {
   constructor(seed: ResearchEvent[] = events) {
     // Curated seed data + whatever the ingest pipeline has accepted so far.
     // Trust-model fields are derived once per event when not set explicitly.
-    this.all = [...seed, ...readIngestedEvents()]
+    const bySlug = new Map(
+      [...seed, ...readIngestedEvents()].map((event) => [event.slug, event])
+    );
+    this.all = [...bySlug.values()]
       .map(normalizeEcosystemEvent)
       .map(applyTrustModel);
   }
 
   async listEvents(options: ListEventsOptions = {}): Promise<ResearchEvent[]> {
-    const { eventType, area, q, status, evidence, tier, model, benchmark, dataset, since, year, sort, limit } = options;
+    const { eventType, area, q, status, evidence, tier, model, benchmark, dataset, since, year, limit } = options;
     let list = this.all;
     if (eventType) list = list.filter((e) => e.eventType === eventType);
     if (area && area.toLowerCase() !== "all") {
@@ -46,8 +49,7 @@ export class SeedStore implements ResearchStore {
     /* Time filter (ISO dates compare lexicographically). */
     if (since) list = list.filter((e) => e.date >= since);
     if (year) list = list.filter((e) => e.date.startsWith(year));
-    const sorted =
-      sort === "importance" ? sortEventsByImportance(list) : sortEvents(list);
+    const sorted = sortEvents(list);
     return limit && limit > 0 ? sorted.slice(0, limit) : sorted;
   }
 

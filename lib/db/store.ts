@@ -26,8 +26,6 @@ export interface ListEventsOptions {
   /* Time filter: inclusive lower bound (ISO date) and/or calendar year. */
   since?: string;
   year?: string;
-  /** Newest-first by default; importance puts assessed events first. */
-  sort?: "date" | "importance";
   limit?: number;
 }
 
@@ -43,7 +41,7 @@ export interface TopicDetail {
  *  - SeedStore   - bundled demo dataset (no database required, default)
  *  - PrismaStore - PostgreSQL via Prisma (used when DATABASE_URL is set)
  *
- * Events are newest-first by default. An optional importance sort places explicitly assessed events first; unassessed events follow in date order.
+ * Events are always returned newest-first.
  * Trust-model and facet filters are available on both implementations so the
  * feed UI behaves identically either way.
  */
@@ -54,5 +52,6 @@ export interface ResearchStore {
   getTopic(slug: string): Promise<TopicDetail | null>;
   search(query: string): Promise<SearchResult>;
 }
+
 
 

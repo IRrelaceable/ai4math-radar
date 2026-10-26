@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { SourceTier } from "@/types";
+import type { EventType, SourceTier } from "@/types";
 
 type SourceView = {
   id: string;
   label: string;
+  category: EventType;
   sourceTier: SourceTier;
   status: "idle" | "success" | "error";
   lastAttemptAt?: string;
@@ -20,8 +21,8 @@ type SourceView = {
   total?: number;
 };
 
-type TierBoard = {
-  tier: SourceTier;
+type CategoryBoard = {
+  category: EventType;
   sources: SourceView[];
 };
 
@@ -39,15 +40,29 @@ type Labels = {
   error: string;
   success: string;
   idle: string;
-  /** Per-tier title/description, keyed by S1..S5. */
-  tiers: Record<SourceTier, { name: string; blurb: string }>;
-  /** Template with a `{n}` placeholder, replaced with the board's source count. */
   syncCount: string;
   empty: string;
+  healthOverview: string;
+  totalSources: string;
+  healthySources: string;
+  failedSources: string;
+  syncCategory: string;
+  syncAll: string;
+  upToDate: string;
+  upToDateHint: string;
+  tierLabel: string;
+  categories: Record<EventType, string>;
+  tiers: Record<SourceTier, { name: string; blurb: string }>;
 };
 
 function formatTime(value?: string) {
   return value ? value.replace("T", " ").replace(/\.\d{3}Z$/, " UTC") : "";
+}
+
+/** Failed sources first, then idle, then success — the reader wants problems first. */
+function compareByUrgency(a: SourceView, b: SourceView): number {
+  const rank = (s: SourceView) => (s.status === "error" ? 0 : s.status === "idle" ? 1 : 2);
+  return rank(a) - rank(b) || a.label.localeCompare(b.label);
 }
 
 /** Aggregate status across a board: error > success > idle. */
@@ -57,29 +72,46 @@ function boardStatus(sources: SourceView[]): "success" | "error" | "idle" {
   return "idle";
 }
 
+const STATUS_CHIP: Record<string, string> = {
+  success: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  error: "border-rose-200 bg-rose-50 text-rose-700",
+  idle: "border-ink-200 text-ink-500",
+};
+
+/**
+ * Source sync panel, regrouped by EVENT CLASS rather than by S1–S5 tier.
+ *
+ * The tier is still shown, but as a quiet per-source label — a reader should
+ * be able to tell "which sources are broken" without understanding the
+ * editorial trust model. Failures sort to the top of each category, and a
+ * successful sync with no new content reads as "Already up to date" instead
+ * of a bare zero.
+ */
 export function SourceSyncPanel({
   boards,
   pending,
   labels,
 }: {
-  boards: TierBoard[];
+  boards: CategoryBoard[];
   pending: number;
   labels: Labels;
 }) {
   const router = useRouter();
-  const [busy, setBusy] = useState<SourceTier | null>(null);
+  const [busy, setBusy] = useState<EventType | "all" | null>(null);
   const [message, setMessage] = useState<string>("");
 
-  /** Sync every source in a board sequentially; each keeps its own cursor/status. */
-  async function syncBoard(board: TierBoard) {
-    if (board.sources.length === 0) return;
-    setBusy(board.tier);
+  const allSources = boards.flatMap((b) => b.sources);
+  const failedCount = allSources.filter((s) => s.status === "error").length;
+  const healthyCount = allSources.filter((s) => s.status === "success").length;
+
+  async function syncSources(sources: SourceView[], label: string) {
+    if (sources.length === 0) return;
     setMessage("");
     let accepted = 0;
     let rejected = 0;
     const failures: string[] = [];
 
-    for (const source of board.sources) {
+    for (const source of sources) {
       try {
         const body: Record<string, unknown> = { source: source.id, persist: true };
         if (source.cursor) body.since = source.cursor;
@@ -98,7 +130,7 @@ export function SourceSyncPanel({
     }
 
     setMessage(
-      `${labels.tiers[board.tier].name}: ${accepted} accepted, ${rejected} rejected` +
+      `${label}: ${accepted} accepted, ${rejected} rejected` +
         (failures.length ? ` — ${failures.join("; ")}` : "")
     );
     router.refresh();
@@ -110,13 +142,37 @@ export function SourceSyncPanel({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{labels.title}</h1>
-          <p className="mt-2 text-sm text-ink-600">{labels.subtitle}</p>
+          <p className="mt-2 max-w-2xl text-sm text-ink-600">{labels.subtitle}</p>
         </div>
-        <div className="card px-4 py-3 text-right">
-          <div className="mono-label">{labels.pending}</div>
-          <div className="font-mono text-2xl font-semibold">{pending}</div>
-        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setBusy("all");
+            void syncSources(allSources, labels.syncAll);
+          }}
+          disabled={busy !== null || allSources.length === 0}
+          className="btn-primary"
+        >
+          {busy === "all"
+            ? labels.syncing
+            : `${labels.syncAll} (${labels.syncCount.replace("{n}", String(allSources.length))})`}
+        </button>
       </div>
+
+      {/* Health overview — four compact counters, readable without knowing S1–S5. */}
+      <section className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-ink-200 bg-ink-200 sm:grid-cols-4">
+        {[
+          [labels.totalSources, String(allSources.length), "text-ink-900"],
+          [labels.healthySources, String(healthyCount), "text-emerald-700"],
+          [labels.failedSources, String(failedCount), failedCount > 0 ? "text-rose-700" : "text-ink-500"],
+          [labels.pending, String(pending), "text-amber-700"],
+        ].map(([label, value, tone]) => (
+          <div key={label} className="bg-white px-4 py-3">
+            <div className={`font-mono text-2xl font-semibold tracking-tight ${tone}`}>{value}</div>
+            <div className="mono-label mt-1">{label}</div>
+          </div>
+        ))}
+      </section>
 
       {message && (
         <div className="rounded-md border border-accent-200 bg-accent-50 px-4 py-3 text-sm text-accent-800">
@@ -127,59 +183,47 @@ export function SourceSyncPanel({
       <div className="space-y-4">
         {boards.map((board) => {
           const status = boardStatus(board.sources);
+          const sorted = [...board.sources].sort(compareByUrgency);
           return (
-            <section key={board.tier} className="card p-4">
+            <section key={board.category} className="card p-4">
               <div className="flex flex-wrap items-center gap-3 border-b border-ink-100 pb-3">
-                <span className="chip border-ink-200 bg-ink-50 font-mono text-ink-700">
-                  {board.tier}
-                </span>
                 <div className="min-w-0 flex-1">
-                  <div className="font-medium text-ink-900">{labels.tiers[board.tier].name}</div>
-                  <p className="mt-0.5 text-xs text-ink-500">{labels.tiers[board.tier].blurb}</p>
+                  <div className="font-medium text-ink-900">{labels.categories[board.category]}</div>
+                  <p className="mt-0.5 text-xs text-ink-500">{labels.tiers.S2.name}</p>
                 </div>
-                <span
-                  className={`chip ${
-                    status === "success"
-                      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                      : status === "error"
-                        ? "border-rose-200 bg-rose-50 text-rose-700"
-                        : "border-ink-200 text-ink-500"
-                  }`}
-                >
+                <span className={`chip ${STATUS_CHIP[status]}`}>
                   {status === "success" ? labels.success : status === "error" ? labels.error : labels.idle}
                 </span>
                 <button
                   type="button"
-                  onClick={() => syncBoard(board)}
+                  onClick={() => {
+                    setBusy(board.category);
+                    void syncSources(board.sources, labels.categories[board.category]);
+                  }}
                   disabled={busy !== null || board.sources.length === 0}
-                  className="btn-primary"
+                  className="btn-ghost"
                 >
-                  {busy === board.tier
+                  {busy === board.category
                     ? labels.syncing
                     : board.sources.length === 0
                       ? labels.sync
-                      : `${labels.sync} (${labels.syncCount.replace("{n}", String(board.sources.length))})`}
+                      : `${labels.syncCategory} (${labels.syncCount.replace("{n}", String(board.sources.length))})`}
                 </button>
               </div>
 
-              {board.sources.length === 0 ? (
+              {sorted.length === 0 ? (
                 <p className="pt-3 text-xs text-ink-500">{labels.empty}</p>
               ) : (
                 <ul className="divide-y divide-ink-100">
-                  {board.sources.map((source) => (
+                  {sorted.map((source) => (
                     <li key={source.id} className="py-3">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-medium text-ink-900">{source.label}</span>
                         <span className="mono-label normal-case tracking-normal">{source.id}</span>
-                        <span
-                          className={`chip ${
-                            source.status === "success"
-                              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                              : source.status === "error"
-                                ? "border-rose-200 bg-rose-50 text-rose-700"
-                                : "border-ink-200 text-ink-500"
-                          }`}
-                        >
+                        <span className="chip border-ink-200 text-ink-500" title={labels.tiers[source.sourceTier].blurb}>
+                          {source.sourceTier} · {labels.tiers[source.sourceTier].name}
+                        </span>
+                        <span className={`chip ${STATUS_CHIP[source.status]}`}>
                           {source.status === "success"
                             ? labels.success
                             : source.status === "error"
@@ -203,8 +247,14 @@ export function SourceSyncPanel({
                         <div>
                           <dt className="mono-label normal-case tracking-normal">{labels.result}</dt>
                           <dd>
-                            {source.added ?? 0} added · {source.updated ?? 0} updated ·{" "}
-                            {source.rejected ?? 0} rejected
+                            {source.status === "success" && (source.added ?? 0) === 0 ? (
+                              <span title={labels.upToDateHint}>0 new · {labels.upToDate}</span>
+                            ) : (
+                              <>
+                                {source.added ?? 0} added · {source.updated ?? 0} updated ·{" "}
+                                {source.rejected ?? 0} rejected
+                              </>
+                            )}
                           </dd>
                         </div>
                       </dl>
