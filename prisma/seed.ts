@@ -106,7 +106,7 @@ async function main() {
           e.metadata === undefined
             ? Prisma.DbNull
             : (e.metadata as unknown as Prisma.InputJsonValue),
-        importanceScore: e.importanceScore,
+        importanceTier: e.importanceTier,
         importanceNote: e.importanceNote,
         provenance: e.provenance ?? "curated",
         reviewStatus: e.reviewStatus ?? (e.provenance === "automated" ? "pending" : "approved"),

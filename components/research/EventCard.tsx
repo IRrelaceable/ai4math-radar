@@ -64,12 +64,14 @@ export function EventCard({ event }: { event: ResearchEvent }) {
           <div className="flex flex-wrap items-center gap-2">
             {event.verificationStatus && <VerificationBadge status={event.verificationStatus} />}
             {event.evidenceLevel && <EvidenceLevelPill level={event.evidenceLevel} />}
-            {event.importanceScore !== undefined && (
+            {event.importanceTier && (
               <span
                 className="chip border-amber-200 bg-amber-50 text-amber-800"
-                title={event.importanceNote ?? t.detail.importanceSubjective}
+                title={`${t.trust.importance[event.importanceTier]} — ${
+                  event.importanceNote ?? t.detail.importanceSubjective
+                }`}
               >
-                {event.importanceScore}/100
+                {event.importanceTier}
               </span>
             )}
             {event.reviewStatus === "pending" && (

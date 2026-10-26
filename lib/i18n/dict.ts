@@ -154,6 +154,11 @@ export const dict = {
         E4: "独立复核",
       },
       tier: { S1: "一手研究", S2: "官方公告", S3: "独立佐证", S4: "媒体报道", S5: "社区线索" },
+      importance: {
+        H1: "历史里程碑",
+        H2: "领域里程碑",
+        H3: "背景事件",
+      },
       type: {
         Research: "科研进展",
         People: "人物动态",
@@ -341,6 +346,11 @@ export const dict = {
         E4: "Independent check",
       },
       tier: { S1: "Primary research", S2: "Official announcement", S3: "Independent", S4: "Media", S5: "Community" },
+      importance: {
+        H1: "Historical milestone",
+        H2: "Field milestone",
+        H3: "Context event",
+      },
       type: {
         Research: "Research",
         People: "People",

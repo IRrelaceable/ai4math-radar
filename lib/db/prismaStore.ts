@@ -66,7 +66,7 @@ function mapEvent(row: any): ResearchEvent {
     eventType: row.eventType ?? undefined,
     researchEventType: row.researchEventType ?? undefined,
     metadata: (row.metadata ?? undefined) as ResearchEvent["metadata"],
-    importanceScore: row.importanceScore ?? undefined,
+    importanceTier: row.importanceTier ?? undefined,
     importanceNote: row.importanceNote ?? undefined,
     provenance: row.provenance ?? "curated",
     reviewStatus: row.reviewStatus ?? (row.provenance === "automated" ? "pending" : "approved"),

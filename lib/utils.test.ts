@@ -118,23 +118,30 @@ describe("sortEvents", () => {
 });
 
 describe("sortEventsByImportance", () => {
-  it("assessed events first, highest score first", () => {
-    const low = makeEvent({ id: "low", date: "2026-01-01", importanceScore: 40 });
-    const high = makeEvent({ id: "high", date: "2025-01-01", importanceScore: 90 });
+  it("assessed events first, highest tier first (H1 > H2 > H3)", () => {
+    const low = makeEvent({ id: "low", date: "2026-01-01", importanceTier: "H3" });
+    const high = makeEvent({ id: "high", date: "2025-01-01", importanceTier: "H1" });
     expect(sortEventsByImportance([low, high]).map((e) => e.id)).toEqual(["high", "low"]);
   });
 
+  it("orders tiers H1, H2, H3 regardless of input order", () => {
+    const h3 = makeEvent({ id: "h3", date: "2026-03-01", importanceTier: "H3" });
+    const h1 = makeEvent({ id: "h1", date: "2024-01-01", importanceTier: "H1" });
+    const h2 = makeEvent({ id: "h2", date: "2025-01-01", importanceTier: "H2" });
+    expect(sortEventsByImportance([h3, h1, h2]).map((e) => e.id)).toEqual(["h1", "h2", "h3"]);
+  });
+
   it("unassessed events follow assessed ones, newest first", () => {
-    const old = makeEvent({ id: "old", date: "2024-01-01", importanceScore: 10 });
+    const old = makeEvent({ id: "old", date: "2024-01-01", importanceTier: "H3" });
     const none = makeEvent({ id: "none", date: "2026-06-01" });
-    const newest = makeEvent({ id: "newest", date: "2026-01-01", importanceScore: 70 });
+    const newest = makeEvent({ id: "newest", date: "2026-01-01", importanceTier: "H2" });
     const sorted = sortEventsByImportance([old, none, newest]);
     expect(sorted.map((e) => e.id)).toEqual(["newest", "old", "none"]);
   });
 
-  it("score ties break by date", () => {
-    const a = makeEvent({ id: "a", date: "2026-01-01", importanceScore: 50 });
-    const b = makeEvent({ id: "b", date: "2025-01-01", importanceScore: 50 });
+  it("tier ties break by date (newest first)", () => {
+    const a = makeEvent({ id: "a", date: "2026-01-01", importanceTier: "H2" });
+    const b = makeEvent({ id: "b", date: "2025-01-01", importanceTier: "H2" });
     expect(sortEventsByImportance([a, b]).map((e) => e.id)).toEqual(["a", "b"]);
   });
 });

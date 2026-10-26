@@ -59,7 +59,7 @@ export default function AboutPage() {
 {`ResearchEvent
 ├── title · summary · significance · date
 ├── eventType (six classes) → researchArea → subArea
-├── researchEventType · metadata · importanceScore (subjective)
+├── researchEventType · metadata · importanceTier H1/H2/H3 (subjective)
 ├── verificationStatus · evidenceLevel · sourceTier
 ├── sourceType · sourceUrl · paperUrl · githubUrl
 ├── papers[] · authors[] · institution

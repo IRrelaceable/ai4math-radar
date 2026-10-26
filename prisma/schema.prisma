@@ -61,8 +61,8 @@ model ResearchEvent {
   researchEventType  String?
   /// Type-specific ecosystem details (people, grant, course, policy, ...).
   metadata           Json?
-  /// Optional 0-100 AI-assisted subjective assessment; never objective.
-  importanceScore    Int?
+  /// Optional editorial importance tier (H1/H2/H3); subjective, never objective.
+  importanceTier      String?
   importanceNote     String?
   /// curated (hand-verified) | automated (ingest pipeline)
   provenance         String  @default("curated")

@@ -37,7 +37,16 @@ export function windowStartDate(window: TimeWindow, now = new Date()): string {
   return d.toISOString().slice(0, 10);
 }
 
-export type SourceType = "arxiv" | "blog" | "conference" | "github" | "demo";
+export type SourceType =
+  | "arxiv"
+  | "blog"
+  | "conference"
+  | "github"
+  | "demo"
+  | "news"
+  | "funding"
+  | "education"
+  | "policy";
 
 /** Human review state for automated/manual ecosystem events. */
 export const REVIEW_STATUSES = ["pending", "approved", "rejected"] as const;
@@ -70,6 +79,16 @@ export type EvidenceLevel = (typeof EVIDENCE_LEVELS)[number];
 /** Where the evidence comes from: primary research -> official -> independent -> media -> community. */
 export const SOURCE_TIERS = ["S1", "S2", "S3", "S4", "S5"] as const;
 export type SourceTier = (typeof SOURCE_TIERS)[number];
+
+/**
+ * Editorial importance, deliberately coarse so it never fakes precision.
+ * Three tiers — a historical turning point, a field milestone, or context —
+ * rather than a 0-100 number, because no one can defend "86 rather than 89".
+ * This stays OUTSIDE the objective trust model and is always labelled
+ * subjective; absent tier means "not assessed", never a default rank.
+ */
+export const IMPORTANCE_TIERS = ["H1", "H2", "H3"] as const;
+export type ImportanceTier = (typeof IMPORTANCE_TIERS)[number];
 
 /**
  * The six primary ecosystem event classes. Research subtypes such as
@@ -198,8 +217,8 @@ export interface ResearchEvent {
   researchEventType?: ResearchEventType;
   /** Type-specific ecosystem details; represented as JSON by Prisma. */
   metadata?: EcosystemMetadata;
-  /** Optional 0-100 AI-assisted subjective assessment, never an objective metric. */
-  importanceScore?: number;
+  /** Optional editorial importance tier (H1/H2/H3), subjective — never an objective metric. */
+  importanceTier?: ImportanceTier;
   importanceNote?: string;
   /** "curated" = hand-verified entry; "automated" = produced by the ingest pipeline. */
   provenance?: "curated" | "automated";
@@ -239,6 +258,14 @@ export interface SearchResult {
 
 /** Shape of an unprocessed item entering the agent pipeline (stage 1). */
 export interface RawResearchItem {
+  /** Optional source-provided ecosystem classification and stable identity. */
+  sourceId?: string;
+  externalId?: string;
+  sourceType?: SourceType;
+  eventType?: EventType;
+  researchArea?: ResearchArea;
+  /** Explicitly opt a source-specific item out of the generic AI4Math gate. */
+  allowNonAI4Math?: boolean;
   id: string;
   title: string;
   abstract?: string;
@@ -248,6 +275,8 @@ export interface RawResearchItem {
   authors?: string[];
   githubUrl?: string;
 }
+
+
 
 
 

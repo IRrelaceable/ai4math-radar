@@ -274,7 +274,9 @@ export default async function ResearchDetailPage({
           <div className="card p-4">
             <div className="mono-label mb-2">{d.detail.importance}</div>
             <div className="font-mono text-2xl font-semibold tracking-tight text-ink-900">
-              {event.importanceScore !== undefined ? `${event.importanceScore}/100` : d.detail.importanceNotAssessed}
+              {event.importanceTier
+                ? `${event.importanceTier} · ${d.trust.importance[event.importanceTier]}`
+                : d.detail.importanceNotAssessed}
             </div>
             <p className="mt-1 text-xs leading-relaxed text-ink-500">
               {event.importanceNote ?? d.detail.importanceSubjective}

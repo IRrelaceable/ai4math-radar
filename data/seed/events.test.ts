@@ -4,6 +4,7 @@ import { applyTrustModel } from "@/lib/verification";
 import {
   EVIDENCE_LEVELS,
   EVENT_TYPES,
+  IMPORTANCE_TIERS,
   RESEARCH_AREAS,
   RESEARCH_EVENT_TYPES,
   SOURCE_TIERS,
@@ -55,11 +56,14 @@ describe("seed data integrity", () => {
     }
   });
 
-  it("importance scores stay in 0-100 and are labelled", () => {
+  it("importance tiers stay within H1/H2/H3 and carry a subjective note", () => {
     for (const e of events) {
-      if (e.importanceScore !== undefined) {
-        expect(e.importanceScore, `${e.slug} score`).toBeGreaterThanOrEqual(0);
-        expect(e.importanceScore, `${e.slug} score`).toBeLessThanOrEqual(100);
+      if (e.importanceTier !== undefined) {
+        expect(
+          IMPORTANCE_TIERS as readonly string[],
+          `${e.slug} tier`
+        ).toContain(e.importanceTier);
+        expect(e.importanceNote, `${e.slug} tier note`).toBeTruthy();
       }
     }
   });

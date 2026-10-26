@@ -1,5 +1,5 @@
-import type { EventType, ResearchEvent, ResearchEventType } from "@/types";
-import { EVENT_TYPES, RESEARCH_EVENT_TYPES } from "@/types";
+import type { EventType, ImportanceTier, ResearchEvent, ResearchEventType } from "@/types";
+import { EVENT_TYPES, IMPORTANCE_TIERS, RESEARCH_EVENT_TYPES } from "@/types";
 
 /** Map legacy and malformed values onto the six primary ecosystem classes. */
 export function normalizeEventType(value?: string): EventType | undefined {
@@ -37,11 +37,11 @@ export function normalizeEcosystemEvent(event: ResearchEvent): ResearchEvent {
     reviewStatus:
       event.reviewStatus ??
       (event.provenance === "automated" ? "pending" : "approved"),
-    importanceScore:
-      typeof event.importanceScore === "number" &&
-      Number.isFinite(event.importanceScore)
-        ? Math.max(0, Math.min(100, Math.round(event.importanceScore)))
-        : undefined,
+    importanceTier: (IMPORTANCE_TIERS as readonly string[]).includes(
+      event.importanceTier ?? ""
+    )
+      ? (event.importanceTier as ImportanceTier)
+      : undefined,
   };
 }
 
