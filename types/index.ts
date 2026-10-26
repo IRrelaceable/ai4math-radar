@@ -32,6 +32,12 @@ export type ResearchArea = (typeof RESEARCH_AREAS)[number];
  * and keeps free-form sub-areas until it is migrated.
  */
 export const CONTROLLED_SUB_AREAS: Partial<Record<ResearchArea, readonly string[]>> = {
+  "Mathematical Reasoning": [
+    "Prompting & decoding",
+    "Process supervision",
+    "Competition-level reasoning",
+    "Tool & code integration",
+  ],
   "Theorem Proving": [
     "Proof search",
     "Prover tooling & interaction",
@@ -41,6 +47,41 @@ export const CONTROLLED_SUB_AREAS: Partial<Record<ResearchArea, readonly string[
     "Autoformalization",
     "Formal corpora & libraries",
     "Proof assistant tooling",
+  ],
+  "Mathematical Discovery": [
+    "Algorithm & program search",
+    "AI-proved results & conjectures",
+    "Verification & corpus scrutiny",
+  ],
+  Geometry: [
+    "Geometry formalization",
+    "Geometry problem solving",
+    "Multimodal geometry",
+  ],
+  "Symbolic Mathematics": [
+    "Equation solving & discovery",
+    "Symbolic benchmark",
+  ],
+  "Mathematical Agents": [
+    "Autonomous research agents",
+    "Engineering & tool agents",
+  ],
+  "LLM for Mathematics": [
+    "Math-specialized models",
+    "Tool & program integration",
+    "Reasoning & self-improvement",
+  ],
+  "Benchmarks & Datasets": [
+    "Formal proving benchmarks",
+    "Competition & olympiad benchmarks",
+    "Math word problem datasets",
+    "Theorem & multimodal benchmarks",
+  ],
+  "AI-assisted Research": [
+    "Autonomous research agents",
+    "Multi-agent discovery",
+    "Automated ideation & review",
+    "Agent evaluation & peer review",
   ],
 };
 

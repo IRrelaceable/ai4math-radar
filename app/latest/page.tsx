@@ -78,12 +78,14 @@ export default async function LatestPage({
     store.listEvents(),
   ]);
 
-  const availableAreas = [...new Set(allEvents.map((e) => e.researchArea))].sort();
-
   // Only offer filter values that actually occur in the data, so no option
   // can return an empty feed (same rule as the timeline's type chips).
   const present = <T extends string>(values: (T | undefined)[]): T[] =>
     [...new Set(values.filter((v): v is T => Boolean(v)))].sort();
+
+  // Ecosystem events carry an event class instead of a research direction, so
+  // researchArea is optional — reuse `present` to drop the undefined entries.
+  const availableAreas = present(allEvents.map((e) => e.researchArea));
 
   const presentYears = present(allEvents.map((e) => e.date.slice(0, 4)));
   // A relative window is offered only if at least one event falls inside it.
