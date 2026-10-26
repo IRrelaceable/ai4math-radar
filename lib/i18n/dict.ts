@@ -74,6 +74,11 @@ export const dict = {
       howItWorks: "工作原理",
     },
     detail: {
+      metaEventType: "事件类型",
+      metaResearchArea: "研究方向",
+      metaVerification: "核验状态",
+      metaEvidence: "证据等级",
+      metaSourceTier: "来源层级",
       whatHappened: "发生了什么",
       problemAddressed: "针对的问题",
       whyMatters: "为什么重要",
@@ -257,6 +262,11 @@ export const dict = {
     },
     detail: {
       whatHappened: "What happened?",
+      metaEventType: "Event type",
+      metaResearchArea: "Research area",
+      metaVerification: "Verification",
+      metaEvidence: "Evidence",
+      metaSourceTier: "Source tier",
       problemAddressed: "Problem addressed",
       whyMatters: "Why does it matter?",
       keyContribution: "Key Contribution",

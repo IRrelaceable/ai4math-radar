@@ -77,10 +77,11 @@ export default async function ResearchDetailPage({
         <span className="text-ink-700">{p.detail.crumbEvent}</span>
       </div>
 
-      {/* Single-column narrative layout — no sidebar rail on desktop.
-          The metadata block (area, trust, source) moves inline under the title,
-          so the reader gets the full context without a second column. */}
-      <div className="max-w-3xl">
+      {/* Two-column layout: the narrative stays a single readable column, and
+          a slim right rail carries only the five compressed metadata rows the
+          spec asks for. The rail drops below the body on narrow screens. */}
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem]">
+        <div className="min-w-0 max-w-3xl">
         {/* Header: type + area + date on one line, then title. */}
         <div className="flex flex-wrap items-center gap-2">
           {event.eventType && <EventTypePill type={event.eventType} />}
@@ -289,7 +290,78 @@ export default async function ResearchDetailPage({
             )}
           </section>
         )}
+        </div>
+
+        {/* Compressed right rail — exactly the five metadata rows the spec
+            calls for. No paper card, no duplicated links; on mobile the grid
+            stacks it below the narrative. */}
+        <aside className="lg:sticky lg:top-8 lg:self-start">
+          <dl className="divide-y divide-ink-100 border-t border-ink-200 text-sm">
+            <MetaRow label={d.detail.metaEventType}>
+              {event.eventType ? (
+                <span className="text-ink-800">{d.trust.type[event.eventType]}</span>
+              ) : (
+                <span className="text-ink-400">—</span>
+              )}
+            </MetaRow>
+            <MetaRow label={d.detail.metaResearchArea}>
+              {event.researchArea ? (
+                <Link
+                  href={`/topics/${slugify(event.researchArea)}`}
+                  className="link-quiet text-ink-800"
+                >
+                  {event.researchArea}
+                  {event.subArea && (
+                    <span className="block text-xs text-ink-500">{event.subArea}</span>
+                  )}
+                </Link>
+              ) : (
+                <span className="text-ink-400">—</span>
+              )}
+            </MetaRow>
+            <MetaRow label={d.detail.metaVerification}>
+              {event.verificationStatus ? (
+                <VerificationBadge status={event.verificationStatus} />
+              ) : (
+                <span className="text-ink-400">—</span>
+              )}
+            </MetaRow>
+            <MetaRow label={d.detail.metaEvidence}>
+              {event.evidenceLevel ? (
+                <EvidenceLevelPill level={event.evidenceLevel} />
+              ) : (
+                <span className="text-ink-400">—</span>
+              )}
+            </MetaRow>
+            <MetaRow label={d.detail.metaSourceTier}>
+              {event.sourceTier ? (
+                <SourceTierPill tier={event.sourceTier} />
+              ) : (
+                <span className="text-ink-400">—</span>
+              )}
+            </MetaRow>
+          </dl>
+          {event.provenance === "automated" && (
+            <p className="mt-3 text-xs text-ink-500">{d.common.automatedHint}</p>
+          )}
+        </aside>
       </div>
+    </div>
+  );
+}
+
+/** One metadata row in the right rail: mono label above, value below. */
+function MetaRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="py-2.5">
+      <dt className="mono-label normal-case tracking-normal">{label}</dt>
+      <dd className="mt-1 text-ink-800">{children}</dd>
     </div>
   );
 }
