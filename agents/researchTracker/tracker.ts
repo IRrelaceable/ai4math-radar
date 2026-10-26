@@ -1,9 +1,10 @@
-import type { RawResearchItem, ResearchEvent, SourceType } from "@/types";
+import type { EventType, RawResearchItem, ResearchEvent, SourceType } from "@/types";
 import { slugify } from "@/lib/utils";
 import { applyTrustModel } from "@/lib/verification";
 import { researchSources, type ResearchSource } from "@/lib/sources";
 import { classifyItem, type Classification } from "./classifier";
 import { summarize } from "./summarizer";
+import { fingerprintItem } from "@/lib/db/ingested";
 
 export interface PipelineStepResult {
   step: string;
@@ -14,6 +15,10 @@ export interface PipelineResult {
   accepted: ResearchEvent[];
   rejected: { item: RawResearchItem; reason: string }[];
   trace: PipelineStepResult[];
+  /** slug -> source fingerprint for accepted items (caller may persist these). */
+  fingerprints: [string, string][];
+  /** Newest date observed in the raw fetch, including skipped unchanged items. */
+  latestSeenDate?: string;
 }
 
 /**
@@ -27,14 +32,24 @@ export interface PipelineResult {
 export async function runPipeline(
   items?: RawResearchItem[],
   sources: ResearchSource[] = researchSources,
-  options: { limit?: number; since?: string } = {}
+  options: {
+    limit?: number;
+    since?: string;
+    /**
+     * slug -> source fingerprint for events already persisted. When a slug is
+     * present and its source fingerprint is unchanged, summarization (the
+     * per-item LLM call) is skipped and the stored event is reused verbatim.
+     */
+    existingFingerprints?: Map<string, string>;
+  } = {}
 ): Promise<PipelineResult> {
+  const { limit, since, existingFingerprints } = options;
   const raw: RawResearchItem[] =
     items ??
       (
         await Promise.all(
           sources.map((s) =>
-            s.fetchRecent({ limit: options.limit, since: options.since })
+            s.fetchRecent({ limit, since })
           )
         )
       ).flat();
@@ -44,26 +59,68 @@ export async function runPipeline(
       step: "ingest",
       detail:
         `received ${raw.length} raw research items` +
-        (options.since ? ` since ${options.since}` : ""),
+        (since ? ` since ${since}` : ""),
     },
   ];
   const accepted: ResearchEvent[] = [];
   const rejected: { item: RawResearchItem; reason: string }[] = [];
+  const fingerprints: [string, string][] = [];
+  const latestSeenDate = raw
+    .map((item) => item.publishedAt)
+    .filter((date): date is string => Boolean(date))
+    .sort()
+    .pop();
+  let skippedUnchanged = 0;
 
   for (const item of raw) {
     const normalized = normalize(item);
     const classification = classifyItem(normalized);
 
-    if (!classification.isAI4Math || !classification.researchArea) {
+    const effective: Classification =
+      classification.isAI4Math && classification.researchArea
+        ? classification
+        : normalized.eventType && normalized.allowNonAI4Math
+          ? {
+              isAI4Math: true,
+              researchArea: normalized.researchArea ?? "AI-assisted Research",
+              subArea: normalized.sourceId,
+              reasons: [
+                `source-level ecosystem classification: ${normalized.eventType}` +
+                  (normalized.sourceId ? ` (${normalized.sourceId})` : ""),
+              ],
+            }
+          : classification;
+
+    if (!effective.isAI4Math || !effective.researchArea) {
       rejected.push({ item, reason: classification.reasons.join("; ") || "not AI4Math" });
       continue;
     }
 
-    const text = await summarize(normalized, classification);
-    accepted.push(toEvent(normalized, classification, text));
+    const slug = slugify(normalized.title);
+    const fingerprint = fingerprintItem(normalized);
+    const previousFingerprint = existingFingerprints?.get(slug);
+
+    // Already stored with identical source text: reuse the stored event and
+    // skip the LLM call entirely. This keeps a re-sync cheap (no repeated
+    // API spend) instead of re-summarizing every duplicate on every run.
+    if (existingFingerprints && previousFingerprint === fingerprint) {
+      skippedUnchanged += 1;
+      continue;
+    }
+
+    const text = await summarize(normalized, effective);
+    fingerprints.push([slug, fingerprint]);
+    accepted.push(toEvent(normalized, effective, text, normalized.eventType));
     trace.push({
       step: "classify+summarize",
-      detail: `"${normalized.title}" -> ${classification.researchArea}`,
+      detail: `"${normalized.title}" -> ${normalized.eventType ?? "Research"} / ${effective.researchArea}`,
+    });
+  }
+
+  if (skippedUnchanged > 0) {
+    trace.push({
+      step: "skip-unchanged",
+      detail: `${skippedUnchanged} items already stored with identical source text; LLM summarization skipped`,
     });
   }
 
@@ -72,7 +129,7 @@ export async function runPipeline(
     detail: `${accepted.length} research events produced, ${rejected.length} items rejected`,
   });
 
-  return { accepted, rejected, trace };
+  return { accepted, rejected, trace, fingerprints, latestSeenDate };
 }
 
 function normalize(item: RawResearchItem): RawResearchItem {
@@ -86,6 +143,7 @@ function normalize(item: RawResearchItem): RawResearchItem {
 }
 
 function sourceTypeOf(item: RawResearchItem): SourceType {
+  if (item.sourceType) return item.sourceType;
   const s = item.source.toLowerCase();
   if (s.includes("arxiv")) return "arxiv";
   if (s.includes("github")) return "github";
@@ -99,7 +157,8 @@ function sourceTypeOf(item: RawResearchItem): SourceType {
 function toEvent(
   item: RawResearchItem,
   classification: Classification,
-  text: { summary: string; significance: string }
+  text: { summary: string; significance: string },
+  eventType: EventType = "Research"
 ): ResearchEvent {
   const now = new Date().toISOString();
   const date = item.publishedAt ?? now.slice(0, 10);
@@ -111,10 +170,11 @@ function toEvent(
     summary: text.summary,
     significance: text.significance,
     date,
-    eventType: "Research",
+    eventType,
     researchArea: classification.researchArea!,
     subArea: classification.subArea,
     sourceType: sourceTypeOf(item),
+    sourceTier: item.sourceTier,
     sourceUrl: item.url ?? "",
     paperUrl: item.url ?? undefined,
     githubUrl: item.githubUrl,
@@ -134,5 +194,4 @@ function toEvent(
 
 export { classifyItem } from "./classifier";
 export { summarize } from "./summarizer";
-
 

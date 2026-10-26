@@ -38,3 +38,4 @@ data/ingested/source-status.json
 # local working notes (requirements draft), not source
 文本.txt
 
+data/ingested/fingerprints.json

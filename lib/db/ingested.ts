@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { ResearchEvent } from "@/types";
+import { createHash } from "node:crypto";
+import type { RawResearchItem, ResearchEvent } from "@/types";
 
 /**
  * File-backed cache for pipeline output (V2).
@@ -11,6 +12,7 @@ import type { ResearchEvent } from "@/types";
  */
 export const INGESTED_DIR = path.join(process.cwd(), "data", "ingested");
 export const INGESTED_FILE = path.join(INGESTED_DIR, "events.json");
+const FINGERPRINT_FILE = path.join(INGESTED_DIR, "fingerprints.json");
 
 export function readIngestedEvents(): ResearchEvent[] {
   try {
@@ -20,6 +22,52 @@ export function readIngestedEvents(): ResearchEvent[] {
   } catch {
     return [];
   }
+}
+
+/**
+ * Content fingerprint of the *source* item, not of the event.
+ *
+ * Summarization is the expensive step (an LLM call per accepted item), so it
+ * must be skipped when a slug is already stored and its source text has not
+ * changed. The event's own summary is LLM-rewritten, so it cannot be used to
+ * tell whether the source moved on — hash the raw title + abstract instead.
+ */
+export function fingerprintItem(item: RawResearchItem): string {
+  const canonical = `${item.title.trim()}\n\n${item.abstract?.trim() ?? ""}`;
+  return createHash("sha256").update(canonical, "utf8").digest("hex");
+}
+
+/**
+ * slug -> source fingerprint for every event persisted so far. Used by the
+ * pipeline to decide whether an already-stored slug needs re-summarizing.
+ */
+export function readIngestedFingerprints(): Map<string, string> {
+  try {
+    const raw = fs.readFileSync(FINGERPRINT_FILE, "utf8");
+    const parsed = JSON.parse(raw) as unknown;
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+      return new Map(
+        Object.entries(parsed as Record<string, string>).filter(
+          (entry): entry is [string, string] => typeof entry[1] === "string"
+        )
+      );
+    }
+    return new Map();
+  } catch {
+    return new Map();
+  }
+}
+
+/** Record fingerprints for the items that were actually persisted. */
+export function writeIngestedFingerprints(entries: Iterable<[string, string]>): void {
+  const merged = readIngestedFingerprints();
+  for (const [slug, fp] of entries) merged.set(slug, fp);
+  fs.mkdirSync(INGESTED_DIR, { recursive: true });
+  fs.writeFileSync(
+    FINGERPRINT_FILE,
+    JSON.stringify(Object.fromEntries(merged), null, 2),
+    "utf8"
+  );
 }
 
 /** Merge by slug: newer content wins, the original createdAt is preserved. */
@@ -50,4 +98,3 @@ export function appendIngestedEvents(events: ResearchEvent[]): {
   fs.writeFileSync(INGESTED_FILE, JSON.stringify(next, null, 2), "utf8");
   return { added, updated, total: next.length };
 }
-

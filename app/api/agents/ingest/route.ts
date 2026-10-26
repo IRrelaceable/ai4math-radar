@@ -3,7 +3,7 @@ import { runPipeline } from "@/agents/researchTracker/tracker";
 import { liveResearchSources, mockResearchSource } from "@/lib/sources";
 import { createArxivSource } from "@/lib/sources/arxiv";
 import { createGitHubSource } from "@/lib/sources/github";
-import { appendIngestedEvents } from "@/lib/db/ingested";
+import { appendIngestedEvents, readIngestedFingerprints, writeIngestedFingerprints } from "@/lib/db/ingested";
 import { updateSourceStatus } from "@/lib/db/sourceStatus";
 import type { RawResearchItem } from "@/types";
 
@@ -24,7 +24,7 @@ const LIVE_DEFAULT_LIMIT = 250;
  *
  * Body (all optional):
  *   { "items": RawResearchItem[] }  - custom items
- *   { "source": "mock" | "arxiv" | "github" }   - default "mock" (offline)
+ *   { "source": "<registered-source-id>" }       - default "mock" (offline)
  *   { "query": "..." }              - arXiv search query override
  *   { "since": "2026-10-01" }        - incremental lower bound (YYYY-MM-DD)
  *   { "limit": 250 }                - max candidates per source
@@ -67,6 +67,7 @@ export async function POST(request: Request) {
   }
 
   const isLive = source in liveResearchSources;
+  const liveSource = isLive ? liveResearchSources[source] : undefined;
   const sources =
     items !== undefined
       ? []
@@ -74,28 +75,37 @@ export async function POST(request: Request) {
         ? [createArxivSource(query ? { query } : {})]
         : source === "github"
           ? [createGitHubSource()]
-          : [mockResearchSource];
+          : liveSource
+            ? [liveSource]
+            : [mockResearchSource];
 
   try {
     const result = await runPipeline(items, sources, {
       limit: limit ?? (isLive ? LIVE_DEFAULT_LIMIT : undefined),
       since,
+      // Skip LLM re-summarization for slugs already stored with identical
+      // source text (only meaningful when we are about to persist anyway).
+      existingFingerprints:
+        !items && (persist ?? isLive) ? readIngestedFingerprints() : undefined,
     });
 
     let persisted: { added: number; updated: number; total: number } | undefined;
     if (!items && (persist ?? isLive) && result.accepted.length > 0) {
       persisted = appendIngestedEvents(result.accepted);
+      // Record what we just stored so the next run can skip it unchanged.
+      writeIngestedFingerprints(result.fingerprints);
     }
 
     let sourceStatus;
     if (isLive) {
-      const latestDate = result.accepted
-        .map((event) => event.date)
-        .sort()
-        .pop();
-      const liveSource = liveResearchSources[source as keyof typeof liveResearchSources];
+      const latestDate =
+        result.latestSeenDate ??
+        result.accepted
+          .map((event) => event.date)
+          .sort()
+          .pop();
       sourceStatus = updateSourceStatus(source, {
-        label: liveSource.label,
+        label: liveSource?.label ?? source,
         status: "success",
         lastAttemptAt: new Date().toISOString(),
         lastSuccessAt: new Date().toISOString(),
@@ -137,5 +147,4 @@ export async function POST(request: Request) {
     );
   }
 }
-
 
