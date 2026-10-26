@@ -223,8 +223,28 @@ export default async function ResearchDetailPage({
           </div>
         </section>
 
-        {/* Related works — first 3 shown, rest behind a toggle. */}
+        {/* Related works — first 3 shown, rest behind a toggle. Renders
+            nothing when no lineage is recorded. */}
         <RelatedWorksSection event={event} />
+
+        {/* More in this area — sits right after Related Works so that when an
+            event has no curated lineage (64% of them), the column still gets
+            real content here instead of ending at a dead placeholder. */}
+        {event.researchArea && (
+          <section className="mt-9 border-t border-ink-200 pt-7">
+            <SectionTitle>
+              {d.detail.moreIn.replace("{area}", event.researchArea)}
+            </SectionTitle>
+            <div className="mt-4 grid gap-4 md:grid-cols-3">
+              {relatedEvents.slice(0, 3).map((e) => (
+                <EventCard key={e.id} event={e} />
+              ))}
+            </div>
+            {relatedEvents.length === 0 && (
+              <p className="mt-3 text-sm text-ink-500">{d.detail.noOtherEvents}</p>
+            )}
+          </section>
+        )}
 
         {/* Timeline */}
         <section className="mt-7">
@@ -236,23 +256,6 @@ export default async function ResearchDetailPage({
 
         {/* Verification history — collapsed by default. */}
         <VerificationHistorySection event={event} />
-
-        {/* More in this area — 3 cards, no sidebar duplication. */}
-        {event.researchArea && (
-          <section className="mt-9 border-t border-ink-200 pt-7">
-            <h2 className="text-lg font-semibold tracking-tight">
-              {d.detail.moreIn} {event.researchArea}
-            </h2>
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              {relatedEvents.slice(0, 3).map((e) => (
-                <EventCard key={e.id} event={e} />
-              ))}
-            </div>
-            {relatedEvents.length === 0 && (
-              <p className="mt-3 text-sm text-ink-500">{d.detail.noOtherEvents}</p>
-            )}
-          </section>
-        )}
 
         {/* Ecosystem metadata — moved from sidebar to bottom of narrative. */}
         <EcosystemDetails event={event} />

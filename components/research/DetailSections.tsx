@@ -20,15 +20,12 @@ export function RelatedWorksSection({ event }: { event: ResearchEvent }) {
   const { t } = useT();
   const d = t.detail;
 
+  // 64% of events carry no curated lineage. Rendering a heading plus a
+  // "not recorded yet" sentence for those just adds a dead block to an
+  // otherwise thin column, so the section disappears entirely and the
+  // page falls back to "more in this area" for context.
   if (event.relatedWorks.length === 0) {
-    return (
-      <section className="mt-7">
-        <h2 className="text-lg font-semibold tracking-tight text-ink-900">
-          {d.relatedWorks}
-        </h2>
-        <p className="mt-2 text-sm text-ink-500">{d.lineagePending}</p>
-      </section>
-    );
+    return null;
   }
 
   const visible = expanded
