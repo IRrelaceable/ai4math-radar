@@ -19,6 +19,10 @@ export interface EventZh {
   problem?: string;
   /** Must keep the same length as the source array (enforced by tests). */
   keyContributions?: string[];
+  /** Chinese counterpart of `event.aiRole.description`. */
+  aiRoleDescription?: string;
+  /** Chinese counterpart of `event.humanContribution`. */
+  humanContribution?: string;
 }
 
 /** Exact-match English → Chinese map for boilerplate prose (notes, labels). */

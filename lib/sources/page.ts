@@ -1,5 +1,6 @@
 import type { EventType, RawResearchItem, ResearchArea, SourceType, SourceTier } from "@/types";
 import type { ResearchSource } from "./index";
+import { sourceFetch } from "./http";
 
 export interface PageSourceOptions {
   id: string;
@@ -13,13 +14,29 @@ export interface PageSourceOptions {
   fetchFn?: typeof fetch;
 }
 
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+  mdash: "—",
+  ndash: "–",
+  hellip: "…",
+  lsquo: "‘",
+  rsquo: "’",
+  ldquo: "“",
+  rdquo: "”",
+  middot: "·",
+  copy: "©",
+};
+
 function decode(value: string): string {
   return value
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+    .replace(/&([a-z]+);/gi, (match, name) => NAMED_ENTITIES[name.toLowerCase()] ?? match)
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -44,7 +61,7 @@ export function createPageSource(options: PageSourceOptions): ResearchSource {
     defaultResearchArea,
     sourceTier,
     allowNonAI4Math = false,
-    fetchFn = fetch,
+    fetchFn = sourceFetch,
   } = options;
 
   return {
@@ -57,6 +74,7 @@ export function createPageSource(options: PageSourceOptions): ResearchSource {
       const since = fetchOptions.since;
       const response = await fetchFn(url, {
         headers: { "User-Agent": "AI4Math-Ecosystem-Radar/0.1" },
+        signal: AbortSignal.timeout(20_000),
       });
       if (!response.ok) {
         throw new Error(`${label} returned HTTP ${response.status}`);
@@ -69,11 +87,16 @@ export function createPageSource(options: PageSourceOptions): ResearchSource {
         matchValue(
           html,
           /<meta[^>]+(?:name|property)=["'](?:description|og:description)["'][^>]+content=["']([^"']+)["']/i
-        ) ??
+        ) ||
         matchValue(
           html,
           /<meta[^>]+content=["']([^"']+)["'][^>]+(?:name|property)=["'](?:description|og:description)["']/i
         );
+
+      // A bare <title> is not an event: it would produce a card whose summary
+      // can only talk about missing metadata.
+      if (!description) return [];
+
       const publishedAt = matchValue(
         html,
         /<meta[^>]+(?:property|name)=["']article:published_time["'][^>]+content=["']([^"']+)["']/i

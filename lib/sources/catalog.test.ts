@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { EVENT_TYPES, SOURCE_TIERS } from "@/types";
-import { OFFICIAL_SOURCE_DEFINITIONS, createOfficialSource } from "./catalog";
-import { liveResearchSources } from "./index";
+import { OFFICIAL_SOURCE_DEFINITIONS, SOURCE_TIER_TABLE, createOfficialSource, resolveSourceTier } from "./catalog";
+import { getLiveResearchSources } from "./index";
 import { parseFeedBlock } from "./rss";
 
 describe("official source catalog", () => {
@@ -18,7 +18,7 @@ describe("official source catalog", () => {
     expect(new Set(sources.map((source) => source.id)).size).toBe(sources.length);
   });
 
-  it("assigns a valid S1-S5 tier to every catalog source", () => {
+  it("assigns a valid S0-S4 tier to every catalog source", () => {
     for (const source of OFFICIAL_SOURCE_DEFINITIONS) {
       expect(
         SOURCE_TIERS as readonly string[],
@@ -28,23 +28,41 @@ describe("official source catalog", () => {
   });
 
   it("groups every registered live source onto exactly one tier board", () => {
-    const sources = Object.values(liveResearchSources);
+    const sources = Object.values(getLiveResearchSources());
     expect(sources.length).toBeGreaterThan(0);
     for (const source of sources) {
       expect(SOURCE_TIERS as readonly string[], `${source.id} tier`).toContain(
         source.sourceTier
       );
     }
-    // arxiv + github are the S1 primary-research anchors.
-    expect(liveResearchSources.arxiv.sourceTier).toBe("S1");
-    expect(liveResearchSources.github.sourceTier).toBe("S1");
+    // arxiv + github are the S0 primary-research anchors.
+    expect(getLiveResearchSources().arxiv.sourceTier).toBe("S0");
+    expect(getLiveResearchSources().github.sourceTier).toBe("S0");
   });
 
   it("spans all five tiers across the full registry (boards are never empty)", () => {
     const tiers = new Set(
-      Object.values(liveResearchSources).map((source) => source.sourceTier)
+      Object.values(getLiveResearchSources()).map((source) => source.sourceTier)
     );
     for (const tier of SOURCE_TIERS) expect(tiers.has(tier)).toBe(true);
+  });
+
+  it("keeps built-in and catalog sources in one tier table", () => {
+    expect(SOURCE_TIER_TABLE.arxiv).toBe("S0");
+    expect(SOURCE_TIER_TABLE.github).toBe("S0");
+    expect(SOURCE_TIER_TABLE["openai-news"]).toBe("S1");
+    expect(SOURCE_TIER_TABLE["terence-tao-blog"]).toBe("S2");
+    expect(SOURCE_TIER_TABLE["quanta-mathematics"]).toBe("S3");
+    expect(SOURCE_TIER_TABLE["math-and-ai"]).toBe("S4");
+  });
+
+  it("resolves tiers by source URL host", () => {
+    expect(resolveSourceTier({ sourceUrl: "https://arxiv.org/abs/1" })).toBe("S0");
+    expect(resolveSourceTier({ sourceUrl: "https://github.com/org/repo" })).toBe("S0");
+    expect(resolveSourceTier({ sourceUrl: "https://terrytao.wordpress.com/post" })).toBe("S2");
+    expect(resolveSourceTier({ sourceUrl: "https://www.quantamagazine.org/story" })).toBe("S3");
+    expect(resolveSourceTier({ sourceUrl: "https://mathandai.org/declaration" })).toBe("S4");
+    expect(resolveSourceTier({ sourceUrl: "https://unknown.example/post" })).toBeUndefined();
   });
 
   it("normalizes RSS and Atom metadata", () => {

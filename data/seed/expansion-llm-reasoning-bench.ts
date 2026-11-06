@@ -101,7 +101,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Large language models struggled with multi-step reasoning tasks that require decomposing a problem before answering it.",
     date: "2022-01-28",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Prompting & decoding",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2201.11903",
@@ -148,7 +148,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Greedy chain-of-thought decoding takes a single reasoning path, so one unlucky step ruins the answer even when the model knows how to solve the problem.",
     date: "2022-03-21",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Prompting & decoding",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2203.11171",
@@ -194,7 +194,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Chain-of-thought prompting fails to generalize to problems harder than the exemplars shown in the prompt.",
     date: "2022-05-21",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Prompting & decoding",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2205.10625",
@@ -243,8 +243,8 @@ export const events: ResearchEvent[] = [
     problem:
       "LLMs often make logical and arithmetic mistakes when solving problems step-by-step in natural language, even when the decomposition is correct.",
     date: "2022-11-18",
-    researchArea: "LLM for Mathematics",
-    subArea: "Tool & program integration",
+    researchArea: "Mathematical Reasoning & LLMs",
+    subArea: "Tool & code integration",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2211.10435",
     paperUrl: "https://arxiv.org/abs/2211.10435",
@@ -335,8 +335,8 @@ export const events: ResearchEvent[] = [
     problem:
       "Language models are strong at analysis but weak at heavy computation, while tools are strong at computation but need the reasoning scaffolding a model provides.",
     date: "2023-09-29",
-    researchArea: "LLM for Mathematics",
-    subArea: "Tool & program integration",
+    researchArea: "Mathematical Reasoning & LLMs",
+    subArea: "Tool & code integration",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2309.17452",
     paperUrl: "https://arxiv.org/abs/2309.17452",
@@ -437,7 +437,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Existing process supervision relied on heavy manual annotation of every reasoning step.",
     date: "2023-12-14",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Process supervision",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2312.08935",
@@ -484,7 +484,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Open models lagged far behind frontier models on competition-level mathematics, and PPO-style RL for math was memory-expensive.",
     date: "2024-02-05",
-    researchArea: "LLM for Mathematics",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Math-specialized models",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2402.03300",

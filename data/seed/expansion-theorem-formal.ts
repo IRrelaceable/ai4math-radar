@@ -23,7 +23,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Automated theorem proving relied on hand-engineered heuristics and supervised training on existing proof corpora, limiting the ability to prove novel goals from scratch.",
     date: "2021-02-19",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2102.09756",
@@ -64,7 +64,7 @@ export const events: ResearchEvent[] = [
     problem:
       "The Lean community's mathematics library needed a dedicated Lean 4 repository as the ecosystem moved to the Lean 4 generation of the prover.",
     date: "2021-05-09",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Formal corpora & libraries",
     sourceType: "github",
     sourceUrl: "https://api.github.com/repos/leanprover-community/mathlib4",
@@ -91,7 +91,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Translating informal mathematics into proof-assistant specifications is a labor-intensive bottleneck, and neural provers starve without large corpora of formal statements.",
     date: "2022-05-25",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Autoformalization",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2205.12615",
@@ -134,7 +134,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Step-by-step neural provers depend on expensive proof search, and whole-proof generation had not previously been shown to be competitive for formal verification.",
     date: "2023-03-08",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2303.04910",
@@ -176,7 +176,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Premise selection in interactive theorem proving long relied on symbolic methods requiring extensive domain knowledge and engineering effort.",
     date: "2023-03-08",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Prover tooling & interaction",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2303.04488",
@@ -226,7 +226,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Proving theorems in a large library requires sifting through thousands of candidate premises, and existing machine-learning approaches were poorly integrated into the interactive proving workflow.",
     date: "2023-03-17",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof assistant tooling",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2304.00994",
@@ -265,7 +265,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Prior LLM provers assume a fixed theorem library during the whole proving process and struggle even with middle-school-level theorems, while creating new useful lemmas is crucial for advancing mathematics.",
     date: "2023-10-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Agent-based proving",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2310.00656",
@@ -316,7 +316,7 @@ export const events: ResearchEvent[] = [
     problem:
       "State-of-the-art theorem proving models are fine-tuned on environment-specific proof data, which is costly to produce and ties each model to a single proof assistant.",
     date: "2023-10-06",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Agent-based proving",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2310.04353",
@@ -358,7 +358,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Existing neural theorem provers are pretrained on fixed corpora and struggle to prove novel theorems in fully autonomous mode, where human insight may be critical; meanwhile LLMs were hard to integrate into Lean's interactive workflow.",
     date: "2024-04-18",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Prover tooling & interaction",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2404.12534",
@@ -397,7 +397,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Large language models are weak at theorem proving in formal languages like Lean, largely because training data in these languages is scarce.",
     date: "2024-06-06",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Formal corpora & libraries",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2406.03847",
@@ -444,7 +444,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Experimenting with LLM-based Coq proof generation requires gluing together models, classical automation and the proof checker, a setup every research group had to rebuild from scratch.",
     date: "2024-10-25",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof assistant tooling",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2410.19605",

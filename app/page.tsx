@@ -2,51 +2,55 @@ import Link from "next/link";
 import { getStore } from "@/lib/db";
 import { sortEvents } from "@/lib/utils";
 import { SearchBox } from "@/components/search/SearchBox";
-import { EventGrid } from "@/components/research/EventGrid";
+import { EventRow } from "@/components/research/EventRow";
 import { TopicBar } from "@/components/topics/TopicBar";
 import { TrendPanel } from "@/components/topics/TrendPanel";
-import { EVENT_TYPES } from "@/types";
+import { EVENT_TYPES, RESEARCH_AREAS } from "@/types";
 import { getLang, t } from "@/lib/i18n/server";
-import { localizeEvents } from "@/lib/i18n/localize";
+import { displayArea, localizeEvents } from "@/lib/i18n/localize";
 
-export const revalidate = 0;
-
-/** Suggested searches shown under the hero search box. */
-const SUGGESTED = [
-  "theorem proving",
-  "mathematical reasoning",
-  "geometry",
-  "formal mathematics",
-  "mathematical agents",
-  "benchmarks",
-  "Lean",
-  "mathematical discovery",
-];
-
-/** Latest events shown on the home page — enough to prove the feed is alive
- *  without pushing the fold past the first screen. */
-const HOME_LATEST_COUNT = 8;
+/** Rows per rail — enough to prove the feed is alive without pushing the fold
+ *  past the first screen. */
+const HOME_RAIL_COUNT = 5;
 
 export default async function HomePage() {
   const lang = getLang();
   const d = t(lang);
   const store = getStore();
-  const [all, topics] = await Promise.all([store.listEvents({ limit: 500 }), store.listTopics()]);
+  const [all, topics] = await Promise.all([store.listEvents(), store.listTopics()]);
   const latest = sortEvents(all);
   const typeCounts = Object.fromEntries(
     EVENT_TYPES.map((type) => [type, all.filter((e) => e.eventType === type).length])
   ) as Record<(typeof EVENT_TYPES)[number], number>;
 
+  const researchLatest = latest.filter((e) => e.eventType === "Research");
+  const ecosystemLatest = latest.filter((e) => e.eventType !== "Research");
+
+  const rails = [
+    {
+      key: "research",
+      title: d.home.researchRail,
+      href: "/latest?type=Research",
+      events: localizeEvents(researchLatest.slice(0, HOME_RAIL_COUNT), lang),
+    },
+    {
+      key: "ecosystem",
+      title: d.home.ecosystemRail,
+      href: "/latest",
+      events: localizeEvents(ecosystemLatest.slice(0, HOME_RAIL_COUNT), lang),
+    },
+  ];
+
   return (
     <>
-      {/* Hero — compact: name, one-line positioning, search. Height kept
-          deliberately small so the classification nav and the first events
-          stay inside the first screen. */}
+      {/* Hero — compact: positioning, search, six directions. Height is
+          deliberately small so the latest rails stay near the first screen. */}
       <section className="border-b border-ink-200 bg-ink-50">
         <div className="container-page py-8 sm:py-10">
           <div className="max-w-3xl">
+            <div className="mono-label mb-2">{d.nav.brand}</div>
             <h1 className="text-[32px] font-semibold leading-tight tracking-tight sm:text-[40px]">
-              {d.nav.brand}
+              {d.home.heroTitle}
             </h1>
             <p className="mt-2 text-base text-ink-600">{d.home.heroTagline}</p>
 
@@ -54,15 +58,17 @@ export default async function HomePage() {
               <SearchBox variant="hero" />
             </div>
 
+            {/* Same six directions as the /latest area filter, so the entry
+                point and the feed never disagree about the taxonomy. */}
             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
               <span className="mono-label mr-1">{d.common.try}</span>
-              {SUGGESTED.map((s) => (
+              {RESEARCH_AREAS.map((area) => (
                 <Link
-                  key={s}
-                  href={`/search?q=${encodeURIComponent(s)}`}
+                  key={area}
+                  href={`/latest?area=${encodeURIComponent(area)}`}
                   className="chip bg-white hover:border-ink-300 hover:text-ink-900"
                 >
-                  {s}
+                  {displayArea(area, lang)}
                 </Link>
               ))}
             </div>
@@ -106,23 +112,37 @@ export default async function HomePage() {
         </nav>
       </section>
 
-      {/* Latest ecosystem events — pulled up so the first screen shows real
-          content, not just chrome. */}
-      <section className="container-page pb-10">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight">{d.home.latestTitle}</h2>
-            <p className="mt-1 text-sm text-ink-600">{d.home.latestSub}</p>
-          </div>
-          <Link href="/latest" className="text-sm font-medium text-accent-700 hover:underline">
-            {d.common.viewAll} →
-          </Link>
+      {/* Dual latest rails: research and ecosystem move on different clocks,
+          so each gets its own column instead of competing in one feed. */}
+      <section className="container-page py-8">
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold tracking-tight">{d.home.latestHeading}</h2>
+          <p className="mt-1 text-sm text-ink-600">{d.home.latestHeadingSub}</p>
         </div>
-        <EventGrid events={localizeEvents(latest.slice(0, HOME_LATEST_COUNT), lang)} />
+        <div className="grid gap-6 lg:grid-cols-2">
+          {rails.map((rail) => (
+            <div key={rail.key} className="min-w-0">
+              <div className="mb-2 flex items-baseline justify-between gap-3">
+                <h3 className="mono-label">{rail.title}</h3>
+                <Link
+                  href={rail.href}
+                  className="text-sm font-medium text-accent-700 hover:underline"
+                >
+                  {d.common.viewAll} →
+                </Link>
+              </div>
+              <div className="divide-y divide-ink-100 overflow-hidden rounded-md border border-ink-200">
+                {rail.events.map((event) => (
+                  <EventRow key={event.slug} event={event} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Research directions — moved below the fold on purpose. */}
-      <section className="border-t border-ink-200 bg-ink-50">
+      <section className="border-b border-ink-200">
         <div className="container-page py-10">
           <div className="mb-4 flex items-end justify-between">
             <div>

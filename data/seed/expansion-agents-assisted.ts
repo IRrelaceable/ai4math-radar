@@ -1,7 +1,7 @@
 import type { ResearchEvent } from "../../types";
 
 /**
- * Expansion seed: "Mathematical Agents" and "AI-assisted Research" events.
+ * Expansion seed: "Mathematical Agents" and "Mathematical Agents" events.
  * Every URL in this file was fetched and verified against the primary source
  * (arXiv abs pages, plus api.github.com for the one GitHub repo).
  */
@@ -64,7 +64,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Generating novel, experimentally testable hypotheses is the bottleneck of scientific discovery and does not scale with human effort alone.",
     date: "2025-02-26",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Multi-agent discovery",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2502.18864",
@@ -205,7 +205,7 @@ export const events: ResearchEvent[] = [
     significance:
       "Demonstrates that multi-agent LLM systems can reason over structured scientific knowledge to propose mechanism-level hypotheses and design principles, a pattern reused across later AI-for-science agents.",
     date: "2024-09-09",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Multi-agent discovery",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2409.05556",
@@ -240,7 +240,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Automating the entire research process with open-source LLMs — including facing a simulated peer-review process — remained largely unexplored.",
     date: "2024-10-28",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Automated ideation & review",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2411.00816",
@@ -284,7 +284,7 @@ export const events: ResearchEvent[] = [
     significance:
       "One of the first validated systems for literature-grounded research ideation with simulated peer discussion, establishing the idea-generation-plus-reviewer-agents pattern now common in AI-assisted research tooling.",
     date: "2024-04-11",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Automated ideation & review",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2404.07738",
@@ -321,7 +321,7 @@ export const events: ResearchEvent[] = [
     problem:
       "High-quality peer reviews are increasingly difficult to obtain as scholarly output grows, and the utility of LLM-generated scientific feedback had not been systematically studied.",
     date: "2023-10-03",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Agent evaluation & peer review",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2310.01783",
@@ -370,7 +370,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Frontier AI safety policies need to anticipate AI agents automating AI R&D itself, but few evaluations existed with realistic environments and direct human performance comparisons.",
     date: "2024-11-22",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Agent evaluation & peer review",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2411.15114",

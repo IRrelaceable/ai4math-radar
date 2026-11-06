@@ -2,6 +2,7 @@ import type { EventType, RawResearchItem, ResearchArea, SourceTier } from "@/typ
 import { arxivSource } from "./arxiv";
 import { githubSource } from "./github";
 import { OFFICIAL_SOURCE_DEFINITIONS, createOfficialSource } from "./catalog";
+import { createCustomSources } from "./custom";
 
 /**
  * Unified data-input interface (ResearchSource).
@@ -15,7 +16,7 @@ export interface ResearchSource {
   /** Source-level fallback classification used when the generic classifier rejects a category-specific item. */
   defaultEventType?: EventType;
   defaultResearchArea?: ResearchArea;
-  /** Editorial evidence tier this source belongs to; the sync UI groups sources into S1-S5 boards. */
+  /** Editorial evidence tier shown as a per-source label; sync boards group by event class instead. */
   sourceTier?: SourceTier;
   /** Returns unprocessed items newest first; `since` enables incremental manual sync. */
   fetchRecent(options?: { limit?: number; since?: string }): Promise<RawResearchItem[]>;
@@ -55,7 +56,7 @@ const MOCK_RAW_ITEMS: RawResearchItem[] = [
   },
 ];
 
-/** Mock source used by the agent pipeline demo (POST /api/agents/ingest). */
+/** Mock source used by the offline pipeline demo. */
 export const mockResearchSource: ResearchSource = {
   id: "mock",
   label: "Mock Research Source (demo)",
@@ -69,16 +70,24 @@ export const mockResearchSource: ResearchSource = {
 export const researchSources: ResearchSource[] = [mockResearchSource];
 
 /**
- * Live sources hit the public internet, so they remain opt-in through the
- * manual `/sources` page or POST /api/agents/ingest. No scheduler is implied.
+ * Live sources hit the public internet, so they are only used by the sync
+ * script (`npm run sync` / GitHub Actions); nothing fetches them at request time.
  */
 const officialSources = OFFICIAL_SOURCE_DEFINITIONS.map(createOfficialSource);
 
-export const liveResearchSources: Record<string, ResearchSource> = {
-  arxiv: arxivSource,
-  github: githubSource,
-  ...Object.fromEntries(officialSources.map((source) => [source.id, source])),
-};
+/**
+ * Rebuilt on every call so a custom source added to
+ * data/ingested/custom-sources.json is picked up without a restart.
+ */
+export function getLiveResearchSources(): Record<string, ResearchSource> {
+  const customSources = createCustomSources();
+  return {
+    arxiv: arxivSource,
+    github: githubSource,
+    ...Object.fromEntries(
+      [...officialSources, ...customSources].map((source) => [source.id, source])
+    ),
+  };
+}
 
 export type LiveSourceId = string;
-

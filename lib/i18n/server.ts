@@ -1,9 +1,13 @@
-import { cookies } from "next/headers";
 import { dict, type Dict, type Lang } from "./dict";
+import { SITE_LANG } from "@/lib/site";
 
-/** Server-side language: the `lang` cookie, defaulting to Chinese. */
+/**
+ * Language of this build. A static export has no request to read a cookie
+ * from, so the choice is made at build time (see lib/site.ts) — the Chinese
+ * build and the English build are two exports of the same app.
+ */
 export function getLang(): Lang {
-  return cookies().get("lang")?.value === "en" ? "en" : "zh";
+  return SITE_LANG;
 }
 
 /** Server-side dictionary access. */

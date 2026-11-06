@@ -1,12 +1,12 @@
 import Link from "next/link";
+import type { ResearchArea } from "@/types";
 import { getStore } from "@/lib/db";
 import { formatDate, slugify } from "@/lib/utils";
-import { TopicBar } from "@/components/topics/TopicBar";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { BackToTop } from "@/components/ui/BackToTop";
 import { getLang, t } from "@/lib/i18n/server";
 import { countText, fill, pagesDict } from "@/lib/i18n/dict.pages";
-import { EVENT_TYPES } from "@/types";
-
-export const dynamic = "force-dynamic";
+import { displayArea, displaySubArea } from "@/lib/i18n/localize";
 
 export async function generateMetadata() {
   const m = pagesDict[getLang()].meta.topics;
@@ -21,6 +21,7 @@ export default async function TopicsPage() {
   const [topics, events] = await Promise.all([store.listTopics(), store.listEvents()]);
   const max = topics[0]?.count ?? 1;
   const total = topics.reduce((sum, topic) => sum + topic.count, 0);
+  const latest = topics.reduce((date, topic) => (topic.latestDate > date ? topic.latestDate : date), "");
 
   // Sub areas per topic, keyed by the same slug buildTopicStats uses
   // (slugify(researchArea)). Absorbs the research-map tree's only unique axis.
@@ -36,127 +37,86 @@ export default async function TopicsPage() {
   }
   for (const list of subAreasByTopic.values()) list.sort((a, b) => b.count - a.count);
 
-  const typeCounts = EVENT_TYPES.map((type) => ({
-    type,
-    count: events.filter((e) => e.eventType === type).length,
-  }));
-
-  const lineage = [...events]
-    .filter((e) => e.relatedWorks.length > 0)
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, 6);
-
   return (
     <div className="container-page py-10">
-      <div className="mb-7 max-w-3xl">
-        <div className="mono-label mb-2">{d.home.statsAreas}</div>
-        <h1 className="text-2xl font-semibold tracking-tight">{d.nav.topics}</h1>
-        <p className="mt-2 text-sm text-ink-600">
-          {fill(p.topics.sub, { events: total, areas: topics.length })}
-        </p>
-      </div>
+      <PageHeader
+        title={d.nav.topics}
+        description={p.topics.sub}
+        meta={
+          <>
+            <span>{fill(p.topics.areaCount, { n: topics.length })}</span>
+            <span>{countText(p, total, "researchEvent")}</span>
+            {latest && (
+              <span>
+                {p.topics.updatedLabel} {formatDate(latest, lang)}
+              </span>
+            )}
+          </>
+        }
+        action={
+          <Link href="/latest?type=Research" className="btn-ghost">
+            {p.topics.allProgress} →
+          </Link>
+        }
+      />
 
       <div className="grid gap-4 lg:grid-cols-2">
         {topics.map((topic) => {
           const subAreas = subAreasByTopic.get(topic.slug) ?? [];
+          const pct = Math.max(4, Math.round((topic.count / Math.max(1, max)) * 100));
+          const href = `/topics/${topic.slug}`;
+
           return (
-            <div key={topic.slug} className="card p-5">
-              <TopicBar stat={topic} max={max} />
-              <div className="mt-4 grid grid-cols-3 gap-3 border-t border-ink-100 pt-3 text-center">
-                <div>
-                  <div className="font-mono text-lg font-semibold text-ink-900">{topic.count}</div>
-                  <div className="mono-label">{d.common.events}</div>
-                </div>
-                <div>
-                  <div className="font-mono text-lg font-semibold text-ink-900">
-                    {topic.models.length}
-                  </div>
-                  <div className="mono-label">{p.topics.modelsLabel}</div>
-                </div>
-                <div>
-                  <div className="font-mono text-lg font-semibold text-ink-900">
-                    {topic.benchmarks.length}
-                  </div>
-                  <div className="mono-label">{p.topics.benchmarksLabel}</div>
-                </div>
+            <article key={topic.slug} className="card flex h-full flex-col p-5">
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="text-[15px] font-semibold text-ink-900">
+                  <Link href={href} className="hover:text-accent-700">
+                    {displayArea(topic.topic as ResearchArea, lang)}
+                  </Link>
+                </h2>
+                <span className="shrink-0 font-mono text-xs text-ink-500">
+                  {countText(p, topic.count, "researchEvent")}
+                </span>
+              </div>
+
+              <div className="mt-2 h-1.5 w-full rounded-sm bg-ink-100" aria-hidden="true">
+                <div className="h-1.5 rounded-sm bg-accent-600" style={{ width: `${pct}%` }} />
               </div>
 
               {subAreas.length > 0 && (
-                <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-ink-100 pt-3">
-                  <span className="mono-label">{p.topics.subAreasLabel}</span>
+                <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                  <span className="mono-label mr-1">{p.topics.subAreasLabel}</span>
                   {subAreas.map((s) => (
-                    <Link
+                    <span
                       key={s.name}
-                      href={`/topics/${topic.slug}`}
-                      className="chip hover:border-accent-400 hover:text-accent-700"
-                      title={p.topics.subAreaTitle
-                        .replace("{count}", String(s.count))
-                        .replace("{name}", s.name)}
+                      className="chip"
+                      title={fill(p.topics.subAreaTitle, {
+                        count: s.count,
+                        name: displaySubArea(s.name, lang) ?? s.name,
+                      })}
                     >
-                      {s.name}
+                      {displaySubArea(s.name, lang) ?? s.name}
                       <span className="ml-1.5 font-mono text-[10px] text-ink-400">{s.count}</span>
-                    </Link>
+                    </span>
                   ))}
                 </div>
               )}
 
-              <div className="mt-3 flex items-center justify-between">
-                <span className="mono-label normal-case tracking-normal">
-                  {p.topics.latestLabel} {formatDate(topic.latestDate, lang)}
+              <div className="mt-auto flex flex-wrap items-end justify-between gap-2 pt-4 text-xs text-ink-500">
+                <span>
+                  {p.topics.updatedLabel} {formatDate(topic.latestDate, lang)} ·{" "}
+                  {p.topics.modelsLabel} {topic.models.length} · {p.topics.benchmarksLabel}{" "}
+                  {topic.benchmarks.length}
                 </span>
-                <Link
-                  href={`/topics/${topic.slug}`}
-                  className="text-sm font-medium text-accent-700 hover:underline"
-                >
+                <Link href={href} className="text-sm font-medium text-accent-700 hover:underline">
                   {p.topics.openTopic} →
                 </Link>
               </div>
-            </div>
+            </article>
           );
         })}
       </div>
-
-      <div className="mt-8 grid gap-4 lg:grid-cols-2">
-        <div className="card p-5">
-          <div className="mono-label mb-3">{p.topics.eventClasses}</div>
-          <ul className="space-y-2">
-            {typeCounts.map(({ type, count }) => (
-              <li key={type} className="flex items-center gap-2.5 text-sm">
-                <Link
-                  href={`/latest?type=${encodeURIComponent(type)}`}
-                  className="flex-1 hover:text-accent-700"
-                >
-                  {d.trust.type[type]}
-                </Link>
-                <span className="font-mono text-xs text-ink-500">{count}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="card p-5">
-          <div className="mono-label mb-3">{p.topics.recordedLineage}</div>
-          {lineage.length === 0 ? (
-            <p className="text-sm text-ink-500">{p.topics.lineageEmpty}</p>
-          ) : (
-            <ul className="space-y-3">
-              {lineage.map((e) => (
-                <li key={e.id} className="border-l-2 border-accent-300 pl-3">
-                  <Link
-                    href={`/research/${e.slug}`}
-                    className="block text-sm font-medium leading-snug hover:text-accent-700"
-                  >
-                    {e.title}
-                  </Link>
-                  <span className="mono-label mt-0.5 block normal-case tracking-normal">
-                    {e.researchArea} · {countText(p, e.relatedWorks.length, "link")}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+      <BackToTop label={d.common.backToTop} />
     </div>
   );
 }

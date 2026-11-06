@@ -8,14 +8,14 @@ export function Footer() {
 
   return (
     <footer className="mt-16 border-t border-ink-200 bg-ink-50">
-      <div className="container-page grid gap-6 py-8 text-sm text-ink-600 sm:grid-cols-3">
+      <div className="container-page grid gap-6 py-8 text-sm text-ink-600 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <div className="mb-2 text-[13px] font-semibold text-ink-900">{t.nav.brand}</div>
           <p className="leading-relaxed">{t.footer.tagline}</p>
         </div>
         <div>
           <div className="mono-label mb-2">{t.footer.navigate}</div>
-          <ul className="space-y-1.5">
+          <ul className="grid grid-cols-2 gap-x-8 gap-y-1.5">
             <li><Link className="link-quiet" href="/latest">{t.footer.latest}</Link></li>
             <li><Link className="link-quiet" href="/timeline">{t.footer.timeline}</Link></li>
             <li><Link className="link-quiet" href="/topics">{t.footer.topics}</Link></li>

@@ -1,15 +1,17 @@
-"use client";
-
 import Link from "next/link";
 import { buildTrends } from "@/lib/trends";
 import { slugify } from "@/lib/utils";
-import type { ResearchEvent } from "@/types";
-import { useLang } from "@/lib/i18n/context";
+import type { ResearchArea, ResearchEvent } from "@/types";
+import { getLang } from "@/lib/i18n/server";
 import { componentsDict } from "@/lib/i18n/dict.components";
+import { displayArea } from "@/lib/i18n/localize";
 
 /**
  * Momentum panel: recorded activity in the last N days vs the previous window.
  * Counts of tracked events only — pair with the verification labels.
+ *
+ * Server-rendered: the home page holds every event for its tiles and counts, so
+ * building the trend summary here keeps those events out of the client bundle.
  */
 export function TrendPanel({
   events,
@@ -18,7 +20,7 @@ export function TrendPanel({
   events: ResearchEvent[];
   windowDays?: number;
 }) {
-  const { lang } = useLang();
+  const lang = getLang();
   const c = componentsDict[lang];
   const newest = events.reduce((max, e) => (e.date > max ? e.date : max), "");
   const nowMs = Date.now();
@@ -65,7 +67,7 @@ export function TrendPanel({
                 className="w-44 shrink-0 truncate text-sm font-medium hover:text-accent-700"
                 title={t.area}
               >
-                {t.area}
+                {displayArea(t.area as ResearchArea, lang)}
               </Link>
               <div className="flex h-2 flex-1 items-center gap-1.5" aria-hidden>
                 <div
@@ -94,4 +96,3 @@ export function TrendPanel({
     </div>
   );
 }
-

@@ -60,17 +60,14 @@ function mapEvent(row: any): ResearchEvent {
     problem: row.problem ?? undefined,
     isDemo: row.isDemo ?? false,
     /* trust model (objective, observable corroboration labels) */
-    verificationStatus: row.verificationStatus ?? "claimed",
     evidenceLevel: row.evidenceLevel ?? "E2",
-    sourceTier: row.sourceTier ?? "S1",
+    sourceTier: row.sourceTier ?? "S0",
     eventType: row.eventType ?? undefined,
     researchEventType: row.researchEventType ?? undefined,
     metadata: (row.metadata ?? undefined) as ResearchEvent["metadata"],
     provenance: row.provenance ?? "curated",
-    reviewStatus: row.reviewStatus ?? (row.provenance === "automated" ? "pending" : "approved"),
     verificationHistory: (row.verificationRecords ?? []).map((r: any) => ({
       date: toIsoDate(r.date),
-      status: r.status,
       evidenceLevel: r.evidenceLevel,
       note: r.note ?? undefined,
     })),
@@ -101,7 +98,7 @@ export class PrismaStore implements ResearchStore {
   }
 
   async listEvents(options: ListEventsOptions = {}): Promise<ResearchEvent[]> {
-    const { eventType, area, q, status, evidence, tier, model, benchmark, dataset, since, year, limit } =
+    const { eventType, area, q, evidence, tier, model, benchmark, dataset, since, year, limit } =
       options;
     const rows = await this.client.researchEvent.findMany({
       where: {
@@ -119,8 +116,7 @@ export class PrismaStore implements ResearchStore {
               ],
             }
           : {}),
-        /* trust-model filters */
-        ...(status ? { verificationStatus: status } : {}),
+        /* evidence/source filters */
         ...(evidence ? { evidenceLevel: evidence } : {}),
         ...(tier ? { sourceTier: tier } : {}),
         /* facet filters (denormalized String[] columns) */
@@ -176,7 +172,3 @@ export class PrismaStore implements ResearchStore {
     return searchEvents(await this.allEvents(), query);
   }
 }
-
-
-
-

@@ -24,58 +24,58 @@ interface Rule {
  */
 const RULES: Rule[] = [
   {
-    area: "Theorem Proving",
-    subArea: "Lean",
+    area: "Theorem Proving & Formal Mathematics",
+    subArea: "Prover tooling & interaction",
     score: 86,
     keywords: ["theorem prov", "proof search", "lean", "tactic", "formal proof", "prover", "isabelle", "coq"],
   },
   {
-    area: "Mathematical Reasoning",
-    subArea: "chain-of-thought",
+    area: "Mathematical Reasoning & LLMs",
+    subArea: "Prompting & decoding",
     score: 74,
-    keywords: ["reasoning", "chain-of-thought", "step-by-step", "problem solv", "quantitative"],
+    keywords: ["reasoning", "chain-of-thought", "step-by-step", "problem solv", "quantitative", "word problem"],
   },
   {
-    area: "Formal Mathematics",
-    subArea: "formalization",
+    area: "Theorem Proving & Formal Mathematics",
+    subArea: "Autoformalization",
     score: 80,
     // "kernel" removed: CNN/ML papers talk about convolution kernels, which
     // mis-filed them into formal mathematics.
     keywords: ["formaliz", "formal math", "verified", "proof assistant"],
   },
   {
-    area: "Mathematical Discovery",
-    subArea: "conjecture",
+    area: "Mathematical Discovery & Symbolic Computation",
+    subArea: "AI-proved results & conjectures",
     score: 90,
     keywords: ["discover", "conjecture", "new construction", "autonomous research"],
   },
   {
     area: "Geometry",
-    subArea: "olympiad geometry",
+    subArea: "Geometry problem solving",
     score: 88,
     keywords: ["geometry", "olympiad", "euclidean", "diagram", "auxiliary construction"],
   },
   {
     area: "Mathematical Agents",
-    subArea: "multi-step tools",
+    subArea: "Engineering & tool agents",
     score: 78,
     keywords: ["agent", "tool use", "agentic", "autonomous", "multi-step"],
   },
   {
     area: "Benchmarks & Datasets",
-    subArea: "evaluation",
+    subArea: "Theorem & multimodal benchmarks",
     score: 70,
     keywords: ["benchmark", "dataset", "evaluation", "leaderboard", "test suite"],
   },
   {
-    area: "LLM for Mathematics",
-    subArea: "math-specialized models",
+    area: "Mathematical Reasoning & LLMs",
+    subArea: "Math-specialized models",
     score: 76,
     keywords: ["large language model", "llm", "language model", "pretrain", "fine-tun"],
   },
   {
-    area: "Symbolic Mathematics",
-    subArea: "cas",
+    area: "Mathematical Discovery & Symbolic Computation",
+    subArea: "Equation solving & discovery",
     score: 72,
     keywords: ["symbolic", "computer algebra", "simplification", "equation solving"],
   },
@@ -110,6 +110,17 @@ const TIER1_MATH_SIGNALS = [
   "olympiad",
   "putnam",
   "minerva",
+  // A math word problem, geometry problem or symbolic-regression task is the
+  // subject of the paper, not a passing example — these phrases are as
+  // decisive as "theorem" and were previously rejected for lacking one.
+  "word problem",
+  "math problem",
+  "mathematical problem",
+  "mathematical reasoning",
+  "geometry problem",
+  "geometric reasoning",
+  "symbolic regression",
+  "equation discovery",
 ];
 
 const TIER2_MATH_SIGNALS = [
@@ -157,26 +168,43 @@ const AI_SIGNALS = [
   "prompt",
   "fine-tun",
   "pretrain",
+  // Frontier-lab names: their blog posts describe model output without always
+  // naming the model, e.g. "OpenAI shares model results on the Kakeya conjecture".
+  "openai",
+  "anthropic",
+  "deepmind",
 ];
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+/**
+ * "Lean" is also an ordinary English word: "Leaner Transformers", "machine
+ * leaning", and the all-caps acronym "LEAN:" all matched the old prefix rule
+ * and filed ML papers under theorem proving. The proof assistant is written
+ * "Lean" (or lowercase "lean" as a standalone token), so match it
+ * case-sensitively and reject letter continuations ("leaner", "leaning") while
+ * still accepting "Lean 4", "Lean4" and "LeanDojo".
+ */
+const LEAN_NAME = /(?<![A-Za-z])(?:Lean|lean)(?![a-z])/;
+
 /** Word-start anchored match: "lean" must not match "clean". */
-function hasSignal(text: string, signal: string): boolean {
+function hasSignal(text: string, signal: string, original?: string): boolean {
+  if (signal === "lean") return LEAN_NAME.test(original ?? text);
   return new RegExp(`\\b${escapeRegExp(signal)}`, "i").test(text);
 }
 
-function matchedKeywords(rule: Rule, text: string): string[] {
-  return rule.keywords.filter((k) => hasSignal(text, k));
+function matchedKeywords(rule: Rule, text: string, original?: string): string[] {
+  return rule.keywords.filter((k) => hasSignal(text, k, original));
 }
 
 /** Stage 1 -> 2 of the MVP pipeline: RawResearchItem -> classification. */
 export function classifyItem(item: RawResearchItem): Classification {
   // "proof of concept" in security/systems papers is not a mathematical
   // proof — strip it so it cannot satisfy the decisive "proof" signal.
-  const text = `${item.title}\n${item.abstract ?? ""}`
+  const raw = `${item.title}\n${item.abstract ?? ""}`;
+  const text = raw
     .toLowerCase()
     .replace(/proof[\s-]of[\s-]concept/g, " ");
   const reasons: string[] = [];
@@ -188,8 +216,8 @@ export function classifyItem(item: RawResearchItem): Classification {
   }
 
   // Two-tier math gate: one decisive signal, or two distinct weak signals.
-  const tier1Hits = TIER1_MATH_SIGNALS.filter((s) => hasSignal(text, s));
-  const tier2Hits = TIER2_MATH_SIGNALS.filter((s) => hasSignal(text, s));
+  const tier1Hits = TIER1_MATH_SIGNALS.filter((s) => hasSignal(text, s, raw));
+  const tier2Hits = TIER2_MATH_SIGNALS.filter((s) => hasSignal(text, s, raw));
   if (tier1Hits.length === 0 && tier2Hits.length < 2) {
     reasons.push(
       "no strong AI4Math signal (theorem/proof/Lean/formalization/...); " +
@@ -198,14 +226,15 @@ export function classifyItem(item: RawResearchItem): Classification {
     return { isAI4Math: false, reasons };
   }
 
-  if (!AI_SIGNALS.some((signal) => hasSignal(text, signal))) {
+  if (!AI_SIGNALS.some((signal) => hasSignal(text, signal, raw))) {
     reasons.push("no AI/ML component detected (plain mathematics is out of scope)");
     return { isAI4Math: false, reasons };
   }
 
-  const hits = RULES.map((rule) => ({ rule, matched: matchedKeywords(rule, text) })).filter(
-    (h) => h.matched.length > 0
-  );
+  const hits = RULES.map((rule) => ({
+    rule,
+    matched: matchedKeywords(rule, text, raw),
+  })).filter((h) => h.matched.length > 0);
   if (hits.length === 0) {
     reasons.push("no AI4Math area keyword matched");
     return { isAI4Math: false, reasons };
@@ -236,4 +265,3 @@ export function classifyItem(item: RawResearchItem): Classification {
 export function isKnownArea(value: string): value is ResearchArea {
   return (RESEARCH_AREAS as readonly string[]).includes(value);
 }
-

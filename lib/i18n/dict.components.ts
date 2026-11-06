@@ -25,19 +25,19 @@ const zh = {
       "180d": "最近 180 天",
       "365d": "最近一年",
     },
-    advancedLabel: "高级筛选",
-    advancedAll: "默认",
-    advancedSummary: "已启用",
     clearFilters: "清除筛选",
     noResultsTitle: "没有匹配的事件",
     noResultsHint: "试试放宽筛选条件，或清除全部筛选。",
     resultsCount: "{n} 条结果",
-    statusLabel: "核验状态",
-    statusAll: "全部状态",
     evidenceLabel: "证据等级",
-    evidenceAll: "全部证据",
+    evidenceAll: "任意证据等级",
     tierLabel: "来源层级",
-    tierAll: "全部来源",
+    expandYearMonths: "展开全年",
+    collapseYearMonths: "收起全年",
+    tierAll: "任意来源层级",
+    viewLabel: "视图",
+    loading: "正在载入事件…",
+    loadError: "事件数据载入失败，请刷新页面重试。",
   },
 
   // components/research/LineageTimeline.tsx
@@ -51,12 +51,14 @@ const zh = {
   // components/research/PipelineStrip.tsx
   pipeline: {
     researchSource: "研究来源",
-    researchSourceHint: "arXiv · GitHub · 会议 · 博客（v1 为模拟数据）",
+    researchSourceHint: "arXiv · GitHub · 会议 · 博客",
+    rawItem: "原始条目",
     rawInputHint: "未处理的原始输入",
     normalizer: "规范化器",
     normalizerHint: "统一字段",
     classifier: "分类器",
     classifierHint: "是否 AI4Math？方向？",
+    event: "事件条目",
     eventHint: "发生了什么 + 为什么重要",
   },
 
@@ -93,20 +95,22 @@ const zh = {
     submit: "搜索",
     heroAria: "搜索 AI4Math 研究",
     headerAria: "搜索研究内容",
-    kbdHint: "按 Enter 搜索",
+    kbdHint: "按 / 聚焦搜索，回车提交",
   },
 
   // components/search/SearchResults.tsx
   results: {
     groupEvents: "研究事件",
     typeQueryBefore: "输入查询词，例如 ",
+    typeQueryExampleA: "定理证明",
     typeQueryMiddle: " 或 ",
+    typeQueryExampleB: "智能体",
     typeQueryAfter: "。",
     searchingPrefix: "正在搜索",
     searchErrorPrefix: "搜索出错：",
     noResultsBefore: "没有找到与",
     noResultsAfter:
-      "相关的结果。试试方向名（Geometry）、系统名（Lean），或模型 / Benchmark 名称。",
+      "相关的结果。试试方向名（几何）、系统名（Lean），或模型 / Benchmark 名称。",
     countPrefix: "条与",
     countSuffix: "相关的结果",
   },
@@ -132,19 +136,19 @@ const en: ComponentsDict = {
       "180d": "Last 180 days",
       "365d": "Last 12 months",
     },
-    advancedLabel: "Advanced",
-    advancedAll: "Default",
-    advancedSummary: "Active",
     clearFilters: "Clear filters",
     noResultsTitle: "No events match",
     noResultsHint: "Try loosening the filters, or clear them all.",
     resultsCount: "{n} results",
-    statusLabel: "Verification status",
-    statusAll: "Any status",
     evidenceLabel: "Evidence level",
-    evidenceAll: "Any evidence",
+    evidenceAll: "Any evidence level",
     tierLabel: "Source tier",
-    tierAll: "Any source",
+    expandYearMonths: "Expand all months",
+    collapseYearMonths: "Collapse all months",
+    tierAll: "Any source tier",
+    viewLabel: "View",
+    loading: "Loading events…",
+    loadError: "Could not load the event data. Reload the page to try again.",
   },
 
   // components/research/LineageTimeline.tsx
@@ -158,12 +162,14 @@ const en: ComponentsDict = {
   // components/research/PipelineStrip.tsx
   pipeline: {
     researchSource: "Research source",
-    researchSourceHint: "arXiv · GitHub · Conference · Blog (mock in v1)",
+    researchSourceHint: "arXiv · GitHub · Conference · Blog",
+    rawItem: "RawResearchItem",
     rawInputHint: "unprocessed input",
     normalizer: "Normalizer",
     normalizerHint: "uniform fields",
     classifier: "Classifier",
     classifierHint: "AI4Math? area?",
+    event: "ResearchEvent",
     eventHint: "what happened + why it matters",
   },
 
@@ -200,14 +206,16 @@ const en: ComponentsDict = {
     submit: "Search",
     heroAria: "Search AI4Math research",
     headerAria: "Search research",
-    kbdHint: "Press Enter to search",
+    kbdHint: "Press / to focus, Enter to search",
   },
 
   // components/search/SearchResults.tsx
   results: {
     groupEvents: "Research Events",
     typeQueryBefore: "Type a query such as ",
+    typeQueryExampleA: "Lean theorem proving",
     typeQueryMiddle: " or ",
+    typeQueryExampleB: "mathematical agents",
     typeQueryAfter: ".",
     searchingPrefix: "Searching ",
     searchErrorPrefix: "Search error: ",
@@ -220,4 +228,3 @@ const en: ComponentsDict = {
 };
 
 export const componentsDict: Record<Lang, ComponentsDict> = { zh, en };
-

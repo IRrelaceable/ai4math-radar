@@ -1,10 +1,11 @@
-"use client";
-
 import Link from "next/link";
-import type { ResearchEvent } from "@/types";
+import type { ListEvent } from "@/types";
 import { formatDate } from "@/lib/utils";
-import { cardTrustSummary, EventTypePill } from "@/components/ui/TrustBadges";
-import { useT } from "@/lib/i18n/context";
+import { cardTrustSummary } from "@/lib/trustLabels";
+import { displayResearchArea } from "@/lib/i18n/localize";
+import { SITE_LANG } from "@/lib/site";
+import { dict } from "@/lib/i18n/dict";
+import { pagesDict } from "@/lib/i18n/dict.pages";
 
 /**
  * The standard Research Event card.
@@ -14,37 +15,52 @@ import { useT } from "@/lib/i18n/context";
  * used to have squeezed the title in narrow grid cells and duplicated the
  * trust information that the detail page already explains in full.
  *
- * Badge budget (see `cardTrustSummary` in TrustBadges.tsx):
- *   1 event-type badge · at most 1 status badge · 1 primary link.
+ * Badge budget (see `cardTrustSummary` in lib/trustLabels.ts):
+ *   1 event-type badge · 1 primary link.
  * Evidence + tier collapse to a compact "E2 · S2" string in the meta line,
  * and the research direction moves under the title as plain text so it reads
  * as context rather than as a second badge.
+ *
+ * Rendered on the server: the feed shows hundreds of these, so keeping them
+ * out of the client bundle avoids hydrating a card grid on every navigation.
  */
-export function EventCard({ event }: { event: ResearchEvent }) {
-  const { t, lang } = useT();
-  const trust = cardTrustSummary(event, t);
-  const primaryUrl = event.paperUrl || event.sourceUrl;
+export function EventCard({ event }: { event: ListEvent }) {
+  const lang = SITE_LANG;
+  const t = dict[lang];
+  const trust = cardTrustSummary(event);
+  // The label must match the artifact: a paper only when the record really
+  // carries a paper link, a repository when the source is the code, and a
+  // plain source link otherwise (news, blog, policy page).
+  const primaryLink = event.paperUrl
+    ? { url: event.paperUrl, label: t.common.paper }
+    : event.githubUrl
+      ? { url: event.githubUrl, label: t.common.github }
+      : event.sourceUrl
+        ? { url: event.sourceUrl, label: t.common.source }
+        : undefined;
+  const areaLabel = displayResearchArea(event, lang);
 
   return (
     <article className="card card-hover flex flex-col p-5">
-      {/* Type badge sits above the title — it classifies the card, so it reads first. */}
-      <div className="flex flex-wrap items-center gap-2">
-        {event.eventType && <EventTypePill type={event.eventType} />}
-        <span className="font-mono text-xs text-ink-500">{formatDate(event.date, lang)}</span>
-      </div>
-
-      <h3 className="mt-2.5 text-[17px] font-semibold leading-snug tracking-tight">
+      <h3 className="line-clamp-2 text-[17px] font-semibold leading-snug tracking-tight">
         <Link href={`/research/${event.slug}`} className="hover:text-accent-700">
           {event.title}
         </Link>
       </h3>
 
-      {/* Research direction as quiet meta text under the title, not a badge. */}
-      {event.researchArea && (
-        <div className="mt-1 text-xs text-ink-500">
-          {event.subArea ? `${event.researchArea} · ${event.subArea}` : event.researchArea}
-        </div>
-      )}
+      {/* Class, research context and date sit together below the title. */}
+      <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-ink-500">
+        {event.eventType && (
+          <span
+            title={pagesDict[lang].methodology.typeDesc[event.eventType]}
+            className="chip border border-ink-200 bg-ink-50 font-medium text-ink-700"
+          >
+            {t.trust.type[event.eventType]}
+          </span>
+        )}
+        {event.researchArea && <span>{areaLabel}</span>}
+        <span className="ml-auto font-mono">{formatDate(event.date, lang)}</span>
+      </div>
 
       {/* Automated entries can carry a full abstract; clamp so one long card
           never stretches its whole grid row. */}
@@ -65,35 +81,20 @@ export function EventCard({ event }: { event: ResearchEvent }) {
           page, so a card never competes with itself for the reader's click. */}
       <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-ink-100 pt-3 text-xs">
         {trust.evidence && (
-          <span className="font-mono text-ink-500" title={t.common.automatedHint}>
-            {t.common.evidenceShort} {trust.evidence}
-          </span>
-        )}
-        {trust.statusBadge && (
-          <span
-            className={`chip border font-medium ${trust.statusBadge.tone}`}
-            title={trust.statusBadge.title}
-          >
-            {trust.statusBadge.label}
-          </span>
-        )}
-        {trust.needsReview && !trust.statusBadge && (
-          <span className="chip border border-amber-200 bg-amber-50 font-medium text-amber-800">
-            {t.common.pending}
+          <span className="font-mono text-ink-500">
+            {trust.evidence}
           </span>
         )}
 
         <span className="ml-auto flex items-center gap-3">
-          {primaryUrl && (
+          {primaryLink && (
             <a
-              href={primaryUrl}
+              href={primaryLink.url}
               target="_blank"
               rel="noopener noreferrer"
               className="link-quiet font-medium"
             >
-              {event.eventType === undefined || event.eventType === "Research"
-                ? t.common.paper
-                : t.common.source}
+              {primaryLink.label}
             </a>
           )}
           <Link

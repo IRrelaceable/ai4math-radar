@@ -1,25 +1,22 @@
 import { loadSourceOverview } from "@/lib/db/sourceStatus";
-import { SourceSyncPanel } from "@/components/sources/SourceSyncPanel";
-import { getLang } from "@/lib/i18n/server";
+import { SourceBoards } from "@/components/sources/SourceBoards";
+import { BackToTop } from "@/components/ui/BackToTop";
+import { getLang, t } from "@/lib/i18n/server";
 import { pagesDict } from "@/lib/i18n/dict.pages";
-
-export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const m = pagesDict[getLang()].meta.sources;
   return { title: m.title, description: m.desc };
 }
 
-export default async function SourcesPage() {
-  const { boards, pending } = await loadSourceOverview();
+export default function SourcesPage() {
+  const { boards } = loadSourceOverview();
+  const lang = getLang();
 
   return (
     <div className="container-page py-10">
-      <SourceSyncPanel
-        boards={boards}
-        pending={pending}
-        labels={pagesDict[getLang()].sources}
-      />
+      <SourceBoards boards={boards} labels={pagesDict[lang].sources} />
+      <BackToTop label={t(lang).common.backToTop} />
     </div>
   );
 }

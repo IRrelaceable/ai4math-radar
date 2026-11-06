@@ -14,6 +14,15 @@ export const INGESTED_DIR = path.join(process.cwd(), "data", "ingested");
 export const INGESTED_FILE = path.join(INGESTED_DIR, "events.json");
 const FINGERPRINT_FILE = path.join(INGESTED_DIR, "fingerprints.json");
 
+/** Modification time of the ingested cache, used to invalidate the seed store. */
+export function ingestedFileMtimeMs(): number {
+  try {
+    return fs.statSync(INGESTED_FILE).mtimeMs;
+  } catch {
+    return 0;
+  }
+}
+
 export function readIngestedEvents(): ResearchEvent[] {
   try {
     const raw = fs.readFileSync(INGESTED_FILE, "utf8");
@@ -88,7 +97,6 @@ export function appendIngestedEvents(events: ResearchEvent[]): {
     else added += 1;
     bySlug.set(event.slug, {
       ...event,
-      reviewStatus: previous?.reviewStatus ?? event.reviewStatus ?? "pending",
       createdAt: previous?.createdAt ?? event.createdAt,
       updatedAt: event.updatedAt,
     });

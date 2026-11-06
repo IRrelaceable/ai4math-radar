@@ -4,10 +4,8 @@ import { useLang } from "@/lib/i18n/context";
 import { componentsDict } from "@/lib/i18n/dict.components";
 
 /**
- * Compact visualization of the agent data path.
- *
- * `RawResearchItem` and `ResearchEvent` are code-level type names and stay in
- * English; the human-facing stage names and hints are localized.
+ * Compact visualization of the agent data path. Every stage label is
+ * localized: the Chinese page must read as Chinese throughout.
  */
 export function PipelineStrip() {
   const { lang } = useLang();
@@ -15,10 +13,10 @@ export function PipelineStrip() {
 
   const steps: { label: string; hint: string }[] = [
     { label: c.pipeline.researchSource, hint: c.pipeline.researchSourceHint },
-    { label: "RawResearchItem", hint: c.pipeline.rawInputHint },
+    { label: c.pipeline.rawItem, hint: c.pipeline.rawInputHint },
     { label: c.pipeline.normalizer, hint: c.pipeline.normalizerHint },
     { label: c.pipeline.classifier, hint: c.pipeline.classifierHint },
-    { label: "ResearchEvent", hint: c.pipeline.eventHint },
+    { label: c.pipeline.event, hint: c.pipeline.eventHint },
   ];
 
   return (

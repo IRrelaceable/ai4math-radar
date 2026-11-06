@@ -98,9 +98,8 @@ async function main() {
         datasetNames: e.dataset ?? [],
         isDemo: e.isDemo ?? false,
         /* trust model */
-        verificationStatus: e.verificationStatus ?? "claimed",
         evidenceLevel: e.evidenceLevel ?? "E2",
-        sourceTier: e.sourceTier ?? "S1",
+        sourceTier: e.sourceTier ?? "S0",
         eventType: e.eventType ?? "Research",
         researchEventType: e.researchEventType,
         metadata:
@@ -108,11 +107,9 @@ async function main() {
             ? Prisma.DbNull
             : (e.metadata as unknown as Prisma.InputJsonValue),
         provenance: e.provenance ?? "curated",
-        reviewStatus: e.reviewStatus ?? (e.provenance === "automated" ? "pending" : "approved"),
         verificationRecords: {
           create: (e.verificationHistory ?? []).map((r) => ({
             date: toUtcDate(r.date),
-            status: r.status,
             evidenceLevel: r.evidenceLevel,
             note: r.note,
           })),
@@ -177,6 +174,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-
-

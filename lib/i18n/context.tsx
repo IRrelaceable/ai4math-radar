@@ -1,19 +1,15 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { useRouter } from "next/navigation";
 import { dict, type Dict, type Lang } from "./dict";
+import { SITE_LANG } from "@/lib/site";
 
 interface LangContextValue {
   lang: Lang;
-  setLang: (next: Lang) => void;
 }
 
-/** Default to Chinese: the primary audience reads Chinese UI text. */
-export const LangContext = createContext<LangContextValue>({
-  lang: "zh",
-  setLang: () => {},
-});
+/** Fixed per build: the language is chosen when the static site is exported. */
+export const LangContext = createContext<LangContextValue>({ lang: SITE_LANG });
 
 export function useLang(): LangContextValue {
   return useContext(LangContext);
@@ -23,15 +19,4 @@ export function useLang(): LangContextValue {
 export function useT(): { lang: Lang; t: Dict } {
   const { lang } = useLang();
   return { lang, t: dict[lang] as Dict };
-}
-
-/** Sets the `lang` cookie and re-renders the current route server-side. */
-export function useSetLang() {
-  const router = useRouter();
-  const { setLang } = useLang();
-  return (next: Lang) => {
-    setLang(next);
-    document.cookie = `lang=${next}; path=/; max-age=31536000`;
-    router.refresh();
-  };
 }

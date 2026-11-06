@@ -4,85 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import type { ResearchEvent } from "@/types";
 import { formatDateLong } from "@/lib/utils";
-import { EvidenceLevelPill, VerificationBadge } from "@/components/ui/TrustBadges";
+import { EvidenceLevelPill, VerificationStatusPill } from "@/components/ui/TrustBadges";
 import { useT } from "@/lib/i18n/context";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 
-const RELATED_PREVIEW_COUNT = 3;
-
-/**
- * Related works with a "show more" toggle — first 3 shown by default.
- * Extracted as a client component because the detail page itself is a server
- * component and cannot host interactive state.
- */
-export function RelatedWorksSection({ event }: { event: ResearchEvent }) {
-  const [expanded, setExpanded] = useState(false);
-  const { t } = useT();
-  const d = t.detail;
-
-  // 64% of events carry no curated lineage. Rendering a heading plus a
-  // "not recorded yet" sentence for those just adds a dead block to an
-  // otherwise thin column, so the section disappears entirely and the
-  // page falls back to "more in this area" for context.
-  if (event.relatedWorks.length === 0) {
-    return null;
-  }
-
-  const visible = expanded
-    ? event.relatedWorks
-    : event.relatedWorks.slice(0, RELATED_PREVIEW_COUNT);
-
-  return (
-    <section className="mt-7">
-      <h2 className="text-lg font-semibold tracking-tight text-ink-900">
-        {d.relatedWorks}
-      </h2>
-      <ul className="mt-2 grid gap-2 sm:grid-cols-2">
-        {visible.map((w) => (
-          <li key={`${w.relation}-${w.title}`} className="card px-4 py-3">
-            <div className="mono-label mb-1 normal-case tracking-normal">
-              {w.relation === "previous"
-                ? d.previous
-                : w.relation === "followup"
-                  ? d.followup
-                  : d.related}
-            </div>
-            <div className="text-sm font-medium">
-              {w.url ? (
-                <a
-                  href={w.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-accent-700"
-                >
-                  {w.title}
-                </a>
-              ) : (
-                w.title
-              )}
-            </div>
-            {w.note && <div className="mt-1 text-xs text-ink-500">{w.note}</div>}
-          </li>
-        ))}
-      </ul>
-      {event.relatedWorks.length > RELATED_PREVIEW_COUNT && (
-        <button
-          type="button"
-          onClick={() => setExpanded((e) => !e)}
-          className="mt-3 text-sm font-medium text-accent-700 hover:underline"
-        >
-          {expanded
-            ? t.detail.showLess
-            : `${t.detail.showMoreRelated} (${event.relatedWorks.length - RELATED_PREVIEW_COUNT})`}
-        </button>
-      )}
-    </section>
-  );
-}
-
 /**
  * Verification history — collapsed by default, expanded on click.
- * Extracted as a client component for the same reason as RelatedWorksSection.
+ * Extracted as a client component because the detail page itself is a server
+ * component and cannot host interactive state.
  */
 export function VerificationHistorySection({ event }: { event: ResearchEvent }) {
   const [open, setOpen] = useState(false);
@@ -92,7 +21,7 @@ export function VerificationHistorySection({ event }: { event: ResearchEvent }) 
   if (history.length === 0) return null;
 
   return (
-    <section className="mt-7">
+    <section id="verification" className="mt-7 scroll-mt-24">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -122,8 +51,8 @@ export function VerificationHistorySection({ event }: { event: ResearchEvent }) 
                   <span className="font-mono text-xs text-ink-500">
                     {formatDateLong(r.date, lang)}
                   </span>
-                  <VerificationBadge status={r.status} />
                   <EvidenceLevelPill level={r.evidenceLevel} />
+                  {r.status && <VerificationStatusPill status={r.status} />}
                 </div>
                 {r.note && (
                   <p className="mt-1 text-sm leading-relaxed text-ink-600">{r.note}</p>

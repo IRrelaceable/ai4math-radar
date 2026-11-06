@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { events } from "@/data/seed/events";
 import { applyTrustModel, validateSubAreas } from "@/lib/verification";
 import {
+  AI_ROLE_LEVELS,
   EVIDENCE_LEVELS,
   EVENT_TYPES,
   RESEARCH_AREAS,
@@ -48,10 +49,27 @@ describe("seed data integrity", () => {
       if (e.eventType) expect(EVENT_TYPES, `${e.slug} eventType`).toContain(e.eventType);
       if (e.researchEventType)
         expect(RESEARCH_EVENT_TYPES, `${e.slug} researchEventType`).toContain(e.researchEventType);
-      if (e.verificationStatus)
-        expect(VERIFICATION_STATUSES, `${e.slug} status`).toContain(e.verificationStatus);
       if (e.evidenceLevel) expect(EVIDENCE_LEVELS, `${e.slug} evidence`).toContain(e.evidenceLevel);
       if (e.sourceTier) expect(SOURCE_TIERS, `${e.slug} tier`).toContain(e.sourceTier);
+      if (e.verificationStatus)
+        expect(VERIFICATION_STATUSES, `${e.slug} status`).toContain(e.verificationStatus);
+      if (e.aiRole) expect(AI_ROLE_LEVELS, `${e.slug} aiRole`).toContain(e.aiRole.level);
+      for (const record of e.verificationHistory ?? []) {
+        if (record.status)
+          expect(VERIFICATION_STATUSES, `${e.slug} history status`).toContain(record.status);
+      }
+    }
+  });
+
+  it("keeps the current verification state aligned with the last recorded state", () => {
+    for (const e of events) {
+      if (!e.verificationStatus || !e.verificationHistory?.length) continue;
+      const lastStatus = [...e.verificationHistory].reverse().find((r) => r.status)?.status;
+      if (lastStatus) {
+        expect(lastStatus, `${e.slug} current state must match the last history entry`).toBe(
+          e.verificationStatus
+        );
+      }
     }
   });
 
@@ -66,14 +84,10 @@ describe("seed data integrity", () => {
   });
 
 
-  it("demo events are fully flagged; real events never use example.org", () => {
+  it("curated events never point at example domains", () => {
     for (const e of events) {
-      if (e.isDemo) {
-        expect(e.sourceType, `${e.slug} demo sourceType`).toBe("demo");
-        expect(e.sourceUrl, `${e.slug} demo source`).toContain("example.org");
-      } else {
-        expect(e.sourceUrl, `${e.slug} must not use the demo domain`).not.toContain("example.org");
-      }
+      expect(e.sourceUrl, `${e.slug} must not use a demo domain`).not.toContain("example.org");
+      expect(e.sourceType, `${e.slug} must not be a demo item`).not.toBe("demo");
     }
   });
 
@@ -89,7 +103,6 @@ describe("seed data integrity", () => {
   it("trust model fills every gap without throwing", () => {
     for (const e of events) {
       const filled = applyTrustModel(e);
-      expect(filled.verificationStatus).toBeTruthy();
       expect(filled.evidenceLevel).toBeTruthy();
       expect(filled.sourceTier).toBeTruthy();
       expect(filled.eventType).toBeTruthy();
@@ -101,4 +114,3 @@ describe("seed data integrity", () => {
     expect(problems, problems.join("\n")).toEqual([]);
   });
 });
-

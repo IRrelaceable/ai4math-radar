@@ -1,25 +1,48 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/lib/i18n/context";
 import { componentsDict } from "@/lib/i18n/dict.components";
 
 interface Props {
   variant?: "header" | "hero";
   autoFocus?: boolean;
+  initialQuery?: string;
 }
 
 /**
  * Site-wide search entry point. Submits to /search?q=..., which queries the
- * API data layer across events, papers, topics, models and benchmarks.
+ * static dataset across events, papers, topics, models and benchmarks.
  */
-export function SearchBox({ variant = "header", autoFocus }: Props) {
+export function SearchBox({ variant = "header", autoFocus, initialQuery = "" }: Props) {
   const router = useRouter();
   const { lang } = useLang();
   const c = componentsDict[lang];
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(initialQuery);
+  const inputRef = useRef<HTMLInputElement>(null);
   const isHero = variant === "hero";
+
+  // Pressing "/" anywhere focuses the header search, the convention most
+  // documentation sites use. Skip when the user is already typing somewhere.
+  useEffect(() => {
+    if (isHero) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
+      const el = document.activeElement;
+      if (
+        el instanceof HTMLInputElement ||
+        el instanceof HTMLTextAreaElement ||
+        (el instanceof HTMLElement && el.isContentEditable)
+      ) {
+        return;
+      }
+      e.preventDefault();
+      inputRef.current?.focus();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isHero]);
 
   function submit(value?: string) {
     const query = (value ?? q).trim();
@@ -65,6 +88,7 @@ export function SearchBox({ variant = "header", autoFocus }: Props) {
     >
       <SearchIcon />
       <input
+        ref={inputRef}
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder={c.search.headerPlaceholder}
@@ -75,7 +99,7 @@ export function SearchBox({ variant = "header", autoFocus }: Props) {
         title={c.search.kbdHint}
         className="hidden lg:block rounded border border-ink-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-ink-500"
       >
-        ⏎
+        /
       </kbd>
     </form>
   );

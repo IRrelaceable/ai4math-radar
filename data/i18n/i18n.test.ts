@@ -32,6 +32,18 @@ describe("Chinese event overlay (EVENT_ZH)", () => {
           e.keyContributions.length
         );
       }
+      if (e.aiRole?.description) {
+        expect(
+          zh.aiRoleDescription?.trim(),
+          `zh aiRoleDescription missing for "${e.slug}"`
+        ).toBeTruthy();
+      }
+      if (e.humanContribution) {
+        expect(
+          zh.humanContribution?.trim(),
+          `zh humanContribution missing for "${e.slug}"`
+        ).toBeTruthy();
+      }
     }
   });
 
@@ -53,6 +65,26 @@ describe("Chinese event overlay (EVENT_ZH)", () => {
     expect(localizeEvents([event], "en")[0]).toBe(event);
   });
 
+  it("prefers ingest-time translations for automated events", () => {
+    const base = seedEvents[0];
+    const event = {
+      ...base,
+      provenance: "automated" as const,
+      translations: {
+        zh: { title: "自动中文标题", summary: "自动中文摘要", significance: "自动中文意义" },
+      },
+    };
+
+    const zh = localizeEvent(event, "zh");
+    expect(zh.title).toBe("自动中文标题");
+    expect(zh.summary).toBe("自动中文摘要");
+    expect(zh.significance).toBe("自动中文意义");
+
+    const en = localizeEvent(event, "en");
+    expect(en.title).toBe(base.title);
+    expect(en.summary).toBe(base.summary);
+  });
+
   it("renders inline LaTeX to Unicode in both languages", () => {
     const synthetic = {
       ...seedEvents[0],
@@ -68,7 +100,9 @@ describe("Chinese event overlay (EVENT_ZH)", () => {
 
 describe("Chinese boilerplate map (PHRASE_ZH)", () => {
   it("includes the verification notes generated at runtime", () => {
-    expect(PHRASE_ZH["Recorded when the event entered the tracker."]).toBeTruthy();
+    expect(
+      PHRASE_ZH["Default evidence level derived from the record's links on the event date."]
+    ).toBeTruthy();
     expect(
       PHRASE_ZH["Inspectable artifact (code, proofs or data) is publicly available."]
     ).toBeTruthy();

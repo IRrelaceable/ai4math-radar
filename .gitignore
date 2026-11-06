@@ -3,7 +3,10 @@ node_modules
 
 # next.js
 .next
+.next-*
 out
+dist
+.pages-test
 build
 
 # env — never commit secrets
@@ -27,10 +30,8 @@ next-env.d.ts.bak
 .DS_Store
 *.pem
 
-# runtime data produced by the ingest pipeline
-data/ingested/events.json
-
-data/ingested/source-status.json
+# generated client dataset (npm run data / prebuild)
+public/data/
 
 # derived inputs for the i18n translation pipeline (regenerable via extract.mjs)
 .i18n-src/
@@ -38,4 +39,5 @@ data/ingested/source-status.json
 # local working notes (requirements draft), not source
 文本.txt
 
-data/ingested/fingerprints.json
+# NOTE: data/ingested/*.json IS committed — the scheduled GitHub Actions job
+# stores what it ingested and must resume from it on the next run.

@@ -37,10 +37,6 @@ export function normalizeEcosystemEvent(event: ResearchEvent): ResearchEvent {
     ...event,
     eventType: primary,
     researchEventType,
-    reviewStatus:
-      event.reviewStatus ??
-      (event.provenance === "automated" ? "pending" : "approved"),
-
   };
 }
 

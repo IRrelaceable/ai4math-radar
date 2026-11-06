@@ -57,6 +57,9 @@ export class OpenAICompatibleProvider implements LLMProvider {
         messages,
         max_tokens: options?.maxTokens ?? 700,
       }),
+      // A stalled provider must not freeze a sync; summarize() falls back to
+      // the deterministic abstract-based text when this aborts.
+      signal: AbortSignal.timeout(60_000),
     });
     if (!res.ok) {
       throw new Error(`LLM request failed: ${res.status} ${await res.text()}`);

@@ -1,7 +1,7 @@
 import type { ResearchEvent } from "../../types";
 
 /**
- * Expansion seed: "Symbolic Mathematics", "Geometry" and "Mathematical Discovery"
+ * Expansion seed: "Mathematical Discovery & Symbolic Computation", "Geometry" and "Mathematical Discovery & Symbolic Computation"
  * events. Every URL in this file was fetched with web_fetch and checked against
  * the primary source (arXiv abs pages; api.github.com for the two GitHub repos).
  */
@@ -65,7 +65,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Sequence-to-sequence transformers trained end-to-end on symbolic mathematics needed enormous amounts of training data to generalize to unseen problems.",
     date: "2021-10-07",
-    researchArea: "Symbolic Mathematics",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Equation solving & discovery",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2110.03501",
@@ -106,7 +106,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Relations between knot invariants are typically found one at a time by hand; no systematic tool existed for scanning the huge space of candidate invariant relations.",
     date: "2022-11-02",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "AI-proved results & conjectures",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2211.01404",
@@ -143,7 +143,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Symbolic regression methods extract equations from data alone, discard scientists' domain priors, and are restricted to low-expressivity representations such as expression trees, which limits both search efficiency and the equations they can express.",
     date: "2024-04-29",
-    researchArea: "Symbolic Mathematics",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Equation solving & discovery",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2404.18400",
@@ -189,7 +189,7 @@ export const events: ResearchEvent[] = [
     problem:
       "Classic genetic-programming symbolic regression searches purely syntactically, which leads to combinatorial explosion, overfitting and hard-to-interpret expressions, and it has no notion of reusable abstract concepts.",
     date: "2024-09-14",
-    researchArea: "Symbolic Mathematics",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Equation solving & discovery",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2409.09359",

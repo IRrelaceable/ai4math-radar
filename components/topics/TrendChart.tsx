@@ -1,15 +1,16 @@
-"use client";
-
-import type { ResearchEvent } from "@/types";
+import type { ListEvent } from "@/types";
 import { formatDate, monthKey } from "@/lib/utils";
-import { useLang } from "@/lib/i18n/context";
+import { getLang } from "@/lib/i18n/server";
 import { componentsDict } from "@/lib/i18n/dict.components";
 
 /**
  * Dependency-free time trend: events per month (ascending), computed from data.
+ *
+ * Server-rendered: the bars are static markup with CSS-only hover, so shipping
+ * the underlying events to the client would cost a full archive per page view.
  */
-export function TrendChart({ events }: { events: ResearchEvent[] }) {
-  const { lang } = useLang();
+export function TrendChart({ events }: { events: ListEvent[] }) {
+  const lang = getLang();
   const c = componentsDict[lang];
 
   if (events.length === 0) {

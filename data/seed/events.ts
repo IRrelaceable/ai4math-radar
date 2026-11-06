@@ -1,10 +1,9 @@
 /**
- * Demo dataset: representative AI4Math Research Events.
+ * Curated dataset: representative AI4Math Research Events.
  *
  * Every entry compiled from a public source keeps its original URL
  * (sourceUrl / paperUrl / githubUrl) — nothing is invented. Fields that could
- * not be verified are left empty instead of guessed. Synthetic examples used
- * by the mock agent pipeline are flagged with `isDemo: true`.
+ * not be verified are left empty instead of guessed.
  *
  * This module is the single source of truth for the offline SeedStore and for
  * `npm run db:seed` (PostgreSQL).
@@ -14,8 +13,10 @@ import { events as llmReasoningBenchEvents } from "./expansion-llm-reasoning-ben
 import { events as agentsAssistedEvents } from "./expansion-agents-assisted";
 import { events as theoremFormalEvents } from "./expansion-theorem-formal";
 import { events as symbolicGeometryDiscoveryEvents } from "./expansion-symbolic-geometry-discovery";
-import { ecosystemDemoEvents } from "./ecosystem";
+import { events as historyEarlyEvents } from "./expansion-history-early";
+import { events as historyModernEvents } from "./expansion-history-modern";
 import { normalizeEcosystemEvent } from "../../lib/ecosystem";
+import { CURATED_AI_ROLES } from "./ai-roles";
 
 const curatedEvents: ResearchEvent[] = [
   /* ------------------------------------------------------------------ *
@@ -71,7 +72,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Provers trained once on a fixed distribution collapse on statements outside that distribution.",
     date: "2022-05-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2205.11491",
@@ -121,7 +122,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Language models are poor at premise selection, while automated provers are good at it but need the right premises supplied.",
     date: "2022-05-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Prover tooling & interaction",
     sourceType: "conference",
     sourceUrl: "https://arxiv.org/abs/2205.10893",
@@ -173,7 +174,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "End-to-end formalization is hard because low-level steps consume all of the search budget.",
     date: "2022-10-01",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Autoformalization",
     sourceType: "conference",
     sourceUrl: "https://arxiv.org/abs/2210.12283",
@@ -226,7 +227,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Premise selection in Lean was a black box, and most proving experiments could not be reproduced.",
     date: "2023-06-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Prover tooling & interaction",
     sourceType: "conference",
     sourceUrl: "https://arxiv.org/abs/2306.15626",
@@ -285,7 +286,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Strong math language models were proprietary, so results could not be reproduced or extended.",
     date: "2023-10-01",
-    researchArea: "LLM for Mathematics",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Math-specialized models",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2310.10631",
@@ -337,7 +338,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Formal proof corpora are tiny compared with the data needs of large language models.",
     date: "2024-05-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2405.14333",
@@ -387,7 +388,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Supervised training alone plateaus, and tree search converges on a single narrow proof path.",
     date: "2024-08-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2408.08152",
@@ -438,7 +439,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Formal theorem-proving data is scarce: human-written Lean 4 code across hundreds of GitHub repositories was not being reused as training signal.",
     date: "2024-07-25",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "github",
     sourceUrl: "https://github.com/InternLM/InternLM-Math",
@@ -462,9 +463,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: ["miniF2F-test", "ProofNet", "Putnam"],
     dataset: ["Lean-Github (29K theorems from 100+ Lean 4 repos)", "Lean-Workbook (57K formal-informal pairs)"],
     researchEventType: "Competition",
-    verificationStatus: "paper_released",
-    evidenceLevel: "E3",
-    sourceTier: "S1",
+    evidenceLevel: "E1",
     keyContributions: [
       "LEAN-GitHub: corpus mined from nearly all Lean 4 repositories on GitHub",
       "54.5% miniF2F-test (64 passes), 18.1% ProofNet, 5 Putnam problems solved — publisher-reported",
@@ -473,8 +472,7 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2024-07-25",
-        status: "paper_released",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Official repository release notes (2024.07.25 entry) and arXiv:2407.17227 fetched and confirmed; benchmark numbers and the 5-solved Putnam figure are publisher-reported.",
       },
     ],
@@ -506,7 +504,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Best-first tactic search discards the ordering information inside a critic's evaluation of a tactic.",
     date: "2024-10-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2410.15700",
@@ -551,7 +549,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Open provers lagged closed systems mainly because open formal training data did not exist.",
     date: "2025-02-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2502.07640",
@@ -596,7 +594,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Large formal reasoning needed both scale and exploration, and prior open provers were much smaller.",
     date: "2025-04-01",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2504.11354",
@@ -746,7 +744,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "General-purpose LLMs failed on undergraduate-level quantitative problems across the sciences.",
     date: "2022-06-01",
-    researchArea: "LLM for Mathematics",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Reasoning & self-improvement",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2206.14858",
@@ -803,7 +801,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Outcome supervision rewards correct final answers without checking whether the reasoning itself is valid.",
     date: "2023-05-01",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Process supervision",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2305.20050",
@@ -847,7 +845,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Autoformalization had no challenging standardized benchmark, so progress was hard to measure.",
     date: "2023-02-01",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Autoformalization",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2302.12433",
@@ -898,7 +896,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Code execution helps hard math problems, but only closed proprietary models had that capability.",
     date: "2023-10-01",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Tool & code integration",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2310.03731",
@@ -943,7 +941,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Open general-purpose models lagged specialized systems on competition mathematics.",
     date: "2024-09-01",
-    researchArea: "LLM for Mathematics",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Reasoning & self-improvement",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2409.12122",
@@ -993,7 +991,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Open models had no on-par, openly available olympiad-level training resource.",
     date: "2024-07-20",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Competition-level reasoning",
     sourceType: "blog",
     sourceUrl: "https://www.aimoprize.com/updates/2024-07-20-progress-prize-results",
@@ -1135,7 +1133,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Finding matrix multiplication schemes faster than known heuristics is a huge discrete search space humans explore by hand.",
     date: "2022-10-05",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Algorithm & program search",
     sourceType: "conference",
     sourceUrl: "https://www.nature.com/articles/s41586-022-05172-4",
@@ -1186,7 +1184,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Searching program space for extremal mathematical constructions is too large for brute force and too novel for pure LLM generation.",
     date: "2023-12-14",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Algorithm & program search",
     sourceType: "conference",
     sourceUrl: "https://www.nature.com/articles/s41586-023-06924-6",
@@ -1293,7 +1291,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Olympiad problems go beyond geometry, and informal claims are hard to verify automatically.",
     date: "2024-07-25",
-    researchArea: "Theorem Proving",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Proof search",
     sourceType: "blog",
     sourceUrl: "https://deepmind.google/blog/ai-solves-imo-problems-at-silver-medal-level/",
@@ -1336,7 +1334,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "The full research loop (idea → experiment → write-up) is expensive and slow even for narrow domains.",
     date: "2024-08-12",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Autonomous research agents",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2408.06292",
@@ -1425,7 +1423,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Existing LLM search methods optimized small snippets rather than real, interacting code.",
     date: "2025-05-14",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Algorithm & program search",
     sourceType: "blog",
     sourceUrl:
@@ -1469,7 +1467,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Gold-medal level on full olympiad problems remained out of reach for general-purpose models under official evaluation.",
     date: "2025-07-21",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     subArea: "Competition-level reasoning",
     sourceType: "blog",
     sourceUrl:
@@ -1507,7 +1505,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Existing formal benchmarks are textbook-level and contaminated; research-level statements had no standardized, verified evaluation.",
     date: "2026-05-13",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Formal corpora & libraries",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2605.13171",
@@ -1678,7 +1676,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Research-level proofs may look plausible but cannot be trusted without rigorous checking, and finding the right domain decomposition is the hard part.",
     date: "2025-10-14",
-    researchArea: "Symbolic Mathematics",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Equation solving & discovery",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2510.12350",
@@ -1727,7 +1725,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Existing evaluations conflate pattern memorization with real symbolic reasoning.",
     date: "2025-05-28",
-    researchArea: "Symbolic Mathematics",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Symbolic benchmark",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2505.23851",
@@ -1777,7 +1775,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Research agents can already produce plausible-looking papers, but nobody had measured whether their experimental results actually hold up.",
     date: "2025-05-26",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Agent evaluation & peer review",
     sourceType: "conference",
     sourceUrl: "https://arxiv.org/abs/2505.19955",
@@ -1835,7 +1833,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Claims about AI-generated mathematics had no shared public record; researchers could not check, count, compare or contest the work.",
     date: "2026-10-06",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Verification & corpus scrutiny",
     sourceType: "github",
     sourceUrl: "https://github.com/openai/math",
@@ -1847,9 +1845,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: [],
     dataset: ["openai/math manuscript collection (722 at release; 719 after withdrawals)"],
     researchEventType: "Discovery",
-    verificationStatus: "partially_verified",
-    evidenceLevel: "E3",
-    sourceTier: "S1",
+    evidenceLevel: "E1",
     keyContributions: [
       "722 manuscripts in 372 result families released with inspectable Lean material",
       "Public correction log: 3 withdrawals, 14 patched manuscripts, 13 citation updates",
@@ -1858,20 +1854,17 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-06",
-        status: "claimed",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Repository published: 722 manuscripts in 372 result families.",
       },
       {
         date: "2026-10-07",
-        status: "partially_verified",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "history.md records 3 withdrawals, 14 revised manuscripts, 13 citation updates; 719 manuscripts remain.",
       },
       {
         date: "2026-10-14",
-        status: "partially_verified",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Repository reports Lean formalization for 300/719 ≈ 42% of headline results. Publisher-reported; not independently re-checked.",
       },
     ],
@@ -1903,7 +1896,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Autoformalisation was being treated as a substitute for verifying the original mathematical argument.",
     date: "2026-10-06",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "Verification & corpus scrutiny",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2610.08144",
@@ -1920,9 +1913,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: [],
     dataset: [],
     researchEventType: "Controversy",
-    verificationStatus: "disputed",
     evidenceLevel: "E2",
-    sourceTier: "S1",
     keyContributions: [
       "SCI-hierarchy argument that faithful autoformalisation is uncomputably hard",
       "Worked AI mistranslations of natural-language statements into Lean",
@@ -1931,7 +1922,6 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-06",
-        status: "disputed",
         evidenceLevel: "E2",
         note: "Preprint published. Records a methodological dispute; it does not by itself refute the underlying Navier–Stokes claim.",
       },
@@ -1964,7 +1954,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Improving the proportion of provably RH-satisfying zeros has required decades of incremental work in Montgomery-style techniques.",
     date: "2026-08-10",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "AI-proved results & conjectures",
     sourceType: "blog",
     sourceUrl: "https://www.anthropic.com/research/riemann-zeta",
@@ -1982,9 +1972,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: [],
     dataset: [],
     researchEventType: "Discovery",
-    verificationStatus: "partially_verified",
-    evidenceLevel: "E3",
-    sourceTier: "S2",
+    evidenceLevel: "E1",
     keyContributions: [
       "New 67.2% lower bound, up from a long-standing 41.6%",
       "Lean formalization passing the leanprover comparator",
@@ -1993,14 +1981,12 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-08-10",
-        status: "claimed",
-        evidenceLevel: "E1",
+        evidenceLevel: "E3",
         note: "Announced by Anthropic; internal mathematicians validated the paper.",
       },
       {
         date: "2026-08-13",
-        status: "partially_verified",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Revised paper published; Lean formalization passes the comparator. Independent published verification not recorded.",
       },
     ],
@@ -2026,7 +2012,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "FLT's formalization was expected to take years; the community blueprint alone runs to 86 pages.",
     date: "2026-09-04",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Autoformalization",
     sourceType: "blog",
     sourceUrl: "https://www.anthropic.com/research/formalizing-fermats-last-theorem",
@@ -2044,9 +2030,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: [],
     dataset: ["Lean 4 (Mathlib-based) FLT development"],
     researchEventType: "Formalization",
-    verificationStatus: "partially_verified",
-    evidenceLevel: "E3",
-    sourceTier: "S2",
+    evidenceLevel: "E1",
     keyContributions: [
       "First end-to-end machine-checked Lean proof of FLT",
       "Multi-agent workflow on Prove2Me with a theorem DAG",
@@ -2055,14 +2039,12 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-09-04",
-        status: "claimed",
-        evidenceLevel: "E1",
+        evidenceLevel: "E3",
         note: "Announced by Anthropic with the artifact repository.",
       },
       {
         date: "2026-09-04",
-        status: "partially_verified",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Artifact publicly available and Lean-checked by the compiler; independent community re-check not recorded.",
       },
     ],
@@ -2100,7 +2082,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "3SUM and APSP have resisted polynomial improvement over textbook algorithms for ~50 years.",
     date: "2026-10-05",
-    researchArea: "Mathematical Discovery",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
     subArea: "AI-proved results & conjectures",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2610.06783",
@@ -2117,9 +2099,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: [],
     dataset: [],
     researchEventType: "Discovery",
-    verificationStatus: "paper_released",
     evidenceLevel: "E2",
-    sourceTier: "S1",
     keyContributions: [
       "Deterministic O(n^1.9992) 3SUM and O(n^2.9995) APSP",
       "New thin matrix product algorithm on sparse lopsided graphs",
@@ -2128,7 +2108,6 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-05",
-        status: "paper_released",
         evidenceLevel: "E2",
         note: "76-page preprint posted; community review ongoing.",
       },
@@ -2155,7 +2134,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Autoformalization had been shown mainly on exercises and competition problems, not on research papers' number-theoretic results.",
     date: "2026-10-07",
-    researchArea: "Formal Mathematics",
+    researchArea: "Theorem Proving & Formal Mathematics",
     subArea: "Autoformalization",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2610.10243",
@@ -2178,9 +2157,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: [],
     dataset: [],
     researchEventType: "Formalization",
-    verificationStatus: "paper_released",
     evidenceLevel: "E2",
-    sourceTier: "S1",
     keyContributions: [
       "Multivariable Euler product for the Tamagawa product",
       "Distributional statistics for Tamagawa numbers",
@@ -2189,7 +2166,6 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-07",
-        status: "paper_released",
         evidenceLevel: "E2",
         note: "Preprint posted; autoformalization claimed by the authors.",
       },
@@ -2245,9 +2221,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: ["FrontierMath Tier 4 (reported 48%)"],
     dataset: [],
     researchEventType: "System",
-    verificationStatus: "paper_released",
     evidenceLevel: "E2",
-    sourceTier: "S1",
     keyContributions: [
       "Stateful, asynchronous human-agent research workspace",
       "Tracks failed hypotheses and refines user intent",
@@ -2256,7 +2230,6 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-05-07",
-        status: "paper_released",
         evidenceLevel: "E2",
         note: "v1 posted; v2 (2026-05-13) adds citations. Benchmark numbers are author-reported.",
       },
@@ -2289,7 +2262,7 @@ const curatedEvents: ResearchEvent[] = [
     problem:
       "Competition-level systems do not handle literature navigation or long-horizon research proofs.",
     date: "2026-02-10",
-    researchArea: "AI-assisted Research",
+    researchArea: "Mathematical Agents",
     subArea: "Autonomous research agents",
     sourceType: "arxiv",
     sourceUrl: "https://arxiv.org/abs/2602.10177",
@@ -2319,9 +2292,7 @@ const curatedEvents: ResearchEvent[] = [
     benchmark: ["Bloom's Erdős Conjectures database (700 open problems)"],
     dataset: [],
     researchEventType: "System",
-    verificationStatus: "paper_released",
     evidenceLevel: "E2",
-    sourceTier: "S1",
     keyContributions: [
       "End-to-end research agent: generate, verify, revise in natural language",
       "Semi-autonomous sweep of 700 open problems with four autonomous solutions",
@@ -2330,7 +2301,6 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-02-10",
-        status: "paper_released",
         evidenceLevel: "E2",
         note: "v1 posted; v3 (2026-03-06) adds FirstProof summary. Milestones are author-reported.",
       },
@@ -2414,9 +2384,7 @@ const curatedEvents: ResearchEvent[] = [
       "Efim Zelmanov",
     ],
     researchEventType: "Commentary",
-    verificationStatus: "independently_verified",
-    evidenceLevel: "E3",
-    sourceTier: "S2",
+    evidenceLevel: "E1",
     keyContributions: [
       "Frames the AI companies' benchmark-driven problem solving as a severe misalignment with mathematical values, not as progress for mathematics",
       "Solving problems is a tool and proxy for conceptual understanding; mass production of true/false statements could destroy fertile ground",
@@ -2426,8 +2394,7 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-09-11",
-        status: "independently_verified",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Full text, all 28 signatories and the Zenodo DOI fetched from mathandai.org on 2026-10-22; corroboration: Terence Tao's blog post of 2026-09-11. The status covers the publication event and its signatories; the declaration's assessments of AI companies' impact are the signatories' stated position, not independently verified facts.",
       },
     ],
@@ -2471,9 +2438,7 @@ const curatedEvents: ResearchEvent[] = [
     authors: ["Association for Human Mathematics \u2014 Communications Working Group"],
     institution: "Association for Human Mathematics",
     researchEventType: "Commentary",
-    verificationStatus: "independently_verified",
     evidenceLevel: "E2",
-    sourceTier: "S2",
     keyContributions: [
       "Rejects the premise that the October 6 release advances mathematics; calls it a demonstration of power, not scholarship",
       "Points to OpenAI's disregard of the Advisory Group on Mathematics and AI's central premise",
@@ -2482,7 +2447,6 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-07",
-        status: "independently_verified",
         evidenceLevel: "E2",
         note: "Statement text fetched from ahmath.org/statements on 2026-10-22; repost verified on Tao's blog (2026-10-07). The status covers the publication of the statement; its allegations about OpenAI's conduct are the association's stated position.",
       },
@@ -2533,9 +2497,7 @@ const curatedEvents: ResearchEvent[] = [
     authors: ["Terence Tao"],
     institution: "California Institute of Technology (AIM Public Lecture Series)",
     researchEventType: "Commentary",
-    verificationStatus: "independently_verified",
-    evidenceLevel: "E3",
-    sourceTier: "S2",
+    evidenceLevel: "E1",
     keyContributions: [
       "Three-stage framing: Math 1.0, the current AI-disrupted state, and a community-sustaining Math 2.0",
       "Shifts the goal from automated problem solving to tools that sustain mathematicians and understanding",
@@ -2544,8 +2506,7 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-10",
-        status: "independently_verified",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Lecture held 2026-10-09 evening (per the author's 2026-10-10 post); slides PDF and the Caltech event page linked from the post were verified on 2026-10-22. The vision described is the speaker's stated position.",
       },
     ],
@@ -2589,9 +2550,7 @@ const curatedEvents: ResearchEvent[] = [
     institution: "SAIR Foundation",
     model: ["Kimi K3", "DeepSeek V4.1 Flash", "GLM 5.3 Flash", "GLM 5.3", "Nemotron 3"],
     researchEventType: "Infrastructure",
-    verificationStatus: "partially_verified",
-    evidenceLevel: "E3",
-    sourceTier: "S2",
+    evidenceLevel: "E1",
     keyContributions: [
       "Open frontier models under community data governance: private by default, consent before training, rules set in public",
       "Team accounts with mutually visible prompts \u2014 addressing the declaration's attribution and process concerns",
@@ -2600,8 +2559,7 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-16",
-        status: "partially_verified",
-        evidenceLevel: "E3",
+        evidenceLevel: "E1",
         note: "Platform live and feature list (model lineup, data-sovereignty terms, team accounts) fetched from openmathmodel.org on 2026-10-22, matching Terence Tao's same-day announcement. Capability claims remain publisher-reported; no independent benchmark of the hosted models was found.",
       },
     ],
@@ -2639,9 +2597,7 @@ const curatedEvents: ResearchEvent[] = [
     authors: ["Simons Foundation"],
     institution: "Simons Foundation",
     researchEventType: "Commentary",
-    verificationStatus: "claimed",
     evidenceLevel: "E2",
-    sourceTier: "S2",
     keyContributions: [
       "$15M committed to initiatives centered on mathematics in the AI era",
       "Call for workshops and community programs, relayed by leading mathematicians",
@@ -2649,7 +2605,6 @@ const curatedEvents: ResearchEvent[] = [
     verificationHistory: [
       {
         date: "2026-10-15",
-        status: "claimed",
         evidenceLevel: "E2",
         note: "Press release page and headline fetched 2026-10-22; program description relayed via Terence Tao's 2026-10-15 post. The full press-release body was not retrievable in this session, so details beyond \u201Cworkshops and other initiatives\u201D are deliberately not recorded.",
       },
@@ -2674,7 +2629,7 @@ const curatedEvents: ResearchEvent[] = [
 ];
 
 /**
- * The full curated dataset includes the hand-built core, verified expansion batches and ecosystem scenarios
+ * The full curated dataset includes the hand-built core and the verified
  * expansion batches (each `expansion-*.ts` module is a set of events whose
  * source URLs were fetched and confirmed during curation). Automated pipeline
  * output is merged on top by `SeedStore` at request time and tagged
@@ -2687,6 +2642,7 @@ const curatedEvents: ResearchEvent[] = [
  * primary event class and type-specific metadata change. The former legacy
  * subtype is intentionally not retained as a Research subtype for these rows.
  */
+
 const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
   "eventType" | "researchEventType" | "metadata"
 >>> = {
@@ -2755,16 +2711,24 @@ export const events: ResearchEvent[] = [
   ...agentsAssistedEvents,
   ...theoremFormalEvents,
   ...symbolicGeometryDiscoveryEvents,
-  ...ecosystemDemoEvents,
-].map((event) =>
-  normalizeEcosystemEvent({
+  ...historyEarlyEvents,
+  ...historyModernEvents,
+].map((event) => {
+  // Curated prose is authored here, so its AI attribution is extracted into
+  // the generated overlay (scripts/backfill-curated-ai-role.ts) instead. An
+  // entry that states its own role wins over the overlay.
+  const role = event.aiRole ? undefined : CURATED_AI_ROLES[event.slug];
+  return normalizeEcosystemEvent({
     ...event,
+    ...(role
+      ? {
+          aiRole: role.description
+            ? { level: role.level, description: role.description }
+            : { level: role.level },
+          humanContribution: role.humanContribution ?? event.humanContribution,
+        }
+      : {}),
     ...ecosystemOverrides[event.slug],
-  })
-);
-
-
-
-
-
+  });
+});
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { EVENT_TYPES, SOURCE_TIERS, type SourceTier } from "@/types";
+import { EVENT_TYPES, SOURCE_TIERS, type EventType, type SourceTier } from "@/types";
 import { useT } from "@/lib/i18n/context";
 import { componentsDict } from "@/lib/i18n/dict.components";
 
@@ -12,8 +12,12 @@ export function TimelineControls({ presentTypes }: { presentTypes: string[] }) {
   const params = useSearchParams();
   const { t, lang } = useT();
   const c = componentsDict[lang];
-  const active = params.get("type") ?? "";
-  const tier = params.get("tier") ?? "";
+  // Ignore unknown values so the controls stay in sync with what the server
+  // actually filtered on (invalid `?type=Foo` renders the unfiltered list).
+  const rawType = params.get("type") ?? "";
+  const active = (EVENT_TYPES as readonly string[]).includes(rawType) ? rawType : "";
+  const rawTier = params.get("tier") ?? "";
+  const tier = (SOURCE_TIERS as readonly string[]).includes(rawTier) ? rawTier : "";
 
   function setParam(key: "type" | "tier", value?: string) {
     const merged = new URLSearchParams(params.toString());
@@ -42,7 +46,7 @@ export function TimelineControls({ presentTypes }: { presentTypes: string[] }) {
               isActive ? "chip-active" : "hover:border-ink-300 hover:text-ink-900"
             }`}
           >
-            {label === "All" ? t.common.all : label}
+            {label === "All" ? t.common.all : t.trust.type[label as EventType]}
           </button>
         );
       })}

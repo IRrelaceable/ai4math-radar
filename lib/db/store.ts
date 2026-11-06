@@ -5,7 +5,6 @@ import type {
   SearchResult,
   SourceTier,
   TopicStat,
-  VerificationStatus,
 } from "@/types";
 
 export interface ListEventsOptions {
@@ -16,7 +15,6 @@ export interface ListEventsOptions {
   /** Free-text query matched against title/summary/fields. */
   q?: string;
   /* Trust-model filters (all optional; combined with AND when given). */
-  status?: VerificationStatus;
   evidence?: EvidenceLevel;
   tier?: SourceTier;
   /* Facet filters: exact membership in the event's arrays. */
@@ -52,6 +50,3 @@ export interface ResearchStore {
   getTopic(slug: string): Promise<TopicDetail | null>;
   search(query: string): Promise<SearchResult>;
 }
-
-
-

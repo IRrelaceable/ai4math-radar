@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import type { TopicStat } from "@/types";
+import type { ResearchArea, TopicStat } from "@/types";
 import { formatDate } from "@/lib/utils";
 import { useLang } from "@/lib/i18n/context";
 import { componentsDict } from "@/lib/i18n/dict.components";
+import { displayArea } from "@/lib/i18n/localize";
 
 /** Horizontal activity bar for one topic (value computed from the data). */
 export function TopicBar({
@@ -24,7 +25,7 @@ export function TopicBar({
     <Link href={`/topics/${stat.slug}`} className="block group">
       <div className="flex items-baseline justify-between gap-3">
         <span className="text-sm font-medium text-ink-900 group-hover:text-accent-700">
-          {stat.topic}
+          {displayArea(stat.topic as ResearchArea, lang)}
         </span>
         <span className="font-mono text-xs text-ink-500">
           {stat.count}{" "}

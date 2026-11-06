@@ -4,15 +4,25 @@
   "private": true,
   "description": "AI4Math Ecosystem Radar - a six-class ecosystem intelligence platform for AI for Mathematics.",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev.mjs",
+    "dev:en": "node scripts/dev-en.mjs",
+    "sync:server": "node scripts/sync-server.mjs",
+    "predev": "npm run data",
     "build": "next build",
-    "start": "next start",
+    "prebuild": "npm run data",
+    "data": "tsx scripts/build-data.ts",
+    "sync": "tsx scripts/ingest.ts",
+    "sync:all": "tsx scripts/ingest.ts --all",
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "test": "vitest run",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "build:site": "node scripts/build-site.mjs",
+    "backfill:entities": "tsx scripts/backfill-entities.ts",
+    "backfill:history:conf": "tsx scripts/backfill-history-conference.ts",
+    "backfill:history": "tsx scripts/backfill-history.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -21,7 +31,8 @@
     "@prisma/client": "^5.22.0",
     "next": "^14.2.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "undici": "^8.12.3"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

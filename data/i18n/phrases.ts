@@ -2,7 +2,7 @@ import type { PhraseZh } from "./types";
 
 /** zh translations for .i18n-src/phrases.json — exact-match English → Chinese. */
 export const PHRASE_ZH: PhraseZh = {
-  "Recorded when the event entered the tracker.": "记录该事件被收录进追踪器的时间。",
+  "Default evidence level derived from the record's links on the event date.": "按事件日期记录的默认证据等级，由记录所带链接派生。",
   "Inspectable artifact (code, proofs or data) is publicly available.": "可查验的产物（代码、证明或数据）已公开。",
   "Platform live and feature list (model lineup, data-sovereignty terms, team accounts) fetched from openmathmodel.org on 2026-10-22, matching Terence Tao's same-day announcement. Capability claims remain publisher-reported; no independent benchmark of the hosted models was found.": "平台已上线，功能清单（模型阵容、数据主权条款、团队账户）于 2026-10-22 取自 openmathmodel.org，与 Terence Tao 当日的公告一致。能力数据仍为发布方自述；未发现针对所托管模型的独立基准测试。",
   "Press release page and headline fetched 2026-10-22; program description relayed via Terence Tao's 2026-10-15 post. The full press-release body was not retrievable in this session, so details beyond “workshops and other initiatives” are deliberately not recorded.": "新闻稿页面与标题于 2026-10-22 抓取；项目介绍经 Terence Tao 2026-10-15 的帖子转述。本次会话未能取回新闻稿全文，因此“研讨会及其他举措”之外的细节有意不予记录。",

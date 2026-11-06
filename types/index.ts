@@ -7,16 +7,12 @@
  */
 
 export const RESEARCH_AREAS = [
-  "Mathematical Reasoning",
-  "Theorem Proving",
-  "Formal Mathematics",
-  "Mathematical Discovery",
-  "Geometry",
-  "Symbolic Mathematics",
+  "Theorem Proving & Formal Mathematics",
+  "Mathematical Reasoning & LLMs",
   "Mathematical Agents",
-  "LLM for Mathematics",
+  "Mathematical Discovery & Symbolic Computation",
+  "Geometry",
   "Benchmarks & Datasets",
-  "AI-assisted Research",
 ] as const;
 
 export type ResearchArea = (typeof RESEARCH_AREAS)[number];
@@ -32,56 +28,46 @@ export type ResearchArea = (typeof RESEARCH_AREAS)[number];
  * and keeps free-form sub-areas until it is migrated.
  */
 export const CONTROLLED_SUB_AREAS: Partial<Record<ResearchArea, readonly string[]>> = {
-  "Mathematical Reasoning": [
-    "Prompting & decoding",
-    "Process supervision",
-    "Competition-level reasoning",
-    "Tool & code integration",
-  ],
-  "Theorem Proving": [
+  "Theorem Proving & Formal Mathematics": [
     "Proof search",
     "Prover tooling & interaction",
     "Agent-based proving",
-  ],
-  "Formal Mathematics": [
     "Autoformalization",
     "Formal corpora & libraries",
     "Proof assistant tooling",
   ],
-  "Mathematical Discovery": [
+  "Mathematical Reasoning & LLMs": [
+    "Prompting & decoding",
+    "Process supervision",
+    "Competition-level reasoning",
+    "Tool & code integration",
+    "Math-specialized models",
+    "Reasoning & self-improvement",
+  ],
+  "Mathematical Agents": [
+    "Autonomous research agents",
+    "Multi-agent discovery",
+    "Automated ideation & review",
+    "Agent evaluation & peer review",
+    "Engineering & tool agents",
+  ],
+  "Mathematical Discovery & Symbolic Computation": [
     "Algorithm & program search",
     "AI-proved results & conjectures",
     "Verification & corpus scrutiny",
+    "Equation solving & discovery",
+    "Symbolic benchmark",
   ],
   Geometry: [
     "Geometry formalization",
     "Geometry problem solving",
     "Multimodal geometry",
   ],
-  "Symbolic Mathematics": [
-    "Equation solving & discovery",
-    "Symbolic benchmark",
-  ],
-  "Mathematical Agents": [
-    "Autonomous research agents",
-    "Engineering & tool agents",
-  ],
-  "LLM for Mathematics": [
-    "Math-specialized models",
-    "Tool & program integration",
-    "Reasoning & self-improvement",
-  ],
   "Benchmarks & Datasets": [
     "Formal proving benchmarks",
     "Competition & olympiad benchmarks",
     "Math word problem datasets",
     "Theorem & multimodal benchmarks",
-  ],
-  "AI-assisted Research": [
-    "Autonomous research agents",
-    "Multi-agent discovery",
-    "Automated ideation & review",
-    "Agent evaluation & peer review",
   ],
 };
 
@@ -112,16 +98,19 @@ export type SourceType =
   | "education"
   | "policy";
 
-/** Human review state for automated/manual ecosystem events. */
-export const REVIEW_STATUSES = ["pending", "approved", "rejected"] as const;
-export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
-
 /**
  * Trust-model fields describe how well a claim is corroborated and where its
  * evidence comes from — deliberately objective, observable properties. Any
  */
 
-/** How far the core event description is corroborated right now. */
+/**
+ * How far the core event description is corroborated right now.
+ *
+ * This is a state, not a score: a paper can be released while its claim is
+ * still disputed, and machine-checking a proof does not by itself settle
+ * priority or acceptance. Transitions are append-only in
+ * `verificationHistory`; the current state never rewrites the past.
+ */
 export const VERIFICATION_STATUSES = [
   "claimed",
   "paper_released",
@@ -134,12 +123,30 @@ export const VERIFICATION_STATUSES = [
 ] as const;
 export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
 
+/**
+ * How the source attributes the reported work between AI systems and humans.
+ * Only meaningful for Research events that report an AI-produced result.
+ */
+export const AI_ROLE_LEVELS = [
+  "autonomous",
+  "assisted",
+  "unclear",
+  "not_applicable",
+] as const;
+export type AiRoleLevel = (typeof AI_ROLE_LEVELS)[number];
+
+export interface AiRole {
+  level: AiRoleLevel;
+  /** What the AI system did, in the source's terms. Omitted when it says nothing. */
+  description?: string;
+}
+
 /** How mature the public evidence is: claim -> record -> artifact -> replay. */
 export const EVIDENCE_LEVELS = ["E0", "E1", "E2", "E3", "E4"] as const;
 export type EvidenceLevel = (typeof EVIDENCE_LEVELS)[number];
 
 /** Where the evidence comes from: primary research -> official -> independent -> media -> community. */
-export const SOURCE_TIERS = ["S1", "S2", "S3", "S4", "S5"] as const;
+export const SOURCE_TIERS = ["S0", "S1", "S2", "S3", "S4"] as const;
 export type SourceTier = (typeof SOURCE_TIERS)[number];
 
 
@@ -178,6 +185,18 @@ export type ResearchEventType = (typeof RESEARCH_EVENT_TYPES)[number];
 export const FEED_FILTERS = ["All", ...EVENT_TYPES] as const;
 export type FeedFilter = (typeof FEED_FILTERS)[number];
 
+/**
+ * Names stated in the source, extracted for cross-event threads. Kept apart
+ * from `metadata` (which describes an ecosystem event's own subject) and from
+ * `authors` (a feed byline belongs to the publisher, not the announcement).
+ */
+export interface EventEntities {
+  people?: string[];
+  institutions?: string[];
+  projects?: string[];
+  systems?: string[];
+}
+
 /** Type-specific details stored as JSON in Prisma and plain data in the demo store. */
 export interface EcosystemMetadata {
   people?: { name: string; role?: string; viewpoint?: string }[];
@@ -209,9 +228,12 @@ export interface EcosystemMetadata {
 
 export interface VerificationRecord {
   date: string;
-  status: VerificationStatus;
   evidenceLevel: EvidenceLevel;
+  /** State reached at this entry; older records may predate the vocabulary. */
+  status?: VerificationStatus;
   note?: string;
+  /** Chinese note for the zh UI; English stays the source text. */
+  noteZh?: string;
 }
 
 export type RelationType = "previous" | "followup" | "related";
@@ -229,6 +251,19 @@ export interface Paper {
   url?: string;
   venue?: string;
   year?: number;
+}
+
+/** Display translation attached at ingest time; English stays the source text. */
+export interface EventTranslation {
+  title?: string;
+  summary?: string;
+  significance?: string;
+  /** Chinese prose inside ecosystem metadata (roles, initiatives, issues …). */
+  metadata?: EcosystemMetadata;
+  /** Chinese counterpart of `aiRole.description`. */
+  aiRoleDescription?: string;
+  /** Chinese counterpart of `humanContribution`. */
+  humanContribution?: string;
 }
 
 export interface ResearchEvent {
@@ -267,20 +302,31 @@ export interface ResearchEvent {
   isDemo?: boolean;
 
   /* ---- trust model (all optional; derived by lib/verification when absent) ---- */
-  verificationStatus?: VerificationStatus;
   evidenceLevel?: EvidenceLevel;
   sourceTier?: SourceTier;
   verificationHistory?: VerificationRecord[];
+  /** Current verification state; the last history entry is authoritative. */
+  verificationStatus?: VerificationStatus;
+  /** How the source divides the reported work between AI and humans. */
+  aiRole?: AiRole;
+  /** What named humans contributed, in the source's terms. */
+  humanContribution?: string;
   /** Primary ecosystem class. Normalized to Research when absent in legacy data. */
   eventType?: EventType;
   /** Optional legacy research subtype (Discovery, Proof, Benchmark, ...). */
   researchEventType?: ResearchEventType;
   /** Type-specific ecosystem details; represented as JSON by Prisma. */
   metadata?: EcosystemMetadata;
-  /** "curated" = hand-verified entry; "automated" = produced by the ingest pipeline. */
+  /** Named people / institutions / projects / systems stated by the source. */
+  entities?: EventEntities;
+  /** "curated" = hand-curated entry; "automated" = produced by the ingest pipeline. */
   provenance?: "curated" | "automated";
-  /** pending = automated item awaiting human confirmation; curated defaults to approved. */
-  reviewStatus?: ReviewStatus;
+  /**
+   * Machine translation written by the ingest pipeline. Kept next to the
+   * English source instead of the static seed overlay, because automated prose
+   * changes on every re-sync.
+   */
+  translations?: { zh?: EventTranslation };
   /** ISO timestamps of the last automated sync, when provenance is automated. */
   lastSyncedAt?: string;
 
@@ -290,6 +336,59 @@ export interface ResearchEvent {
 
 /** Normalized shape returned by every API route (camelCase, arrays kept as arrays). */
 export type ResearchEventDTO = ResearchEvent;
+
+/**
+ * The part of an event every list surface needs (feed, timeline, topic
+ * archive, search). Detail-only prose and provenance stay on the server so the
+ * static dataset sent to the browser stays small.
+ */
+export type ListEvent = Pick<
+  ResearchEvent,
+  | "id"
+  | "slug"
+  | "title"
+  | "summary"
+  | "significance"
+  | "date"
+  | "eventType"
+  | "researchEventType"
+  | "researchArea"
+  | "subArea"
+  | "sourceUrl"
+  | "paperUrl"
+  | "githubUrl"
+  | "papers"
+  | "authors"
+  | "institution"
+  | "model"
+  | "benchmark"
+  | "dataset"
+  | "evidenceLevel"
+  | "sourceTier"
+  | "verificationStatus"
+>;
+
+export type EntityKind = "person" | "institution" | "project" | "system";
+
+/** One entity's cross-event timeline, oldest first. */
+export interface EntityThread {
+  kind: EntityKind;
+  /** Stable id: kind + normalized name. */
+  key: string;
+  /** Most common spelling in the thread. */
+  name: string;
+  events: ResearchEvent[];
+}
+
+/**
+ * Build-time dataset consumed by the client-rendered lists. One file per
+ * language under public/data; a static export cannot answer queries.
+ */
+export interface StaticDataset {
+  generatedAt: string;
+  events: ListEvent[];
+  topics: TopicStat[];
+}
 
 export interface TopicStat {
   topic: string;
@@ -333,6 +432,3 @@ export interface RawResearchItem {
   authors?: string[];
   githubUrl?: string;
 }
-
-
-

@@ -25,7 +25,9 @@ const MONTHS_LONG = [
  * negative-offset timezones (e.g. "2024-07-25" → July 24 in UTC-5).
  */
 function parseYmd(iso: string): { y: string; m: number; d: number } | null {
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  // Pipeline timestamps carry a time ("2026-10-28T08:05:41.678Z"); only the
+  // calendar-day part is displayed, so the suffix is ignored.
+  const match = /^(\d{4})-(\d{2})-(\d{2})(?:[T ].*)?$/.exec(iso);
   if (!match) return null;
   const m = Number(match[2]);
   const d = Number(match[3]);
@@ -53,8 +55,56 @@ export function yearOf(iso: string): string {
   return iso.slice(0, 4);
 }
 
+/** "2026-10" (or a full date) -> "10月" (zh) / "October" (en). */
+export function formatMonth(iso: string, lang: Lang = "zh"): string {
+  const match = /^(\d{4})-(\d{2})/.exec(iso);
+  if (!match) return iso;
+  const m = Number(match[2]);
+  if (m < 1 || m > 12) return iso;
+  return lang === "zh" ? `${m}月` : MONTHS_LONG[m - 1];
+}
+
+/** Compact month label for jump chips: "10月" (zh) / "Oct" (en). */
+export function formatMonthShort(iso: string, lang: Lang = "zh"): string {
+  const match = /^(\d{4})-(\d{2})/.exec(iso);
+  if (!match) return iso;
+  const m = Number(match[2]);
+  if (m < 1 || m > 12) return iso;
+  return lang === "zh" ? `${m}月` : MONTHS_SHORT[m - 1];
+}
+
 export function monthKey(iso: string): string {
   return iso.slice(0, 7);
+}
+
+/** "2024-07-25" -> "07-25"; the year and month are group headings elsewhere. */
+export function formatMonthDay(iso: string): string {
+  const p = parseYmd(iso);
+  if (!p) return iso;
+  return `${String(p.m).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`;
+}
+
+/**
+ * Short preview for lists that visually clamp to a couple of lines. Keeps the
+ * server payload proportional to what is read: a 1,900-character abstract
+ * would otherwise ship in full just to be clipped by CSS.
+ */
+export function truncateText(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const boundary = cut.lastIndexOf(" ");
+  const body = boundary > max * 0.6 ? cut.slice(0, boundary) : cut;
+  return `${body.trimEnd()}…`;
+}
+
+/** Bare hostname for a source URL, with the "www." noise removed. */
+export function sourceHost(url?: string): string | undefined {
+  if (!url) return undefined;
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return undefined;
+  }
 }
 
 export function clamp(n: number, min: number, max: number): number {
@@ -70,10 +120,17 @@ export function matchesQuery(haystack: string, query: string): boolean {
 
 /** Build a flat, searchable text blob for one event. */
 export function eventSearchText(e: ResearchEvent): string {
+  // The zh UI is searched with Chinese words, so the stored translation is
+  // part of the blob; matching the English source alone returns nothing for a
+  // query like 定理证明.
+  const zh = e.translations?.zh;
   return [
     e.title,
     e.summary,
     e.significance,
+    zh?.title ?? "",
+    zh?.summary ?? "",
+    zh?.significance ?? "",
     e.eventType ?? "",
     e.researchEventType ?? "",
     e.researchArea,

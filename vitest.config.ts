@@ -1,7 +1,7 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 
-/** Unit tests for pure logic: lib utilities, trust model and seed-data invariants. */
+/** Unit tests for pure logic: lib utilities, agent pipeline, trust model and seed-data invariants. */
 export default defineConfig({
   resolve: {
     alias: {
@@ -10,6 +10,6 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["lib/**/*.test.ts", "data/**/*.test.ts"],
+    include: ["lib/**/*.test.ts", "data/**/*.test.ts", "agents/**/*.test.ts"],
   },
 });

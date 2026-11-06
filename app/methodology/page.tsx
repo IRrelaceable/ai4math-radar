@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { EVIDENCE_LEVELS, EVENT_TYPES, SOURCE_TIERS, VERIFICATION_STATUSES } from "@/types";
+import { AI_ROLE_LEVELS, EVIDENCE_LEVELS, EVENT_TYPES, SOURCE_TIERS, VERIFICATION_STATUSES } from "@/types";
 import { getLang, t } from "@/lib/i18n/server";
 import { pagesDict } from "@/lib/i18n/dict.pages";
-
-export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const m = pagesDict[getLang()].meta.methodology;
@@ -38,12 +36,25 @@ export default function MethodologyPage() {
       </p>
 
       <Legend
-        title={m.legendStatus}
-        entries={VERIFICATION_STATUSES.map((s) => [s, m.statusDesc[s]])}
+        title={m.legendEvidence}
+        entries={EVIDENCE_LEVELS.map((s) => ({ code: s, text: m.evidenceDesc[s] }))}
       />
-      <Legend title={m.legendEvidence} entries={EVIDENCE_LEVELS.map((s) => [s, m.evidenceDesc[s]])} />
-      <Legend title={m.legendTier} entries={SOURCE_TIERS.map((s) => [s, m.tierDesc[s]])} />
-      <Legend title={m.legendType} entries={EVENT_TYPES.map((s) => [s, m.typeDesc[s]])} />
+      <Legend
+        title={m.legendTier}
+        entries={SOURCE_TIERS.map((s) => ({ code: s, text: m.tierDesc[s] }))}
+      />
+      <Legend
+        title={m.legendType}
+        entries={EVENT_TYPES.map((s) => ({ text: m.typeDesc[s] }))}
+      />
+      <Legend
+        title={m.legendVerification}
+        entries={VERIFICATION_STATUSES.map((s) => ({ text: m.verificationDesc[s] }))}
+      />
+      <Legend
+        title={m.legendAiRole}
+        entries={AI_ROLE_LEVELS.map((s) => ({ text: m.aiRoleDesc[s] }))}
+      />
 
       <section className="mt-10">
         <h2 className="text-lg font-semibold tracking-tight">{m.dataPolicyTitle}</h2>
@@ -85,15 +96,22 @@ function Dimension({ n, title, body }: { n: string; title: string; body: string 
   );
 }
 
-function Legend({ title, entries }: { title: string; entries: [string, string][] }) {
+/**
+ * Fixed-width term columns clipped the longer keys (`PolicyCommunity`,
+ * `independently_verified`), so the term is optional and only carries the
+ * short E/S codes that the badges themselves display.
+ */
+function Legend({ title, entries }: { title: string; entries: { code?: string; text: string }[] }) {
   return (
     <section className="mt-8">
       <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
       <dl className="mt-3 divide-y divide-ink-100 rounded-md border border-ink-200">
-        {entries.map(([code, label]) => (
-          <div key={code} className="flex gap-4 px-4 py-2.5 text-sm">
-            <dt className="w-16 shrink-0 font-mono font-medium text-ink-800">{code}</dt>
-            <dd className="text-ink-600">{label}</dd>
+        {entries.map(({ code, text }) => (
+          <div key={text} className="flex items-baseline gap-3 px-4 py-2.5 text-sm leading-relaxed">
+            {code && (
+              <dt className="w-7 shrink-0 font-mono text-xs font-medium text-ink-800">{code}</dt>
+            )}
+            <dd className="min-w-0 text-ink-600">{text}</dd>
           </div>
         ))}
       </dl>

@@ -6,11 +6,61 @@ import { applyTrustModel } from "@/lib/verification";
 import type { ListEventsOptions, ResearchStore, TopicDetail } from "./store";
 import { buildTopicStats, searchEvents } from "./shared";
 import { readIngestedEvents } from "./ingested";
+import { dedupePersonStories } from "./storyDedupe";
+
+/** Path-level URL identity; homepages are ignored so distinct events are not merged. */
+function sourceKey(url: string): string | undefined {
+  try {
+    const parsed = new URL(url);
+    const pathname = parsed.pathname.replace(/\/+$/, "");
+    if (!pathname) return undefined;
+    const host = parsed.hostname.replace(/^www\./, "");
+    return `${host}${pathname}${parsed.search}`.toLowerCase();
+  } catch {
+    return undefined;
+  }
+}
+
+function preferEvent(a: ResearchEvent, b: ResearchEvent): ResearchEvent {
+  // Seed records omit `provenance`; they are curated by construction, so an
+  // absent value must not lose to a newer automated copy of the same URL.
+  const aCurated = (a.provenance ?? "curated") === "curated";
+  const bCurated = (b.provenance ?? "curated") === "curated";
+  if (aCurated !== bCurated) return aCurated ? a : b;
+  return (b.updatedAt ?? "") > (a.updatedAt ?? "") ? b : a;
+}
+
+/**
+ * Merge curated and ingested data. Slugs dedupe the same story, and the same
+ * article arriving through two sources (e.g. a page source and that site's RSS
+ * feed) is reduced to one card; curated prose wins over automated prose.
+ */
+export function mergeEvents(
+  seed: ResearchEvent[],
+  ingested: ResearchEvent[]
+): ResearchEvent[] {
+  const bySlug = new Map<string, ResearchEvent>();
+  for (const event of seed) bySlug.set(event.slug, event);
+  for (const event of ingested) bySlug.set(event.slug, event);
+
+  const byUrl = new Map<string, ResearchEvent>();
+  const withoutUrl: ResearchEvent[] = [];
+  for (const event of bySlug.values()) {
+    const key = sourceKey(event.sourceUrl);
+    if (!key) {
+      withoutUrl.push(event);
+      continue;
+    }
+    const existing = byUrl.get(key);
+    byUrl.set(key, existing ? preferEvent(existing, event) : event);
+  }
+  return dedupePersonStories([...byUrl.values(), ...withoutUrl]);
+}
 
 /**
  * SeedStore - the default data source.
  *
- * Serves the bundled demo dataset (data/seed/events.ts) so `npm run dev`
+ * Serves the bundled dataset (data/seed/events.ts) so `npm run dev`
  * works without PostgreSQL. When DATABASE_URL is configured, PrismaStore
  * answers the same interface instead (see lib/db/index.ts).
  */
@@ -20,16 +70,13 @@ export class SeedStore implements ResearchStore {
   constructor(seed: ResearchEvent[] = events) {
     // Curated seed data + whatever the ingest pipeline has accepted so far.
     // Trust-model fields are derived once per event when not set explicitly.
-    const bySlug = new Map(
-      [...seed, ...readIngestedEvents()].map((event) => [event.slug, event])
-    );
-    this.all = [...bySlug.values()]
+    this.all = mergeEvents(seed, readIngestedEvents())
       .map(normalizeEcosystemEvent)
       .map(applyTrustModel);
   }
 
   async listEvents(options: ListEventsOptions = {}): Promise<ResearchEvent[]> {
-    const { eventType, area, q, status, evidence, tier, model, benchmark, dataset, since, year, limit } = options;
+    const { eventType, area, q, evidence, tier, model, benchmark, dataset, since, year, limit } = options;
     let list = this.all;
     if (eventType) list = list.filter((e) => e.eventType === eventType);
     if (area && area.toLowerCase() !== "all") {
@@ -38,8 +85,7 @@ export class SeedStore implements ResearchStore {
     if (q && q.trim()) {
       list = list.filter((e) => matchesQuery(eventSearchText(e), q));
     }
-    // Trust-model filters (AND-combined).
-    if (status) list = list.filter((e) => e.verificationStatus === status);
+    // Evidence/source filters (AND-combined).
     if (evidence) list = list.filter((e) => e.evidenceLevel === evidence);
     if (tier) list = list.filter((e) => e.sourceTier === tier);
     // Facet filters: exact membership in the event's arrays.
@@ -74,4 +120,3 @@ export class SeedStore implements ResearchStore {
     return searchEvents(this.all, query);
   }
 }
-

@@ -10,7 +10,7 @@ function makeEvent(overrides: Partial<ResearchEvent>): ResearchEvent {
     summary: "s",
     significance: "sig",
     date: "2026-01-01",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     sourceType: "arxiv",
     sourceUrl: "https://example.com/claim",
     authors: ["A"],
@@ -26,7 +26,7 @@ describe("buildTopicStats", () => {
     const stats = buildTopicStats([
       makeEvent({ researchArea: "Geometry", date: "2025-01-01", model: ["M1"] }),
       makeEvent({ researchArea: "Geometry", date: "2026-01-01", model: ["M1", "M2"], benchmark: ["B1"] }),
-      makeEvent({ researchArea: "Theorem Proving", date: "2024-01-01" }),
+      makeEvent({ researchArea: "Theorem Proving & Formal Mathematics", date: "2024-01-01" }),
     ]);
     expect(stats[0].topic).toBe("Geometry");
     expect(stats[0].count).toBe(2);

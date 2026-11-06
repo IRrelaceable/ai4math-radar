@@ -7,13 +7,24 @@ import { componentsDict } from "@/lib/i18n/dict.components";
 
 /**
  * Previous Work -> This Work -> Follow-up Work, derived from relatedWorks
- * relation labels. Falls back to a neutral "not yet recorded" state.
+ * relation labels.
+ *
+ * Renders nothing when the event carries no lineage at all: 64% of events
+ * have no `previous` and no `followup`, and showing three boxes for those
+ * ("no previous work recorded" / this event / "no follow-up recorded")
+ * spends three containers to state one fact. It is the same dead-block
+ * problem as RelatedWorksSection, so it gets the same treatment — the page
+ * simply ends at the verification history instead.
  */
 export function LineageTimeline({ event }: { event: ResearchEvent }) {
   const { lang } = useLang();
   const c = componentsDict[lang];
   const previous = event.relatedWorks.filter((w) => w.relation === "previous");
   const followup = event.relatedWorks.filter((w) => w.relation === "followup");
+
+  if (previous.length === 0 && followup.length === 0) {
+    return null;
+  }
 
   return (
     <div className="space-y-0">

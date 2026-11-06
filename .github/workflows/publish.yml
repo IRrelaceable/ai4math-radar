@@ -1,0 +1,95 @@
+name: Publish site
+
+# One job does everything so a scheduled run cannot race the Pages deployment:
+# pull new events → commit the refreshed state → build both languages → deploy.
+# The committed data/ingested/*.json files are the only mutable database.
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      sync:
+        description: "Pull new events before building"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Project pages live at /<repo>; user/org pages and custom domains at the
+      # root. A repository variable SITE_BASE overrides the derived value.
+      - name: Resolve base path
+        run: |
+          REPO="${GITHUB_REPOSITORY#*/}"
+          if [ -n "${{ vars.SITE_BASE }}" ]; then
+            BASE="${{ vars.SITE_BASE }}"
+          elif [[ "$REPO" == *.github.io ]]; then
+            BASE=""
+          else
+            BASE="/$REPO"
+          fi
+          echo "SITE_BASE=$BASE" >> "$GITHUB_ENV"
+          echo "site base: ${BASE:-(root)}"
+
+      - name: Ingest new events
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync)
+        env:
+          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
+          LLM_API_URL: ${{ secrets.LLM_API_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: npm run sync:all
+
+      - name: Commit refreshed data
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ingested
+          if git diff --cached --quiet; then
+            echo "no data changes"
+          else
+            git commit -m "chore(data): ingest $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Build zh + en export
+        run: npm run build:site
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

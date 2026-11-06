@@ -11,7 +11,7 @@ function makeEvent(overrides: Partial<ResearchEvent> = {}): ResearchEvent {
     summary: "s",
     significance: "sig",
     date: "2026-01-01",
-    researchArea: "Mathematical Reasoning",
+    researchArea: "Mathematical Reasoning & LLMs",
     sourceType: "arxiv",
     sourceUrl: "https://example.com/claim",
     authors: ["A"],
@@ -23,26 +23,20 @@ function makeEvent(overrides: Partial<ResearchEvent> = {}): ResearchEvent {
 }
 
 describe("applyTrustModel — conservative derivation", () => {
-  it("github artifact derives E3 + paper_released", () => {
+  it("github artifact derives E1", () => {
     const out = applyTrustModel(makeEvent({ sourceType: "github", githubUrl: "https://github.com/x/y" }));
-    expect(out.evidenceLevel).toBe("E3");
-    expect(out.verificationStatus).toBe("paper_released");
-    expect(out.sourceTier).toBe("S1");
+    expect(out.evidenceLevel).toBe("E1");
+    expect(out.sourceTier).toBe("S0");
   });
 
-  it("bare announcement derives E1 + claimed", () => {
-    const out = applyTrustModel(makeEvent());
-    expect(out.evidenceLevel).toBe("E1");
-    expect(out.verificationStatus).toBe("claimed");
+  it("bare announcement derives E3", () => {
+    expect(applyTrustModel(makeEvent()).evidenceLevel).toBe("E3");
   });
 
   it("explicit curated fields are never overwritten", () => {
-    const out = applyTrustModel(
-      makeEvent({ verificationStatus: "disputed", evidenceLevel: "E4", sourceTier: "S3" })
-    );
-    expect(out.verificationStatus).toBe("disputed");
+    const out = applyTrustModel(makeEvent({ evidenceLevel: "E4", sourceTier: "S2" }));
     expect(out.evidenceLevel).toBe("E4");
-    expect(out.sourceTier).toBe("S3");
+    expect(out.sourceTier).toBe("S2");
   });
 
   it("manual override wins over a strong artifact", () => {
@@ -53,12 +47,27 @@ describe("applyTrustModel — conservative derivation", () => {
         githubUrl: "https://github.com/x/y",
       })
     );
-    expect(out.verificationStatus).toBe("claimed");
-    expect(out.evidenceLevel).toBe("E1");
+    expect(out.evidenceLevel).toBe("E3");
   });
 
+  it("manual sourceTier wins over the catalog table", () => {
+    const out = applyTrustModel(
+      makeEvent({ sourceUrl: "https://mathandai.org/declaration", sourceTier: "S1" })
+    );
+    expect(out.sourceTier).toBe("S1");
+  });
+
+  it("catalog sourceTier is used when the event has no manual tier", () => {
+    const out = applyTrustModel(makeEvent({ sourceUrl: "https://mathandai.org/declaration" }));
+    expect(out.sourceTier).toBe("S4");
+  });
   it("eventType defaults to Research and gets a derived subtype", () => {
-    const out = applyTrustModel(makeEvent({ researchArea: "Formal Mathematics" }));
+    const out = applyTrustModel(
+      makeEvent({
+        researchArea: "Theorem Proving & Formal Mathematics",
+        subArea: "Autoformalization",
+      })
+    );
     expect(out.eventType).toBe("Research");
     expect(out.researchEventType).toBe("Formalization");
   });
@@ -69,10 +78,58 @@ describe("applyTrustModel — conservative derivation", () => {
     expect(out.researchEventType).toBeUndefined();
   });
 
-  it("generates verification history with an artifact record for E3", () => {
+  it("generates evidence history with an artifact record for E1", () => {
     const out = applyTrustModel(makeEvent({ sourceType: "github", githubUrl: "https://github.com/x/y" }));
     expect(out.verificationHistory?.length).toBe(2);
-    expect(out.verificationHistory?.[0].note).toContain("entered the tracker");
+    // The row is dated to the event, not to ingest time; the note says so.
+    expect(out.verificationHistory?.[0].date).toBe("2026-01-01");
+    expect(out.verificationHistory?.[0].note).toContain("on the event date");
+  });
+
+  it("derives a conservative verification state from the links", () => {
+    expect(applyTrustModel(makeEvent()).verificationStatus).toBe("claimed");
+    expect(
+      applyTrustModel(makeEvent({ paperUrl: "https://arxiv.org/abs/1234.5678" })).verificationStatus
+    ).toBe("paper_released");
+    expect(
+      applyTrustModel(
+        makeEvent({ sourceType: "github", githubUrl: "https://github.com/x/y" })
+      ).verificationStatus
+    ).toBe("paper_released");
+    // E0 is the only level that records an actual independent check.
+    expect(
+      applyTrustModel(makeEvent({ evidenceLevel: "E0" })).verificationStatus
+    ).toBe("independently_verified");
+  });
+
+  it("never infers a dispute, correction or retraction", () => {
+    const out = applyTrustModel(makeEvent({ paperUrl: "https://arxiv.org/abs/1234.5678" }));
+    expect(["claimed", "paper_released"]).toContain(out.verificationStatus);
+  });
+
+  it("keeps an explicit state and the last recorded history state", () => {
+    const explicit = applyTrustModel(makeEvent({ verificationStatus: "disputed" }));
+    expect(explicit.verificationStatus).toBe("disputed");
+    const fromHistory = applyTrustModel(
+      makeEvent({
+        verificationHistory: [
+          { date: "2026-01-01", evidenceLevel: "E2", status: "paper_released" },
+          { date: "2026-02-01", evidenceLevel: "E2", status: "under_verification" },
+        ],
+      })
+    );
+    expect(fromHistory.verificationStatus).toBe("under_verification");
+  });
+
+  it("passes AI attribution through untouched", () => {
+    const out = applyTrustModel(
+      makeEvent({
+        aiRole: { level: "assisted", description: "Model proposed the proof." },
+        humanContribution: "Researchers formalized the statement.",
+      })
+    );
+    expect(out.aiRole?.level).toBe("assisted");
+    expect(out.humanContribution).toBe("Researchers formalized the statement.");
   });
 });
 
@@ -85,14 +142,35 @@ describe("deriveResearchEventType", () => {
 
   it("competition keywords win over area", () => {
     expect(
-      deriveResearchEventType({ researchArea: "LLM for Mathematics", title: "IMO gold" })
+      deriveResearchEventType({ researchArea: "Mathematical Reasoning & LLMs", title: "IMO gold" })
     ).toBe("Competition");
   });
 
-  it("Theorem Proving maps to Proof", () => {
-    expect(deriveResearchEventType({ researchArea: "Theorem Proving", title: "Faster tactic" })).toBe(
-      "Proof"
-    );
+  it("merged formal area splits by sub-area", () => {
+    expect(
+      deriveResearchEventType({
+        researchArea: "Theorem Proving & Formal Mathematics",
+        subArea: "Proof search",
+        title: "Faster tactic",
+      })
+    ).toBe("Proof");
+    expect(
+      deriveResearchEventType({
+        researchArea: "Theorem Proving & Formal Mathematics",
+        subArea: "Autoformalization",
+        title: "Paper to Lean",
+      })
+    ).toBe("Formalization");
+  });
+
+  it("merged discovery area maps to Discovery", () => {
+    expect(
+      deriveResearchEventType({
+        researchArea: "Mathematical Discovery & Symbolic Computation",
+        subArea: "Equation solving & discovery",
+        title: "New identity",
+      })
+    ).toBe("Discovery");
   });
 
   it("unknown areas fall back to System", () => {
@@ -100,46 +178,28 @@ describe("deriveResearchEventType", () => {
   });
 });
 
-/**
- * Guard: the derivation rules published on /about must stay in lockstep
- * with applyTrustModel. Each documented rule is paired with a representative
- * event; if the derivation logic changes without a matching copy update, this
- * fails, so the site never describes rules it no longer applies.
- */
-describe("/about derivation copy matches applyTrustModel", () => {
-  const m = pagesDict.zh.about;
+describe("/methodology derivation copy matches applyTrustModel", () => {
+  const m = pagesDict.zh.methodology;
 
   it("evidence-level rules yield exactly the documented codes", () => {
     const cases: [Partial<ResearchEvent>, string][] = [
-      [{ githubUrl: "https://github.com/x/y" }, "E3"], // GitHub → E3
-      [{ paperUrl: "https://arxiv.org/abs/1" }, "E2"], // paper → E2
-      [{ sourceUrl: "https://example.com/claim" }, "E1"], // source only → E1
-      [{ sourceUrl: "" }, "E0"], // no links at all → E0
+      [{ githubUrl: "https://github.com/x/y" }, "E1"],
+      [{ paperUrl: "https://arxiv.org/abs/1" }, "E2"],
+      [{ sourceUrl: "https://example.com/claim" }, "E3"],
+      [{ sourceUrl: "" }, "E4"],
     ];
     for (const [overrides, expected] of cases) {
       expect(applyTrustModel(makeEvent(overrides)).evidenceLevel).toBe(expected);
     }
-    // codes appear in the documented table, in ascending order
-    expect(m.deriveEvidence.map((r) => r.code)).toEqual(["E3", "E2", "E1", "E0"]);
+    expect(m.deriveEvidence.map((r) => r.code)).toEqual(["E1", "E2", "E3", "E4"]);
   });
 
   it("source-tier rules yield exactly the documented codes", () => {
-    expect(applyTrustModel(makeEvent({ sourceType: "arxiv" })).sourceTier).toBe("S1");
-    expect(applyTrustModel(makeEvent({ sourceType: "github" })).sourceTier).toBe("S1");
-    expect(applyTrustModel(makeEvent({ sourceType: "conference" })).sourceTier).toBe("S1");
-    expect(applyTrustModel(makeEvent({ sourceType: "blog" })).sourceTier).toBe("S2");
-    expect(applyTrustModel(makeEvent({ sourceType: "demo" })).sourceTier).toBe("S2");
-    expect(m.deriveTier.map((r) => r.code)).toEqual(["S1", "S2"]);
-  });
-
-  it("verification-status rules tie evidence level to status", () => {
-    expect(applyTrustModel(makeEvent({ paperUrl: "https://arxiv.org/abs/1" })).verificationStatus).toBe(
-      "paper_released"
-    );
-    expect(applyTrustModel(makeEvent({ githubUrl: "https://github.com/x/y" })).verificationStatus).toBe(
-      "paper_released"
-    );
-    expect(applyTrustModel(makeEvent()).verificationStatus).toBe("claimed");
-    expect(m.deriveStatus.map((r) => r.code)).toEqual(["paper_released", "claimed"]);
+    expect(applyTrustModel(makeEvent({ sourceType: "arxiv" })).sourceTier).toBe("S0");
+    expect(applyTrustModel(makeEvent({ sourceType: "github" })).sourceTier).toBe("S0");
+    expect(applyTrustModel(makeEvent({ sourceType: "conference" })).sourceTier).toBe("S0");
+    expect(applyTrustModel(makeEvent({ sourceType: "blog" })).sourceTier).toBe("S1");
+    expect(applyTrustModel(makeEvent({ sourceType: "demo" })).sourceTier).toBe("S1");
+    expect(m.deriveTier.map((r) => r.code)).toEqual(["S0", "S1"]);
   });
 });

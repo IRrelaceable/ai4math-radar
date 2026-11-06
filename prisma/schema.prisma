@@ -49,22 +49,18 @@ model ResearchEvent {
   isDemo Boolean @default(false)
 
   /// Trust model — objective, observable corroboration labels.
-  /// claimed | paper_released | under_verification | partially_verified | ...
-  verificationStatus String  @default("claimed")
   /// E0..E4 - maturity of the public evidence
   evidenceLevel      String  @default("E2")
-  /// S1..S5 - where the evidence comes from
-  sourceTier         String  @default("S1")
+  /// S0..S4 - where the evidence comes from
+  sourceTier         String  @default("S0")
   /// Primary ecosystem class: Research | People | Institutions | Funding | Education | PolicyCommunity.
   eventType          String?
   /// Legacy research subtype: Discovery | Proof | Formalization | Benchmark | ...
   researchEventType  String?
   /// Type-specific ecosystem details (people, grant, course, policy, ...).
   metadata           Json?
-  /// curated (hand-verified) | automated (ingest pipeline)
+  /// curated (hand-curated) | automated (ingest pipeline)
   provenance         String  @default("curated")
-  /// pending | approved | rejected (automated records default to pending).
-  reviewStatus       String  @default("approved")
   lastSyncedAt       DateTime?
 
   createdAt DateTime @default(now())
@@ -174,13 +170,9 @@ model VerificationRecord {
   eventId       String
   event         ResearchEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
   date          DateTime      @db.Date
-  /// claimed | paper_released | under_verification | ...
-  status        String
   /// E0..E4
   evidenceLevel String
   note          String?
 
   @@index([eventId])
 }
-
-

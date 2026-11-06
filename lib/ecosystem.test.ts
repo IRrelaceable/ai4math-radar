@@ -40,7 +40,7 @@ describe("ecosystem event classes", () => {
       significance: "sig",
       date: "2026-01-01",
       eventType: "Education" as never,
-      researchArea: "AI-assisted Research",
+      researchArea: "Mathematical Agents",
       sourceType: "demo",
       sourceUrl: "https://example.org/",
       authors: [],

@@ -8,6 +8,17 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Keep the same content width when Chinese/English page length changes
+     whether or not the vertical scrollbar is present. */
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
