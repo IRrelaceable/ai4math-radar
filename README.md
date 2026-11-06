@@ -1,203 +1,149 @@
-# AI4Math Ecosystem Radar · AI4Math 生态雷达
+<div align="center">
 
-[English](README.en.md) · **中文**
+# ∑ AI4Math 生态雷达
 
-一个面向 **AI for Mathematics (AI4Math)** 的生态情报平台。它不只罗列论文,而是追踪五类生态
-事件——**研究 · 人物 · 机构与教育 · 资金 · 政策与社区**——回答发生了什么、谁在推动这个领域、
-为何重要、以及它如何与既往工作相连。
+**AI for Mathematics 的生态情报平台 —— 追踪事件，而不只是论文。**
 
-技术栈为 **Next.js(App Router)+ React + TypeScript + Tailwind CSS**,以**纯静态站点**发布:
-数据在构建时写入 JSON,页面导出为 HTML,GitHub Actions 定时抓取新事件并重新发布。没有服务端
-进程,也不需要数据库即可运行。
+把散落在 arXiv、会议论文集、实验室博客、大学新闻与基金会公告里的进展，
+整理成一条可筛选、可追溯、可定位的生态时间线。
 
-## 快速开始
+[中文](README.md) · [English](README.en.md) · [功能更新](project_management.md)
+
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Static Export](https://img.shields.io/badge/deploy-static_export-2F855A)](#数据如何更新)
+[![Tests](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+
+<img src="docs/screenshots/home.png" alt="AI4Math 生态雷达首页" width="880">
+
+</div>
+
+---
+
+## 这是什么
+
+AI4Math 的进展不只发生在论文里。新方法出现、研究者流动、机构成立联合实验室、基金会开放资助、
+社区发布政策声明——这些事件共同决定了一个方向的走向，却分散在几十个来源里，格式各异、更新节奏
+不同。
+
+**AI4Math 生态雷达**把六类研究方向和五类生态事件收进同一份数据集，为每条事件保留原始来源链接、
+证据等级与核验记录。你可以按方向、类型、时间、证据等级筛选，也可以在时间线上看一个领域如何
+一步步走到今天。
+
+当前数据集：**约 650 条事件**，最早可追溯到 **1956 年**，覆盖 **6 个研究方向**。
+
+## 核心设计
+
+<table>
+<tr><td width="33%" valign="top">
+
+### 以事件为单位
+
+论文、模型、基准、数据集是**事件的属性**，不作为一级分类。五类生态事件并列：研究、人物、
+机构与教育、资金、政策与社区。
+
+</td><td width="33%" valign="top">
+
+### 证据与重要性分开
+
+`evidenceLevel`（E0–E4）说明证据成熟到什么程度，`sourceTier`（S0–S4）说明证据来自哪里。
+两者独立标注，不合成分数。
+
+</td><td width="33%" valign="top">
+
+### 自动采集，来源可追溯
+
+自动采集直接进入事件流，不设人工审核队列；无法核实的字段留空，来源无法确认的条目直接丢弃。
+
+</td></tr>
+</table>
+
+## 功能
+
+| 模块 | 路由 | 说明 |
+| --- | --- | --- |
+| 首页 | `/` | 事件总量、方向分布、最新事件与近期活跃度 |
+| 事件流 | `/latest` | 按类型 / 方向 / 时间 / 证据 / 来源筛选，支持搜索、卡片与紧凑两种视图 |
+| 时间线 | `/timeline` | 2020 年起逐年、更早按十年；月份可折叠、支持深链与全年展开 |
+| 研究方向 | `/topics` · `/topics/[topic]` | 六个方向的趋势、代表论文、模型、基准与事件列表 |
+| 事件详情 | `/research/[slug]` | 发生了什么、关键事实、证据与状态、同类事件，以及**事件脉络** |
+| 全站搜索 | `/search` | 按事件、论文、方向、模型与基准分组返回结果 |
+| 来源同步 | `/sources` | 每个来源的最近同步状态与游标 |
+| 术语表 | `/methodology` | 证据等级与来源层级的完整定义 |
+
+**事件脉络**：详情页会按事件中出现的人物、机构、项目、模型与基准，把它放回一条共现时间线上，
+标出起点、最新进展与当前事件的位置。共现加时序表达的是关联，不是因果。
+
+**信任模型**：证据等级 E0–E4（独立复核 / 可检验产物 / 研究记录 / 单方声明 / 无证据）与来源
+层级 S0–S4 分开标注；核验历史只增不改。规则见 [`/methodology`](app/methodology/page.tsx)。
+
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/timeline.png" alt="时间线页面"><br><sub>时间线：按年分组，月份可折叠</sub></td>
+<td width="50%"><img src="docs/screenshots/detail.png" alt="事件详情页面"><br><sub>事件详情：事实、证据与原始来源</sub></td>
+</tr>
+</table>
+
+## 数据与信任模型
+
+每条事件的证据等级由可核验的链接推导，不靠主观打分：
+
+```text
+E0 独立复核    多个独立来源交叉验证
+E1 可检验产物  公开代码 / 数据 / 形式化证明
+E2 研究记录    论文、论文集或技术报告
+E3 单方声明    只有发起方自己的公开声明
+E4 无证据      暂无公开材料
+```
+
+来源层级 `S0`–`S4` 独立标注，按以下优先级解析：事件显式覆盖 → 来源目录表 → 来源类型兜底。
+arXiv 与 GitHub 均为 `S0`。
+
+数据政策：
+
+- 不编造结果、arXiv ID 或 URL；无法核实的字段留空，来源 URL 无法确认的条目直接丢弃。
+- 发布方自报的结果按「单方声明」记录，并保留分母（例如按已发布语料计数，而不是按已证明定理数）。
+- 自动采集不设人工审核队列；更正与撤回以追加核验记录的方式留痕。
+- 事件标题保持来源原文，不自动改写。
+
+## 数据如何更新
+
+站点是纯静态导出：数据在构建时写入 JSON，页面导出为 HTML，没有服务端进程，也不需要数据库。
+来源清单登记在 `lib/sources/catalog.ts`，每次同步把新事件写入 `data/ingested/`；构建时与内置
+事件合并、去重，再生成中英两份数据集。
+
+发布由 [`.github/workflows/publish.yml`](.github/workflows/publish.yml) 完成：push 到 `main`、
+每 6 小时定时或手动触发；定时与手动运行会先抓取新事件，再重建并发布双语言站点。
+
+## 本地运行
+
+需要 Node.js 20 及以上：
 
 ```bash
 npm install
 npm run dev
 ```
 
-打开 <http://localhost:3000>。`predev` 会先根据 `data/seed` 与 `data/ingested` 生成
-`public/data/{zh,en}.json`,再启动开发服务器。
+中文站运行在 <http://localhost:3000>，English 在 <http://localhost:3001/en/>。
 
-语言在编译期固定,所以开发服务器一次只编译一种语言;要同时看英文版,另开一个终端:
+## Roadmap
 
-```bash
-npm run dev:en   # http://localhost:3001/en/
-```
+- [x] 五类生态事件模型与信任标签
+- [x] 纯静态导出，中英双语独立构建
+- [x] 时间线（按年 / 十年分组、月份折叠、深链）
+- [x] 事件脉络（人物、机构、项目、模型、基准共现）
+- [x] 定时采集与自动发布
+- [ ] 事件之间的引用图，替代纯共现脉络
+- [ ] 方向内的逐题评测结果追踪
+- [ ] Math4AI 作为独立一级入口
 
-两个服务各用各的构建目录(`.next`、`.next-en`),互不干扰;页头的语言开关会自动跳到对应端口。
+## 参与贡献
 
-## 构建与部署
+发现错误或希望补充来源，请在仓库提交 Issue，并附上可核验的原始链接；无法确认来源的条目不合并。
+功能更新按周记录在 [project_management.md](project_management.md)。
 
-站点是中英两份独立导出(语言在构建时固定,靠路径区分):
+## 许可证
 
-| 语言 | 路径 | 构建方式 |
-| --- | --- | --- |
-| 中文 | `/` | `SITE_LANG=zh next build` |
-| English | `/en/` | `SITE_LANG=en next build` |
-
-一条命令完成两次构建与合并:
-
-```bash
-SITE_BASE=/ai4math-radar npm run build:site
-```
-
-产物在 `dist/`(中文)与 `dist/en/`(English)。`SITE_BASE` 是站点所在的子路径:GitHub
-项目页为 `/<仓库名>`,用户页或自定义域留空。
-
-GitHub Pages 部署由 [`.github/workflows/publish.yml`](.github/workflows/publish.yml) 完成:
-
-1. 每次 push 到 `main`、每 6 小时定时、或手动触发时运行;
-2. 定时/手动运行时先执行 `npm run sync:all` 抓取新事件,把
-   `data/ingested/*.json` 提交回仓库(这是跨次运行唯一需要持久化的状态);
-3. 双语言构建后通过 GitHub Pages 发布。
-
-启用步骤:
-
-- 仓库 **Settings → Pages → Source** 选择 **GitHub Actions**;
-- 在 **Settings → Secrets and variables → Actions** 添加 `LLM_PROVIDER`、`LLM_API_URL`、
-  `LLM_API_KEY`、`LLM_MODEL`(不配置时采集使用 mock 摘要,只验证管线);
-- 若子路径不是仓库名,添加仓库变量 `SITE_BASE` 覆盖。
-
-## 核心特性
-
-- **五类事件模型** —— 研究只是五类之一。论文、模型、基金、课程、政策文件都挂在事件之下,
-  绝不作为一级分类;教育作为机构类下的分支,不单列。
-- **信任模型** —— 每个事件有两个彼此独立、绝不混同的标签:`evidenceLevel`(E0–E4)、
-  `sourceTier`(S0–S4),外加一份只增不改的 `verificationHistory` 证据记录。术语表见
-  `/methodology`。
-- **精选 + 自动采集** —— 内置事件加自动采集结果,按 slug 与来源 URL 去重合并;自动条目标记为
-  `automated`,精选中文文案优先。
-- **话题 / 时间线 / 趋势** —— 话题页包含事件间的血缘关系与按话题统计,另有活跃度面板。
-- **数学公式渲染** —— 正文中的行内 LaTeX 在构建时渲染为 Unicode,客户端不打包数学库。
-- **中英双版** —— 中文在根路径,English 在 `/en/`,共用同一份数据与信任模型。
-
-## 路由
-
-| 路由 | 用途 |
-| --- | --- |
-| `/` | 仪表盘:五类概览、最新事件、活跃度 |
-| `/latest` | 事件流,支持分类 / 领域 / 证据等级 / 来源档位 / 时间筛选与搜索 |
-| `/timeline` | 按年分组的时间线视图 |
-| `/topics` · `/topics/[topic]` | 话题列表与详情(进展、趋势、论文、血缘关系) |
-| `/research/[slug]` | 事件详情:发生了什么、为何重要、来源、验证历史 |
-| `/sources` | 各来源最近一次同步的状态与游标(只读,同步见下) |
-| `/search` · `/methodology` · `/about` | 全站搜索、信任标签术语表、数据政策 |
-
-> `/research-map` 保留为兼容入口,跳转到 `/topics`。
-
-## 采集
-
-采集是命令行脚本(发布站点是纯静态导出,没有服务端,所以页面上没有常驻按钮):
-
-```bash
-npm run sync                 # 按配置增量抓取全部来源
-npm run sync -- --source=arxiv
-npm run sync -- --all --since=2026-01-01
-```
-
-`npm run dev` / `npm run dev:en` 会在 `127.0.0.1:3100` 顺带启动一个仅限本机的同步端点,
-因此本地开发时 `/sources` 的「本地同步」卡片会出现「立即同步」按钮,点击即执行与上面相同的
-管线(抓取 + 重建数据),完成后刷新页面生效。发布构建中这个按钮不存在。
-
-脚本读取 `.env`(或环境变量)中的 `LLM_PROVIDER` / `LLM_API_URL` / `LLM_API_KEY` /
-`LLM_MODEL` 生成结构化摘要,把结果写入 `data/ingested/`:
-
-| 文件 | 内容 |
-| --- | --- |
-| `events.json` | 已接受的自动采集事件 |
-| `fingerprints.json` | 已处理条目指纹,避免重复摘要 |
-| `source-status.json` | 每个来源的最近成功 / 失败 / 游标 |
-| `custom-sources.json` | 额外登记的 RSS / 页面来源 |
-
-这些文件需要提交到仓库,GitHub Actions 才能接着上次的游标继续抓取。同步结束时会顺带刷新
-`public/data/`,本地刷新页面即可看到新事件。
-
-详情页的「事件脉络」按事件里出现的人名、机构、项目与模型名串起时间线。新事件在同步时自动
-抽取这些名字;存量事件用 `npm run backfill:entities` 补一次(`--force` 全部重跑,
-`--limit=N` 先抽样)。历史空档用 `npm run backfill:history` 按年回补 arXiv 论文
-(默认 2018–2025、每年 14 条,`--from` / `--to` / `--per-year` 可调,`--dry` 只看选中结果)。
-会议来源用 `npm run backfill:history:conf` 回补 NeurIPS、ICML(PMLR)与 ACL/EMNLP/NAACL/COLING
-2018–2022 的论文集(同样支持 `--dry`),避免早年事件只剩 arXiv 一种出处。
-
-## 项目结构
-
-```text
-app/                  # 路由(构建时渲染)
-components/           # 布局、研究、话题、搜索、信息流、UI 组件
-lib/
-  db/                 # ResearchStore 契约 · SeedStore · 采集结果合并
-  i18n/               # 中英文词典 + localize()
-  staticData.ts       # ListEvent 投影与客户端搜索
-  useDataset.ts       # 读取 public/data/<lang>.json
-  math.ts             # LaTeX → Unicode
-  verification.ts     # 信任模型(证据等级 / 来源档位)
-  sources/            # ResearchSource:arXiv · GitHub · RSS / 页面 · 自定义来源
-agents/researchTracker/   # tracker · classifier · summarizer
-scripts/              # build-data · ingest · build-site
-data/seed/            # 内置事件
-data/ingested/        # 自动采集的持久状态(需提交)
-types/                # 领域类型
-```
-
-数据流分两段:
-
-```text
-构建时   data/seed + data/ingested → public/data/{zh,en}.json → 静态 HTML
-运行时   页面读取对应语言的 JSON → 客户端筛选 / 搜索 / 分页
-```
-
-详情页、首页、方法论、关于页在构建时即为完整 HTML;事件流、时间线、搜索与话题归档由客户端
-读取数据集后筛选,因此不需要任何 API。
-
-## 已登记的官方来源
-
-来源目录见 `lib/sources/catalog.ts`:
-
-- 官方实验室 / 公司 News RSS:OpenAI、Google DeepMind、Google AI、Microsoft Research、
-  NVIDIA、Amazon Science
-- 大学与研究机构 News:MIT News(Mathematics)、Isaac Newton Institute、IPAM、
-  Simons Foundation News、Clay Mathematics Institute、MATRIX Institute
-- 数学系 News:哥伦比亚大学、UCLA、威斯康星大学、UBC
-- 学会 News:Australian Mathematical Society
-- 教育与训练:AIMO、Mathematics in Lean、Lean Community
-- 人物与公开观点:Terence Tao's blog、Timothy Gowers' blog、Scott Aaronson's blog、
-  Quanta Mathematics
-- 政策与共同体:Math & AI declarations、Association for Human Mathematics statements、IMO
-
-## 来源档位规则
-
-事件档位按以下优先级确定:
-
-```text
-1. 事件显式 sourceTier(人工覆盖)
-2. catalog.ts 的 SOURCE_TIER_TABLE
-3. sourceType 兜底
-```
-
-`arxiv` 与 `github` 均为 `S0`。
-
-## 数据政策
-
-- 不编造结果、arXiv ID 或 URL——无法核实的字段留空;来源 URL 无法确认的条目直接丢弃。
-- 发布方自报的结果始终标注为"声称",并保留分母(样本量)。
-- 自动采集直接进入事件流,不设人工审核队列;纠错以追加验证记录的方式留痕。
-
-## 扩展
-
-实现一个接口即可接入新的实时数据源:
-
-```ts
-export interface ResearchSource {
-  id: string;
-  label: string;
-  fetchRecent(options?: { limit?: number; since?: string }): Promise<RawResearchItem[]>;
-}
-```
-
-在 `getLiveResearchSources`(`lib/sources/index.ts`)中注册后,`npm run sync` 就会运行管线
-`Source → RawResearchItem → Normalizer → Classifier → ResearchEvent`。
-
-也可以把自定义 RSS / 页面来源写入 `data/ingested/custom-sources.json`,下一次同步即生效。
-分类器目前基于关键词;可通过 `getLLMProvider()` 在同一契约背后换成大模型调用。
+本项目暂未选择开源许可证。在添加 `LICENSE` 文件之前，默认保留所有权利；如需复用，请先联系作者。
