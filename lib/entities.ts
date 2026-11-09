@@ -22,10 +22,13 @@ export interface EntityRef {
 const MIN_NAME_LENGTH = 3;
 
 /**
- * Matching key for a name. Only case, spacing, padding punctuation and a
- * leading "The" are folded: anything looser ("DeepMind" ≈ "Google DeepMind")
- * would merge entities the sources keep apart, which is worse than missing a
- * link on a tracker whose whole point is verifiability.
+ * Matching key for a name. Case, spacing, padding punctuation and a leading
+ * "The" are folded, then separators are removed outright: sources spell one
+ * entity as "MATH-500", "MATH 500" or "MATH500", and those must hit the same
+ * key — while looser folds ("DeepMind" ≈ "Google DeepMind") would merge
+ * entities the sources keep apart, which is worse than missing a link on a
+ * tracker whose whole point is verifiability. Display is unaffected: every
+ * spelling stays in the group and chooseName picks one.
  */
 export function normalizeEntityName(name: string): string {
   return name
@@ -34,7 +37,8 @@ export function normalizeEntityName(name: string): string {
     .trim()
     .replace(/^the\s+/i, "")
     .replace(/[.,;:]+$/g, "")
-    .toLocaleLowerCase("en");
+    .toLocaleLowerCase("en")
+    .replace(/[\s\-–—/]+/g, "");
 }
 
 function usableName(raw: string | undefined): string | undefined {

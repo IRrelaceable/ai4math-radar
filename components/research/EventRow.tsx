@@ -33,6 +33,8 @@ export function EventRow({ event }: { event: ListEvent }) {
         <p className="mt-0.5 line-clamp-1 text-xs leading-relaxed text-ink-500">
           {[
             event.eventType ? t.trust.type[event.eventType] : "",
+            // Every research event carries the axis; ecosystem records have none.
+            event.direction ? t.trust.direction[event.direction] : "",
             area,
             event.summary,
           ]

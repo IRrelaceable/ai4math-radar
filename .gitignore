@@ -39,5 +39,8 @@ public/data/
 # local working notes (requirements draft), not source
 文本.txt
 
+# oil-ui design-session working artifacts
+.oil-ui/
+
 # NOTE: data/ingested/*.json IS committed — the scheduled GitHub Actions job
 # stores what it ingested and must resume from it on the next run.

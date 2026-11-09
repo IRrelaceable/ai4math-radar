@@ -9,6 +9,7 @@ import {
   TIME_WINDOWS,
   windowStartDate,
   type EvidenceLevel,
+  type EventDirection,
   type EventType,
   type SourceTier,
   type TimeWindow,
@@ -40,9 +41,11 @@ function oneOf<T extends string>(raw: string | null, allowed: readonly T[]): T |
  * A static export cannot filter on the server, so the page ships the whole
  * build-time dataset once and this view applies the same filters the store
  * used to: event class, area, search, evidence, tier, facets, time window.
- * URL state is unchanged — every filter is still shareable.
+ * URL state is unchanged — every filter is still shareable. A page may pin
+ * the direction axis via `presetDirection` (the /math4ai entry), which narrows
+ * the dataset before any other filter and keeps the pager on its own path.
  */
-export function LatestFeed() {
+export function LatestFeed({ presetDirection }: { presetDirection?: EventDirection } = {}) {
   const params = useSearchParams();
   const { data, error } = useDataset();
   const { lang } = useLang();
@@ -56,7 +59,12 @@ export function LatestFeed() {
     return <p className="text-sm text-ink-500">{c.feed.loading}</p>;
   }
 
-  const all = data.events;
+  // "both" serves either side, so it appears in every direction view.
+  const all = presetDirection
+    ? data.events.filter(
+        (e) => e.direction === presetDirection || e.direction === "both"
+      )
+    : data.events;
   const eventType = oneOf<EventType>(params.get("type"), EVENT_TYPES);
   const evidence = oneOf<EvidenceLevel>(params.get("evidence"), EVIDENCE_LEVELS);
   const tier = oneOf<SourceTier>(params.get("tier"), SOURCE_TIERS);
@@ -92,6 +100,9 @@ export function LatestFeed() {
   // empty result set. The full scale stays documented on /methodology.
   const presentAreas = new Set(all.map((e) => e.researchArea));
   const availableAreas = RESEARCH_AREAS.filter((a) => presentAreas.has(a));
+  const presentTypes = EVENT_TYPES.filter((type) =>
+    all.some((e) => e.eventType === type)
+  );
   const presentEvidence = EVIDENCE_LEVELS.filter((level) =>
     all.some((e) => e.evidenceLevel === level)
   );
@@ -106,12 +117,13 @@ export function LatestFeed() {
   const pageEvents = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   /** Preserve active filters; page 1 stays canonical without `?page=1`. */
+  const base = presetDirection ? "/math4ai" : "/latest";
   const pageHref = (n: number) => {
     const query = new URLSearchParams(params.toString());
     query.delete("page");
     if (n > 1) query.set("page", String(n));
     const qs = query.toString();
-    return qs ? `/latest?${qs}` : "/latest";
+    return qs ? `${base}?${qs}` : base;
   };
 
   return (
@@ -123,6 +135,7 @@ export function LatestFeed() {
         presentTiers={[...SOURCE_TIERS]}
         presentWindows={presentWindows}
         presentYears={presentYears}
+        presentTypes={presentTypes}
         compact={compact}
       />
 

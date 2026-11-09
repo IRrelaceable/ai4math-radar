@@ -18,6 +18,15 @@ export const RESEARCH_AREAS = [
 export type ResearchArea = (typeof RESEARCH_AREAS)[number];
 
 /**
+ * Direction axis, orthogonal to researchArea: who the progress directly
+ * serves. "ai4math" = mathematics done with machines (proofs, formalization,
+ * discovery, their toolchain); "math4ai" = general AI capability, where
+ * mathematics is only the medium or testbed; "both" = co-primary.
+ * Ecosystem events carry no direction, same rule as researchArea.
+ */
+export type EventDirection = "ai4math" | "math4ai" | "both";
+
+/**
  * Controlled sub-area vocabulary, per research area.
  *
  * Sub-areas used to be free text, which fragmented one concept across many
@@ -283,6 +292,8 @@ export interface ResearchEvent {
    */
   researchArea?: ResearchArea;
   subArea?: string;
+  /** Direction axis (see EventDirection); assigned by the pipeline, absent on ecosystem events. */
+  direction?: EventDirection;
   sourceType: SourceType;
   sourceUrl: string;
   paperUrl?: string;
@@ -354,6 +365,7 @@ export type ListEvent = Pick<
   | "researchEventType"
   | "researchArea"
   | "subArea"
+  | "direction"
   | "sourceUrl"
   | "paperUrl"
   | "githubUrl"

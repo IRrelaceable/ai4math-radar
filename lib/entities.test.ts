@@ -28,11 +28,20 @@ function makeEvent(overrides: Partial<ResearchEvent>): ResearchEvent {
 }
 
 describe("entity threads", () => {
-  it("folds case, spacing, padding punctuation and a leading The", () => {
+  it("folds case, separators, padding punctuation and a leading The", () => {
     expect(normalizeEntityName("  The  Clay Mathematics Institute. ")).toBe(
-      "clay mathematics institute"
+      "claymathematicsinstitute"
     );
-    expect(normalizeEntityName("Terence Tao")).toBe("terence tao");
+    expect(normalizeEntityName("Terence Tao")).toBe("terencetao");
+  });
+
+  it("maps separator variants of one name onto the same key", () => {
+    expect(normalizeEntityName("MATH-500")).toBe(normalizeEntityName("MATH500"));
+    expect(normalizeEntityName("MATH 500")).toBe(normalizeEntityName("MATH500"));
+    expect(normalizeEntityName("Lean 4")).toBe(normalizeEntityName("Lean4"));
+    // Folding separators must not collapse genuinely different names.
+    expect(normalizeEntityName("MATH500")).not.toBe(normalizeEntityName("MATH1000"));
+    expect(normalizeEntityName("GPT-4")).not.toBe(normalizeEntityName("GPT-3"));
   });
 
   it("threads research events by author name across spellings", () => {
@@ -88,7 +97,7 @@ describe("entity threads", () => {
       }),
     ];
     const keys = events.flatMap((event) => eventEntities(event)).map((ref) => ref.key);
-    expect(keys).toContain("person|john pardon");
+    expect(keys).toContain("person|johnpardon");
     expect(keys).not.toContain("person|susie");
   });
 

@@ -63,9 +63,6 @@ export default function MethodologyPage() {
           <li>{m.policy2}</li>
           <li>
             {m.policy3A}
-            <span className="chip border-violet-200 bg-violet-50 text-violet-700">
-              {d.common.automated}
-            </span>
             {m.policy3B}
           </li>
           <li>{m.policy4}</li>

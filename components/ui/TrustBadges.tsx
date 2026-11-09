@@ -5,7 +5,6 @@ import type {
   AiRoleLevel,
   EvidenceLevel,
   EventType,
-  ResearchEvent,
   SourceTier,
   VerificationStatus,
 } from "@/types";
@@ -122,9 +121,5 @@ export function EventTypePill({ type }: { type: EventType }) {
       {t.trust.type[type]}
     </span>
   );
-}
-
-export function provenanceOf(event: ResearchEvent): "curated" | "automated" {
-  return event.provenance ?? "curated";
 }
 

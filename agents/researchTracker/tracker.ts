@@ -7,6 +7,7 @@ import { summarize } from "./summarizer";
 import { extractEcosystemMetadata, type ExtractedMetadata } from "./metadata";
 import { extractContribution, type ExtractedContribution } from "./contribution";
 import { extractNamedEntities } from "./entities";
+import { classifyDirection } from "./direction";
 import { fingerprintItem } from "@/lib/db/ingested";
 
 export interface PipelineStepResult {
@@ -153,13 +154,25 @@ export async function runPipeline(
     // Named entities are what place the event on a person/institution/project
     // timeline; they come from the source text, never from a feed byline.
     const entities = await extractNamedEntities(entry.normalized);
-    return { text, metadata, contribution, entities };
+    // The direction axis is judged from the just-written summary under the
+    // fixed rubric; ecosystem items carry an event class instead and skip it.
+    const direction =
+      eventType === "Research" && entry.effective.researchArea
+        ? await classifyDirection({
+            title: entry.normalized.title,
+            summary: text.summary,
+            researchArea: entry.effective.researchArea,
+            subArea: entry.effective.subArea,
+          })
+        : undefined;
+    return { text, metadata, contribution, entities, direction };
   });
 
   pending.forEach((entry, index) => {
     fingerprints.push([entry.slug, entry.fingerprint]);
-    accepted.push(
-      toEvent(
+    const direction = results[index].direction;
+    accepted.push({
+      ...toEvent(
         entry.normalized,
         entry.effective,
         results[index].text,
@@ -168,8 +181,9 @@ export async function runPipeline(
         results[index].metadata,
         results[index].contribution,
         results[index].entities
-      )
-    );
+      ),
+      ...(direction ? { direction } : {}),
+    });
     trace.push({
       step: "classify+summarize",
       detail: `"${entry.normalized.title}" -> ${entry.normalized.eventType ?? "Research"} / ${entry.effective.researchArea}`,

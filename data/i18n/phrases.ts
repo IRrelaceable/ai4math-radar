@@ -141,4 +141,6 @@ export const PHRASE_ZH: PhraseZh = {
   "Amount disclosed in the official announcement": "官方公告中披露的金额",
   "Amount not disclosed": "金额未披露",
   "Amount disclosed in the illustrative source": "示意性来源中披露的金额",
+  "Listed in this event's reference list": "列于本事件的参考文献列表",
+  "Cites this event's paper": "其论文引用了本事件",
 };

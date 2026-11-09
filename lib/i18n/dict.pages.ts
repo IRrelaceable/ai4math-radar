@@ -21,6 +21,7 @@ const zh = {
   /** Browser tab metadata (used by each page's `generateMetadata`). */
   meta: {
     latest: { title: "最新 AI4Math 生态事件", desc: "AI for Mathematics 的研究、人物、机构与教育、资助与政策共同体事件，可按五类筛选。" },
+    math4ai: { title: "Math4AI 方向", desc: "以数学为工具或测试场、直接服务通用 AI 能力的事件——模型训练、提示方法与能力评测——按方向轴自动归类，含兼有事件。" },
     timeline: { title: "时间线", desc: "已记录的 AI4Math 研究事件按时间顺序排列，逐年分组。" },
     topics: { title: "研究方向", desc: "按研究方向汇总的科研进展事件，含子方向、模型与 Benchmark 覆盖。" },
     search: { title: "搜索", desc: "全站搜索：研究事件、论文、方向、模型与 Benchmark。" },
@@ -51,9 +52,16 @@ const zh = {
     sub: "每条记录都是一个生态事件——发生了什么、谁在推动、为什么重要、去哪里读原始来源。可按五类事件与研究方向筛选。",
   },
 
+  /** app/math4ai/page.tsx */
+  math4ai: {
+    label: "方向轴",
+    title: "Math4AI：数学服务 AI 的进展",
+    sub: "受益方是通用 AI 能力的事件——训练方法、提示策略、能力评测与以数学为工具的工作。每条由管线按方向轴自动归类，两侧兼有的事件也在此列出，可继续按事件类别、方向与时间筛选。",
+  },
+
   /** app/timeline/page.tsx */
   timeline: {
-    sub: "全部已记录的生态事件按时间顺序排列，并按年份分组。用五类一级事件筛选，Research 事件还可通过研究子类型识别；打开任一条目可查看完整证据记录。",
+    sub: "全部已记录的生态事件按时间顺序排列，并按年份分组。用五类一级事件筛选；打开任一条目可查看完整证据记录。",
     feedLink: "带方向筛选的信息流视图",
     empty: "没有事件符合该筛选。",
     decadeNav: "按时间跳转",
@@ -250,8 +258,8 @@ const zh = {
       "每条条目都保留其原始来源 URL。候选条目的来源若无法确认，宁可剔除，也不发布没有链接的记录。",
     policy2:
       "发布方口径的结果按“单方声明”记录，并保留分母（例如已发布的语料按稿件数计，而不是按已证明的定理数计）。",
-    policy3A: "由抓取管线生成的条目会标记为",
-    policy3B: "，并立即进入事件流。",
+    policy3A: "由抓取管线生成的条目",
+    policy3B: "直接进入事件流。",
     policy4: "更正与撤回会追加到事件的核验历史中，而不是悄悄改动记录。",
     seeAlsoA: "另见：",
     seeAlsoB: "（数据模型与管线），或",
@@ -319,6 +327,7 @@ const en = {
   /** Browser tab metadata (used by each page's `generateMetadata`). */
   meta: {
     latest: { title: "Latest AI4Math Ecosystem Events", desc: "Research, people, institutions & education, funding and policy events in AI for Mathematics, filterable by class." },
+    math4ai: { title: "Math4AI direction", desc: "Events where mathematics is the tool or testbed serving general AI capability — training, prompting and evaluation — classified on the direction axis, co-primary events included." },
     timeline: { title: "Timeline", desc: "Chronological view of recorded AI4Math research events, year by year." },
     topics: { title: "Topics", desc: "Research events grouped by direction, with sub areas and model/benchmark coverage." },
     search: { title: "Search", desc: "Full-site search across research events, papers, topics, models and benchmarks." },
@@ -344,6 +353,12 @@ const en = {
     label: "Ecosystem feed",
     title: "Latest AI4Math Ecosystem Events",
     sub: "Every entry is an ecosystem event — what happened, who is moving the field, why it matters, and where to read the source. Filter by class and area, and search titles, summaries, models and benchmarks.",
+  },
+
+  math4ai: {
+    label: "Direction axis",
+    title: "Math4AI: mathematics in service of AI",
+    sub: "Events whose beneficiary is general AI capability — training methods, prompting strategies, capability benchmarks and mathematical tooling. Each is classified automatically on the direction axis; co-primary events appear here too, and the usual class, area and time filters still apply.",
   },
 
   timeline: {
@@ -542,8 +557,8 @@ const en = {
       "Every entry keeps its original source URL. If a candidate's source could not be confirmed, it was dropped rather than shipped without a link.",
     policy2:
       "Publisher-reported results are recorded as originator claims, with denominators preserved (e.g. a released corpus is counted as manuscripts, not as proven theorems).",
-    policy3A: "Automated entries produced by the ingest pipeline are labelled ",
-    policy3B: " and enter the feed immediately.",
+    policy3A: "Entries produced by the ingest pipeline enter ",
+    policy3B: "the feed immediately.",
     policy4:
       "Corrections and withdrawals are appended to an event's verification history instead of silently editing the record.",
     seeAlsoA: "See also ",

@@ -21,6 +21,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "build:site": "node scripts/build-site.mjs",
     "backfill:entities": "tsx scripts/backfill-entities.ts",
+    "backfill:citations": "tsx scripts/backfill-citations.ts",
+    "backfill:direction": "tsx scripts/backfill-direction.ts",
     "backfill:history:conf": "tsx scripts/backfill-history-conference.ts",
     "backfill:history": "tsx scripts/backfill-history.ts"
   },

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { ResearchEvent, RelatedWork } from "@/types";
 import { formatDate } from "@/lib/utils";
 import { useLang } from "@/lib/i18n/context";
@@ -7,7 +8,8 @@ import { componentsDict } from "@/lib/i18n/dict.components";
 
 /**
  * Previous Work -> This Work -> Follow-up Work, derived from relatedWorks
- * relation labels.
+ * relation labels plus the reverse edges the detail page computes (records
+ * that name this event as their previous work, so they are its follow-ups).
  *
  * Renders nothing when the event carries no lineage at all: 64% of events
  * have no `previous` and no `followup`, and showing three boxes for those
@@ -16,11 +18,25 @@ import { componentsDict } from "@/lib/i18n/dict.components";
  * problem as RelatedWorksSection, so it gets the same treatment — the page
  * simply ends at the verification history instead.
  */
-export function LineageTimeline({ event }: { event: ResearchEvent }) {
+export function LineageTimeline({
+  event,
+  extraPrevious = [],
+  extraFollowup = [],
+}: {
+  event: ResearchEvent;
+  extraPrevious?: RelatedWork[];
+  extraFollowup?: RelatedWork[];
+}) {
   const { lang } = useLang();
   const c = componentsDict[lang];
-  const previous = event.relatedWorks.filter((w) => w.relation === "previous");
-  const followup = event.relatedWorks.filter((w) => w.relation === "followup");
+  const previous = [
+    ...event.relatedWorks.filter((w) => w.relation === "previous"),
+    ...extraPrevious,
+  ];
+  const followup = [
+    ...event.relatedWorks.filter((w) => w.relation === "followup"),
+    ...extraFollowup,
+  ];
 
   if (previous.length === 0 && followup.length === 0) {
     return null;
@@ -49,6 +65,23 @@ function Connector() {
   );
 }
 
+/** Internal targets stay in the site (next/link applies basePath); external ones open the source. */
+function WorkLink({ work, className }: { work: RelatedWork; className: string }) {
+  if (!work.url) return <span className={className}>{work.title}</span>;
+  if (work.url.startsWith("/")) {
+    return (
+      <Link href={work.url} className={className}>
+        {work.title}
+      </Link>
+    );
+  }
+  return (
+    <a href={work.url} target="_blank" rel="noopener noreferrer" className={className}>
+      {work.title}
+    </a>
+  );
+}
+
 function Stage({ label, items }: { label: string; items: RelatedWork[] }) {
   const { lang } = useLang();
   const c = componentsDict[lang];
@@ -61,18 +94,10 @@ function Stage({ label, items }: { label: string; items: RelatedWork[] }) {
         <ul className="mt-1.5 space-y-1.5">
           {items.map((w) => (
             <li key={w.title} className="text-sm">
-              {w.url ? (
-                <a
-                  href={w.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-ink-900 hover:text-accent-700"
-                >
-                  {w.title}
-                </a>
-              ) : (
-                <span className="font-medium text-ink-900">{w.title}</span>
-              )}
+              <WorkLink
+                work={w}
+                className="font-medium text-ink-900 hover:text-accent-700"
+              />
               {w.note && <span className="block text-xs text-ink-500">{w.note}</span>}
             </li>
           ))}

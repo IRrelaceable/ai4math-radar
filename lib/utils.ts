@@ -10,6 +10,16 @@ export function slugify(input: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+const ARXIV_RE =
+  /(?:arxiv\.org\/(?:abs|pdf|format)\/|doi\.org\/10\.48550\/arXiv\.)(\d{4}\.\d{4,5})(?:v\d+)?/i;
+const ARXIV_DOI_RE = /10\.48550\/arXiv\.(\d{4}\.\d{4,5})(?:v\d+)?/i;
+
+/** arXiv identifier carried by an abs/pdf/DOI URL, when there is one. */
+export function arxivIdOf(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  return ARXIV_RE.exec(url)?.[1] ?? ARXIV_DOI_RE.exec(url)?.[1];
+}
+
 const MONTHS_SHORT = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -132,7 +142,6 @@ export function eventSearchText(e: ResearchEvent): string {
     zh?.summary ?? "",
     zh?.significance ?? "",
     e.eventType ?? "",
-    e.researchEventType ?? "",
     e.researchArea,
     e.subArea ?? "",
     e.institution ?? "",

@@ -48,7 +48,9 @@ export function EventCard({ event }: { event: ListEvent }) {
         </Link>
       </h3>
 
-      {/* Class, research context and date sit together below the title. */}
+      {/* Class, research context and date sit together below the title.
+          The direction axis labels every research event — an unlabelled card
+          would leave readers guessing whether it means ai4math or no axis. */}
       <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-ink-500">
         {event.eventType && (
           <span
@@ -56,6 +58,21 @@ export function EventCard({ event }: { event: ListEvent }) {
             className="chip border border-ink-200 bg-ink-50 font-medium text-ink-700"
           >
             {t.trust.type[event.eventType]}
+          </span>
+        )}
+        {event.direction === "ai4math" && (
+          <span className="chip border border-accent-200 bg-accent-50 font-medium text-accent-700">
+            {t.trust.direction.ai4math}
+          </span>
+        )}
+        {event.direction === "math4ai" && (
+          <span className="chip border border-violet-200 bg-violet-50 font-medium text-violet-700">
+            {t.trust.direction.math4ai}
+          </span>
+        )}
+        {event.direction === "both" && (
+          <span className="chip border border-amber-200 bg-amber-50 font-medium text-amber-700">
+            {t.trust.direction.both}
           </span>
         )}
         {event.researchArea && <span>{areaLabel}</span>}

@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   EVENT_TYPES,
   type EvidenceLevel,
+  type EventType,
   type ResearchArea,
   type SourceTier,
   type TimeWindow,
@@ -76,6 +77,7 @@ export function FeedControls({
   presentTiers,
   presentWindows,
   presentYears,
+  presentTypes,
   compact,
 }: {
   availableAreas: ResearchArea[];
@@ -84,6 +86,8 @@ export function FeedControls({
   presentTiers: SourceTier[];
   presentWindows: TimeWindow[];
   presentYears: string[];
+  /** Event classes with at least one record; a class with no data would only ever yield an empty result. */
+  presentTypes?: EventType[];
   compact: boolean;
 }) {
   const router = useRouter();
@@ -147,9 +151,9 @@ export function FeedControls({
 
   return (
     <div className="space-y-3">
-      {/* 1. Primary axis: the five event classes (+ All), view switch on the right. */}
+      {/* 1. Primary axis: the event classes present in the data (+ All), view switch on the right. */}
       <div className="flex flex-wrap items-center gap-2">
-        {(["All", ...EVENT_TYPES] as const).map((type) => {
+        {(["All", ...(presentTypes ?? EVENT_TYPES)] as const).map((type) => {
           const active = type === "All" ? !get("type") : get("type") === type;
           const label = type === "All" ? t.common.all : t.trust.type[type];
           return (

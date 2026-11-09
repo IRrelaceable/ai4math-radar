@@ -4,9 +4,11 @@ import type { EntityKind } from "@/lib/entities";
 import { truncateText } from "@/lib/utils";
 
 /**
- * An event placed on the timeline of the people, institutions, projects and
- * systems the record names. Every row is a real stored event; the current one
- * is marked instead of linked, so the chain shows where this event sits.
+ * One "event thread" section: the previous -> this -> follow-up lineage
+ * diagram first, then an event placed on the timeline of the people,
+ * institutions, projects and systems the record states. Every row is a real
+ * stored event; the current one is marked instead of linked, so the chain
+ * shows where this event sits.
  *
  * A chain reads as a story only if its ends are visible: the first and latest
  * events stay pinned, the window around the current event carries a one-line
@@ -55,17 +57,22 @@ export function EntityThreads({
   others,
   currentSlug,
   labels,
+  lineage,
 }: {
   threads: EntityThreadView[];
   others: { kind: EntityKind; name: string }[];
   currentSlug: string;
   labels: EntityThreadsLabels;
+  lineage?: React.ReactNode;
 }) {
   return (
     <section id="thread" className="mt-7 scroll-mt-24">
       <h2 className="text-lg font-semibold tracking-tight">{labels.title}</h2>
-      <p className="mt-1 text-sm text-ink-500">{labels.intro}</p>
-      <div className="mt-3 space-y-3">
+      {lineage && <div className="mt-3">{lineage}</div>}
+      {threads.length > 0 && (
+        <>
+          <p className={`${lineage ? "mt-4" : "mt-1"} text-sm text-ink-500`}>{labels.intro}</p>
+          <div className="mt-3 space-y-3">
         {threads.map((thread) => {
           const { visible, earlier, later } = chainAround(thread.events, currentSlug);
           const index = thread.events.findIndex((event) => event.slug === currentSlug);
@@ -130,7 +137,9 @@ export function EntityThreads({
             </div>
           );
         })}
-      </div>
+          </div>
+        </>
+      )}
 
       {others.length > 0 && (
         <div className="mt-3 rounded-md border border-dashed border-ink-200 p-3">

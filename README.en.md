@@ -74,13 +74,16 @@ fields stay empty; items without a confirmable source URL are dropped.
 | Areas | `/topics` · `/topics/[topic]` | Trends, papers, models, benchmarks and events for each area |
 | Event detail | `/research/[slug]` | What happened, key facts, evidence and status, related events, and the **event thread** |
 | Search | `/search` | Results grouped by event, paper, area, model and benchmark |
+| Math4AI entry | `/math4ai` | Direction-axis feed: events whose beneficiary is general AI capability (co-primary included) |
 | Sources | `/sources` | Last sync status and cursor per source |
 | Glossary | `/methodology` | Full definitions of evidence levels and source tiers |
 
-**Event thread**: the detail page places an event on a co-occurrence timeline built from
-the people, institutions, projects, models and benchmarks it names, marking the earliest
-point, the latest development and the current event. Co-occurrence plus ordering expresses
-association, not causation.
+**Event thread**: the detail page first draws "previous work → this event → follow-up work"
+from citation links — edges are checked against OpenAlex reference lists, so both the citing
+and cited side are facts stated by the paper — then places the event on a co-occurrence
+timeline built from the people, institutions, projects, models and benchmarks it names,
+marking the earliest point, the latest development and the current event. Co-occurrence
+plus ordering expresses association, not causation.
 
 **Trust model**: evidence levels E0–E4 (independent replication / testable artifact /
 research record / originator claim / no evidence) and source tiers S0–S4 are labelled
@@ -125,7 +128,8 @@ The site is a fully static export: data is written to JSON at build time, pages 
 exported as HTML, and there is no server process or database. Sources are registered in
 `lib/sources/catalog.ts`; each sync appends new events to `data/ingested/`, which are
 merged with the bundled events, deduplicated, and turned into the Chinese and English
-datasets at build time.
+datasets at build time. Citation links between events are backfilled from OpenAlex
+reference lists via `npm run backfill:citations` (idempotent, safe to re-run).
 
 Publishing is handled by [`.github/workflows/publish.yml`](.github/workflows/publish.yml):
 on every push to `main`, every 6 hours, or on manual dispatch. Scheduled and manual runs
@@ -150,9 +154,9 @@ The Chinese site runs at <http://localhost:3000> and English at
 - [x] Timeline (year / decade grouping, month folding, deep links)
 - [x] Event threads across people, institutions, projects, models and benchmarks
 - [x] Scheduled ingestion and automated publishing
-- [ ] Citation graph between events, replacing pure co-occurrence threads
+- [x] Citation graph between events (previous / follow-up edges checked against OpenAlex references)
 - [ ] Per-problem benchmark result tracking within areas
-- [ ] Math4AI as a first-class entry
+- [x] Math4AI as a first-class entry (direction axis ai4math / math4ai / both, assigned at ingest)
 
 ## Contributing
 

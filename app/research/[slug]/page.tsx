@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getStore } from "@/lib/db";
-import type { ResearchEvent } from "@/types";
-import { formatDateLong, slugify, sourceHost } from "@/lib/utils";
+import type { RelatedWork, ResearchEvent } from "@/types";
+import { formatDateLong, slugify, sourceHost, arxivIdOf } from "@/lib/utils";
 import {
   AiRolePill,
   EvidenceLevelPill,
@@ -87,13 +87,67 @@ export default async function ResearchDetailPage({
   // the link is the section's only content, so it always renders.
   const sourceLinkIsPrimary =
     papers.length > 0 && event.sourceUrl !== undefined && event.sourceUrl === primaryUrl;
-  // Most events carry no curated lineage, so the related block only earns a
-  // place on the page when there is something in it. Lineage renders as a
-  // three-stage diagram; works that are merely "related" are listed under it
-  // rather than repeated in a second grid.
-  const hasLineage = event.relatedWorks.some(
-    (work) => work.relation === "previous" || work.relation === "followup"
+  // The reverse side of the lineage: records naming this event as their
+  // previous work (citation backfill and handwritten seed entries alike).
+  // Stored entries pointing here already cover the forward direction, so a
+  // candidate is either a real follow-up or a real previous — never both.
+  const internalHref = `/research/${event.slug}`;
+  const eventArxiv = arxivIdOf(event.paperUrl ?? event.sourceUrl);
+  const pointsHere = (url: string | undefined) =>
+    Boolean(url) &&
+    (url === internalHref ||
+      url === event.paperUrl ||
+      url === event.sourceUrl ||
+      Boolean(eventArxiv && arxivIdOf(url) === eventArxiv));
+  const storedUrls = new Set(
+    event.relatedWorks
+      .filter((work) => work.relation === "previous" || work.relation === "followup")
+      .map((work) => work.url)
   );
+  const derivedPrevious: { work: RelatedWork; date: string }[] = [];
+  const derivedFollowup: { work: RelatedWork; date: string }[] = [];
+  for (const candidate of allEvents) {
+    if (candidate.slug === event.slug) continue;
+    const links = candidate.relatedWorks ?? [];
+    const candidateHref = `/research/${candidate.slug}`;
+    if (storedUrls.has(candidateHref)) continue;
+    const title = localizeEvent(candidate, lang).title;
+    if (links.some((work) => work.relation === "previous" && pointsHere(work.url))) {
+      derivedFollowup.push({
+        date: candidate.date,
+        work: {
+          title,
+          url: candidateHref,
+          relation: "followup",
+          note: d.detail.derivedFollowupNote,
+        },
+      });
+    } else if (links.some((work) => work.relation === "followup" && pointsHere(work.url))) {
+      derivedPrevious.push({
+        date: candidate.date,
+        work: {
+          title,
+          url: candidateHref,
+          relation: "previous",
+          note: d.detail.derivedPreviousNote,
+        },
+      });
+    }
+  }
+  derivedPrevious.sort((a, b) => a.date.localeCompare(b.date));
+  derivedFollowup.sort((a, b) => a.date.localeCompare(b.date));
+  const previousWorks = derivedPrevious.map((entry) => entry.work);
+  const followupWorks = derivedFollowup.map((entry) => entry.work);
+
+  // The lineage diagram lives inside the thread section, so it only earns its
+  // place when there is something in it; works that are merely "related" keep
+  // their own section.
+  const hasLineage =
+    previousWorks.length > 0 ||
+    followupWorks.length > 0 ||
+    event.relatedWorks.some(
+      (work) => work.relation === "previous" || work.relation === "followup"
+    );
   const relatedOnly = event.relatedWorks.filter(
     (work) => work.relation !== "previous" && work.relation !== "followup"
   );
@@ -140,11 +194,11 @@ export default async function ResearchDetailPage({
           },
         ]
       : []),
-    ...(event.relatedWorks.length > 0
-      ? [{ id: "related", label: d.detail.relatedWorks }]
-      : []),
-    ...(eventThreads.length > 0
+    ...(hasLineage || eventThreads.length > 0
       ? [{ id: "thread", label: d.detail.thread }]
+      : []),
+    ...(relatedOnly.length > 0
+      ? [{ id: "related", label: d.detail.relatedWorks }]
       : []),
     ...((event.verificationHistory?.length ?? 0) > 0
       ? [{ id: "verification", label: d.detail.verificationHistory }]
@@ -221,7 +275,7 @@ export default async function ResearchDetailPage({
           {event.title}
         </h1>
 
-        {/* Compact trust line — evidence, tier, provenance — plus the page's
+        {/* Compact trust line — evidence and tier — plus the page's
             primary action, so the original paper is one click from the title. */}
         <div className="mt-3 flex flex-wrap items-center gap-2 border-b border-ink-100 pb-4">
           {event.evidenceLevel && <EvidenceLevelPill level={event.evidenceLevel} />}
@@ -229,10 +283,21 @@ export default async function ResearchDetailPage({
           {event.verificationStatus && (
             <VerificationStatusPill status={event.verificationStatus} />
           )}
-
-          {event.provenance === "automated" && (
-            <span className="chip border-violet-200 bg-violet-50 text-violet-700">
-              {d.common.automated}
+          {/* Direction axis labels every research event so the pair reads as a
+              real distinction; ecosystem records carry no axis and no chip. */}
+          {event.direction === "ai4math" && (
+            <span className="chip border border-accent-200 bg-accent-50 font-medium text-accent-700">
+              {d.trust.direction.ai4math}
+            </span>
+          )}
+          {event.direction === "math4ai" && (
+            <span className="chip border border-violet-200 bg-violet-50 font-medium text-violet-700">
+              {d.trust.direction.math4ai}
+            </span>
+          )}
+          {event.direction === "both" && (
+            <span className="chip border border-amber-200 bg-amber-50 font-medium text-amber-700">
+              {d.trust.direction.both}
             </span>
           )}
 
@@ -358,54 +423,23 @@ export default async function ResearchDetailPage({
           </section>
         )}
 
-        {/* Related works — one block. Lineage events get the three-stage
-            diagram; works that are merely "related" (not predecessor or
-            follow-up) are listed underneath instead of repeating the same
-            titles in a second card grid. */}
-        {event.relatedWorks.length > 0 && (
-          <section id="related" className="mt-7 scroll-mt-24">
-            <SectionTitle>{d.detail.relatedWorks}</SectionTitle>
-            {hasLineage && (
-              <div className="mt-3">
-                <LineageTimeline event={event} />
-              </div>
-            )}
-            {relatedOnly.length > 0 && (
-              <div className={hasLineage ? "mt-4" : "mt-2"}>
-                {hasLineage && <div className="mono-label mb-1.5">{d.detail.related}</div>}
-                <ul className="grid gap-2 sm:grid-cols-2">
-                  {relatedOnly.map((work) => (
-                    <li key={work.title} className="card px-4 py-3">
-                      <div className="text-sm font-medium">
-                        {work.url ? (
-                          <a
-                            href={work.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-accent-700"
-                          >
-                            {work.title}
-                          </a>
-                        ) : (
-                          work.title
-                        )}
-                      </div>
-                      {work.note && <div className="mt-1 text-xs text-ink-500">{work.note}</div>}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* Entity threads — the event on the timeline of every named person,
-            institution, project and system the record states. */}
-        {eventThreads.length > 0 && (
+        {/* Event thread — lineage diagram first (what this event builds on and
+            what builds on it), then the entity timelines it sits on, so the
+            whole story lives under one heading. */}
+        {(hasLineage || eventThreads.length > 0) && (
           <EntityThreads
             threads={eventThreads}
             others={otherThreads}
             currentSlug={event.slug}
+            lineage={
+              hasLineage ? (
+                <LineageTimeline
+                  event={event}
+                  extraPrevious={previousWorks}
+                  extraFollowup={followupWorks}
+                />
+              ) : undefined
+            }
             labels={{
               title: d.detail.thread,
               intro: d.detail.threadIntro,
@@ -420,6 +454,34 @@ export default async function ResearchDetailPage({
               kinds: d.detail.threadKinds,
             }}
           />
+        )}
+
+        {/* Related works that are neither predecessor nor follow-up. */}
+        {relatedOnly.length > 0 && (
+          <section id="related" className="mt-7 scroll-mt-24">
+            <SectionTitle>{d.detail.relatedWorks}</SectionTitle>
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+              {relatedOnly.map((work) => (
+                <li key={work.title} className="card px-4 py-3">
+                  <div className="text-sm font-medium">
+                    {work.url ? (
+                      <a
+                        href={work.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-accent-700"
+                      >
+                        {work.title}
+                      </a>
+                    ) : (
+                      work.title
+                    )}
+                  </div>
+                  {work.note && <div className="mt-1 text-xs text-ink-500">{work.note}</div>}
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
 
         {/* Verification history — collapsed by default. */}
@@ -506,17 +568,17 @@ export default async function ResearchDetailPage({
                 {formatDateLong(event.lastSyncedAt, lang)}
               </MetaRow>
             )}
-            <MetaRow label={d.detail.metaProvenance}>
-              {event.provenance === "automated"
-                ? d.common.automated
-                : d.detail.provenanceCurated}
-            </MetaRow>
+            {/* Only fixed corpus entries are marked; every other record comes
+                from the ingest pipeline, so stating that would be noise. */}
+            {(event.provenance ?? "curated") === "curated" && (
+              <MetaRow label={d.detail.metaProvenance}>
+                {d.detail.provenanceCurated}
+              </MetaRow>
+            )}
           </dl>
-          <p className="mt-3 text-xs text-ink-500">
-            {event.provenance === "automated"
-              ? d.common.automatedHint
-              : d.detail.provenanceCuratedHint}
-          </p>
+          {(event.provenance ?? "curated") === "curated" && (
+            <p className="mt-3 text-xs text-ink-500">{d.detail.provenanceCuratedHint}</p>
+          )}
         </aside>
       </div>
       <BackToTop label={d.common.backToTop} />
@@ -546,9 +608,9 @@ function MetaRow({
  * Auto-ingested entries often have only a short summary and no significance
  * or key contributions, which leaves the narrative column looking empty. This
  * section fills that gap without inventing any prose: every row is a real
- * field on the event (research subtype, source, and what the trust model says
- * would count as checking it). Curated events with a full narrative are
- * unaffected, and the record date stays in the rail where it always shows.
+ * field on the event (the outlet, and what the trust model says would count
+ * as checking it). Curated events with a full narrative are unaffected, and
+ * the record date stays in the rail where it always shows.
  */
 function keyFactsVisible(event: ResearchEvent): boolean {
   const hasNarrative = Boolean(
@@ -563,14 +625,6 @@ function KeyFactsSection({ event }: { event: ResearchEvent }) {
   if (!keyFactsVisible(event)) return null;
 
   const facts: { label: string; value: React.ReactNode }[] = [];
-
-  // What this is: the research subtype when present (e.g. Proof, Benchmark).
-  if (event.researchEventType) {
-    facts.push({
-      label: d.detail.keyFactsSubtype,
-      value: <span className="text-ink-800">{d.trust.researchType[event.researchEventType]}</span>,
-    });
-  }
 
   // Where it came from: the outlet's host reads better than the raw class
   // ("news"), and it is what a reader would check against the link.

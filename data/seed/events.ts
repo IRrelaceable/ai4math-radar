@@ -17,6 +17,7 @@ import { events as historyEarlyEvents } from "./expansion-history-early";
 import { events as historyModernEvents } from "./expansion-history-modern";
 import { normalizeEcosystemEvent } from "../../lib/ecosystem";
 import { CURATED_AI_ROLES } from "./ai-roles";
+import { DIRECTIONS } from "./directions";
 
 const curatedEvents: ResearchEvent[] = [
   /* ------------------------------------------------------------------ *
@@ -2718,8 +2719,11 @@ export const events: ResearchEvent[] = [
   // the generated overlay (scripts/backfill-curated-ai-role.ts) instead. An
   // entry that states its own role wins over the overlay.
   const role = event.aiRole ? undefined : CURATED_AI_ROLES[event.slug];
+  // Same overlay pattern for the direction axis (scripts/backfill-direction.ts).
+  const direction = event.direction ?? DIRECTIONS[event.slug];
   return normalizeEcosystemEvent({
     ...event,
+    ...(direction ? { direction } : {}),
     ...(role
       ? {
           aiRole: role.description
