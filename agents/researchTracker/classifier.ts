@@ -170,8 +170,11 @@ const AI_SIGNALS = [
   "pretrain",
   // Frontier-lab names: their blog posts describe model output without always
   // naming the model, e.g. "OpenAI shares model results on the Kakeya conjecture".
+  // "claude" covers Anthropic's model families (Fable, Mythos, Opus): a launch
+  // post can say "Claude formalized …" with no generic AI noun anywhere.
   "openai",
   "anthropic",
+  "claude",
   "deepmind",
 ];
 

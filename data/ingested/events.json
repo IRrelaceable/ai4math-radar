@@ -1,5 +1,52 @@
 [
   {
+    "id": "evt_anthropic-news:https://www.anthropic.com/claude-fable-and-mythos-5-2",
+    "title": "Introducing Claude Fable 5.2 and Claude Mythos 5.2",
+    "slug": "introducing-claude-fable-5-2-and-claude-mythos-5-2",
+    "summary": "Anthropic released Claude Fable 5.2 and Claude Mythos 5.2. As a prerelease test, a team of 1,000 Fable 5.2 agents fully formalized Fermat's Last Theorem in 30 hours with minimal human intervention: they started from minimal prompts, organized their own coordination, and used no mathematical references beyond a list of intermediate theorem statements to score progress. The first formalization, by an unreleased research version of Claude, had taken 11 days with a purpose-built harness and human-researcher guidance. Fable 5.2 needed one-third of the action tokens and produced a proof seven times shorter, while Opus 5.5 with the same 1,000-agent setup completed 26% in 18 hours.",
+    "significance": "A public model formalized Fermat's Last Theorem in 30 hours with minimal supervision, and its proof is far shorter than the human-guided first attempt — large agent teams can now run formalization at a scale and speed a single prover cannot.",
+    "date": "2026-11-09",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.anthropic.com/claude-fable-and-mythos-5-2",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T07:45:59.579Z",
+    "createdAt": "2026-11-10T07:45:59.579Z",
+    "updatedAt": "2026-11-10T07:46:20.531Z",
+    "evidenceLevel": "E3",
+    "researchEventType": "Formalization",
+    "verificationHistory": [
+      {
+        "date": "2026-11-09",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "direction": "ai4math",
+    "aiRole": {
+      "level": "autonomous",
+      "description": "A team of 1,000 Claude Fable 5.2 agents fully formalized Fermat's Last Theorem in 30 hours, coordinating on their own and scoring progress against a list of intermediate theorem statements."
+    },
+    "humanContribution": "Anthropic set up the prerelease test and supplied the intermediate theorem statements used to score progress; it describes human intervention as minimal.",
+    "translations": {
+      "zh": {
+        "title": "Claude Fable 5.2 与 Claude Mythos 5.2 发布",
+        "summary": "Anthropic 发布 Claude Fable 5.2 与 Claude Mythos 5.2。在预发布测试中，由 1,000 个 Fable 5.2 智能体组成的团队以极少人工干预在 30 小时内完整形式化了费马大定理：它们只从简短提示出发，自行组织协作，除用于评估进度的中间定理陈述清单外不使用任何数学参考资料。此前的首次形式化由未发布的研究版 Claude 完成，耗时 11 天，依赖专用框架与人类研究者指导。Fable 5.2 只用了三分之一的动作 token，产出的证明长度缩短为原来的七分之一；采用同样 1,000 智能体设置的 Opus 5.5 在 18 小时内只完成 26%，30 小时后几乎没有更多进展。",
+        "significance": "公开模型在 30 小时内、以极少监督完成费马大定理形式化，且证明远短于人类引导的首版——大规模智能体团队已经能以单个证明器达不到的规模和速度推进形式化。",
+        "aiRoleDescription": "1,000 个 Claude Fable 5.2 智能体在 30 小时内完整形式化了费马大定理，自行组织协作，并按中间定理陈述清单评估进度。",
+        "humanContribution": "Anthropic 设置了预发布测试，并提供用于评分的中间定理陈述清单；公告将人工介入描述为极少。"
+      }
+    }
+  },
+  {
     "id": "evt_https://scottaaronson.blog/?p=10295",
     "title": "Aaronson-Ambainis Conjecture proved! (By AI, of course)",
     "slug": "aaronson-ambainis-conjecture-proved-by-ai-of-course",

@@ -1,5 +1,6 @@
 import { createRssSource } from "./rss";
 import { createPageSource } from "./page";
+import { createSitemapSource } from "./sitemap";
 import { readCustomSources } from "./custom";
 import type { EventType, ResearchArea, SourceType, SourceTier } from "@/types";
 import type { ResearchSource } from "./index";
@@ -7,8 +8,12 @@ import type { ResearchSource } from "./index";
 export interface SourceDefinition {
   id: string;
   label: string;
-  mode: "rss" | "page";
+  mode: "rss" | "page" | "sitemap";
   url: string;
+  /** Sitemap mode: keep only article paths, not site chrome. */
+  pathPattern?: RegExp;
+  /** Sitemap mode: pages read per run. */
+  maxPages?: number;
   sourceType: SourceType;
   defaultEventType?: EventType;
   defaultResearchArea?: ResearchArea;
@@ -87,6 +92,16 @@ export const OFFICIAL_SOURCE_DEFINITIONS: SourceDefinition[] = [
   { id: "openai-news", label: "OpenAI News", mode: "rss", url: "https://openai.com/news/rss.xml", sourceType: "news", defaultEventType: "Research", sourceTier: "S1" },
   { id: "deepmind-blog", label: "Google DeepMind Blog", mode: "rss", url: "https://deepmind.google/blog/rss.xml", sourceType: "news", defaultEventType: "Research", sourceTier: "S1" },
   { id: "google-ai-blog", label: "Google AI Blog", mode: "rss", url: "https://blog.google/technology/ai/rss/", sourceType: "news", defaultEventType: "Research", sourceTier: "S1" },
+  // Anthropic publishes no RSS at all, and model announcements land on
+  // root-level slugs ("/claude-fable-and-mythos-5-2") rather than under /news,
+  // so the sitemap is the only index. Announcements that carry maths work sit
+  // in the opening paragraphs ("formalized … Fermat's Last Theorem"), which is
+  // why the reader keeps the article excerpt and not just the meta description.
+  { id: "anthropic-news", label: "Anthropic News & Research", mode: "sitemap", url: "https://www.anthropic.com/sitemap.xml", pathPattern: /\/(?:news|research)\/|^\/[a-z0-9]+(?:-[a-z0-9]+){3,}\/?$/, sourceType: "news", defaultEventType: "Research", sourceTier: "S1", maxPages: 10,
+    // The site is mostly model and product news. A crypto post about zkSNARK
+    // "proofs" cleared the generic classifier; this list keeps the source to
+    // posts that actually talk about mathematics.
+    includeKeywords: ["theorem", "formaliz", "lean", "math", "conjecture", "olympiad", "proof assistant", "prover", "autoformalization", "Fermat"] },
 
   // University and research-institution news. Ecosystem feeds are narrowed by
   // AI/maths keywords and then classified at source level, because institute
@@ -259,6 +274,24 @@ export function createOfficialSource(definition: SourceDefinition): ResearchSour
       excludeKeywords: definition.excludeKeywords,
       matchTitleOnly: definition.matchTitleOnly,
       eventTypeRules: definition.eventTypeRules,
+    });
+  }
+  if (definition.mode === "sitemap") {
+    return createSitemapSource({
+      id: definition.id,
+      label: definition.label,
+      sitemapUrl: definition.url,
+      pathPattern: definition.pathPattern,
+      sourceType: definition.sourceType,
+      defaultEventType: definition.defaultEventType,
+      defaultResearchArea: definition.defaultResearchArea,
+      sourceTier: definition.sourceTier,
+      allowNonAI4Math: definition.allowNonAI4Math,
+      includeKeywords: definition.includeKeywords,
+      excludeKeywords: definition.excludeKeywords,
+      matchTitleOnly: definition.matchTitleOnly,
+      eventTypeRules: definition.eventTypeRules,
+      maxPages: definition.maxPages,
     });
   }
   return createPageSource({

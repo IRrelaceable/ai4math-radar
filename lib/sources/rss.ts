@@ -70,7 +70,7 @@ function stripHtml(value: string): string {
  * Word-start match so "math" finds "mathematics" without matching "aftermath",
  * and "AI" does not match inside "said".
  */
-function mentionsKeyword(text: string, keywords: string[]): boolean {
+export function mentionsKeyword(text: string, keywords: string[]): boolean {
   const lower = text.toLowerCase();
   return keywords.some((keyword) => {
     const needle = keyword.toLowerCase();
