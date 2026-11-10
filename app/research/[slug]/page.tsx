@@ -89,8 +89,8 @@ export default async function ResearchDetailPage({
   const primaryUrl = event.paperUrl ?? papers[0]?.url ?? event.sourceUrl;
   const isResearch = event.eventType === undefined || event.eventType === "Research";
   // When the paper list already links to the same URL as the header action,
-  // repeating it at the bottom of the card adds nothing. With no paper list
-  // the link is the section's only content, so it always renders.
+  // repeating it at the bottom of the card adds nothing. Without a paper list
+  // the section does not render: the header button is the only copy.
   const sourceLinkIsPrimary =
     papers.length > 0 && event.sourceUrl !== undefined && event.sourceUrl === primaryUrl;
   // The reverse side of the lineage: records naming this event as their
@@ -211,11 +211,11 @@ export default async function ResearchDetailPage({
     ...((event.keyContributions?.length ?? 0) > 0
       ? [{ id: "contributions", label: d.detail.keyContribution }]
       : []),
-    ...(papers.length > 0 || event.sourceUrl
+    ...(papers.length > 0
       ? [
           {
             id: "source",
-            label: isResearch && papers.length > 0 ? d.detail.relatedPaper : d.detail.source,
+            label: isResearch ? d.detail.relatedPaper : d.detail.source,
           },
         ]
       : []),
@@ -409,11 +409,10 @@ export default async function ResearchDetailPage({
           </section>
         )}
 
-        {/* Original source — appears exactly once, never duplicated in a
-            sidebar. Renders nothing when the record carries neither a paper
-            list nor a source link, so the heading never sits above a lone
-            "read the original" link. */}
-        {(papers.length > 0 || event.sourceUrl) && (
+        {/* Original source — the header button already opens it, so this
+            section exists only to list papers the record cites; a lone
+            "read the original" link here would repeat the button verbatim. */}
+        {papers.length > 0 && (
           <section id="source" className="mt-7 scroll-mt-24">
             <SectionTitle>
               {isResearch && papers.length > 0 ? d.detail.relatedPaper : d.detail.source}
