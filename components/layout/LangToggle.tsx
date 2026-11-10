@@ -1,5 +1,6 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { useLang, useT } from "@/lib/i18n/context";
 import { SITE_BASE, sitePathOf } from "@/lib/site";
@@ -21,6 +22,14 @@ export function LangToggle() {
   const zhHref = dev ? `http://localhost:3000${path}` : `${SITE_BASE}${path}`;
   const enHref = dev ? `http://localhost:3001/en${path}` : `${SITE_BASE}/en${path}`;
 
+  // Filters, the time window and the compact view live in the query string.
+  // The anchor is rendered on the server without it, so carry the live query
+  // over at click time instead of dropping the reader back into card view.
+  function keepQuery(href: string, event: MouseEvent<HTMLAnchorElement>) {
+    const query = window.location.search + window.location.hash;
+    if (query) event.currentTarget.href = `${href}${query}`;
+  }
+
   return (
     <div
       className="inline-flex items-center rounded-md border border-ink-200 p-0.5"
@@ -41,6 +50,9 @@ export function LangToggle() {
             key={value}
             href={value === "zh" ? zhHref : enHref}
             hrefLang={value === "zh" ? "zh-CN" : "en"}
+            onClick={(event) =>
+              keepQuery(value === "zh" ? zhHref : enHref, event)
+            }
             className="rounded px-2 py-1 text-xs font-medium text-ink-600 transition-colors hover:text-ink-900"
           >
             {value === "zh" ? "中文" : "EN"}
