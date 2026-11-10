@@ -5088,7 +5088,8 @@
         "OpenAI"
       ]
     },
-    "direction": "ai4math"
+    "direction": "ai4math",
+    "lab": "openai"
   },
   {
     "id": "evt_https://scottaaronson.blog/?p=10239",
@@ -11694,7 +11695,8 @@
         "Lean"
       ]
     },
-    "direction": "ai4math"
+    "direction": "ai4math",
+    "lab": "openai"
   },
   {
     "id": "evt_https://www.ipam.ucla.edu/?p=14745",
