@@ -1,0 +1,23 @@
+{
+  "stop-handcrafting-your-engine-gendb-v-towards-ai-generated-and-formally-verified-database-systems": "none",
+  "lark-lean-assisted-reasoning-for-llm-generated-gpu-kernels": "none",
+  "gtformer-a-syntax-free-graph-network-alternative-to-transformers-for-8192-times-length-extrapolation-in-linear-time": "none",
+  "trainable-boundary-keeping-where-no-formal-answer-exists-a-controlled-knock-in-study-of-reward-training-in-evidence-sufficiency-judgment": "none",
+  "formalizing-ptx-in-lean-to-prove-gpu-kernel-correctness": "none",
+  "tlaps-bench-formally-proving-correctness-of-real-world-system-specifications-with-tla-proof-system": "none",
+  "how-stable-are-llm-generated-proofs-under-program-refactoring-a-stress-test-for-verifiable-code-generation": "none",
+  "rain-agentic-proof-generation-for-rocq-based-software-verification": "none",
+  "verifying-deployed-bytecode-against-executable-evm-semantics-with-exact-gas-and-no-added-axioms": "none",
+  "cost-efficient-theorem-proving-via-agent-orchestration-in-program-verification": "none",
+  "beyond-type-checking-towards-holistic-evaluation-of-formal-specification-generation": "none",
+  "solving-vericontest-with-a-lean-backed-rust-verifier": "none",
+  "veripy-source-preserving-verification-and-compatibility-checking-for-python-components": "none",
+  "prosabuddy-assisting-mechanized-real-time-schedulability-analysis-with-llm-based-agents": "none",
+  "sled-ifv-solver-validated-llm-guided-decomposition-for-scalable-hardware-information-flow-verification": "none",
+  "extending-concurrent-separation-logic-to-the-hardware-level-to-verify-the-xv6-os-kernel-on-risc-v-with-ai-agents": "none",
+  "agentic-verified-optimization-of-real-world-software": "none",
+  "formally-verified-autoresearch-for-analyzing-the-expressivity-of-multi-head-attention": "math4ai",
+  "zero-storage-procedural-neural-synthesis-via-boundary-dynamics-formal-verification-in-lean-4-and-bare-metal-gauntlet-validation": "math4ai",
+  "second-order-problem-solving-for-recursive-self-improvement-in-formal-verification": "math4ai",
+  "provably-complete-generalized-planning-with-llms": "math4ai"
+}
