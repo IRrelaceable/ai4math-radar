@@ -16,10 +16,10 @@ export function EventDiscussion() {
           {d.discussionPending}
         </span>
       </div>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-600">
+      <p className="mt-3 text-sm leading-relaxed text-ink-600">
         {d.discussionHint}
       </p>
-      <div className="mt-4 max-w-2xl">
+      <div className="mt-4">
         <label htmlFor="event-discussion-input" className="sr-only">
           {d.discussionPlaceholder}
         </label>
