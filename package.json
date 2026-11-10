@@ -2,7 +2,7 @@
   "name": "ai4math-research-tracker",
   "version": "0.1.0",
   "private": true,
-  "description": "AI4Math Ecosystem Radar - a six-class ecosystem intelligence platform for AI for Mathematics.",
+  "description": "AI4Math Ecosystem Radar - a five-class ecosystem intelligence platform for AI for Mathematics.",
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:en": "node scripts/dev-en.mjs",
@@ -23,8 +23,11 @@
     "backfill:entities": "tsx scripts/backfill-entities.ts",
     "backfill:citations": "tsx scripts/backfill-citations.ts",
     "backfill:direction": "tsx scripts/backfill-direction.ts",
+    "audit:direction": "tsx scripts/audit-direction.ts",
+    "apply:direction": "tsx scripts/apply-direction-audit.ts",
     "backfill:history:conf": "tsx scripts/backfill-history-conference.ts",
-    "backfill:history": "tsx scripts/backfill-history.ts"
+    "backfill:history": "tsx scripts/backfill-history.ts",
+    "audit:direction:source": "tsx scripts/audit-direction-source.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

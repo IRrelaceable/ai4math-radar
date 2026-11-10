@@ -45,21 +45,9 @@ const zh = {
     previousWork: "前作",
     thisWork: "本事件",
     followupWork: "后续工作",
-    notRecorded: "尚未记录",
-  },
-
-  // components/research/PipelineStrip.tsx
-  pipeline: {
-    researchSource: "研究来源",
-    researchSourceHint: "arXiv · GitHub · 会议 · 博客",
-    rawItem: "原始条目",
-    rawInputHint: "未处理的原始输入",
-    normalizer: "规范化器",
-    normalizerHint: "统一字段",
-    classifier: "分类器",
-    classifierHint: "是否 AI4Math？方向？",
-    event: "事件条目",
-    eventHint: "发生了什么 + 为什么重要",
+    referenceNote: "本事件参考文献列出",
+    citationNote: "引用了本事件",
+    original: "原文",
   },
 
   // components/topics/TopicBar.tsx
@@ -156,21 +144,9 @@ const en: ComponentsDict = {
     previousWork: "Previous work",
     thisWork: "This event",
     followupWork: "Follow-up work",
-    notRecorded: "Not yet recorded",
-  },
-
-  // components/research/PipelineStrip.tsx
-  pipeline: {
-    researchSource: "Research source",
-    researchSourceHint: "arXiv · GitHub · Conference · Blog",
-    rawItem: "RawResearchItem",
-    rawInputHint: "unprocessed input",
-    normalizer: "Normalizer",
-    normalizerHint: "uniform fields",
-    classifier: "Classifier",
-    classifierHint: "AI4Math? area?",
-    event: "ResearchEvent",
-    eventHint: "what happened + why it matters",
+    referenceNote: "In this event's references",
+    citationNote: "Cites this event",
+    original: "Original",
   },
 
   // components/topics/TopicBar.tsx

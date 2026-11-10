@@ -6,7 +6,7 @@ import { pagesDict } from "@/lib/i18n/dict.pages";
 
 /**
  * Math4AI — the direction-axis entry. Same feed as /latest, pinned to events
- * whose beneficiary is general AI capability (co-primary "both" included);
+ * whose research object is the AI system itself (co-primary "both" included);
  * every other filter stays available inside the view.
  */
 export async function generateMetadata() {

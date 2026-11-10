@@ -19,12 +19,12 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+    <div className="mb-7 flex flex-wrap items-end justify-between gap-4 border-b border-ink-200 pb-5">
       <div className="max-w-2xl">
         {label && <div className="mono-label mb-2">{label}</div>}
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-[28px]">{title}</h1>
+        <h1 className="h-display text-[30px] sm:text-[36px]">{title}</h1>
         {description && (
-          <p className="mt-2 text-sm leading-relaxed text-ink-600">{description}</p>
+          <p className="lede mt-3">{description}</p>
         )}
         {meta && (
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-ink-500">

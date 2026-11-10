@@ -54,10 +54,15 @@ export default async function ResearchDetailPage({
     event.slug,
     Number.POSITIVE_INFINITY
   );
-  const eventThreads = entityThreads
-    .slice(0, 3)
-    .map((thread) => ({ ...thread, events: localizeEvents(thread.events, lang) }));
-  const otherThreads = entityThreads.slice(3).map(({ kind, name }) => ({ kind, name }));
+  // Localize once per event, not once per thread membership: a widely shared
+  // entity (Lean spans 70 events) would otherwise be localized many times.
+  const localizedBySlug = new Map(
+    localizeEvents(allEvents, lang).map((localized) => [localized.slug, localized])
+  );
+  const eventThreads = entityThreads.map((thread) => ({
+    ...thread,
+    events: thread.events.map((item) => localizedBySlug.get(item.slug) ?? item),
+  }));
   const areaTimeline = event.researchArea
     ? allEvents.filter((candidate) => candidate.researchArea === event.researchArea)
     : event.eventType
@@ -139,6 +144,25 @@ export default async function ResearchDetailPage({
   const previousWorks = derivedPrevious.map((entry) => entry.work);
   const followupWorks = derivedFollowup.map((entry) => entry.work);
 
+  // Only the citation targets actually shown on this page are serialized to
+  // the client component; passing all 650 source URLs inflated every page.
+  const eventBySlug = new Map(allEvents.map((candidate) => [candidate.slug, candidate]));
+  const sourceUrlBySlug: Record<string, string> = {};
+  const lineageWorks = [
+    ...event.relatedWorks.filter(
+      (work) => work.relation === "previous" || work.relation === "followup"
+    ),
+    ...previousWorks,
+    ...followupWorks,
+  ];
+  for (const work of lineageWorks) {
+    if (!work.url?.startsWith("/research/")) continue;
+    const slug = work.url.replace(/^\/research\//, "").replace(/\/$/, "");
+    const target = eventBySlug.get(slug);
+    const original = target?.paperUrl ?? target?.sourceUrl;
+    if (original) sourceUrlBySlug[slug] = original;
+  }
+
   // The lineage diagram lives inside the thread section, so it only earns its
   // place when there is something in it; works that are merely "related" keep
   // their own section.
@@ -194,9 +218,8 @@ export default async function ResearchDetailPage({
           },
         ]
       : []),
-    ...(hasLineage || eventThreads.length > 0
-      ? [{ id: "thread", label: d.detail.thread }]
-      : []),
+    ...(hasLineage ? [{ id: "lineage", label: d.detail.lineage }] : []),
+    ...(eventThreads.length > 0 ? [{ id: "thread", label: d.detail.thread }] : []),
     ...(relatedOnly.length > 0
       ? [{ id: "related", label: d.detail.relatedWorks }]
       : []),
@@ -219,7 +242,7 @@ export default async function ResearchDetailPage({
   ];
 
   return (
-    <div className="container-page py-10">
+    <div className="container-page py-10 lg:py-14">
       {/* Breadcrumb */}
       <div className="mb-6 text-sm text-ink-500">
         <Link href="/latest" className="link-quiet">
@@ -271,7 +294,7 @@ export default async function ResearchDetailPage({
           )}
         </div>
 
-        <h1 className="mt-3 text-[28px] font-semibold leading-tight tracking-tight sm:text-[32px]">
+        <h1 className="mt-3 text-[28px] font-semibold leading-[1.2] tracking-[-0.025em] text-ink-900 sm:text-[34px]">
           {event.title}
         </h1>
 
@@ -283,20 +306,29 @@ export default async function ResearchDetailPage({
           {event.verificationStatus && (
             <VerificationStatusPill status={event.verificationStatus} />
           )}
-          {/* Direction axis labels every research event so the pair reads as a
-              real distinction; ecosystem records carry no axis and no chip. */}
+          {/* Research events on either side of the direction axis carry a chip;
+              events outside both sides and ecosystem records carry none. */}
           {event.direction === "ai4math" && (
-            <span className="chip border border-accent-200 bg-accent-50 font-medium text-accent-700">
+            <span
+              title={p.methodology.directionDesc.ai4math}
+              className="chip border border-accent-200 bg-accent-50 font-medium text-accent-700"
+            >
               {d.trust.direction.ai4math}
             </span>
           )}
           {event.direction === "math4ai" && (
-            <span className="chip border border-violet-200 bg-violet-50 font-medium text-violet-700">
+            <span
+              title={p.methodology.directionDesc.math4ai}
+              className="chip border border-violet-200 bg-violet-50 font-medium text-violet-700"
+            >
               {d.trust.direction.math4ai}
             </span>
           )}
           {event.direction === "both" && (
-            <span className="chip border border-amber-200 bg-amber-50 font-medium text-amber-700">
+            <span
+              title={p.methodology.directionDesc.both}
+              className="chip border border-amber-200 bg-amber-50 font-medium text-amber-700"
+            >
               {d.trust.direction.both}
             </span>
           )}
@@ -423,23 +455,28 @@ export default async function ResearchDetailPage({
           </section>
         )}
 
-        {/* Event thread — lineage diagram first (what this event builds on and
-            what builds on it), then the entity timelines it sits on, so the
-            whole story lives under one heading. */}
-        {(hasLineage || eventThreads.length > 0) && (
+        {/* Two different relations, deliberately two sections: a citation is a
+            documented link between papers; co-occurrence is only an entity two
+            records happen to name. One shared heading made the latter causal. */}
+        {hasLineage && (
+          <section id="lineage" className="mt-10 scroll-mt-24">
+            <SectionTitle>{d.detail.lineage}</SectionTitle>
+            <p className="lede max-w-3xl">{d.detail.lineageIntro}</p>
+            <div className="mt-5">
+              <LineageTimeline
+                event={event}
+                extraPrevious={previousWorks}
+                extraFollowup={followupWorks}
+                sourceUrlBySlug={sourceUrlBySlug}
+              />
+            </div>
+          </section>
+        )}
+
+        {eventThreads.length > 0 && (
           <EntityThreads
             threads={eventThreads}
-            others={otherThreads}
             currentSlug={event.slug}
-            lineage={
-              hasLineage ? (
-                <LineageTimeline
-                  event={event}
-                  extraPrevious={previousWorks}
-                  extraFollowup={followupWorks}
-                />
-              ) : undefined
-            }
             labels={{
               title: d.detail.thread,
               intro: d.detail.threadIntro,
@@ -450,7 +487,8 @@ export default async function ResearchDetailPage({
               position: d.detail.threadPosition,
               expandEarlier: d.detail.threadExpandEarlier,
               expandLater: d.detail.threadExpandLater,
-              others: d.detail.threadOthers,
+              more: d.detail.threadMore,
+              short: d.detail.threadShort,
               kinds: d.detail.threadKinds,
             }}
           />
@@ -516,9 +554,7 @@ export default async function ResearchDetailPage({
         {/* Attached artifacts — moved from sidebar. */}
         {hasArtifacts && (
           <section id="artifacts" className="mt-7 scroll-mt-24">
-            <h2 className="text-lg font-semibold tracking-tight">
-              {d.detail.attachedArtifacts}
-            </h2>
+            <SectionTitle>{d.detail.attachedArtifacts}</SectionTitle>
             <div className="mt-3">
               <Facet label={d.detail.model} values={event.model ?? []} param="model" />
               <Facet
@@ -534,9 +570,7 @@ export default async function ResearchDetailPage({
         {/* Authors — moved from sidebar. */}
         {hasAuthors && (
           <section id="authors" className="mt-7 scroll-mt-24">
-            <h2 className="text-lg font-semibold tracking-tight">
-              {d.detail.authorsInstitution}
-            </h2>
+            <SectionTitle>{d.detail.authorsInstitution}</SectionTitle>
             {authors.length > 0 && (
               <ul className="mt-2 space-y-1 text-sm text-ink-700">
                 {authors.map((a) => (
@@ -752,7 +786,7 @@ function EcosystemDetails({ event }: { event: ResearchEvent }) {
 
   return (
     <section id="ecosystem" className="mt-7 scroll-mt-24">
-      <h2 className="text-lg font-semibold tracking-tight">{d.detail.ecosystemDetails}</h2>
+      <SectionTitle>{d.detail.ecosystemDetails}</SectionTitle>
 
       {hasPeople && (
         <div className="mt-3">
@@ -817,9 +851,7 @@ function EcosystemDetails({ event }: { event: ResearchEvent }) {
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="text-lg font-semibold tracking-tight text-ink-900">{children}</h2>
-  );
+  return <h2 className="section-head h-section">{children}</h2>;
 }
 
 function Facet({

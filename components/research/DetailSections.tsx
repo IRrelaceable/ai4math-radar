@@ -28,9 +28,7 @@ export function VerificationHistorySection({ event }: { event: ResearchEvent }) 
         aria-expanded={open}
         className="flex w-full items-center justify-between text-left"
       >
-        <h2 className="text-lg font-semibold tracking-tight text-ink-900">
-          {d.verificationHistory}
-        </h2>
+        <h2 className="h-section text-ink-900">{d.verificationHistory}</h2>
         <span className="text-sm font-medium text-accent-700">
           {open ? "−" : `+${history.length}`}
         </span>

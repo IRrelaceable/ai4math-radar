@@ -50,6 +50,34 @@ const DEPARTMENT_NEWS_RULES: { keywords: string[]; eventType: EventType }[] = [
 ];
 
 /**
+ * South-European institute feeds (ICMAT, CRM) mix Catalan, Spanish and English,
+ * and carry courses, summer schools and outreach alongside awards and grants.
+ * The shared department list covers the ecosystem vocabulary; the extra terms
+ * keep training announcements, and the local-language forms are what those
+ * feeds actually print. Postdoc and fellowship announcements stay in: training
+ * and career funding is exactly what the education lane records.
+ */
+const INSTITUTE_ECOSYSTEM_KEYWORDS = [
+  ...DEPARTMENT_NEWS_KEYWORDS,
+  "course", "curs", "escuela", "escola", "summer school", "workshop", "jornada",
+  "training", "outreach", "public talk", "charla", "conferencia",
+  "artificial intelligence", "AI", "machine learning", "LLM",
+  "mathemat", "matemát", "matemàt", "beca", "premi",
+  "institute", "instituto", "centre", "center", "opens", "expands", "initiative",
+];
+
+const INSTITUTE_ECOSYSTEM_EXCLUDES = [
+  "obituary", "remembering", "passed away", "in memoriam", "slides", "seminar recording",
+];
+
+/** Ordered: a call for nominations mentions the prize name, so it must win first. */
+const INSTITUTE_EVENT_RULES: { keywords: string[]; eventType: EventType }[] = [
+  { keywords: ["call for", "nominations open", "applications open"], eventType: "PolicyCommunity" },
+  { keywords: ["funding", "grant", "gift", "donat", "endow", "million", "scholarship", "fellowship", "beca", "invests"], eventType: "Funding" },
+  { keywords: ["prize", "award", "medal", "elected", "named", "appointed", "honor", "honour", "congratulations", "director", "chair", "retire", "premi", "talk", "lecture", "charla", "xerrada", "conferenc", "keynote", "interview"], eventType: "People" },
+];
+
+/**
  * Curated official source catalog. All entries are opt-in through the manual
  * sync UI; no scheduler is implied. URLs are kept here so coverage is visible
  * and a failed feed can be replaced without touching the pipeline.
@@ -100,6 +128,8 @@ export const OFFICIAL_SOURCE_DEFINITIONS: SourceDefinition[] = [
   { id: "ucla-math-news", label: "UCLA Mathematics", mode: "rss", url: "https://ww3.math.ucla.edu/feed/", sourceType: "news", defaultEventType: "Institutions", allowNonAI4Math: true, includeKeywords: DEPARTMENT_NEWS_KEYWORDS, excludeKeywords: DEPARTMENT_NEWS_EXCLUDES, matchTitleOnly: true, eventTypeRules: DEPARTMENT_NEWS_RULES, sourceTier: "S1" },
   { id: "wisc-math-news", label: "University of Wisconsin Mathematics", mode: "rss", url: "https://www.math.wisc.edu/feed/", sourceType: "news", defaultEventType: "Institutions", allowNonAI4Math: true, includeKeywords: DEPARTMENT_NEWS_KEYWORDS, excludeKeywords: DEPARTMENT_NEWS_EXCLUDES, matchTitleOnly: true, eventTypeRules: DEPARTMENT_NEWS_RULES, sourceTier: "S1" },
   { id: "ubc-math-news", label: "UBC Mathematics", mode: "rss", url: "https://www.math.ubc.ca/news/feed/", sourceType: "news", defaultEventType: "Institutions", allowNonAI4Math: true, includeKeywords: DEPARTMENT_NEWS_KEYWORDS, excludeKeywords: DEPARTMENT_NEWS_EXCLUDES, matchTitleOnly: true, eventTypeRules: DEPARTMENT_NEWS_RULES, sourceTier: "S1" },
+  { id: "icmat-news", label: "ICMAT — Instituto de Ciencias Matemáticas", mode: "rss", url: "https://www.icmat.es/feed/", sourceType: "news", defaultEventType: "Institutions", allowNonAI4Math: true, includeKeywords: INSTITUTE_ECOSYSTEM_KEYWORDS, excludeKeywords: INSTITUTE_ECOSYSTEM_EXCLUDES, matchTitleOnly: true, eventTypeRules: INSTITUTE_EVENT_RULES, sourceTier: "S1" },
+  { id: "crm-news", label: "CRM — Centre de Recerca Matemàtica", mode: "rss", url: "https://www.crm.cat/feed/", sourceType: "news", defaultEventType: "Institutions", allowNonAI4Math: true, includeKeywords: INSTITUTE_ECOSYSTEM_KEYWORDS, excludeKeywords: INSTITUTE_ECOSYSTEM_EXCLUDES, matchTitleOnly: true, eventTypeRules: INSTITUTE_EVENT_RULES, sourceTier: "S1" },
 
   // Funding and foundation announcements. These feeds are general science
   // news, so they stay narrowed to AI/mathematics wording; without the filters
@@ -109,6 +139,14 @@ export const OFFICIAL_SOURCE_DEFINITIONS: SourceDefinition[] = [
     { keywords: ["appointed", "named", "elected", "receives"], eventType: "People" },
   ], sourceTier: "S1" },
   { id: "simons-ai-math-funding", label: "Simons Foundation AI-era mathematics effort", mode: "page", url: "https://www.simonsfoundation.org/news/simons-foundation-launches-15m-effort-to-help-mathematicians-navigate-ai-era/", sourceType: "funding", defaultEventType: "Funding", allowNonAI4Math: true, sourceTier: "S1" },
+  // Agency news is where "NSF invests/awards ..." announcements appear. The
+  // feed is general science, so only math/AI titles survive; a title without a
+  // funding verb stays an institutional announcement, never a grant.
+  { id: "nsf-news", label: "U.S. National Science Foundation News", mode: "rss", url: "https://www.nsf.gov/rss/rss_www_news.xml", sourceType: "news", defaultEventType: "Institutions", allowNonAI4Math: true, includeKeywords: ["mathemat", "statistic", "artificial intelligence", "AI", "machine learning", "computing"], excludeKeywords: ["Podcast:", "laser", "dwarf planet", "DNA", "prosthetic", "holographic", "circuit boards", "semiconductor technologies"], matchTitleOnly: true, eventTypeRules: [
+    { keywords: ["policy", "statement", "partnership", "memorandum"], eventType: "PolicyCommunity" },
+    { keywords: ["prize", "award", "named", "appointed", "director", "fellowship"], eventType: "People" },
+    { keywords: ["invests", "investment", "funding", "grant", "initiative", "launch", "supports", "million"], eventType: "Funding" },
+  ], sourceTier: "S1" },
 
   // Education, training and summer-school entry points (folded into the
   // Institutions & Education class).
@@ -131,6 +169,12 @@ export const OFFICIAL_SOURCE_DEFINITIONS: SourceDefinition[] = [
   { id: "terence-tao-blog", label: "Terence Tao's blog", mode: "rss", url: "https://terrytao.wordpress.com/feed/", sourceType: "blog", defaultEventType: "People", allowNonAI4Math: true, includeKeywords: ["artificial intelligence", "AI", "machine learning", "LLM", "ChatGPT", "Lean", "proof assistant"], matchTitleOnly: true, sourceTier: "S2" },
   { id: "timothy-gowers-blog", label: "Timothy Gowers' blog", mode: "rss", url: "https://gowers.wordpress.com/feed/", sourceType: "blog", defaultEventType: "People", allowNonAI4Math: true, includeKeywords: ["artificial intelligence", "AI", "machine learning", "LLM", "ChatGPT", "Leiden Declaration"], matchTitleOnly: true, sourceTier: "S2" },
   { id: "scott-aaronson-blog", label: "Scott Aaronson's blog", mode: "rss", url: "https://scottaaronson.blog/?feed=rss2", sourceType: "blog", defaultEventType: "People", allowNonAI4Math: true, requireKeywords: ["AI", "math"], excludeKeywords: ["vote", "election"], sourceTier: "S2" },
+  { id: "xena-project", label: "Xena Project — Kevin Buzzard", mode: "rss", url: "https://xenaproject.wordpress.com/feed/", sourceType: "blog", defaultEventType: "People", allowNonAI4Math: true, includeKeywords: ["AI", "artificial intelligence", "machine learning", "LLM", "ChatGPT", "Anthropic", "Copilot", "Lean", "formal", "automat", "proof assistant", "mathematician"], excludeKeywords: ["grieve", "obituary"], matchTitleOnly: true, eventTypeRules: [
+    // Teaching posts announce courses and workshops; they belong to the
+    // Institutions & Education class, not to the author's people thread.
+    { keywords: ["workshop", "course", "summer school", "teaching", "students", "curriculum", "lecture series"], eventType: "Institutions" },
+  ], sourceTier: "S2" },
+  { id: "gil-kalai-blog", label: "Gil Kalai's blog", mode: "rss", url: "https://gilkalai.wordpress.com/feed/", sourceType: "blog", defaultEventType: "People", allowNonAI4Math: true, includeKeywords: ["artificial intelligence", "AI", "machine learning", "LLM", "ChatGPT", "AlphaProof", "formal proof", "Lean", "automat", "AGI"], matchTitleOnly: true, sourceTier: "S2" },
   { id: "quanta-mathematics", label: "Quanta Magazine — Mathematics", mode: "rss", url: "https://www.quantamagazine.org/mathematics/feed/", sourceType: "blog", defaultEventType: "People", allowNonAI4Math: true, includeKeywords: ["artificial intelligence", "AI", "machine learning", "LLM"], matchTitleOnly: true, sourceTier: "S3" },
 
   // Policy, declarations and community sources.

@@ -13,7 +13,7 @@ export default function LatestPage() {
   const p = pagesDict[getLang()];
 
   return (
-    <div className="container-page py-10">
+    <div className="container-page py-10 sm:py-12">
       <PageHeader
         label={p.latest.label}
         title={p.latest.title}

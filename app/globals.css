@@ -4,6 +4,64 @@
 
 :root {
   color-scheme: light;
+  /* Fallback class theme. Any element carrying [data-type] overrides these
+     for itself and its descendants, so a card colours its own marks without
+     each child needing to know the event class. */
+  --type: #98a2b6;
+  --type-ink: #566075;
+  --type-soft: #f7f8fa;
+  --type-line: #dfe3ea;
+}
+
+/* --- Direction-axis palette ---------------------------------------------
+   The same three hues as .direction-dot, exposed as variables so an area's
+   "axis mix" bar can be built from plain [data-axis] segments. `none` is a
+   missing mark, not a fourth side, so it stays graphite. */
+[data-axis="ai4math"] { --axis: #3b5bdb; }
+[data-axis="math4ai"] { --axis: #7c5cc4; }
+[data-axis="both"] { --axis: #c07a1a; }
+[data-axis="none"] { --axis: #c2c9d6; }
+
+/* --- Event-class palette -------------------------------------------------
+   Colour is bound to ONE semantic axis: which class an event belongs to.
+   Five muted hues at comparable lightness keep a three-column grid calm,
+   while still telling cards apart before the title is read. Trust marks
+   (evidence / tier) deliberately stay graphite: a hue must never imply
+   "more reliable". The direction dots use their own small palette, matching
+   the direction chips already used on detail pages. */
+[data-type="Research"] {
+  --type: #4f5bd5;
+  --type-ink: #33409e;
+  --type-soft: #eef0ff;
+  --type-line: #cdd3fb;
+}
+
+[data-type="People"] {
+  --type: #c0496f;
+  --type-ink: #943252;
+  --type-soft: #fdeef3;
+  --type-line: #f3c7d6;
+}
+
+[data-type="Institutions"] {
+  --type: #14807f;
+  --type-ink: #0f5f5f;
+  --type-soft: #e8f6f5;
+  --type-line: #b9e0dd;
+}
+
+[data-type="Funding"] {
+  --type: #b26a12;
+  --type-ink: #85500e;
+  --type-soft: #fdf3e3;
+  --type-line: #efd3a4;
+}
+
+[data-type="PolicyCommunity"] {
+  --type: #7556b8;
+  --type-ink: #583e91;
+  --type-soft: #f2edfc;
+  --type-line: #dacdf5;
 }
 
 html {
@@ -29,15 +87,14 @@ body {
     -apple-system,
     "Segoe UI",
     Roboto,
-    "Helvetica Neue",
-    Arial,
     "PingFang SC",
+    "Hiragino Sans GB",
     "Microsoft YaHei",
     sans-serif;
 }
 
 ::selection {
-  background: #dce7ff;
+  background: #dfe4ff;
 }
 
 @layer components {
@@ -45,16 +102,140 @@ body {
     @apply mx-auto w-full max-w-content px-5 sm:px-8;
   }
 
+  /* One type scale for the whole site. Titles no longer rely on weight alone:
+     display / section / item have distinct size, leading and tracking. */
+  .h-display {
+    @apply text-[34px] font-semibold leading-[1.14] tracking-[-0.028em] text-ink-900 sm:text-[46px];
+  }
+
+  .h-section {
+    @apply text-[20px] font-semibold leading-tight tracking-[-0.015em] text-ink-900 sm:text-[22px];
+  }
+
+  .h-item {
+    @apply text-[15px] font-medium leading-snug tracking-[-0.005em] text-ink-900;
+  }
+
   .mono-label {
-    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-ink-500;
+    @apply font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-ink-500;
+  }
+
+  .lede {
+    @apply text-[15px] leading-relaxed text-ink-600;
+  }
+
+  .section-head {
+    @apply mb-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-ink-200 pb-3;
   }
 
   .card {
-    @apply rounded-lg border border-ink-200 bg-white transition-colors;
+    @apply rounded-md border border-ink-200 bg-white transition-colors;
   }
 
   .card-hover {
     @apply hover:border-ink-300 hover:bg-ink-50;
+  }
+
+  /* Event card: a class-coloured top rule, a soft wash across the header and
+     a class-tinted footer rule. The wash fades out before the abstract, so
+     every card carries colour even when it has no "why it matters" note,
+     while long Chinese/English prose still sits on plain white. */
+  .event-card {
+    @apply relative rounded-md border border-ink-200;
+    background-color: #fff;
+    background-image: linear-gradient(
+      180deg,
+      var(--type-soft) 0,
+      rgb(255 255 255 / 0) 112px
+    );
+    border-top: 3px solid var(--type);
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .event-card:hover {
+    border-color: var(--type-line);
+    border-top-color: var(--type);
+    background-color: var(--type-soft);
+    box-shadow: 0 2px 12px rgb(22 28 40 / 0.06);
+  }
+
+  .card-footer {
+    border-top-color: var(--type-line);
+  }
+
+  .card-title {
+    @apply transition-colors;
+  }
+
+  .event-card:hover .card-title {
+    color: var(--type-ink);
+  }
+
+  /* Fixed two-line rhythm for the card's text blocks. `line-clamp-2` caps
+     prose at two lines but does not RESERVE two lines: a one-line title
+     collapsed its box and shifted the warm note panel, the class-coloured
+     header wash and the footer by one line relative to the next card in the
+     same grid row. Every card now reserves exactly two line boxes, so the
+     coloured blocks line up across the row regardless of title length.
+     Heights follow the type scale instead of hard-coded pixels:
+       .h-item   15px * 1.375 (leading-snug)    * 2 = 2.75em
+       body copy 13px * 1.625 (leading-relaxed) * 2 = 3.25em
+     `em` resolves against each element's own font-size. */
+  .card-clamp-title {
+    min-height: 2.75em;
+  }
+
+  .card-clamp-body {
+    min-height: 3.25em;
+  }
+
+  /* Class label reads as a tinted tag; the small vertical bar inside keeps
+     the same shape code the glossary and the compact feed use. */
+  .type-chip {
+    @apply inline-flex shrink-0 items-center gap-1.5 rounded border px-1.5 py-0.5 text-[11px] font-medium leading-none;
+    color: var(--type-ink);
+    background: var(--type-soft);
+    border-color: var(--type-line);
+  }
+
+  /* Small shared helpers so category bars, home distribution and filter tabs
+     all read from the same tokens instead of hard-coded Tailwind colours. */
+  .type-fill {
+    background: var(--type);
+  }
+
+  /* Same idea for the direction axis: segments in the area overview and in
+     each topic card read the hues defined by [data-axis] above. */
+  .axis-fill {
+    background: var(--axis, #c2c9d6);
+  }
+
+  .type-underline {
+    border-color: var(--type);
+  }
+
+  .type-link:hover {
+    color: var(--type-ink);
+  }
+
+  .type-link:hover .type-count {
+    color: var(--type);
+  }
+
+  /* "Why it matters" is editorial interpretation, not event metadata. A
+     fixed warm-sand panel separates it from the class hue of the card. */
+  .note-block {
+    @apply mt-3 rounded-r-sm border-l-2 py-1.5 pl-3;
+    background: #fdf7ec;
+    border-left-color: #d9a04f;
+  }
+
+  .note-label {
+    @apply mb-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.16em];
+    color: #96631d;
   }
 
   /* Two-column event card: a body column plus a narrow meta rail. Driven by a
@@ -87,23 +268,26 @@ body {
   }
 
   .link-quiet {
-    @apply text-ink-600 underline-offset-4 hover:text-accent-600 hover:underline;
+    @apply text-ink-600 underline-offset-4 hover:text-accent-700 hover:underline;
   }
 
+  /* Chips are square-ish now. Rounded-full pills were used for every piece of
+     metadata, which flattened the hierarchy; full rounding is reserved for
+     the compact status dots below. */
   .chip {
-    @apply inline-flex items-center rounded-full border border-ink-200 px-2.5 py-0.5 text-xs text-ink-600;
+    @apply inline-flex items-center rounded border border-ink-200 bg-white px-2 py-0.5 text-xs text-ink-600;
   }
 
   .chip-active {
-    @apply border-accent-600 bg-accent-50 text-accent-700;
+    @apply border-accent-600 bg-accent-50 font-medium text-accent-700;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-md bg-ink-900 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-ink-700;
+    @apply inline-flex items-center justify-center rounded-md bg-ink-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink-700;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-md border border-ink-200 px-3.5 py-2 text-sm font-medium text-ink-700 transition-colors hover:border-ink-300 hover:bg-ink-50;
+    @apply inline-flex items-center justify-center rounded-md border border-ink-200 px-4 py-2 text-sm font-medium text-ink-700 transition-colors hover:border-ink-300 hover:bg-ink-50;
   }
 
   /* Compact filter select: native arrow replaced by a slim chevron pinned
@@ -111,10 +295,121 @@ body {
   .select-control {
     @apply cursor-pointer rounded-md border border-ink-200 bg-white py-1.5 pl-2.5 text-xs text-ink-700 focus:border-accent-500 focus:outline-none;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23707c93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.5rem center;
     background-size: 10px 6px;
     padding-right: 1.6rem;
+  }
+
+  /* --- Trust encoding ---------------------------------------------------
+     Evidence level, source tier, event class and the direction axis used to
+     all render as the same pale pill. They now differ in SHAPE first; colour
+     is layered on top only where it carries its own meaning.
+
+       evidence  -> graphite 5-step strength bar (dark = independently checked)
+       tier      -> graphite outlined square code (depth = source proximity)
+       eventType -> vertical bar + the card's class hue (5-class palette)
+       direction -> solid / hollow / ringed dot in its own 3-hue palette
+
+     Evidence and tier stay achromatic on purpose: a reader must not read a
+     green or red mark as a verdict on whether a claim is true.
+     ---------------------------------------------------------------------- */
+  .trust-code {
+    @apply inline-flex items-center gap-1.5 whitespace-nowrap font-mono text-[11px] leading-none text-ink-600;
+  }
+
+  .trust-evidence::before {
+    content: "";
+    display: inline-block;
+    width: 17px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--ev-fill, #c2c9d6);
+    box-shadow: inset 0 0 0 1px rgb(22 28 40 / 0.12);
+  }
+
+  .trust-evidence[data-level="E0"] { --ev-fill: #161c28; }
+  .trust-evidence[data-level="E1"] { --ev-fill: #414a5c; }
+  .trust-evidence[data-level="E2"] { --ev-fill: #707c93; }
+  .trust-evidence[data-level="E3"] { --ev-fill: #aab4c6; }
+  .trust-evidence[data-level="E4"] { --ev-fill: #e6e9f0; }
+
+  .trust-tier {
+    @apply inline-flex items-center rounded border px-1.5 py-0.5 font-mono text-[10px] leading-none;
+  }
+
+  .trust-tier[data-level="S0"] { border-color: #414a5c; color: #2c3341; }
+  .trust-tier[data-level="S1"] { border-color: #707c93; color: #414a5c; }
+  .trust-tier[data-level="S2"] { border-color: #98a2b6; color: #566075; }
+  .trust-tier[data-level="S3"] { border-color: #c2c9d6; color: #66728c; }
+  .trust-tier[data-level="S4"] { border-color: #c2c9d6; color: #6b7789; }
+
+  /* The bar picks up the class hue from itself or from a [data-type] ancestor
+     (a card or a compact row), so every surface stays in sync automatically. */
+  .type-bar {
+    @apply inline-block w-[3px] shrink-0 rounded-sm;
+    background: var(--type, #c2c9d6);
+  }
+
+  /* Direction is a separate axis from class, so it keeps its own hues — the
+     same blue / violet / amber already used by the direction chips on an
+     event page. Shape (filled / hollow / ringed) still carries the meaning. */
+  .direction-dot {
+    @apply inline-block h-2 w-2 shrink-0 rounded-full border;
+    border-color: var(--dir, #3b5bdb);
+    background: transparent;
+  }
+
+  .direction-dot[data-direction="ai4math"] {
+    --dir: #3b5bdb;
+    background: var(--dir);
+  }
+
+  .direction-dot[data-direction="math4ai"] { --dir: #7c5cc4; }
+
+  .direction-dot[data-direction="both"] {
+    --dir: #c07a1a;
+    background: var(--dir);
+    box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--dir);
+  }
+
+  /* "No direction" is deliberately muted: it is a missing mark, not a side. */
+  .direction-dot[data-direction="none"] { --dir: #c2c9d6; }
+
+  /* The compact feed row: tighter than a card, but with an explicit leading
+     date column, a class bar and a right-aligned trust summary. */
+  .feed-row {
+    @apply flex items-start gap-3 border-b border-ink-100 px-4 py-2.5 transition-colors last:border-b-0;
+  }
+
+  .feed-row:hover {
+    background: var(--type-soft);
+  }
+
+  .feed-row:hover .row-title {
+    color: var(--type-ink);
+  }
+
+  .feed-row:hover .row-arrow {
+    color: var(--type);
+  }
+
+  /* A native <details> for optional, reader-facing detail (the source registry
+     on About). The sign is CSS-generated so it works with JavaScript off. */
+  .disclosure > summary {
+    list-style: none;
+  }
+
+  .disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .disclosure > summary .disclosure-sign::after {
+    content: "+";
+  }
+
+  .disclosure[open] > summary .disclosure-sign::after {
+    content: "\2212";
   }
 }

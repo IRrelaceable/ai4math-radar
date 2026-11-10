@@ -6,45 +6,78 @@ import { SITE_LANG } from "@/lib/site";
 import { dict } from "@/lib/i18n/dict";
 
 /**
- * One-line list row for the home rails and the compact feed. Titles and dates
- * carry the scan; the summary stays to one clamped line so a 30-row page does
- * not turn into the same height as the card grid.
+ * Compact list row for the home rails and the compact feed.
+ *
+ * The right-hand side used to be empty apart from an arrow, so a wide screen
+ * wasted half the row. The date, class bar, title, context and trust codes now
+ * sit in one scannable line while the row stays shorter than a card.
  */
 export function EventRow({ event }: { event: ListEvent }) {
   const lang = SITE_LANG;
   const t = dict[lang];
   const area = displayResearchArea(event, lang);
+  const context = [
+    event.eventType ? t.trust.type[event.eventType] : "",
+    area,
+    event.summary,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <Link
       href={`/research/${event.slug}`}
-      className="group flex gap-3 px-4 py-3 transition-colors hover:bg-ink-50"
+      className="feed-row group"
+      data-type={event.eventType ?? ""}
     >
       <time
         dateTime={event.date}
-        className="w-[5.5rem] shrink-0 pt-0.5 font-mono text-[11px] leading-5 text-ink-400"
+        className="w-[5.5rem] shrink-0 pt-0.5 font-mono text-[10px] leading-5 text-ink-400"
       >
         {formatDate(event.date, lang)}
       </time>
+
+      <span
+        className="type-bar h-9 self-start"
+        data-type={event.eventType ?? ""}
+        aria-hidden="true"
+      />
+
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium leading-snug text-ink-900 group-hover:text-accent-700">
-          {event.title}
+        <div className="row-title h-item line-clamp-1 transition-colors">{event.title}</div>
+        <div className="mt-0.5 flex items-center gap-2 text-[11px] text-ink-500">
+          {event.direction && (
+            <span className="inline-flex shrink-0 items-center gap-1">
+              <span className="direction-dot" data-direction={event.direction} aria-hidden="true" />
+              {t.trust.direction[event.direction]}
+            </span>
+          )}
+          <span className="truncate">{context}</span>
         </div>
-        <p className="mt-0.5 line-clamp-1 text-xs leading-relaxed text-ink-500">
-          {[
-            event.eventType ? t.trust.type[event.eventType] : "",
-            // Every research event carries the axis; ecosystem records have none.
-            event.direction ? t.trust.direction[event.direction] : "",
-            area,
-            event.summary,
-          ]
-            .filter(Boolean)
-            .join(" · ")}
-        </p>
       </div>
+
+      {event.evidenceLevel && (
+        <span
+          className="trust-code trust-evidence hidden shrink-0 sm:inline-flex"
+          data-level={event.evidenceLevel}
+          title={t.trust.evidence[event.evidenceLevel]}
+        >
+          <span className="text-ink-700">{event.evidenceLevel}</span>
+        </span>
+      )}
+      {event.sourceTier && (
+        <span
+          className="trust-tier hidden shrink-0 md:inline-flex"
+          data-level={event.sourceTier}
+          title={t.trust.tier[event.sourceTier]}
+        >
+          {event.sourceTier}
+        </span>
+      )}
+
       <span
         aria-hidden="true"
-        className="shrink-0 self-center font-mono text-xs text-ink-300 group-hover:text-accent-600"
+        className="row-arrow shrink-0 self-center font-mono text-xs text-ink-300 transition-colors"
       >
         →
       </span>

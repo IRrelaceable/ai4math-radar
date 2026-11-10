@@ -1,5 +1,18 @@
 import type { Config } from "tailwindcss";
 
+/**
+ * Design tokens for the "modern research tool" visual system.
+ *
+ * `ink` is the structural graphite ramp and `accent` is the indigo used for
+ * actions and links. On top of those two, event classes get five muted hues
+ * defined as CSS custom properties in globals.css (`[data-type]`), along with
+ * a small blue / violet / amber palette for the direction axis. Class colour
+ * lives in the card frame and metadata only; evidence strength and source
+ * tier stay achromatic so a hue never reads as a reliability verdict.
+ *
+ * Keeping the `ink` / `accent` names stable means existing components pick up
+ * the new values without a rename across 30 files.
+ */
 const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
@@ -10,33 +23,54 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          50: "#f6f7f9",
-          100: "#eceef2",
-          200: "#d5d9e2",
-          300: "#b0b8c7",
-          400: "#8591a8",
-          500: "#66728c",
-          600: "#515b73",
-          700: "#424a5e",
-          800: "#39404f",
-          900: "#0f172a",
+          50: "#f7f8fa",
+          100: "#eef0f4",
+          200: "#dfe3ea",
+          300: "#c2c9d6",
+          400: "#98a2b6",
+          500: "#707c93",
+          600: "#566075",
+          700: "#414a5c",
+          800: "#2c3341",
+          900: "#161c28",
         },
         accent: {
-          50: "#eef4ff",
-          100: "#dce7ff",
-          200: "#bed2ff",
-          300: "#91b3ff",
-          400: "#5d89fc",
-          500: "#3b66f6",
-          600: "#2549eb",
-          700: "#1d38d8",
-          800: "#1e30af",
-          900: "#1e2f8a",
+          50: "#f0f2ff",
+          100: "#e2e6ff",
+          200: "#c6cdff",
+          300: "#9fa9fb",
+          400: "#7582f2",
+          500: "#5361e6",
+          600: "#3b5bdb",
+          700: "#3149b8",
+          800: "#2a3d93",
+          900: "#263474",
         },
       },
-      typography: {},
+      fontFamily: {
+        sans: [
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "PingFang SC",
+          "Hiragino Sans GB",
+          "Microsoft YaHei",
+          "sans-serif",
+        ],
+        mono: [
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Consolas",
+          "Liberation Mono",
+          "monospace",
+        ],
+      },
       maxWidth: {
         content: "78rem",
+        prose: "44rem",
       },
     },
   },

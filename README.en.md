@@ -70,29 +70,30 @@ fields stay empty; items without a confirmable source URL are dropped.
 | --- | --- | --- |
 | Home | `/` | Event totals, area distribution, latest events and recent activity |
 | Feed | `/latest` | Class / area / time / evidence / tier filters, search, card and compact views |
-| Timeline | `/timeline` | Year-by-year from 2020, decades before that; month folding, deep links, expand-all |
-| Areas | `/topics` · `/topics/[topic]` | Trends, papers, models, benchmarks and events for each area |
-| Event detail | `/research/[slug]` | What happened, key facts, evidence and status, related events, and the **event thread** |
+| Timeline | `/timeline` | Year-by-year density overview and class mix; the three newest months open by default, sparse years open fully, dense months group by day; search, deep links, class filter |
+| Areas | `/topics` · `/topics/[topic]` | Direction-axis mix, 12-month trend, sub areas and latest records for six areas; detail pages add trends, papers, models, benchmarks and events |
+| Event detail | `/research/[slug]` | What happened, key facts, evidence and status, related events, plus **citation links** and **related events** as separate sections |
 | Search | `/search` | Results grouped by event, paper, area, model and benchmark |
-| Math4AI entry | `/math4ai` | Direction-axis feed: events whose beneficiary is general AI capability (co-primary included) |
-| Sources | `/sources` | Last sync status and cursor per source |
-| Glossary | `/methodology` | Full definitions of evidence levels and source tiers |
+| Math4AI entry | `/math4ai` | Direction-axis feed: events where mathematics is the method or theory and the object is the AI system (co-primary included) |
+| About | `/about` | What the site tracks, the five event classes, how to read the E/S labels, and the public source registry (the old `/sources` route redirects here) |
+| Glossary | `/methodology` | Definitions for all six label groups: evidence level, source tier, event class, verification state, AI involvement and direction axis |
 
-**Event thread**: the detail page first draws "previous work → this event → follow-up work"
-from citation links — edges are checked against OpenAlex reference lists, so both the citing
-and cited side are facts stated by the paper — then places the event on a co-occurrence
-timeline built from the people, institutions, projects, models and benchmarks it names,
-marking the earliest point, the latest development and the current event. Co-occurrence
-plus ordering expresses association, not causation.
+**Citation links and related events**: the detail page keeps the two relations apart.
+"Citation links" lists works in this event's reference list and later works citing it,
+each with a link to the original paper; a citation is a documented link, not a claim that
+conclusions carry over. "Related events" groups co-occurring people, institutions, projects
+and models into timelines — co-occurrence signals association, not causation. Short chains
+collapse to one line, remaining threads stay expandable and long chains mark the current
+position.
 
 **Trust model**: evidence levels E0–E4 (independent replication / testable artifact /
 research record / originator claim / no evidence) and source tiers S0–S4 are labelled
-separately; verification history is append-only. Rules live at
+separately; verification history is append-only. Label definitions live at
 [`/methodology`](app/methodology/page.tsx).
 
 <table>
 <tr>
-<td width="50%"><img src="docs/screenshots/timeline.png" alt="Timeline page"><br><sub>Timeline: grouped by year, months foldable</sub></td>
+<td width="50%"><img src="docs/screenshots/timeline.png" alt="Timeline page"><br><sub>Timeline: yearly density, three newest months open by default, month folding</sub></td>
 <td width="50%"><img src="docs/screenshots/detail.png" alt="Event detail page"><br><sub>Event detail: facts, evidence and original source</sub></td>
 </tr>
 </table>
@@ -151,12 +152,12 @@ The Chinese site runs at <http://localhost:3000> and English at
 
 - [x] Five-class ecosystem event model with trust labels
 - [x] Static export with separate Chinese and English builds
-- [x] Timeline (year / decade grouping, month folding, deep links)
+- [x] Timeline (density overview, three newest months open by default, density-aware folding, deep links, keyword search)
 - [x] Event threads across people, institutions, projects, models and benchmarks
 - [x] Scheduled ingestion and automated publishing
 - [x] Citation graph between events (previous / follow-up edges checked against OpenAlex references)
 - [ ] Per-problem benchmark result tracking within areas
-- [x] Math4AI as a first-class entry (direction axis ai4math / math4ai / both, assigned at ingest)
+- [x] Math4AI as a first-class entry (direction axis ai4math / math4ai / both, judged by research object → core goal → actual contribution at ingest)
 
 ## Contributing
 

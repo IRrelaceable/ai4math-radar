@@ -19,21 +19,24 @@ export function Header() {
     { href: "/timeline", label: t.nav.timeline },
     { href: "/topics", label: t.nav.topics },
     { href: "/math4ai", label: t.nav.math4ai },
-    { href: "/sources", label: t.nav.sources },
     { href: "/about", label: t.nav.about },
   ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur">
-      <div className="container-page flex h-14 items-center gap-4 sm:gap-6">
+      <div className="container-page flex h-16 items-center gap-4 sm:gap-6">
         <Link href="/" prefetch className="flex min-w-0 items-center gap-2.5 shrink-0">
-          <span className="flex h-7 w-7 items-center justify-center rounded bg-ink-900 font-mono text-sm text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-ink-900 font-mono text-sm text-white">
             ∑
           </span>
-          <span className="max-w-[11rem] truncate text-[15px] font-semibold tracking-tight sm:max-w-none">{t.nav.brand}</span>
+          <span className="max-w-[11rem] truncate text-[15px] font-semibold tracking-tight text-ink-900 sm:max-w-none">
+            {t.nav.brand}
+          </span>
         </Link>
 
-        <nav className="hidden lg:flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
+        {/* Active state is an underline anchored to the header rule, not a
+            filled chip — one less rounded box competing with the content. */}
+        <nav className="hidden lg:flex min-w-0 flex-1 self-stretch items-center gap-1 overflow-hidden">
           {NAV.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -42,10 +45,10 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 prefetch
-                className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+                className={`flex h-full items-center border-b-2 px-3 text-[13px] transition-colors ${
                   active
-                    ? "bg-ink-100 font-medium text-ink-900"
-                    : "text-ink-600 hover:bg-ink-50 hover:text-ink-900"
+                    ? "border-accent-600 font-medium text-ink-900"
+                    : "border-transparent text-ink-500 hover:text-ink-900"
                 }`}
               >
                 {item.label}
@@ -72,13 +75,13 @@ export function Header() {
             <summary className="list-none cursor-pointer rounded-md border border-ink-200 px-2.5 py-1.5 text-sm text-ink-700">
               {t.nav.menu}
             </summary>
-            <div className="absolute right-0 top-10 w-44 rounded-lg border border-ink-200 bg-white p-1.5 shadow-lg">
+            <div className="absolute right-0 top-10 w-44 rounded-md border border-ink-200 bg-white p-1.5 shadow-lg">
               {NAV.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   prefetch
-                  className="block rounded-md px-3 py-2 text-sm text-ink-700 hover:bg-ink-50"
+                  className="block rounded px-3 py-2 text-sm text-ink-700 hover:bg-ink-50"
                 >
                   {item.label}
                 </Link>

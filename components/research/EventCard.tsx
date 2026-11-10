@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ListEvent } from "@/types";
 import { formatDate } from "@/lib/utils";
-import { cardTrustSummary } from "@/lib/trustLabels";
 import { displayResearchArea } from "@/lib/i18n/localize";
 import { SITE_LANG } from "@/lib/site";
 import { dict } from "@/lib/i18n/dict";
@@ -11,15 +10,15 @@ import { pagesDict } from "@/lib/i18n/dict.pages";
  * The standard Research Event card.
  *
  * Answers "What happened?" and "Why does it matter?" before anything else.
- * The layout is deliberately single-column: the two-column body/rail split it
- * used to have squeezed the title in narrow grid cells and duplicated the
- * trust information that the detail page already explains in full.
+ * The top line carries classification (event class tag + direction dot), the
+ * bottom line carries trust (evidence strength bar + outlined source tier).
  *
- * Badge budget (see `cardTrustSummary` in lib/trustLabels.ts):
- *   1 event-type badge · 1 primary link.
- * Evidence + tier collapse to a compact "E2 · S2" string in the meta line,
- * and the research direction moves under the title as plain text so it reads
- * as context rather than as a second badge.
+ * `data-type` on the <article> sets the class hue for the top rule, the tag,
+ * the hover tint and the title hover; trust marks intentionally stay graphite
+ * so colour never doubles as a reliability verdict. The "why it matters" note
+ * uses a fixed warm panel because it is editorial, not event metadata. All
+ * three text blocks reserve exactly two lines, so a short title cannot move
+ * the coloured panels or the footer relative to the other cards in its row.
  *
  * Rendered on the server: the feed shows hundreds of these, so keeping them
  * out of the client bundle avoids hydrating a card grid on every navigation.
@@ -27,7 +26,6 @@ import { pagesDict } from "@/lib/i18n/dict.pages";
 export function EventCard({ event }: { event: ListEvent }) {
   const lang = SITE_LANG;
   const t = dict[lang];
-  const trust = cardTrustSummary(event);
   // The label must match the artifact: a paper only when the record really
   // carries a paper link, a repository when the source is the code, and a
   // plain source link otherwise (news, blog, policy page).
@@ -41,65 +39,69 @@ export function EventCard({ event }: { event: ListEvent }) {
   const areaLabel = displayResearchArea(event, lang);
 
   return (
-    <article className="card card-hover flex flex-col p-5">
-      <h3 className="line-clamp-2 text-[17px] font-semibold leading-snug tracking-tight">
-        <Link href={`/research/${event.slug}`} className="hover:text-accent-700">
+    <article
+      className="event-card group flex flex-col p-4"
+      data-type={event.eventType ?? ""}
+    >
+      <div className="flex items-center gap-2 text-[11px] text-ink-500">
+        {event.eventType && (
+          <span
+            title={pagesDict[lang].methodology.typeDesc[event.eventType]}
+            className="type-chip"
+          >
+            <span className="type-bar h-3" aria-hidden="true" />
+            {t.trust.type[event.eventType]}
+          </span>
+        )}
+        {event.direction && (
+          <span
+            title={pagesDict[lang].methodology.directionDesc[event.direction]}
+            className="inline-flex shrink-0 items-center gap-1.5"
+          >
+            <span className="direction-dot" data-direction={event.direction} aria-hidden="true" />
+            {t.trust.direction[event.direction]}
+          </span>
+        )}
+        {areaLabel && <span className="truncate text-ink-400">{areaLabel}</span>}
+        <time dateTime={event.date} className="ml-auto shrink-0 font-mono text-[10px] text-ink-400">
+          {formatDate(event.date, lang)}
+        </time>
+      </div>
+
+      <h3 className="card-clamp-title mt-2 line-clamp-2 h-item">
+        <Link href={`/research/${event.slug}`} className="card-title">
           {event.title}
         </Link>
       </h3>
 
-      {/* Class, research context and date sit together below the title.
-          The direction axis labels every research event — an unlabelled card
-          would leave readers guessing whether it means ai4math or no axis. */}
-      <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-ink-500">
-        {event.eventType && (
-          <span
-            title={pagesDict[lang].methodology.typeDesc[event.eventType]}
-            className="chip border border-ink-200 bg-ink-50 font-medium text-ink-700"
-          >
-            {t.trust.type[event.eventType]}
-          </span>
-        )}
-        {event.direction === "ai4math" && (
-          <span className="chip border border-accent-200 bg-accent-50 font-medium text-accent-700">
-            {t.trust.direction.ai4math}
-          </span>
-        )}
-        {event.direction === "math4ai" && (
-          <span className="chip border border-violet-200 bg-violet-50 font-medium text-violet-700">
-            {t.trust.direction.math4ai}
-          </span>
-        )}
-        {event.direction === "both" && (
-          <span className="chip border border-amber-200 bg-amber-50 font-medium text-amber-700">
-            {t.trust.direction.both}
-          </span>
-        )}
-        {event.researchArea && <span>{areaLabel}</span>}
-        <span className="ml-auto font-mono">{formatDate(event.date, lang)}</span>
-      </div>
-
       {/* Automated entries can carry a full abstract; clamp so one long card
-          never stretches its whole grid row. */}
-      <p className="mt-2.5 line-clamp-3 text-sm leading-relaxed text-ink-600">{event.summary}</p>
+          never stretches its whole grid row, and reserve the second line so a
+          short abstract does not pull the note panel up. */}
+      <p className="card-clamp-body mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-ink-500">
+        {event.summary}
+      </p>
 
       {/* Auto-ingested events carry no curated significance; skip the block
-          rather than echo a boilerplate disclaimer already shown by the
-          trust line. */}
+          rather than echo a boilerplate disclaimer. */}
       {event.significance?.trim() && (
-        <div className="mt-3 border-l-2 border-accent-200 pl-3">
-          <div className="mono-label mb-0.5">{t.common.whyItMatters}</div>
-          <p className="line-clamp-2 text-sm leading-relaxed text-ink-700">{event.significance}</p>
+        <div className="note-block">
+          <div className="note-label">{t.common.whyItMatters}</div>
+          <p className="card-clamp-body line-clamp-2 text-[13px] leading-relaxed text-ink-600">
+            {event.significance}
+          </p>
         </div>
       )}
 
-      {/* Footer: one trust summary line, then exactly one primary link and the
-          detail link. GitHub is no longer shown here — it lives on the detail
-          page, so a card never competes with itself for the reader's click. */}
-      <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-ink-100 pt-3 text-xs">
-        {trust.evidence && (
-          <span className="font-mono text-ink-500">
-            {trust.evidence}
+      <div className="card-footer mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 border-t pt-3 text-xs">
+        {event.evidenceLevel && (
+          <span className="trust-code trust-evidence" data-level={event.evidenceLevel}>
+            <span className="font-medium text-ink-800">{event.evidenceLevel}</span>
+            <span className="font-sans text-[11px]">{t.trust.evidence[event.evidenceLevel]}</span>
+          </span>
+        )}
+        {event.sourceTier && (
+          <span className="trust-tier" data-level={event.sourceTier}>
+            {event.sourceTier}
           </span>
         )}
 

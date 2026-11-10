@@ -24,22 +24,24 @@ export function TopicBar({
   return (
     <Link href={`/topics/${stat.slug}`} className="block group">
       <div className="flex items-baseline justify-between gap-3">
-        <span className="text-sm font-medium text-ink-900 group-hover:text-accent-700">
+        <span className="h-item group-hover:text-accent-700">
           {displayArea(stat.topic as ResearchArea, lang)}
         </span>
-        <span className="font-mono text-xs text-ink-500">
+        <span className="font-mono text-xs text-ink-600">
           {stat.count}{" "}
-          {stat.count === 1 ? c.topic.researchEvent : c.topic.researchEvents}
+          <span className="text-ink-400">
+            {stat.count === 1 ? c.topic.researchEvent : c.topic.researchEvents}
+          </span>
         </span>
       </div>
-      <div className="mt-1.5 h-2.5 w-full rounded-sm bg-ink-100" aria-hidden="true">
+      <div className="mt-2 h-1.5 w-full rounded-sm bg-ink-100" aria-hidden="true">
         <div
-          className="h-2.5 rounded-sm bg-accent-600 transition-[width] group-hover:bg-accent-700"
+          className="h-1.5 rounded-sm bg-accent-600 transition-[width] group-hover:bg-accent-700"
           style={{ width: `${pct}%` }}
         />
       </div>
       {showMeta && (
-        <div className="mono-label mt-1 normal-case tracking-normal">
+        <div className="mono-label mt-1.5 normal-case tracking-normal">
           {c.topic.latestPrefix}
           {formatDate(stat.latestDate, lang)}
         </div>

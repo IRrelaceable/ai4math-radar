@@ -69,7 +69,7 @@ export interface SourceView {
   id: string;
   label: string;
   category: EventType;
-  /** Editorial evidence tier; sources are grouped into S0-S4 sync boards. */
+  /** Editorial evidence tier; shown as the per-source S0–S4 label. */
   sourceTier: SourceTier;
   status: SourceSyncState;
   lastAttemptAt?: string;
@@ -97,17 +97,14 @@ export interface CategoryBoard {
 /**
  * Source registry + persisted sync statuses.
  *
- * Single source of truth for `app/sources/page.tsx` and the sync script so the
- * two can never drift.
+ * Single source of truth for the public source registry on `/about` and for
+ * the sync script, so the two can never drift.
  *
  * `boards` always contains all five event classes in EVENT_TYPES order, even
  * when a class has no sources, so the sync UI renders a stable five-board
  * layout.
  */
-export function loadSourceOverview(): {
-  boards: CategoryBoard[];
-  sources: SourceView[];
-} {
+export function loadSourceOverview(): { boards: CategoryBoard[] } {
   const statuses = readSourceStatuses();
 
   const sources: SourceView[] = Object.entries(getLiveResearchSources()).map(([id, source]) => {
@@ -137,6 +134,6 @@ export function loadSourceOverview(): {
     sources: sources.filter((source) => source.category === category),
   }));
 
-  return { boards, sources };
+  return { boards };
 }
 

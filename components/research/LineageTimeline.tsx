@@ -7,28 +7,27 @@ import { useLang } from "@/lib/i18n/context";
 import { componentsDict } from "@/lib/i18n/dict.components";
 
 /**
- * Previous Work -> This Work -> Follow-up Work, derived from relatedWorks
- * relation labels plus the reverse edges the detail page computes (records
- * that name this event as their previous work, so they are its follow-ups).
+ * Citation links: previous work above, this event in the middle, follow-up
+ * work below. Unlike the old three-column diagram, an empty side simply is
+ * not drawn — "not yet recorded" boxes spent two containers saying nothing.
  *
- * Renders nothing when the event carries no lineage at all: 64% of events
- * have no `previous` and no `followup`, and showing three boxes for those
- * ("no previous work recorded" / this event / "no follow-up recorded")
- * spends three containers to state one fact. It is the same dead-block
- * problem as RelatedWorksSection, so it gets the same treatment — the page
- * simply ends at the verification history instead.
+ * Every edge states where the link comes from and offers a direct link to the
+ * original source, so the reader can check the citation without trusting us.
  */
 export function LineageTimeline({
   event,
   extraPrevious = [],
   extraFollowup = [],
+  sourceUrlBySlug,
 }: {
   event: ResearchEvent;
   extraPrevious?: RelatedWork[];
   extraFollowup?: RelatedWork[];
+  /** slug -> original paper/source URL, resolved once by the detail page. */
+  sourceUrlBySlug: Record<string, string>;
 }) {
   const { lang } = useLang();
-  const c = componentsDict[lang];
+  const c = componentsDict[lang].lineage;
   const previous = [
     ...event.relatedWorks.filter((w) => w.relation === "previous"),
     ...extraPrevious,
@@ -38,36 +37,112 @@ export function LineageTimeline({
     ...extraFollowup,
   ];
 
-  if (previous.length === 0 && followup.length === 0) {
-    return null;
-  }
+  if (previous.length === 0 && followup.length === 0) return null;
 
   return (
-    <div className="space-y-0">
-      <Stage label={c.lineage.previousWork} items={previous} />
-      <Connector />
-      <div className="rounded-md border border-accent-300 bg-accent-50 px-4 py-3">
-        <div className="mono-label text-accent-700">{c.lineage.thisWork}</div>
-        <div className="mt-1 text-sm font-medium text-ink-900">{event.title}</div>
-        <div className="mt-1 font-mono text-xs text-ink-500">{formatDate(event.date, lang)}</div>
+    <ol className="relative ml-2 border-l border-ink-200 pl-5">
+      {previous.map((work) => (
+        <EdgeRow
+          key={`previous:${work.title}`}
+          work={work}
+          label={c.previousWork}
+          sourceUrlBySlug={sourceUrlBySlug}
+        />
+      ))}
+
+      <li className="relative my-2 rounded-md border border-accent-300 bg-accent-50 px-3.5 py-2.5">
+        <span
+          aria-hidden="true"
+          className="absolute -left-[23px] top-4 h-2.5 w-2.5 rounded-full bg-accent-600"
+        />
+        <div className="mono-label text-accent-700">{c.thisWork}</div>
+        <div className="h-item mt-1">{event.title}</div>
+        <div className="mt-1 font-mono text-xs text-ink-500">
+          {formatDate(event.date, lang)}
+        </div>
+      </li>
+
+      {followup.map((work) => (
+        <EdgeRow
+          key={`followup:${work.title}`}
+          work={work}
+          label={c.followupWork}
+          sourceUrlBySlug={sourceUrlBySlug}
+        />
+      ))}
+    </ol>
+  );
+}
+
+/** Citation backfill stores two English notes; everything else is already localized. */
+function localizedNote(note: string | undefined, c: ReturnType<typeof labels>): string | undefined {
+  if (!note) return undefined;
+  if (note === "Listed in this event's reference list") return c.referenceNote;
+  if (note === "Cites this event's paper") return c.citationNote;
+  return note;
+}
+
+function labels(lang: "zh" | "en") {
+  return componentsDict[lang].lineage;
+}
+
+/** Internal edges point at a detail page; the reader still needs the underlying source. */
+function originalUrl(
+  work: RelatedWork,
+  sourceUrlBySlug: Record<string, string>
+): string | undefined {
+  if (!work.url) return undefined;
+  if (!work.url.startsWith("/")) return work.url;
+  const slug = work.url.replace(/^\/research\//, "").replace(/\/$/, "");
+  return sourceUrlBySlug[slug];
+}
+
+function EdgeRow({
+  work,
+  label,
+  sourceUrlBySlug,
+}: {
+  work: RelatedWork;
+  label: string;
+  sourceUrlBySlug: Record<string, string>;
+}) {
+  const { lang } = useLang();
+  const c = labels(lang);
+  const note = localizedNote(work.note, c);
+  const original = originalUrl(work, sourceUrlBySlug);
+
+  return (
+    <li className="relative pb-3 last:pb-0">
+      <span
+        aria-hidden="true"
+        className="absolute -left-[23px] top-2 h-2 w-2 rounded-full border border-ink-300 bg-white"
+      />
+      <div className="mono-label">{label}</div>
+      <div className="h-item mt-1">
+        <WorkLink work={work} />
       </div>
-      <Connector />
-      <Stage label={c.lineage.followupWork} items={followup} />
-    </div>
+      {(note || original) && (
+        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-500">
+          {note && <span>{note}</span>}
+          {original && (
+            <a
+              href={original}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-quiet font-mono text-[11px]"
+            >
+              {c.original} ↗
+            </a>
+          )}
+        </div>
+      )}
+    </li>
   );
 }
 
-function Connector() {
-  return (
-    <div className="flex justify-center py-1" aria-hidden="true">
-      <span className="font-mono text-sm text-ink-400">↓</span>
-    </div>
-  );
-}
-
-/** Internal targets stay in the site (next/link applies basePath); external ones open the source. */
-function WorkLink({ work, className }: { work: RelatedWork; className: string }) {
-  if (!work.url) return <span className={className}>{work.title}</span>;
+function WorkLink({ work }: { work: RelatedWork }) {
+  const className = "hover:text-accent-700";
+  if (!work.url) return <span>{work.title}</span>;
   if (work.url.startsWith("/")) {
     return (
       <Link href={work.url} className={className}>
@@ -79,30 +154,5 @@ function WorkLink({ work, className }: { work: RelatedWork; className: string })
     <a href={work.url} target="_blank" rel="noopener noreferrer" className={className}>
       {work.title}
     </a>
-  );
-}
-
-function Stage({ label, items }: { label: string; items: RelatedWork[] }) {
-  const { lang } = useLang();
-  const c = componentsDict[lang];
-  return (
-    <div className="rounded-md border border-ink-200 bg-white px-4 py-3">
-      <div className="mono-label">{label}</div>
-      {items.length === 0 ? (
-        <div className="mt-1 text-sm text-ink-400">{c.lineage.notRecorded}</div>
-      ) : (
-        <ul className="mt-1.5 space-y-1.5">
-          {items.map((w) => (
-            <li key={w.title} className="text-sm">
-              <WorkLink
-                work={w}
-                className="font-medium text-ink-900 hover:text-accent-700"
-              />
-              {w.note && <span className="block text-xs text-ink-500">{w.note}</span>}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
   );
 }

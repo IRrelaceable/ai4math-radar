@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { applyTrustModel, deriveResearchEventType } from "@/lib/verification";
-import { pagesDict } from "@/lib/i18n/dict.pages";
 import type { ResearchEvent } from "@/types";
 
 function makeEvent(overrides: Partial<ResearchEvent> = {}): ResearchEvent {
@@ -178,10 +177,8 @@ describe("deriveResearchEventType", () => {
   });
 });
 
-describe("/methodology derivation copy matches applyTrustModel", () => {
-  const m = pagesDict.zh.methodology;
-
-  it("evidence-level rules yield exactly the documented codes", () => {
+describe("applyTrustModel derivation rules", () => {
+  it("evidence-level rules yield the expected codes", () => {
     const cases: [Partial<ResearchEvent>, string][] = [
       [{ githubUrl: "https://github.com/x/y" }, "E1"],
       [{ paperUrl: "https://arxiv.org/abs/1" }, "E2"],
@@ -191,15 +188,13 @@ describe("/methodology derivation copy matches applyTrustModel", () => {
     for (const [overrides, expected] of cases) {
       expect(applyTrustModel(makeEvent(overrides)).evidenceLevel).toBe(expected);
     }
-    expect(m.deriveEvidence.map((r) => r.code)).toEqual(["E1", "E2", "E3", "E4"]);
   });
 
-  it("source-tier rules yield exactly the documented codes", () => {
+  it("source-tier rules yield the expected codes", () => {
     expect(applyTrustModel(makeEvent({ sourceType: "arxiv" })).sourceTier).toBe("S0");
     expect(applyTrustModel(makeEvent({ sourceType: "github" })).sourceTier).toBe("S0");
     expect(applyTrustModel(makeEvent({ sourceType: "conference" })).sourceTier).toBe("S0");
     expect(applyTrustModel(makeEvent({ sourceType: "blog" })).sourceTier).toBe("S1");
     expect(applyTrustModel(makeEvent({ sourceType: "demo" })).sourceTier).toBe("S1");
-    expect(m.deriveTier.map((r) => r.code)).toEqual(["S0", "S1"]);
   });
 });

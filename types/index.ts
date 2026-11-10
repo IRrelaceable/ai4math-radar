@@ -18,11 +18,13 @@ export const RESEARCH_AREAS = [
 export type ResearchArea = (typeof RESEARCH_AREAS)[number];
 
 /**
- * Direction axis, orthogonal to researchArea: who the progress directly
- * serves. "ai4math" = mathematics done with machines (proofs, formalization,
- * discovery, their toolchain); "math4ai" = general AI capability, where
- * mathematics is only the medium or testbed; "both" = co-primary.
- * Ecosystem events carry no direction, same rule as researchArea.
+ * Direction axis, orthogonal to researchArea: what the work is about and what
+ * it actually delivers. "ai4math" = the object/deliverable is mathematics
+ * (proofs, conjectures, formal corpora, math-specialized models, datasets and
+ * benchmarks); "math4ai" = a reusable AI method, theory or algorithm, with
+ * mathematics as the method or testbed; "both" = co-primary.
+ * Ecosystem events carry no direction, same rule as researchArea; research
+ * events outside both sides are left without a direction.
  */
 export type EventDirection = "ai4math" | "math4ai" | "both";
 

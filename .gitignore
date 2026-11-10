@@ -22,6 +22,9 @@ prisma/*.db
 npm-debug.log*
 *.log
 
+# resumable audit/cache output
+.cache/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts.bak
@@ -41,6 +44,12 @@ public/data/
 
 # oil-ui design-session working artifacts
 .oil-ui/
+
+# local verification scratch (headless browser captures and probes)
+.edge-verify/
+
+# local agent working notes
+.workbuddy/
 
 # NOTE: data/ingested/*.json IS committed — the scheduled GitHub Actions job
 # stores what it ingested and must resume from it on the next run.

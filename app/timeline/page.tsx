@@ -13,8 +13,12 @@ export default function TimelinePage() {
   const p = pagesDict[getLang()];
 
   return (
-    <div className="container-page py-10">
-      <PageHeader title={t().nav.timeline} description={p.timeline.sub} />
+    <div className="container-page py-10 sm:py-12">
+      <PageHeader
+        label={p.timeline.label}
+        title={t().nav.timeline}
+        description={p.timeline.sub}
+      />
 
       <div className="mt-2">
         <Suspense fallback={<div className="h-24" />}>

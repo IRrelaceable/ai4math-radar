@@ -65,13 +65,24 @@ export function yearOf(iso: string): string {
   return iso.slice(0, 4);
 }
 
-/** "2026-10" (or a full date) -> "10月" (zh) / "October" (en). */
+/** "2026-10" -> "10月" (zh) / "October" (en). */
 export function formatMonth(iso: string, lang: Lang = "zh"): string {
   const match = /^(\d{4})-(\d{2})/.exec(iso);
   if (!match) return iso;
   const m = Number(match[2]);
   if (m < 1 || m > 12) return iso;
   return lang === "zh" ? `${m}月` : MONTHS_LONG[m - 1];
+}
+
+/** "2026-10" -> "2026年10月" (zh) / "October 2026" (en). Year-qualified month. */
+export function formatMonthYear(iso: string, lang: Lang = "zh"): string {
+  const match = /^(\d{4})-(\d{2})/.exec(iso);
+  if (!match) return iso;
+  const m = Number(match[2]);
+  if (m < 1 || m > 12) return iso;
+  return lang === "zh"
+    ? `${match[1]}年${m}月`
+    : `${MONTHS_LONG[m - 1]} ${match[1]}`;
 }
 
 /** Compact month label for jump chips: "10月" (zh) / "Oct" (en). */

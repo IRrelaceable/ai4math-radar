@@ -11,10 +11,12 @@ import {
 } from "@/types";
 import { useT } from "@/lib/i18n/context";
 import { displayArea } from "@/lib/i18n/localize";
+import { formatMonthYear } from "@/lib/utils";
 import { componentsDict } from "@/lib/i18n/dict.components";
+import { SearchGlyph } from "@/components/ui/SearchGlyph";
 
 /** Adaptive width: shrinks to the label, capped so one long option can't eat the row. */
-const SELECT_CLASS = "select-control max-w-36";
+const SELECT_CLASS = "select-control max-w-40";
 
 type Option = { value: string; label: string; disabled?: boolean };
 
@@ -62,13 +64,13 @@ function FilterSelect({
  * Feed controls for the ecosystem stream.
  *
  * Layout, top to bottom:
- *   1. Event-class chips (the one primary axis)
- *   2. Search, on its own row — it is a different interaction from filtering
- *      and deserves its own line
- *   3. Secondary filters: area, time, evidence and source tier,
- *      with the result count pinned to the right
+ *   1. Event-class tabs as text with an underline (the one primary axis),
+ *      with the view switch pinned right
+ *   2. Search and the four secondary filters on one row, result count right
  *
- * State lives in the URL so results are shareable and server-rendered.
+ * Chips were replaced with tabs so the filter bar no longer competes with the
+ * metadata chips inside each event card. State still lives in the URL so
+ * results remain shareable.
  */
 export function FeedControls({
   availableAreas,
@@ -137,8 +139,12 @@ export function FeedControls({
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   }
 
-  // Time filter: relative windows first, then a divider, then concrete years.
+  // Time filter: a month from a timeline deep link first, then relative
+  // windows, a divider, and concrete years. Keeping the month in the list
+  // stops the select from showing a blank value on such a page.
+  const monthValue = /^\d{4}-\d{2}$/.test(get("time")) ? get("time") : undefined;
   const timeOptions: Option[] = [
+    ...(monthValue ? [{ value: monthValue, label: formatMonthYear(monthValue, lang) }] : []),
     ...presentWindows.map((w) => ({
       value: w,
       label: c.feed.windows[w],
@@ -150,28 +156,35 @@ export function FeedControls({
   ];
 
   return (
-    <div className="space-y-3">
-      {/* 1. Primary axis: the event classes present in the data (+ All), view switch on the right. */}
-      <div className="flex flex-wrap items-center gap-2">
-        {(["All", ...(presentTypes ?? EVENT_TYPES)] as const).map((type) => {
-          const active = type === "All" ? !get("type") : get("type") === type;
-          const label = type === "All" ? t.common.all : t.trust.type[type];
-          return (
-            <button
-              key={type}
-              type="button"
-              onClick={() => update({ type: type === "All" ? undefined : type })}
-              className={`chip px-3 py-1 transition-colors ${
-                active ? "chip-active" : "hover:border-ink-300 hover:text-ink-900"
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
+    <div className="space-y-4">
+      {/* 1. Primary axis: event classes as underline tabs. */}
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-ink-200">
+        <nav className="flex flex-wrap items-center gap-x-5 gap-y-1" aria-label={c.feed.viewLabel}>
+          {(["All", ...(presentTypes ?? EVENT_TYPES)] as const).map((type) => {
+            const active = type === "All" ? !get("type") : get("type") === type;
+            const label = type === "All" ? t.common.all : t.trust.type[type];
+            return (
+              <button
+                key={type}
+                type="button"
+                data-type={type === "All" ? "" : type}
+                onClick={() => update({ type: type === "All" ? undefined : type })}
+                className={`-mb-px border-b-2 pb-2.5 pt-1 text-[13px] transition-colors ${
+                  active
+                    ? type === "All"
+                      ? "border-accent-600 font-medium text-ink-900"
+                      : "type-underline font-medium text-ink-900"
+                    : "border-transparent text-ink-500 hover:text-ink-900"
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </nav>
 
         <div
-          className="ml-auto flex items-center gap-0.5 rounded-md border border-ink-200 p-0.5"
+          className="mb-2 flex items-center gap-0.5 rounded-md border border-ink-200 p-0.5"
           role="group"
           aria-label={c.feed.viewLabel}
         >
@@ -201,27 +214,27 @@ export function FeedControls({
         </div>
       </div>
 
-      {/* 2. Search gets its own row — it is not a filter in the same sense. */}
-      <form
-        className="flex w-full items-center gap-2 rounded-md border border-ink-200 px-3 py-2 focus-within:border-accent-500"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const value = new FormData(e.currentTarget).get("q");
-          update({ q: String(value ?? "").trim() || undefined });
-        }}
-      >
-        <input
-          name="q"
-          defaultValue={q}
-          key={q}
-          placeholder={t.common.searchEvents}
-          aria-label={c.feed.searchAria}
-          className="w-full bg-transparent text-sm placeholder:text-ink-400 focus:outline-none"
-        />
-      </form>
-
-      {/* 3. Secondary row: all filters visible, count pinned right. */}
+      {/* 2. Search and secondary filters share a row; the count is pinned right. */}
       <div className="flex flex-wrap items-center gap-2">
+        <form
+          className="flex min-w-[15rem] flex-1 items-center gap-2 rounded-md border border-ink-200 px-3 py-2 focus-within:border-accent-500"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const value = new FormData(e.currentTarget).get("q");
+            update({ q: String(value ?? "").trim() || undefined });
+          }}
+        >
+          <SearchGlyph />
+          <input
+            name="q"
+            defaultValue={q}
+            key={q}
+            placeholder={t.common.searchEvents}
+            aria-label={c.feed.searchAria}
+            className="w-full bg-transparent text-sm placeholder:text-ink-400 focus:outline-none"
+          />
+        </form>
+
         <FilterSelect
           id="filter-area"
           label={c.feed.areaLabel}
@@ -274,7 +287,7 @@ export function FeedControls({
           </button>
         )}
 
-        <span className="ml-auto font-mono text-xs text-ink-500">
+        <span className="ml-auto whitespace-nowrap rounded bg-ink-50 px-2 py-1 font-mono text-xs font-medium text-ink-700">
           {c.feed.resultsCount.replace("{n}", String(total))}
         </span>
       </div>

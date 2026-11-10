@@ -69,10 +69,13 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
   const evidence = oneOf<EvidenceLevel>(params.get("evidence"), EVIDENCE_LEVELS);
   const tier = oneOf<SourceTier>(params.get("tier"), SOURCE_TIERS);
 
-  // `time` is either a relative window ("90d") or a concrete year ("2025").
+  // `time` is a relative window ("90d"), a concrete year ("2025") or an
+  // exact month ("2026-10"). The timeline links here for dense months, where
+  // a year-wide filter would still show thousands of unrelated records.
   const rawTime = params.get("time");
   const window = oneOf<TimeWindow>(rawTime, TIME_WINDOWS);
   const year = rawTime && /^\d{4}$/.test(rawTime) ? rawTime : undefined;
+  const month = rawTime && /^\d{4}-\d{2}$/.test(rawTime) ? rawTime : undefined;
   const since = window ? windowStartDate(window) : undefined;
 
   const area = params.get("area");
@@ -93,7 +96,8 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
       (!benchmark || (e.benchmark ?? []).includes(benchmark)) &&
       (!datasetFacet || (e.dataset ?? []).includes(datasetFacet)) &&
       (!since || e.date >= since) &&
-      (!year || e.date.startsWith(year))
+      (!year || e.date.startsWith(year)) &&
+      (!month || e.date.startsWith(month))
   );
 
   // Options are data-derived: a level with no records would only ever yield an
@@ -141,7 +145,7 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
 
       <div className="mt-6">
         {compact ? (
-          <div className="divide-y divide-ink-100 overflow-hidden rounded-md border border-ink-200">
+          <div className="overflow-hidden rounded-md border border-ink-200">
             {pageEvents.map((event) => (
               <EventRow key={event.slug} event={event} />
             ))}
