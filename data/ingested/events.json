@@ -1490,6 +1490,37 @@
     "verificationStatus": "paper_released"
   },
   {
+    "id": "evt_https://www.crm.cat/?p=39145",
+    "title": "The CRM exhibition ‘Les matemàtiques de Gaudí’ moves to the University of Barcelona",
+    "slug": "the-crm-exhibition-les-matem-tiques-de-gaud-moves-to-the-university-of-barcelona",
+    "summary": "After its October run at the UAB, the exhibition Les matemàtiques de Gaudí, produced by the CRM, can be seen at the University of Barcelona's CRAI Biblioteca de Matemàtiques i Informàtica from 2 to 30 November 2026. The post The CRM exhibition ‘Les matemàtiques de Gaudí’ moves to the University of Barcelona first appeared on Centre de Recerca Matemàtica .",
+    "significance": "",
+    "date": "2026-11-03",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/the-crm-exhibition-les-matematiques-de-gaudi-moves-to-the-university-of-barcelona/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:38:26.046Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-03",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_http://terrytao.wordpress.com/?p=18635",
     "title": "Egoless Mathematics in the AI Era",
     "slug": "egoless-mathematics-in-the-ai-era",
@@ -2144,6 +2175,68 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "math4ai"
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=39119",
+    "title": "Advanced Course on Free Boundary Problems Opens the Intensive Weeks of the IRP",
+    "slug": "advanced-course-on-free-boundary-problems-opens-the-intensive-weeks-of-the-irp",
+    "summary": "From 26 to 30 October, around forty researchers attended the Advanced Course on Free Boundary Problems at the CRM, three seven-hour mini-courses given by Bozhidar Velichkov (Università di Pisa), Max Engelstein (University of Minnesota) and Zihui Zhao (Johns Hopkins University). The course was the first of the two intensive weeks of the Intensive Research Programme on Analysis of Free Boundary Problems, which runs until 4 December. The post Advanced Course on Free Boundary Problems Opens the Intensive Weeks of the IRP first appeared on Centre de Recerca Matemàtica .",
+    "significance": "",
+    "date": "2026-11-02",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/advanced-course-on-free-boundary-problems-opens-the-intensive-weeks-of-the-irp/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:38:26.046Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-02",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=38959",
+    "title": "El CRM rep els estudiants de la prova de nivell de Bojos per les Matemàtiques 2027",
+    "slug": "el-crm-rep-els-estudiants-de-la-prova-de-nivell-de-bojos-per-les-matem-tiques-2027",
+    "summary": "Els aspirants a Bojos per les Matemàtiques 2027 van visitar el Centre de Recerca Matemàtica (CRM) dissabte 24 d’octubre, després de fer la prova de nivell a la Facultat de Ciències i Biociències de la UAB. En acabat, Tomás Sanz (UB-CRM) els va explicar què té a veure l’escalfament d’una barra de ferro amb els àudios de WhatsApp. The post El CRM rep els estudiants de la prova de nivell de Bojos per les Matemàtiques 2027 first appeared on Centre de Recerca Matemàtica .",
+    "significance": "",
+    "date": "2026-11-02",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/el-crm-rep-els-estudiants-de-la-prova-de-nivell-de-bojos-per-les-matematiques-2027/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:38:26.046Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-02",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
   },
   {
     "id": "evt_arxiv-2611.02285",
@@ -4318,6 +4411,37 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "both"
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=38554",
+    "title": "Fish schools and growing tissues: a workshop on how collective behaviour emerges",
+    "slug": "fish-schools-and-growing-tissues-a-workshop-on-how-collective-behaviour-emerges",
+    "summary": "The Centre de Recerca Matemàtica (CRM) organised the Barcelona Workshop on Kinetic and Macroscopic Models in Biology with Friends II, held from 7 to 10 September at the Institut d'Estudis Catalans. More than thirty researchers discussed how order at the scale of tissues and animal groups arises from local interactions between individuals, in a programme that included talks by CRM researchers Daria Stepanova and Juan Arellano-Tintó. Two of the speakers, James Sharpe (EMBL Barcelona) and Chiara Villa (CNRS, Université Paris Cité), talked to the CRM about their research. The post Fish schools and growing tissues: a workshop on how collective behaviour emerges first appeared on Centre de Recerca Matemàtica .",
+    "significance": "",
+    "date": "2026-10-27",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/fish-schools-and-growing-tissues-a-workshop-on-how-collective-behaviour-emerges/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:38:26.046Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-27",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
   },
   {
     "id": "evt_arxiv-2610.36396",
@@ -7327,6 +7451,37 @@
     "direction": "math4ai"
   },
   {
+    "id": "evt_https://www.crm.cat/?p=38470",
+    "title": "The CRM opens the academic year and unveils its Directors’ Gallery",
+    "slug": "the-crm-opens-the-academic-year-and-unveils-its-directors-gallery",
+    "summary": "The CRM opens the academic year and unveils its Directors’ Gallery was reported by CRM — Centre de Recerca Matemàtica.",
+    "significance": "",
+    "date": "2026-10-19",
+    "eventType": "People",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/the-crm-opens-the-academic-year-and-unveils-its-directors-gallery/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:38:26.046Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-19",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_arxiv-2610.25357",
     "title": "Studying proof data with proof theory: the case of AI-generated mathematics",
     "slug": "studying-proof-data-with-proof-theory-the-case-of-ai-generated-mathematics",
@@ -7920,6 +8075,35 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "math4ai"
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3913",
+    "title": "How to Formalize All of Mathematics",
+    "slug": "how-to-formalize-all-of-mathematics",
+    "summary": "(This is a guest post, written by Jeremy Avigad, Kevin Buzzard, Johan Commelin, Rémy Degenne, Kim Morrison, Oliver Nash and Adam Topaz.) Mathematicians’ reactions to last week’s big OpenAI release range from excitement to frustration, but one thing is clear: … Continue reading →",
+    "significance": "",
+    "date": "2026-10-16",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/10/16/how-to-formalize-all-of-mathematics/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:38:29.500Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-16",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
   },
   {
     "id": "evt_arxiv-2610.22698",
@@ -11233,6 +11417,37 @@
       }
     ],
     "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_http://gilkalai.wordpress.com/?p=32744",
+    "title": "Updates: Sharing AI progress on mathematics (amazing!); and my lecture plans",
+    "slug": "updates-sharing-ai-progress-on-mathematics-amazing-and-my-lecture-plans",
+    "summary": "With Danny and Sharon Kleitman and Michel Goemans at the MIT Endicott house. Update: There are many reactions and emerging details on the new 700 or so papers released by Open AI. On Persiflage there is a very interesting post … Continue reading →",
+    "significance": "",
+    "date": "2026-10-07",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://gilkalai.wordpress.com/2026/10/07/updates-sharing-ai-progress-on-mathematics-amazing-and-my-lecture-plans/",
+    "authors": [
+      "Gil Kalai"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.579Z",
+    "createdAt": "2026-11-10T06:38:29.579Z",
+    "updatedAt": "2026-11-10T06:38:29.579Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-07",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
   },
   {
     "id": "evt_github-openai-math",
@@ -21571,6 +21786,35 @@
     "direction": "math4ai"
   },
   {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3886",
+    "title": "FLT: Anthropic has beaten me to it",
+    "slug": "flt-anthropic-has-beaten-me-to-it",
+    "summary": "I guess technically it was revealed to the world by a coffee shop in Islington on Insta, but an hour later it was officially announced by Anthropic: one of their internal models, using the prove2.me platform, has formalized a complete … Continue reading →",
+    "significance": "",
+    "date": "2026-09-04",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:38:29.500Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-09-04",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_arxiv-2609.04043",
     "title": "Extending concurrent separation logic to the hardware level to verify the xv6 OS kernel on RISC-V with AI agents",
     "slug": "extending-concurrent-separation-logic-to-the-hardware-level-to-verify-the-xv6-os-kernel-on-risc-v-with-ai-agents",
@@ -23053,6 +23297,35 @@
     }
   },
   {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3829",
+    "title": "Human mathematicians are being outcounterexampled",
+    "slug": "human-mathematicians-are-being-outcounterexampled",
+    "summary": "It’s been an interesting few weeks for counterexamples. This post is basically my perspective of what has been going on in the world of formalization, AI tools and, in particular, counterexamples. Unit distance Two months ago today (20th May 2026), … Continue reading →",
+    "significance": "",
+    "date": "2026-07-20",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/07/20/human-mathematicians-are-being-outcounterexampled/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:38:29.500Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-07-20",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_4188 at https://www.math.ubc.ca",
     "title": "Twelve UBC Mathematics Faculty Members Awarded NSERC Discovery Grants",
     "slug": "twelve-ubc-mathematics-faculty-members-awarded-nserc-discovery-grants",
@@ -23860,6 +24133,35 @@
         "Maryam Mirzakhani New Frontiers Prize"
       ]
     }
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3810",
+    "title": "Formalizing Fermat workshop",
+    "slug": "formalizing-fermat-workshop",
+    "summary": "I’m organizing a workshop in London on July 6th to 10th (2026) whose goal is to work on my EPSRC-funded project formalizing Fermat’s Last theorem in Lean. The initial aim of the project was to reduce FLT to theorems known … Continue reading →",
+    "significance": "",
+    "date": "2026-05-15",
+    "eventType": "Institutions",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/05/15/formalizing-fermat-workshop/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:38:29.500Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-05-15",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
   },
   {
     "id": "evt_https://news.mit.edu/2026/knight-hennessy-scholars-0514",
@@ -25758,6 +26060,35 @@
     "direction": "ai4math"
   },
   {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3745",
+    "title": "Formalization of Erdős problems",
+    "slug": "formalization-of-erd-s-problems",
+    "summary": "[This is a guest post by Boris Alexeev. Now over to Boris.] I’m here to tell you about various exciting developments centering on Erdős problems, especially involving the formalization of old and new mathematics using artificial intelligence. Background As is … Continue reading →",
+    "significance": "",
+    "date": "2025-12-05",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2025/12/05/formalization-of-erdos-problems/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:38:29.500Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2025-12-05",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_https://www.ipam.ucla.edu/?p=13759",
     "title": "Wilfrid Gangbo receives 2026 AMS Award",
     "slug": "wilfrid-gangbo-receives-2026-ams-award",
@@ -25984,6 +26315,35 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "ai4math"
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3711",
+    "title": "Formal or not formal? That is the question in AI for theorem proving.",
+    "slug": "formal-or-not-formal-that-is-the-question-in-ai-for-theorem-proving",
+    "summary": "So it’s an interesting time for computers-doing-mathematics. A couple of interesting things happened in the last few days, which have inspired me to write about the question more broadly. First there is the question on whether computers will ever prove … Continue reading →",
+    "significance": "",
+    "date": "2025-10-22",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2025/10/22/formal-or-not-formal-that-is-the-question-in-ai-for-theorem-proving/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:38:29.500Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2025-10-22",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
   },
   {
     "id": "evt_arxiv-2510.08988",
@@ -26302,6 +26662,35 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "ai4math"
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3653",
+    "title": "AI at IMO 2025: a round-up",
+    "slug": "ai-at-imo-2025-a-round-up",
+    "summary": "Setting the scene The 2025 International Mathematics Olympiad has come and gone. Reminder: this is an exam for high-school kids across the world (each country typically sends six kids), comprising of two 4.5-hour exams each containing three questions, so six … Continue reading →",
+    "significance": "",
+    "date": "2025-08-03",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2025/08/03/ai-at-imo-2025-a-round-up/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:38:29.500Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2025-08-03",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
   },
   {
     "id": "evt_arxiv-2507.18885",
