@@ -2,15 +2,15 @@
   "arxiv": {
     "label": "arXiv (cs.LO / math.LO / cs.AI)",
     "status": "success",
-    "lastAttemptAt": "2026-11-04T06:01:52.860Z",
-    "lastSuccessAt": "2026-11-04T06:24:52.363Z",
-    "accepted": 126,
-    "added": 126,
+    "lastAttemptAt": "2026-11-10T03:22:27.247Z",
+    "lastSuccessAt": "2026-11-10T03:22:27.247Z",
+    "accepted": 18,
+    "added": 18,
     "updated": 0,
-    "rejected": 1337,
+    "rejected": 0,
     "id": "arxiv",
-    "cursor": "2026-11-03",
-    "total": 523
+    "cursor": "2026-11-07",
+    "total": 544
   },
   "github": {
     "label": "GitHub (watched repositories)",
@@ -64,14 +64,15 @@
   "microsoft-research": {
     "label": "Microsoft Research",
     "status": "success",
-    "lastAttemptAt": "2026-11-04T04:25:27.248Z",
-    "lastSuccessAt": "2026-11-04T04:25:31.451Z",
-    "accepted": 0,
-    "added": 0,
+    "lastAttemptAt": "2026-11-10T03:22:27.247Z",
+    "lastSuccessAt": "2026-11-10T03:22:27.247Z",
+    "accepted": 1,
+    "added": 1,
     "updated": 0,
-    "rejected": 4,
-    "cursor": "2026-11-03",
-    "id": "microsoft-research"
+    "rejected": 0,
+    "cursor": "2026-11-05",
+    "id": "microsoft-research",
+    "total": 544
   },
   "nvidia-ai-blog": {
     "label": "NVIDIA AI Blog",
@@ -158,15 +159,15 @@
   "scott-aaronson-blog": {
     "label": "Scott Aaronson's blog",
     "status": "success",
-    "lastAttemptAt": "2026-11-04T04:26:11.544Z",
-    "lastSuccessAt": "2026-11-04T04:26:36.463Z",
+    "lastAttemptAt": "2026-11-10T03:22:27.247Z",
+    "lastSuccessAt": "2026-11-10T03:22:27.247Z",
     "accepted": 1,
     "added": 1,
     "updated": 0,
     "rejected": 0,
     "id": "scott-aaronson-blog",
-    "cursor": "2026-10-31",
-    "total": 272
+    "cursor": "2026-11-08",
+    "total": 544
   },
   "quanta-mathematics": {
     "label": "Quanta Magazine — Mathematics",
@@ -363,14 +364,15 @@
   "ucla-math-news": {
     "label": "UCLA Mathematics",
     "status": "success",
-    "lastAttemptAt": "2026-11-04T04:24:49.677Z",
-    "lastSuccessAt": "2026-11-04T04:24:51.658Z",
-    "accepted": 0,
-    "added": 0,
+    "lastAttemptAt": "2026-11-10T03:22:27.247Z",
+    "lastSuccessAt": "2026-11-10T03:22:27.247Z",
+    "accepted": 1,
+    "added": 1,
     "updated": 0,
     "rejected": 0,
-    "cursor": "2026-10-23",
-    "id": "ucla-math-news"
+    "cursor": "2026-11-04",
+    "id": "ucla-math-news",
+    "total": 544
   },
   "wisc-math-news": {
     "label": "University of Wisconsin Mathematics",

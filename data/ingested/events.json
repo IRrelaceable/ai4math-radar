@@ -1,5 +1,1136 @@
 [
   {
+    "id": "evt_https://scottaaronson.blog/?p=10295",
+    "title": "Aaronson-Ambainis Conjecture proved! (By AI, of course)",
+    "slug": "aaronson-ambainis-conjecture-proved-by-ai-of-course",
+    "summary": "Scott Aaronson reports that the startup Physical Superintelligence has announced a proof of the Aaronson–Ambainis conjecture, which he and Andris Ambainis posed in 2009: every degree-d polynomial p from {0,1}^n to [0,1] in n Boolean variables, with constant variance, has some variable whose influence is at least 1/poly(d). The proof, obtained with a proprietary research harness on an internal Claude model and led by David Turturean and Jim Halverson, shows a variable of influence at least about 1/d^6. Aaronson says he believes it because there is a Lean certificate and human experts have already gone over it, and notes that it rules out one class of quantum speedup — yes-or-no problems relative to random oracles — not quantum supremacy in general.",
+    "significance": "The conjecture implies there is no superpolynomial quantum query advantage over classical query complexity for decision problems on most Boolean inputs, which would answer a 1998 question of Fortnow and Rogers; its proof is another longstanding open problem settled by an AI system.",
+    "date": "2026-11-08",
+    "eventType": "Research",
+    "researchArea": "Mathematical Discovery & Symbolic Computation",
+    "subArea": "AI-proved results & conjectures",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://scottaaronson.blog/?p=10295",
+    "authors": [
+      "Scott"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "people": [
+        "Scott Aaronson",
+        "Andris Ambainis",
+        "David Turturean",
+        "Jim Halverson",
+        "Guy Blanc"
+      ],
+      "institutions": [
+        "Physical Superintelligence",
+        "MIT",
+        "Stanford"
+      ],
+      "systems": [
+        "Lean",
+        "Claude"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "Physical Superintelligence's proprietary research harness, run on an internal Claude model, produced a proof of the Aaronson–Ambainis conjecture showing a variable of influence at least about 1/d^6, backed by a Lean certificate."
+    },
+    "humanContribution": "David Turturean and Jim Halverson led the effort at Physical Superintelligence, human experts reviewed the proof, and Guy Blanc and colleagues wrote an exposition.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "Aaronson-Ambainis 猜想获证！（当然，是 AI 证的）",
+        "summary": "Scott Aaronson 报告称，初创公司 Physical Superintelligence 宣布证明了 Aaronson–Ambainis 猜想。该猜想由他与 Andris Ambainis 于 2009 年提出：任意定义在 n 个布尔变量上的次数为 d 的多项式 p:{0,1}^n→[0,1]，若方差为常数，则必有某个变量的影响至少为 1/poly(d)。这一证明由 David Turturean 与 Jim Halverson 主导，在一套专有研究框架上借助内部 Claude 模型得到，给出影响至少约为 1/d^6 的变量。Aaronson 表示，他相信证明成立，因为有 Lean 证书，且人类专家已经审阅过；并指出该结果排除的是一类量子加速——相对于随机 oracle 的是非判定问题——而非一般意义上的量子优越性。",
+        "significance": "该猜想蕴含：对大多数布尔输入上的判定问题，量子查询复杂度相对经典查询复杂度不存在超多项式优势，这将回答 Fortnow 与 Rogers 于 1998 年提出的问题；其证明也成为一个被 AI 系统解决的长年未决问题。",
+        "aiRoleDescription": "Physical Superintelligence 的专有研究框架在内部 Claude 模型上运行，产出了 Aaronson–Ambainis 猜想的证明，给出影响至少约为 1/d^6 的变量，并有 Lean 证书作为支撑。",
+        "humanContribution": "David Turturean 与 Jim Halverson 在 Physical Superintelligence 主导了这项工作，人类专家审阅了证明，Guy Blanc 等人撰写了阐释文章。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E3",
+    "researchEventType": "Discovery",
+    "verificationHistory": [
+      {
+        "date": "2026-11-08",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
+    "id": "evt_arxiv-2611.10800",
+    "title": "Enhancing Mathematical Reasoning in Turkish Large Language Models with Search-Based Inference and Model Merging",
+    "slug": "enhancing-mathematical-reasoning-in-turkish-large-language-models-with-search-based-inference-and-model-merging",
+    "summary": "Turkish-Llama 8B-DPO is fine-tuned with LoRA on Turkish translations of MetaMath, NuminaMath and TigerLab, then combined with weight-space model merging and search-based inference. Data quality beats scale: Mix-30k is the best fine-tuned variant while large MetaMath underperforms; linear merging delivers the largest gains (GSM8K up to 0.63), Ties is modest and Breadcrumbs/Slerp degrade results. MCTS and Tree of Thoughts search improve mean LLM-judge scores for reasoning quality on a 0-100 scale. The stated limitations are machine translation, limited scale and search stochasticity.",
+    "significance": "For a lower-resource language, a small well-curated translated corpus plus checkpoint merging can outperform more training data, and adding search at inference time improves reasoning quality beyond fine-tuning.",
+    "date": "2026-11-07",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Math-specialized models",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.10800",
+    "paperUrl": "https://arxiv.org/abs/2611.10800",
+    "authors": [
+      "Ahmed Zeer",
+      "Osama Shbib",
+      "Muzaffer Kaan Yuce",
+      "Himmet Toprak Kesgin",
+      "Mehmet Fatih Amasyali"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "Turkish-Llama 8B-DPO",
+        "Mix-30k"
+      ],
+      "systems": [
+        "MetaMath",
+        "NuminaMath",
+        "TigerLab",
+        "GSM8K",
+        "MCTS",
+        "Tree of Thoughts"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "The authors fine-tune Turkish-Llama 8B-DPO with LoRA, merge checkpoints and add MCTS and Tree of Thoughts search, reporting GSM8K scores up to 0.63 and higher mean LLM-judge reasoning-quality scores."
+    },
+    "humanContribution": "Humans selected and translated the training corpora, ran the LoRA fine-tuning and merging experiments, and evaluated the models with GSM8K and an LLM judge.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "利用搜索式推理与模型合并提升土耳其语大模型的数学推理能力",
+        "summary": "研究以土耳其语 MetaMath、NuminaMath 与 TigerLab 的译本对 Turkish-Llama 8B-DPO 做 LoRA 微调，再结合权重空间的模型合并与基于搜索的推理。数据质量胜过规模：Mix-30k 是微调变体中最优者，而大规模 MetaMath 反而表现更差；线性合并带来最大提升（GSM8K 最高 0.63），Ties 提升有限，Breadcrumbs 与 Slerp 则使结果变差。MCTS 与思维树（Tree of Thoughts）搜索提升了 0-100 分制下 LLM 裁判给出的推理质量均分。作者列出的局限包括机器翻译、规模有限与搜索的随机性。",
+        "significance": "对低资源语言而言，经过精心筛选的小规模译料配合检查点合并，可能优于更多训练数据；在推理阶段加入搜索，则能在微调之外进一步提升推理质量。",
+        "aiRoleDescription": "作者对 Turkish-Llama 8B-DPO 做 LoRA 微调、合并检查点并加入 MCTS 与思维树搜索，报告 GSM8K 最高 0.63 的成绩与更高的 LLM 裁判推理质量均分。",
+        "humanContribution": "人类筛选并翻译了训练语料，完成了 LoRA 微调与合并实验，并用 GSM8K 与 LLM 裁判评估模型。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "math4ai",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-07",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.09822",
+    "title": "Discovering formally verified quantum programs with AI",
+    "slug": "discovering-formally-verified-quantum-programs-with-ai",
+    "summary": "The authors build a quantum program library in Lean in which LLM agents synthesize novel programs against formal problem specifications and verify their correctness and cost, with agent teams collaborating through shared wikis and organized conferences. The automated discovery loop improves on prior baselines for parallel search by up to 1.4x, for quantum arithmetic by 290x, and for simulations relevant to fusion, photochemistry and drug metabolism by 11x, 8x and 2.5x.",
+    "significance": "Because quantum algorithms can only be evaluated classically on restricted or small instances, a Lean library with machine-checked correctness and cost lets agents search program space beyond what today's computers can test.",
+    "date": "2026-11-06",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Engineering & tool agents",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.09822",
+    "paperUrl": "https://arxiv.org/abs/2611.09822",
+    "authors": [
+      "Sergey Shirobokov",
+      "Ben Jaderberg",
+      "Katerina Hristova",
+      "George Tsoukalas",
+      "Johannes Bausch",
+      "Eric Wieser",
+      "Francisco J. H. Heras",
+      "Nicholas C. Rubin",
+      "Guang Hao Low",
+      "Sébastien Racanière",
+      "Nenad Tomašev",
+      "Lei M. Zhang"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "quantum program library"
+      ],
+      "systems": [
+        "Lean"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "LLM agent teams synthesized and verified novel quantum programs inside a Lean library, improving baselines by up to 290x on quantum arithmetic and by 11x, 8x and 2.5x on fusion, photochemistry and drug-metabolism simulations."
+    },
+    "humanContribution": "Humans built the Lean quantum program library and its formal problem specifications, organized the agent teams with their wikis and conferences, and reviewed the resulting programs.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "用 AI 发现经形式化验证的量子程序",
+        "summary": "作者在 Lean 中搭建了一个量子程序库，让大模型智能体依据形式化问题规格合成新程序，并验证其正确性与代价；智能体团队通过共享 wiki 和组织会议协作。该自动化发现循环在并行搜索上比既有基线最高提升 1.4 倍，在量子算术上提升 290 倍，在面向聚变、光化学与药物代谢的模拟上分别提升 11 倍、8 倍与 2.5 倍。",
+        "significance": "量子算法只能在受限或小规模实例上用经典计算机评估；有了经机器检验正确性与代价的 Lean 库，智能体便能搜索今天计算机无法测试的程序空间。",
+        "aiRoleDescription": "大模型智能体团队在 Lean 库中合成并验证了新的量子程序，在量子算术上把基线提升最多 290 倍，在聚变、光化学与药物代谢模拟上分别提升 11 倍、8 倍与 2.5 倍。",
+        "humanContribution": "人类搭建了 Lean 量子程序库及其形式化问题规格，组织了智能体团队、共享 wiki 与会议，并审阅了所得程序。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-06",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.09798",
+    "title": "Test-Time Compute Scales Better with Parallel Agent Teams",
+    "slug": "test-time-compute-scales-better-with-parallel-agent-teams",
+    "summary": "The paper compares ways to spend test-time compute when a verifier can score every attempt. Best-of-N sampling saturates quickly, and one large collaborating team scores higher but stops improving as it grows; parallel agent teams sample many small teams in parallel and keep the best team's result. With a 27B model and a budget of 100 agents, teams of ten beat parallel agents on 10 of 12 long-horizon tasks spanning GPU kernels, formal proofs and exploit development, beat one team of 100 on all four tasks where such a team was run, and at equal dollar cost beat a frontier model on half the tasks.",
+    "significance": "A simple statistical model explains both failures — independent agents have a low sample mean, while a single large team gains no variance — so sampling many small teams balances the two and offers a better test-time scaling axis.",
+    "date": "2026-11-06",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Engineering & tool agents",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.09798",
+    "paperUrl": "https://arxiv.org/abs/2611.09798",
+    "authors": [
+      "Junlin Wang",
+      "Haozhe Chen",
+      "Ang Li",
+      "Rahul Chalamala",
+      "Zhuang Liu"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "parallel agent teams"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "Parallel agent teams of ten, run with a 27B model and a 100-agent budget, beat parallel independent agents on 10 of 12 long-horizon tasks including formal proofs, and at equal cost beat a frontier model on half the tasks."
+    },
+    "humanContribution": "Humans designed the parallel-team method and the statistical model of team size, and built the evaluation across GPU kernels, formal proofs and exploit-development tasks.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "并行智能体团队能让测试时计算扩展得更好",
+        "summary": "论文比较在验证器能给每次尝试打分时如何花费测试时计算。Best-of-N 采样很快饱和；单个大型协作团队得分更高，但规模变大后不再提升；并行智能体团队则并行采样许多小型团队并保留最佳团队的结果。在 270 亿参数模型、100 个智能体的预算下，十人小队在 12 项长周期任务（涵盖 GPU 内核、形式证明与漏洞利用开发）中于 10 项上胜过并行独立智能体，在运行过百人大团的全部 4 项任务上胜出，并在等额美元成本下于半数任务上超过前沿模型。",
+        "significance": "一个简单的统计模型同时解释了两种失败：独立智能体样本均值偏低，单个大团队则无法获得方差收益；并行采样多个小团队在两者之间取得平衡，提供了更好的测试时扩展维度。",
+        "aiRoleDescription": "在 270 亿参数模型与 100 个智能体的预算下，十人并行小队在 12 项长周期任务（含形式证明）中的 10 项胜过并行独立智能体，并在等额成本下于半数任务上超过前沿模型。",
+        "humanContribution": "人类设计了并行团队方法及其团队规模的统计模型，并构建了涵盖 GPU 内核、形式证明与漏洞利用开发的评测。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "math4ai",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-06",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.09736",
+    "title": "Safety Is $Π_1$, Provability Is $Σ_1$: One Framework for the Hugging Face Breach and OpenAI's Mathematical Proofs",
+    "slug": "safety-is-1-provability-is-1-one-framework-for-the-hugging-face-breach-and-openai-s-mathematical-proofs",
+    "summary": "The authors read two 2026 events — an agent-driven breach of Hugging Face and OpenAI's release of more than seven hundred AI-generated proof manuscripts — through a framework in which coding, proving and learning are one deductive mechanism distinguished by the premises they start from. Safety is a Π₁ statement, since it says no exploit exists and no finite list of passed tests can establish that, while provability is Σ₁, since one checked proof witnesses it. Using Turing's undecidability theorem they prove that attaching a statistical proposer to a deductive verifier does not change the undecidability result, however good the proposer is, and they discuss what does assure safety and where the residual risk goes.",
+    "significance": "The logical form of the statement, not the quality of the proposer, decides what verification can certify: a single checked derivation settles a proof claim, while an absence claim has no finite witness.",
+    "date": "2026-11-06",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.09736",
+    "paperUrl": "https://arxiv.org/abs/2611.09736",
+    "authors": [
+      "Jinho Kang",
+      "Jinsook Kim"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "institutions": [
+        "Hugging Face",
+        "OpenAI"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "安全性是 Π₁，可证性是 Σ₁：用一个框架同时解读 Hugging Face 入侵与 OpenAI 的数学证明",
+        "summary": "作者用一个统一框架解读 2026 年的两件事——智能体入侵 Hugging Face，以及 OpenAI 发布七百多篇 AI 生成的证明手稿——该框架认为编码、证明与从数据中学习是同一种演绎机制，区别只在于所依据的前提。安全性是 Π₁ 陈述，因为它断言不存在漏洞利用，而任何有限的通过测试清单都无法确立这一点；可证性则是 Σ₁ 陈述，因为一份经检验的证明即可构成见证。借助图灵不可判定性定理，作者证明：把统计式提议者接到演绎验证器上，无论提议者多好，都不会改变不可判定性结论，并讨论了究竟什么才能保证安全、剩余风险落在何处。",
+        "significance": "决定验证能担保什么的是陈述的逻辑形式，而不是提议者的水平：一份经检验的推导即可裁定可证性主张，而「不存在」类主张没有有限见证。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "math4ai",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-06",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.09412",
+    "title": "MIRA: Mitigating Pole Geometry Bias in Recurrent Language Models",
+    "slug": "mira-mitigating-pole-geometry-bias-in-recurrent-language-models",
+    "summary": "The paper shows that Transformer's recurrent successors — selective state-space models, RWKV and RetNet — can be characterized as infinite-impulse-response systems whose zero–pole geometry fixes the temporal modes they can represent, and that the algebraic structures adopted for parallelism often constrain poles to the real axis. Inspired by the lattice–ladder realization of general IIR systems, MIRA realizes a higher-order IIR block that can represent modes from both real and complex-conjugate poles. MirA-S, a 12-layer 0.14B-parameter model built entirely from MIRA blocks, pretrains to lower perplexity than strong recurrent baselines, generalizes beyond the training context length, and reaches higher throughput with a dedicated CUDA kernel.",
+    "significance": "Treating recurrent architectures as IIR systems turns an architectural limitation into a pole-placement question, giving one mathematical language for comparing state-space, RWKV and RetNet-style models.",
+    "date": "2026-11-06",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Math-specialized models",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.09412",
+    "paperUrl": "https://arxiv.org/abs/2611.09412",
+    "authors": [
+      "Róisín Luo",
+      "Ihsan Ullah",
+      "Christian Gagné",
+      "Dong Li",
+      "Karyn Morrissey"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "MIRA",
+        "MirA-S"
+      ],
+      "systems": [
+        "selective state-space models",
+        "RWKV",
+        "RetNet"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "MirA-S, a 12-layer 0.14B-parameter model built entirely from MIRA blocks, pretrained to lower perplexity than strong recurrent baselines, generalized beyond its training context length and ran at higher throughput with a dedicated CUDA kernel."
+    },
+    "humanContribution": "Humans derived the IIR characterization, designed the lattice–ladder MIRA block, pretrained MirA-S and wrote the CUDA kernel.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "MIRA：缓解循环语言模型中的极点几何偏差",
+        "summary": "论文指出，Transformer 的循环后继架构——选择性状态空间模型、RWKV 与 RetNet——都可刻画为无限脉冲响应（IIR）系统，其零极点几何决定了可表示的时间模态；而为换取并行性所采用的参数化代数结构，往往把极点限制在实轴上。受一般 IIR 系统格型—梯形实现的启发，MIRA 用格型—梯形结构实现高阶 IIR 块，从而同时表示实极点与共轭复极点对应的模态。完全由 MIRA 块构成的 12 层、1.4 亿参数模型 MirA-S 在预训练中困惑度低于强循环基线，在超出训练长度的上下文上泛化更好，并借助专用 CUDA 内核获得更高吞吐。",
+        "significance": "把循环架构视为 IIR 系统，可将架构上的限制转化为极点配置问题，为比较状态空间、RWKV 与 RetNet 类模型提供统一的数学语言。",
+        "aiRoleDescription": "完全由 MIRA 块构成的 12 层、1.4 亿参数模型 MirA-S 预训练后困惑度低于强循环基线，在超出训练长度的上下文上泛化更好，并借助专用 CUDA 内核获得更高吞吐。",
+        "humanContribution": "人类推导了 IIR 刻画，设计了格型—梯形 MIRA 块，预训练了 MirA-S 并编写了 CUDA 内核。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "math4ai",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-06",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.09048",
+    "title": "LeanDojo-v2: A Comprehensive Library for AI-Assisted Theorem Proving in Lean",
+    "slug": "leandojo-v2-a-comprehensive-library-for-ai-assisted-theorem-proving-in-lean",
+    "summary": "LeanDojo-v2 unifies repository data extraction, LLM fine-tuning, proof search, AI autocompletion and LLM-assisted theorem proving in one open library for Lean. The release also includes Lean4Code, a lightweight IDE that exposes these features through a mathematician-friendly interface, so researchers can fine-tune a model on a domain-specific Lean codebase and experiment with LLM-assisted proving without assembling the setup themselves.",
+    "significance": "The library packages tooling that recent Lean proving work builds by hand, lowering the cost of domain-specific fine-tuning and proof-search experiments.",
+    "date": "2026-11-06",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.09048",
+    "paperUrl": "https://arxiv.org/abs/2611.09048",
+    "authors": [
+      "Ryan Hsiang",
+      "William Adkisson",
+      "Robert Joseph George",
+      "Anima Anandkumar"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "LeanDojo-v2",
+        "Lean4Code"
+      ],
+      "systems": [
+        "Lean"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "LeanDojo-v2：面向 Lean 中 AI 辅助定理证明的综合库",
+        "summary": "LeanDojo-v2 把仓库数据抽取、LLM 微调、证明搜索、AI 自动补全与 LLM 辅助定理证明整合进一个面向 Lean 的开源库。该版本还提供 Lean4Code：一个轻量 IDE，以对数学家友好的界面呈现上述功能。研究者因此可以在特定领域的 Lean 代码库上微调模型、试验 LLM 辅助证明，而无需自行搭建整套流程。",
+        "significance": "该库把近期 Lean 证明研究需要手工搭建的工具链打包成品，降低了领域微调与证明搜索实验的门槛。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-06",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.10051",
+    "title": "All roads lead to Markov kernel networks: A representation theorem for discretization-stable learning",
+    "slug": "all-roads-lead-to-markov-kernel-networks-a-representation-theorem-for-discretization-stable-learning",
+    "summary": "The paper formalizes uniform discretization stability, a quantitative refinement of discretization invariance: a Hölder bound relates changes in an operator's output to the Wasserstein distance between the probability-measure representations of input functions and their discretizations. Its representation theorem shows that every uniformly discretization-stable operator can be written exactly as a stable Markov kernel network — a joint generalization of transformers, Fourier neural operators, Flowers and other learned operators — and that the read kernels can be realized as solutions of regularized variational problems recovering those architectures as special cases. Designing a new architecture then becomes a question of which parts of a Markov kernel network to parameterize.",
+    "significance": "One representation theorem covers several successful learned operators and turns discretization stability into a design constraint expressed as a variational problem instead of a property checked after training.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Math-specialized models",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.10051",
+    "paperUrl": "https://arxiv.org/abs/2611.10051",
+    "authors": [
+      "S David Mis",
+      "Trevor Teolis",
+      "Ivan Dokmanić",
+      "Matti Lassas",
+      "Maarten V. de Hoop"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "systems": [
+        "transformers",
+        "Fourier neural operators",
+        "Flowers",
+        "Markov kernel network"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "殊途同归：面向离散化稳定学习的马尔可夫核网络表示定理",
+        "summary": "论文形式化了「一致离散化稳定性」，这是离散化不变性的定量加强版：它以 Hölder 界把算子输出的变化与输入函数及其离散化作为概率测度表示之间的 Wasserstein 距离联系起来。其表示定理表明，任何一致离散化稳定的算子都可精确写成一个稳定马尔可夫核网络——它同时推广了 Transformer、傅里叶神经算子（FNO）、Flowers 等成功的可学习算子；论文还证明这些网络的读取核可作为正则化变分问题的解来实现，特定代价与正则项即可还原上述各类架构。由此，设计新架构就变成选择对马尔可夫核网络的哪些部分做参数化。",
+        "significance": "一条表示定理覆盖了多种成功的可学习算子，并把离散化稳定性从训练后检验的性质，变成以变分问题表述的设计约束。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "math4ai",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.08753",
+    "title": "Random Symbolic Boosting: A Geometric Approach to Symbolic Regression",
+    "slug": "random-symbolic-boosting-a-geometric-approach-to-symbolic-regression",
+    "summary": "Random Symbolic Boosting builds explicit additive symbolic models by boosting over populations of randomly generated syntax trees, treating tree semantics as vectors so no generational evolution is needed. For ordinary least squares the boosting process guarantees a monotone reduction of training error in both regression and classification, and an adaptive geometric early-stopping rule based on the angle between prediction and target vectors needs no per-task tuning. On a standard symbolic-regression benchmark the method sits at the Pareto-optimal point between accuracy and training time and ranks first on the real-world datasets, and it is competitive on a 200-problem tabular classification benchmark.",
+    "significance": "Replacing generational evolution with boosting over random trees keeps symbolic models interpretable while removing most of the evolutionary search cost, which shows up as a better accuracy–time trade-off.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Mathematical Discovery & Symbolic Computation",
+    "subArea": "Equation solving & discovery",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.08753",
+    "paperUrl": "https://arxiv.org/abs/2611.08753",
+    "authors": [
+      "José R. Ortegaa",
+      "José Manuel Muñoz Contreras",
+      "Leonardo Trujillo"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "Random Symbolic Boosting"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "随机符号提升：符号回归的几何方法",
+        "summary": "随机符号提升（RSB）通过对随机生成的语法树种群做提升（boosting）来构造显式的加性符号模型，并把语法树语义直接当作向量处理，从而无需代际演化。对普通最小二乘，该提升过程在回归与分类中都保证训练误差单调下降；一种基于预测向量与目标向量夹角的几何早停机制与问题尺度无关，也无需在不同任务间调参。在标准符号回归基准上，该方法处于预测精度与训练时间的 Pareto 最优点，并在真实数据集上排名第一；在包含 200 个问题的表格分类基准上也具有竞争力。",
+        "significance": "以随机树上的提升替代代际演化，在保留符号模型可解释性的同时去掉了大部分演化搜索开销，体现为更优的精度—时间权衡。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E2",
+    "researchEventType": "Discovery",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.08412",
+    "title": "The Gold Rush in AI4Math, II: What are signatures of AI-assisted Proofs?",
+    "slug": "the-gold-rush-in-ai4math-ii-what-are-signatures-of-ai-assisted-proofs",
+    "summary": "The authors build five cohorts of 8,281 papers — historical arXiv papers, recent papers that disclose substantive AI use, manuscripts released by OpenAI, and AI-generated and AI-reworded papers matched to the same research problems — and introduce ProofTrace, which represents each paper as a graph of immediate proof support (GIPS) and extracts interpretable features of mathematical organization. Principal-component projections show a gradient of AI involvement: reworded papers stay close to human papers, the two AI-generated cohorts depart in broadly shared directions, and disclosing papers sit in between and shift toward the generated cohorts over time. Recurring signatures of AI-generated proofs include fewer externally cited results, greater reliance on intermediate conclusions and altered graph connectivity, many of which persist under controls for field, length or graph size. ProofTrace distinguishes human-written from disclosing papers stably under AI rewording, where text-based detectors degrade sharply.",
+    "significance": "If AI involvement leaves structural traces in how a proof is organized, provenance checks can use the proof graph rather than stylometry, which rewording defeats.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Mathematical Discovery & Symbolic Computation",
+    "subArea": "Verification & corpus scrutiny",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.08412",
+    "paperUrl": "https://arxiv.org/abs/2611.08412",
+    "authors": [
+      "Yuanchuan Guo",
+      "Jiashun Jin",
+      "Zheng Tracy Ke",
+      "Bingcheng Sui"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "ProofTrace"
+      ],
+      "systems": [
+        "GIPS"
+      ],
+      "institutions": [
+        "OpenAI"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "AI4Math 淘金热 II：AI 辅助证明有哪些特征？",
+        "summary": "作者构建了五个共 8,281 篇论文的队列——历史 arXiv 论文、近期披露实质性使用 AI 的论文、OpenAI 发布的手稿，以及针对同一研究问题匹配生成的 AI 论文与 AI 改写论文——并提出 ProofTrace：把每篇论文表示为「直接证明支撑图」（GIPS），提取可解释的数学组织特征。主成分投影显示出 AI 参与的梯度：AI 改写论文与人类论文接近，两个 AI 生成队列朝大致相同的方向偏离，披露使用 AI 的论文处于中间并随时间向生成队列移动。AI 生成证明反复出现的特征包括引用外部结果更少、更依赖中间结论以及图连通性改变；在控制领域、篇幅或图规模后，许多特征依然存在。在 AI 改写条件下，ProofTrace 仍能区分人类论文与披露使用 AI 的论文，而当前基于文本的检测器性能急剧下降。",
+        "significance": "如果 AI 参与会在证明的组织方式上留下结构性痕迹，来源核查就可以依赖证明图而非文体计量，因为改写会让后者失效。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E2",
+    "researchEventType": "Discovery",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.08277",
+    "title": "LeanContext: Disentangling Mathematical Resources from Local Formal Context in Lean Whole-Proof Generation",
+    "slug": "leancontext-disentangling-mathematical-resources-from-local-formal-context-in-lean-whole-proof-generation",
+    "summary": "LeanContext is a benchmark of 129,826 Lean whole-proof-generation problems that separates selected complete preceding mathematical declarations (Mathematical Context) from the remaining selected local source commands (Environment Context), with four aligned input views for crossed training and inference evaluation under the original Lean verification environments. Selected declarations outperform comparable alternatives by a larger margin when training includes Mathematical Context, for both diffusion- and autoregressive-based models, and auditing final inputs for omitted declarations improves Pass@32 by 1.40% for LLaDA and 1.70% for Llama on 2,000 targets.",
+    "significance": "The split between mathematical resources and local formal context makes the value of retrieved declarations measurable, and the audit shows that silently dropped dependencies account for part of the gap.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Benchmarks & Datasets",
+    "subArea": "Formal proving benchmarks",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.08277",
+    "paperUrl": "https://arxiv.org/abs/2611.08277",
+    "githubUrl": "https://github.com/haaaardcvZ/LeanContext",
+    "authors": [
+      "Hang Zhang",
+      "Qihao Ye",
+      "Litong Liu",
+      "Yunbei Zhang",
+      "Yugyung Lee",
+      "Yue Zhou",
+      "Bowen Liu",
+      "Emily First",
+      "Cheng Han",
+      "Qiao Zhuang"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "LeanContext"
+      ],
+      "systems": [
+        "Lean",
+        "LLaDA",
+        "Llama"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "LeanContext：在 Lean 整体证明生成中分离数学资源与局部形式上下文",
+        "summary": "LeanContext 是一个包含 129,826 个 Lean 整体证明生成问题的基准，把选定的完整前置数学声明归为「数学上下文」（MC），把其余选定的本地源命令归为「环境上下文」（EC），并提供四种对齐的输入视图，用于在原始 Lean 验证环境下做交叉训练与推理评估。对扩散模型与自回归模型，当训练包含 MC 时，选定声明的优势比可比替代更大；对最终输入做审计以找出被遗漏的声明后，LLaDA 与 Llama 在 2,000 个目标上的 Pass@32 分别提升 1.40% 与 1.70%。",
+        "significance": "把数学资源与局部形式上下文分开，使检索到的声明价值可以被度量；审计还表明，被静默丢弃的依赖解释了一部分差距。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E1",
+    "researchEventType": "Benchmark",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E1",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      },
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E1",
+        "status": "paper_released",
+        "note": "Inspectable artifact (code, proofs or data) is publicly available."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.08237",
+    "title": "Terminal-style Mathematical Modeling Bench: The First Agentic and Verifiable Benchmark for Mathematical Modeling",
+    "slug": "terminal-style-mathematical-modeling-bench-the-first-agentic-and-verifiable-benchmark-for-mathematical-modeling",
+    "summary": "TB-MathModel covers 18 real CUMCM and MCM modeling problems from 2023–2025, each shipping its verbatim statement, official attachments and figures in a containerized terminal; the agent returns one JSON artifact scored on the numeric core of the final question. Two design choices define it: direction-aware, one-sided scoring that never penalises beating the anchor, and two-layer feasibility verification — a programmatic gate over six decidable invariant forms plus 624 Lean 4 obligations — that zeroes infeasible answers, with every task scored against a panel of human outstanding papers rather than one. Across seven multimodal entries with three seeds each, the strongest reach a multi-reference O-Eval of 64.58%, while a $2.54 open model holds 59.81% at 1/100 the cost.",
+    "significance": "Scoring the numeric core against multiple outstanding papers with a feasibility gate makes modeling results machine-checkable, instead of trusting an LLM judge over whole reports.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Benchmarks & Datasets",
+    "subArea": "Competition & olympiad benchmarks",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.08237",
+    "paperUrl": "https://arxiv.org/abs/2611.08237",
+    "githubUrl": "https://github.com/wxj630/terminal-bench-math-modeling",
+    "authors": [
+      "Xiaojun Wu",
+      "Cehao Yang",
+      "Xuhui Jiang",
+      "Chengjin Xu",
+      "Jia Li",
+      "Jian Guo"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "TB-MathModel",
+        "CUMCM",
+        "MCM"
+      ],
+      "systems": [
+        "Lean 4"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "终端式数学建模基准：首个面向数学建模的智能体化可验证基准",
+        "summary": "TB-MathModel 收录 2023–2025 年的 18 道真实 CUMCM 与 MCM 建模题，每题在容器化终端中提供原始题面、官方附件与图表；智能体返回单个 JSON 产物，按最终问题的数值核心评分。两个设计使其区别于既有基准：方向感知的单侧评分，不会因超过锚定值而扣分；以及两层可行性验证——对六类可判定不变式做程序化门槛检查，加上 624 条 Lean 4 义务——不可行答案直接判零；每题对照一组人类优秀论文而非单篇评分。在七个多模态模型（各三个随机种子）中，最强者的多参考 O-Eval 达到 64.58%，而成本 2.54 美元的开源模型以百分之一的成本取得 59.81%。",
+        "significance": "以可行性门槛对多篇优秀论文的数值核心评分，使数学建模结果可被机器检验，而不再依赖 LLM 裁判对整篇报告打分。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:26:42.896Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E1",
+    "researchEventType": "Benchmark",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E1",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      },
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E1",
+        "status": "paper_released",
+        "note": "Inspectable artifact (code, proofs or data) is publicly available."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.07962",
+    "title": "TCSExam: Evaluating Frontier LLMs on the Full Range of TCS Research",
+    "slug": "tcsexam-evaluating-frontier-llms-on-the-full-range-of-tcs-research",
+    "summary": "TCSExam is a framework and benchmark covering the full range of theoretical computer science research: theorem proving, solver engineering and constructions, alongside direct attempts to resolve open conjectures, with submissions checked by the Lean kernel or an executable task checker. TCSExam-Full has 100 expert-reviewed tasks and TCSExam-Lite 20 (five per track), reducing task attempts by 80% at the same per-attempt budget. Evaluating eight agents on Full and nine on Lite, the TCSExam Index has GPT-6 Astra leading Full at 71.9 and Opus 5.5 leading Lite at 72.3, the two rankings align strongly across eight shared agents (Spearman ρ=0.93), and the evaluations produced improved solver outputs and constructions plus independently verified special cases and bounds from open-conjecture attempts.",
+    "significance": "A four-track benchmark with kernel- or checker-verified submissions measures progress on TCS research itself, including partial progress on open conjectures, and the Lite split preserves the Full ranking at a fifth of the attempts.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Benchmarks & Datasets",
+    "subArea": "Theorem & multimodal benchmarks",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.07962",
+    "paperUrl": "https://arxiv.org/abs/2611.07962",
+    "authors": [
+      "Yifan Luo",
+      "Zhengying Liu",
+      "Yang Yuan",
+      "Zhilin Yang",
+      "Andrew Chi-Chih Yao"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "TCSExam",
+        "TCSExam-Full",
+        "TCSExam-Lite"
+      ],
+      "systems": [
+        "Lean",
+        "GPT-6 Astra",
+        "Opus 5.5"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "TCSExam：在理论计算机科学研究的完整范围内评测前沿大模型",
+        "summary": "TCSExam 是一套覆盖理论计算机科学研究全貌的框架与基准：定理证明、求解器工程与构造，以及对未决猜想的直接尝试；提交结果由 Lean 内核或可执行任务检查器核验。TCSExam-Full 含 100 道经专家审阅的题，TCSExam-Lite 取 20 道（每条赛道 5 道），在单次尝试预算不变的情况下把尝试次数减少 80%。在 Full 上评测 8 个智能体、在 Lite 上评测 9 个，TCSExam 指数显示 GPT-6 Astra 以 71.9 领跑 Full、Opus 5.5 以 72.3 领跑 Lite，两者在 8 个共同智能体上的排名高度一致（Spearman ρ=0.93）；评测还产出改进的求解器输出与构造，以及经独立验证的未决猜想特例与界。",
+        "significance": "覆盖四条赛道、且提交经内核或检查器核验的基准，衡量的是理论计算机科学研究本身的进展（包括对未决猜想的部分推进）；Lite 版本以五分之一的尝试量保持了 Full 的排名。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:26:42.896Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E2",
+    "researchEventType": "Benchmark",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.10031",
+    "title": "zkARc: Succinctly Verifiable Proofs for Neurosymbolic Natural Language Formalization and Verification",
+    "slug": "zkarc-succinctly-verifiable-proofs-for-neurosymbolic-natural-language-formalization-and-verification",
+    "summary": "zkARc wraps each stage of Automated Reasoning checks (ARc) — the planner's output, the policy's formalization, the action's formalization and both solver queries — in an independent, succinctly verifiable zero-knowledge proof, producing a receipt bound to the exact action received that reveals nothing beyond the declared public information and the verdict. The authors prove completeness, knowledge soundness and zero knowledge for the composed receipt under explicit assumptions. An implementation on Qwen2-0.5B enforces a spending policy end to end, approving two purchases and denying a third; a full receipt, which also proves model inference, takes about an hour to issue with CPU-only proving and verifies in under a minute, while the solver proof alone is 88 KiB and verifies in 0.3 seconds.",
+    "significance": "Proof-carrying enforcement lets a third party check that a declared policy was applied without re-running the pipeline or trusting the operator, which ordinary middleware guardrails cannot provide.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Engineering & tool agents",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.10031",
+    "paperUrl": "https://arxiv.org/abs/2611.10031",
+    "authors": [
+      "Wyatt Benno",
+      "Alberto Centelles",
+      "Aman Goel",
+      "Benjamin Kiesl-Reiter"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "zkARc",
+        "ARc"
+      ],
+      "systems": [
+        "Qwen2-0.5B"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "zkARc's neurosymbolic pipeline certifies the planner output, policy and action formalizations and solver queries with zero-knowledge proofs, enforcing a spending policy end to end on Qwen2-0.5B by approving two purchases and denying a third."
+    },
+    "humanContribution": "Humans designed the proof-carrying framework, stated and proved its completeness, knowledge soundness and zero-knowledge properties, and built the end-to-end implementation.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "zkARc：面向神经符号自然语言形式化与验证的简洁可验证证明",
+        "summary": "zkARc 把自动推理检查（ARc）的每个阶段——规划器输出、策略形式化、动作形式化以及两次求解器查询——分别包进一个独立的、可简洁验证的零知识证明，生成的收据与实际收到的动作绑定，除声明的公开信息与判定结果外不泄露其他内容。作者在明确假设下证明了组合收据的完备性、知识可靠性与零知识性。基于 Qwen2-0.5B 的实现端到端执行了一项支出策略，批准两笔购买并拒绝第三笔；完整收据（同时证明模型推理）在纯 CPU 证明下约需一小时生成、一分钟内验证完毕，单是求解器证明为 88 KiB、0.3 秒即可验证。",
+        "significance": "携带证明的执行让第三方无需重跑流程或信任运营方，就能确认声明的策略确实被执行，这是普通中间件护栏无法提供的。",
+        "aiRoleDescription": "zkARc 的神经符号流程对规划器输出、策略与动作形式化以及求解器查询生成零知识证明，并在 Qwen2-0.5B 上端到端执行支出策略：批准两笔购买、拒绝第三笔。",
+        "humanContribution": "人类设计了携带证明的框架，提出并证明了其完备性、知识可靠性与零知识性质，并完成了端到端实现。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_https://www.microsoft.com/en-us/research/?p=1191852",
+    "title": "Formally verifying agent-written full-stack web apps with PDD Kit",
+    "slug": "formally-verifying-agent-written-full-stack-web-apps-with-pdd-kit",
+    "summary": "PDD Kit addresses AI-generated code that is too large to review line by line: it converts developer intent into a Verus specification, proves that the generated code meets it for every input, and falls back to tests where proofs are not practical. Developers then review intent rather than every line, which the Microsoft Research post presents as a way to keep agent-written full-stack web apps doing what the developer intended.",
+    "significance": "Moving review from every line of code to a proved specification pairs agent code generation with machine-checked intent, addressing the scale of generated code rather than only its correctness.",
+    "date": "2026-11-05",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Engineering & tool agents",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.microsoft.com/en-us/research/blog/formally-verifying-agent-written-full-stack-web-apps-with-pdd-kit/",
+    "authors": [
+      "Alex Lavaee",
+      "Matthai Philipose"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "PDD Kit"
+      ],
+      "systems": [
+        "Verus"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "用 PDD Kit 形式化验证智能体编写的全栈 Web 应用",
+        "summary": "PDD Kit 针对人工逐行审阅已不可行的 AI 生成代码：它把开发者意图转写成 Verus 规格，证明生成的代码对任意输入都满足该规格，在证明不现实之处则退回测试。于是开发者审阅的是意图而非每一行代码；Microsoft Research 的博文将其视为让智能体编写的全栈 Web 应用保持符合开发者意图的一种方式。",
+        "significance": "把审阅对象从每一行代码移到经过证明的规格，使智能体代码生成与机器检验的意图相结合，应对的是生成代码的规模，而不仅是正确性。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "evidenceLevel": "E3",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-05",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
+    "id": "evt_arxiv-2611.06995",
+    "title": "Autonomous AI Agents Systematically Diverge From Human Preferences in Proof Formalization",
+    "slug": "autonomous-ai-agents-systematically-diverge-from-human-preferences-in-proof-formalization",
+    "summary": "The authors present 'simulated collaboration', a method for asking how AI agents and humans differ in pursuing a proof-formalization task, applied to nine major human collaborations in Lean with 4.7M definitions across more than 6K commits. Over the course of proof construction, AI agents are far more strongly drawn than humans to explicitly marked gaps, show relative aversion to densely connected proof centers and to complex or surprising proof goals, and are relatively attracted to surprising proof bodies, which they tend to regularize toward baseline.",
+    "significance": "The measured preference gaps locate where AI formalization departs from human practice, identifying blind spots and possible interventions for human–AI collaboration in mathematics.",
+    "date": "2026-11-04",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Agent evaluation & peer review",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.06995",
+    "paperUrl": "https://arxiv.org/abs/2611.06995",
+    "authors": [
+      "Bálint Gyevnár",
+      "Simon DeDeo"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "simulated collaboration"
+      ],
+      "systems": [
+        "Lean"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "自主 AI 智能体在证明形式化中系统性地偏离人类偏好",
+        "summary": "作者提出「模拟协作」方法，用来考察 AI 智能体与人类在证明形式化任务上的差异，并在 Lean 中九个大型人类协作项目（超过 6,000 次提交、470 万条定义）上进行了分析。在证明构建过程中，AI 智能体比人类更强烈地被显式标记的缺口吸引；对连接密集的证明中心以及复杂或出人意料的证明目标表现出相对回避；同时对出人意料的证明主体相对偏好，并倾向于将其规整到基线水平。",
+        "significance": "所测得的偏好差异指出了 AI 形式化与人类实践分歧所在，为数学中的人机协作识别出盲点与可能的干预方式。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "math4ai",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-04",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.06372",
+    "title": "Give Up to Get More: Priors, Not Policies, Govern Test-Time Compute Allocation",
+    "slug": "give-up-to-get-more-priors-not-policies-govern-test-time-compute-allocation",
+    "summary": "The paper shows that the common difficulty-proportional rule for allocating repeated LLM attempts captures half or more of the oracle gain on benchmarks a model mostly solves, but at most 13% on hard workloads, even given true pass rates. Because the value of one more attempt peaks at intermediate difficulty, the optimal static allocation is an inverted U that gives little to inputs hopeless at the current budget. In a survey of 221 LLM allocation papers, at least 13 give the hardest inputs the most attempts. With a verifier and a prior from a related model's past runs on the same inputs, Thompson Sampling raises the solved share on the hardest workload from 14% to 27%; without such a prior no tested policy beats round-robin, and the gain vanishes between prior rank correlations of about 0.3 and 0.55.",
+    "significance": "Information about which inputs are solvable, not the allocation policy, drives the gain, which redirects effort from policy design toward priors and verifier quality.",
+    "date": "2026-11-04",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Reasoning & self-improvement",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.06372",
+    "paperUrl": "https://arxiv.org/abs/2611.06372",
+    "authors": [
+      "Jinhyung Bae"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "systems": [
+        "Thompson Sampling"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "Thompson Sampling with a prior from a related model's past runs raised the solved share on the hardest workload from 14% to 27%, while without such a prior no tested policy beat round-robin."
+    },
+    "humanContribution": "Humans surveyed 221 allocation papers, ran the experiments on public math, code and formal-proof samples, and turned the findings into a decision guide.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "以退为进：决定测试时计算分配的是先验，而不是策略",
+        "summary": "论文表明，常见的「难题多给尝试」规则在模型大多能解的基准上可取得 oracle 增益的一半以上，但在困难负载上最多只有 13%，即便已知真实通过率。由于多一次尝试的价值在中等难度处最高，最优的静态分配呈倒 U 形，对在当前预算下无望的输入几乎不投入。在 221 篇 LLM 分配论文的调查中，至少 13 篇把最多尝试给最难的输入。在具备验证器、且能用相关模型在同一批输入上的历史运行作为先验时，Thompson Sampling 把最难负载上的已解决比例从 14% 提升到 27%；没有这样的先验时，所测试的任何策略都不优于轮转，而增益在先验秩相关约 0.3 到 0.55 之间消失。",
+        "significance": "带来增益的是「哪些输入可解」的信息，而不是分配策略本身；这使投入重心从策略设计转向先验与验证器质量。",
+        "aiRoleDescription": "在相关模型历史运行的先验辅助下，Thompson Sampling 把最难负载上的已解决比例从 14% 提升到 27%；没有此类先验时，所测试的任何策略都不优于轮转。",
+        "humanContribution": "人类调查了 221 篇分配论文，在公开的数学、代码与形式证明样本上开展了实验，并把结论整理成决策指南。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "math4ai",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-04",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.06962",
+    "title": "Formalizing inverse problems in the age of AI: possibilities, pitfalls, and an invitation",
+    "slug": "formalizing-inverse-problems-in-the-age-of-ai-possibilities-pitfalls-and-an-invitation",
+    "summary": "The authors describe AutoIP, a Lean library in which classical linear regularization theory and the functional analysis it rests on have been autoformalized by AI agents, and organize it around the human task that machine-checked proofs leave open: confirming that each formal statement says what was intended. A reviewer compares formal statements with their natural-language counterparts and never needs to read a proof. The authors report that the risks lie in the statements rather than in the proofs, illustrating this with a textbook theorem whose hypothesis is more restrictive than asserted, and invite the inverse-problems community to extend the library.",
+    "significance": "For an autoformalized library, statement review becomes the bottleneck and the place where errors survive; simple automated tests on statements can expose problems even in established literature.",
+    "date": "2026-11-04",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.06962",
+    "paperUrl": "https://arxiv.org/abs/2611.06962",
+    "authors": [
+      "Christian Clason",
+      "Tapio Helin",
+      "Medet Nursultanov",
+      "Lauri Oksanen"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "AutoIP"
+      ],
+      "systems": [
+        "Lean"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "AI agents autoformalized classical linear regularization theory and its functional analysis as the Lean library AutoIP, and automated tests on the statements exposed a textbook theorem whose hypothesis was more restrictive than asserted."
+    },
+    "humanContribution": "Humans designed the library around statement review, compared formal statements with their natural-language counterparts, and wrote the automated statement tests.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "AI 时代的反问题形式化：可能、陷阱与邀请",
+        "summary": "作者介绍 AutoIP：一个由 AI 智能体自动形式化的 Lean 库，收录经典线性正则化理论及其所依赖的泛函分析，并围绕机器检验之外留给人类的任务来组织——确认每条形式化陈述确实表达了原本的意图。审阅者只需对比形式化陈述与自然语言表述，无需阅读证明。作者的经验是：风险落在陈述而非证明上，并用一个假设比原文断言更强、却出现在既有文献中的教科书定理加以说明；作者邀请反问题领域的研究者共同扩展该库。",
+        "significance": "对自动形式化的库而言，陈述审阅成为瓶颈，也是错误得以存留之处；对陈述做简单的自动化测试，甚至能在既有文献中发现问题。",
+        "aiRoleDescription": "AI 智能体把经典线性正则化理论及其泛函分析自动形式化为 Lean 库 AutoIP；对陈述的自动化测试还暴露出一个教科书定理的假设比原文断言更强。",
+        "humanContribution": "人类围绕陈述审阅设计了该库，对比了形式化陈述与自然语言表述，并编写了陈述的自动化测试。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E2",
+    "researchEventType": "Formalization",
+    "verificationHistory": [
+      {
+        "date": "2026-11-04",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_https://ww3.math.ucla.edu/?p=34320",
+    "title": "Professor Inwon Kim named 2027 AMS Fellow",
+    "slug": "professor-inwon-kim-named-2027-ams-fellow",
+    "summary": "UCLA professor Inwon Kim joins the Class of 2027 Fellows of the American Mathematical Society (AMS) in recognition of outstanding contributions to mathematics. The announcement quotes the AMS's welcome to the 2027 class; the following sentence describing how this year's class was selected is cut off in the feed.",
+    "significance": "Election as an AMS Fellow is among the society's highest recognitions for sustained contributions to the mathematical sciences, and this adds a UCLA faculty member to the 2027 class.",
+    "date": "2026-11-04",
+    "eventType": "People",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://ww3.math.ucla.edu/professor-inwon-kim-named-2027-ams-fellow/",
+    "authors": [
+      "Zenith Farin"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "metadata": {
+      "people": [
+        {
+          "name": "Inwon Kim",
+          "role": "UCLA professor elected to the Class of 2027 Fellows of the American Mathematical Society"
+        }
+      ]
+    },
+    "entities": {
+      "people": [
+        "Inwon Kim"
+      ],
+      "institutions": [
+        "University of California, Los Angeles",
+        "UCLA",
+        "American Mathematical Society",
+        "AMS"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "Inwon Kim 教授当选 2027 年美国数学学会会士",
+        "summary": "UCLA 教授 Inwon Kim 获选美国数学学会（AMS）2027 届会士，以表彰其对数学的杰出贡献。公告引用了 AMS 对 2027 届会士的欢迎辞；随后说明本届会士如何遴选的那句话在来源中被截断。",
+        "significance": "当选 AMS 会士是该学会对数学科学长期贡献的最高表彰之一，此次当选使 2027 届会士中再添一位 UCLA 教师。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Inwon Kim",
+              "role": "UCLA 教授，当选美国数学学会（AMS）2027 届会士"
+            }
+          ]
+        }
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-04",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_https://www.math.wisc.edu/?p=11910",
     "title": "Mariya Soskova named 2027 AMS Fellow",
     "slug": "mariya-soskova-named-2027-ams-fellow",
@@ -180,8 +1311,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2611.04434",
@@ -239,6 +1369,125 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "ai4math"
+  },
+  {
+    "id": "evt_arxiv-2611.05612",
+    "title": "Whiel: A Neurosymbolic Platform for Certified Relational Program Verification",
+    "slug": "whiel-a-neurosymbolic-platform-for-certified-relational-program-verification",
+    "summary": "Whiel is a system for Lean-certified reasoning about imperative relational programs, encoding containment and equivalence problems for Datalog, its extensions with negation and the core fragment of graph query languages, plus optimized or incremental evaluation algorithms and first-order specifications of integrity constraints, schema mappings and views. Its program states are database instances, which supports compositional Hoare-style reasoning with first-order relational specifications, prophecy variables and leveled invariants. It supports neurosymbolic discovery of loop invariants whose verification conditions are checked with the Vampire first-order prover, feeds counterexamples back into the pipeline, and translates accepted solutions into Lean proof certificates.",
+    "significance": "The system shows a route to trustworthy answers on typically undecidable query and constraint problems: neural search proposes invariants, a first-order prover checks them, and Lean certifies the result.",
+    "date": "2026-11-03",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.05612",
+    "paperUrl": "https://arxiv.org/abs/2611.05612",
+    "authors": [
+      "Jesse Comer",
+      "Fangzhu Shen",
+      "Shuo Zhang",
+      "Mayur Naik",
+      "Sudeepa Roy",
+      "Val Tannen"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "Whiel"
+      ],
+      "systems": [
+        "Lean",
+        "Vampire",
+        "Datalog"
+      ]
+    },
+    "aiRole": {
+      "level": "assisted",
+      "description": "Whiel's neurosymbolic pipeline discovers loop invariants, checks their verification conditions with Vampire, feeds counterexamples back and translates accepted solutions into Lean proof certificates."
+    },
+    "humanContribution": "Humans designed the imperative relational language and its Hoare-style reasoning rules, the prophecy-variable and leveled-invariant machinery, and the benchmark suite.",
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "Whiel：面向经过认证的关系程序验证的神经符号平台",
+        "summary": "Whiel 是一个面向命令式关系程序、以 Lean 认证推理的系统，可编码 Datalog 及其带否定扩展、图查询语言核心片段的包含与等价问题，也能表示无法用原查询语言表达的最优化或增量求值算法，以及数据集成、交换与共享中出现的一阶完整性约束、模式映射与视图。其程序状态即数据库实例，因而支持带一阶关系规格、预言变量与分级不变式的组合式 Hoare 推理。系统以神经符号方式发现循环不变式，用 Vampire 一阶定理证明器检验验证条件，把反例反馈回流程，并把被接受的解翻译成 Lean 证明证书。",
+        "significance": "该系统为通常不可判定的查询与约束问题提供了一条可信求解路径：神经搜索提出不变式，一阶证明器加以检验，Lean 认证最终结果。",
+        "aiRoleDescription": "Whiel 的神经符号流程发现循环不变式，用 Vampire 检验验证条件，把反例反馈回流程，并将被接受的解翻译成 Lean 证明证书。",
+        "humanContribution": "人类设计了命令式关系语言及其 Hoare 式推理规则、预言变量与分级不变式机制，以及基准套件。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-03",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.05540",
+    "title": "ProofStudio: Five Proof Assistants in the Browser",
+    "slug": "proofstudio-five-proof-assistants-in-the-browser",
+    "summary": "ProofStudio is a browser-based environment that integrates Isabelle/HOL, Lean, Rocq, HOL4 and HOL Light with worked examples, preconfigured proof search and contextual AI assistance, so users can explore formal specifications and proofs across five systems without local installation. It exposes native prover feedback and automation through a common interface, aimed at lowering the installation and learning barriers of mature proof assistants.",
+    "significance": "Lowering the setup cost of five mature proof assistants gives formal-specification education a common entry point, which matters because more automation does not remove the need to judge whether a statement captures the requirements.",
+    "date": "2026-11-03",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.05540",
+    "paperUrl": "https://arxiv.org/abs/2611.05540",
+    "authors": [
+      "Yutaka Nagashima"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "entities": {
+      "projects": [
+        "ProofStudio"
+      ],
+      "systems": [
+        "Isabelle/HOL",
+        "Lean",
+        "Rocq",
+        "HOL4",
+        "HOL Light"
+      ]
+    },
+    "provenance": "automated",
+    "translations": {
+      "zh": {
+        "title": "ProofStudio：浏览器中的五个证明助手",
+        "summary": "ProofStudio 是一个基于浏览器的环境，集成 Isabelle/HOL、Lean、Rocq、HOL4 与 HOL Light，并提供配套示例、预配置的证明搜索与上下文相关的 AI 辅助；用户无需本地安装即可在五种系统中探索形式化规格与证明。它以统一界面呈现各证明器的原生反馈与自动化能力，目标是降低成熟证明助手的安装与学习门槛。",
+        "significance": "降低五种成熟证明助手的上手成本，为形式化规格教学提供统一入口；这很重要，因为更强的自动化并不能免去判断陈述是否真正表达需求的责任。"
+      }
+    },
+    "lastSyncedAt": "2026-11-10T03:22:27.247Z",
+    "createdAt": "2026-11-10T03:22:19.351Z",
+    "updatedAt": "2026-11-10T03:22:27.247Z",
+    "direction": "ai4math",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-03",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_http://terrytao.wordpress.com/?p=18635",
@@ -546,8 +1795,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2611.02843",
@@ -665,8 +1913,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2611.02678",
@@ -1015,8 +2262,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2611.03721",
@@ -2752,8 +3998,7 @@
         "GTFormer",
         "RoPE Transformers"
       ]
-    },
-    "direction": "math4ai"
+    }
   },
   {
     "id": "evt_arxiv-2610.36854",
@@ -3248,8 +4493,7 @@
         "Goedel-Prover-V2-32B",
         "Goedel-Prover-V2-8B"
       ]
-    },
-    "direction": "ai4math"
+    }
   },
   {
     "id": "evt_arxiv-2610.35645",
@@ -3755,8 +4999,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "math4ai"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2610.34516",
@@ -4799,8 +6042,7 @@
         "Rocq (Coq)",
         "CoqStoq"
       ]
-    },
-    "direction": "ai4math"
+    }
   },
   {
     "id": "evt_arxiv-2610.33094",
@@ -5416,8 +6658,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2610.28484",
@@ -6341,7 +7582,7 @@
       }
     ],
     "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "direction": "math4ai"
   },
   {
     "id": "evt_arxiv-2610.26943",
@@ -7594,8 +8835,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2610.17697",
@@ -9829,8 +11069,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2610.09401",
@@ -9993,8 +11232,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_github-openai-math",
@@ -11006,7 +12244,7 @@
       }
     ],
     "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "direction": "math4ai"
   },
   {
     "id": "evt_arxiv-2610.05683",
@@ -11733,8 +12971,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2610.03947",
@@ -12106,8 +13343,7 @@
         "note": "Inspectable artifact (code, proofs or data) is publicly available."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2610.02525",
@@ -12717,8 +13953,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2610.00988",
@@ -14758,7 +15993,7 @@
       }
     ],
     "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "direction": "math4ai"
   },
   {
     "id": "evt_arxiv-2609.32924",
@@ -15946,7 +17181,7 @@
       }
     ],
     "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "direction": "math4ai"
   },
   {
     "id": "evt_arxiv-2609.27041",
@@ -16194,8 +17429,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2609.25575",
@@ -20400,8 +21634,7 @@
         "note": "Default evidence level derived from the record's links on the event date."
       }
     ],
-    "verificationStatus": "paper_released",
-    "direction": "ai4math"
+    "verificationStatus": "paper_released"
   },
   {
     "id": "evt_arxiv-2609.03528",

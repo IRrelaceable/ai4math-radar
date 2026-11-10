@@ -10,8 +10,8 @@ to resume from it (the deploy reads the same files when it builds the site).
   by the source), which the detail page turns into its "Event thread".
 - `fingerprints.json` — per-slug hash of the source text, so an unchanged item
   is not re-summarized on every run.
-- `source-status.json` — per-source last attempt/success, cursor and counts,
-  rendered by `/sources`.
+- `source-status.json` — per-source last attempt/success, cursor and counts;
+  operator state used by the sync pipeline, not shown on the public site.
 - `custom-sources.json` — sources added by hand; `npm run sync` picks them up.
 
 Regenerate the site's client dataset with `npm run data`. Deleting
