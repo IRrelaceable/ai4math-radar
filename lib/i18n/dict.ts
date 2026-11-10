@@ -15,6 +15,7 @@ export const dict = {
       latest: "最新进展",
       timeline: "时间线",
       topics: "研究方向",
+      labs: "实验室进展",
       math4ai: "Math4AI 方向",
       sources: "数据来源",
       about: "关于",
@@ -156,6 +157,12 @@ export const dict = {
       benchmark: "Benchmark",
       dataset: "数据集",
       recordId: "记录 ID",
+      discussion: "讨论",
+      discussionPending: "讨论区即将开放",
+      discussionHint:
+        "每个事件下方都会保留一个讨论位，围绕这篇工作提问、补充证据或指出问题；上线后按事件归档，中英文界面共用同一条讨论串。",
+      discussionPlaceholder: "写下你的问题或补充（尚未开放）",
+      discussionButton: "发表",
     },
     trust: {
       evidence: {
@@ -226,7 +233,8 @@ export const dict = {
       latest: "Latest",
       timeline: "Timeline",
       topics: "Topics",
-      math4ai: "Math4AI axis",
+      labs: "Labs",
+      math4ai: "Math4AI",
       sources: "Data sources",
       about: "About",
       menu: "Menu",
@@ -370,6 +378,12 @@ export const dict = {
       benchmark: "Benchmark",
       dataset: "Dataset",
       recordId: "Record ID",
+      discussion: "Discussion",
+      discussionPending: "Discussion opens soon",
+      discussionHint:
+        "Every event keeps a discussion slot: ask about the work, add evidence, or flag a problem. Threads will be archived per event and shared across the Chinese and English views.",
+      discussionPlaceholder: "Your question or addition (not open yet)",
+      discussionButton: "Post",
     },
     trust: {
       evidence: {

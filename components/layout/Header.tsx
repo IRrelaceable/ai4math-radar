@@ -18,6 +18,7 @@ export function Header() {
     { href: "/latest", label: t.nav.latest },
     { href: "/timeline", label: t.nav.timeline },
     { href: "/topics", label: t.nav.topics },
+    { href: "/labs", label: t.nav.labs },
     { href: "/math4ai", label: t.nav.math4ai },
     { href: "/about", label: t.nav.about },
   ];
@@ -36,7 +37,7 @@ export function Header() {
 
         {/* Active state is an underline anchored to the header rule, not a
             filled chip — one less rounded box competing with the content. */}
-        <nav className="hidden lg:flex min-w-0 flex-1 self-stretch items-center gap-1 overflow-hidden">
+        <nav className="hidden lg:flex min-w-0 flex-1 self-stretch items-center overflow-hidden">
           {NAV.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -45,7 +46,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 prefetch
-                className={`flex h-full items-center border-b-2 px-3 text-[13px] transition-colors ${
+                className={`flex h-full items-center border-b-2 px-2.5 text-[13px] transition-colors ${
                   active
                     ? "border-accent-600 font-medium text-ink-900"
                     : "border-transparent text-ink-500 hover:text-ink-900"

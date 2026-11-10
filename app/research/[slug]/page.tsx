@@ -15,6 +15,7 @@ import { EventCard } from "@/components/research/EventCard";
 import { EntityThreads } from "@/components/research/EntityThreads";
 import { buildEntityThreads, threadsForEvent } from "@/lib/entities";
 import { VerificationHistorySection } from "@/components/research/DetailSections";
+import { EventDiscussion } from "@/components/research/EventDiscussion";
 import { TocNav } from "@/components/layout/TocNav";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { getLang, t } from "@/lib/i18n/server";
@@ -239,6 +240,7 @@ export default async function ResearchDetailPage({
     ...(hasEcosystem ? [{ id: "ecosystem", label: d.detail.ecosystemDetails }] : []),
     ...(hasArtifacts ? [{ id: "artifacts", label: d.detail.attachedArtifacts }] : []),
     ...(hasAuthors ? [{ id: "authors", label: d.detail.authorsInstitution }] : []),
+    { id: "discussion", label: d.detail.discussion },
   ];
 
   return (
@@ -583,6 +585,8 @@ export default async function ResearchDetailPage({
             )}
           </section>
         )}
+
+        <EventDiscussion />
         </div>
 
         {/* Right rail — a scroll-spy table of contents instead of a second

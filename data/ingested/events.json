@@ -3,6 +3,7 @@
     "id": "evt_anthropic-news:https://www.anthropic.com/claude-fable-and-mythos-5-2",
     "title": "Introducing Claude Fable 5.2 and Claude Mythos 5.2",
     "slug": "introducing-claude-fable-5-2-and-claude-mythos-5-2",
+    "lab": "anthropic",
     "summary": "Anthropic released Claude Fable 5.2 and Claude Mythos 5.2. As a prerelease test, a team of 1,000 Fable 5.2 agents fully formalized Fermat's Last Theorem in 30 hours with minimal human intervention: they started from minimal prompts, organized their own coordination, and used no mathematical references beyond a list of intermediate theorem statements to score progress. The first formalization, by an unreleased research version of Claude, had taken 11 days with a purpose-built harness and human-researcher guidance. Fable 5.2 needed one-third of the action tokens and produced a proof seven times shorter, while Opus 5.5 with the same 1,000-agent setup completed 26% in 18 hours.",
     "significance": "A public model formalized Fermat's Last Theorem in 30 hours with minimal supervision, and its proof is far shorter than the human-guided first attempt — large agent teams can now run formalization at a scale and speed a single prover cannot.",
     "date": "2026-11-09",

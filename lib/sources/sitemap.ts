@@ -1,4 +1,4 @@
-import type { EventType, RawResearchItem, ResearchArea, SourceType, SourceTier } from "@/types";
+import type { EventType, Lab, RawResearchItem, ResearchArea, SourceType, SourceTier } from "@/types";
 import type { ResearchSource } from "./index";
 import { sourceFetch } from "./http";
 import { mentionsKeyword } from "./rss";
@@ -14,6 +14,8 @@ export interface SitemapSourceOptions {
   defaultEventType?: EventType;
   defaultResearchArea?: ResearchArea;
   sourceTier?: SourceTier;
+  /** Frontier lab whose own work this site publishes (see /labs). */
+  lab?: Lab;
   allowNonAI4Math?: boolean;
   includeKeywords?: string[];
   excludeKeywords?: string[];
@@ -150,6 +152,7 @@ export function createSitemapSource(options: SitemapSourceOptions): ResearchSour
     defaultEventType,
     defaultResearchArea,
     sourceTier,
+    lab,
     allowNonAI4Math = false,
     includeKeywords,
     excludeKeywords,
@@ -247,6 +250,7 @@ export function createSitemapSource(options: SitemapSourceOptions): ResearchSour
           source: label,
           sourceType,
           sourceTier,
+          lab,
           eventType: rule?.eventType ?? defaultEventType,
           researchArea: defaultResearchArea,
           allowNonAI4Math,

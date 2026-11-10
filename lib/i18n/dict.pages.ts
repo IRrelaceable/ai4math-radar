@@ -24,6 +24,7 @@ const zh = {
     math4ai: { title: "Math4AI 方向", desc: "研究对象是 AI 系统本身的科研事件——改进训练方法、用数学理论改进算法、解释模型的数学性质——按「研究对象 → 核心目标 → 实际贡献」三步判定，含双向兼有的事件。" },
     timeline: { title: "时间线", desc: "按年份回看已记录的 AI4Math 事件，含逐年记录量与事件类别构成。" },
     topics: { title: "研究方向", desc: "六个研究方向的索引：方向轴构成、近 12 个月走势、子方向与最近记录。" },
+    labs: { title: "实验室进展", desc: "OpenAI 与 Anthropic 在 AI4Math 上公开发布的成果与已解决的问题，按时间排列，每条记录保留原始来源。" },
     search: { title: "搜索", desc: "全站搜索：研究事件、论文、方向、模型与 Benchmark。" },
     about: { title: "关于", desc: "AI4Math 生态雷达：追踪研究进展、人物、机构、资助与政策事件，每条记录都保留原始来源链接。" },
     methodology: { title: "标签释义——如何阅读这些标签", desc: "证据等级、来源层级、事件类型、核验状态、AI 参与程度与方向轴的标签释义。" },
@@ -146,6 +147,19 @@ const zh = {
     demoEntry: "示例 / 演示条目",
     venueMissing: "未记录发表信息",
     howToReadLabels: "如何阅读这些标签",
+  },
+
+  /** app/labs/page.tsx */
+  labs: {
+    label: "实验室进展",
+    title: "两家前沿实验室在 AI4Math 上的进展",
+    sub: "OpenAI 与 Anthropic 公开发布、且与数学直接相关的成果：解决了什么问题、给出了什么产物、留下了什么可核对的链接。按时间由新到旧排列，每条记录下方都保留讨论位。",
+    openai: "OpenAI",
+    anthropic: "Anthropic",
+    count: { one: "{n} 条记录", many: "{n} 条记录" },
+    sectionEmpty: "这一分类的记录正在整理，补齐后会出现在这里。",
+    pageEmpty: "实验室进展正在整理中：两家的成果会按年份逐条录入，并保留原始公告与论文链接。",
+    howToRead: "这批条目与信息流共用同一套字段：方向轴、证据等级、来源层级与 AI 参与程度，规则见标签释义。",
   },
 
   /** app/search/page.tsx */
@@ -292,6 +306,7 @@ const en = {
     math4ai: { title: "Math4AI direction", desc: "Research events whose object is the AI system itself — training methods, mathematically grounded algorithms, analyses of model properties — judged by research object → core goal → actual contribution, co-primary events included." },
     timeline: { title: "Timeline", desc: "Browse recorded AI4Math events year by year, with a density overview and class mix." },
     topics: { title: "Topics", desc: "Index of six research directions: direction-axis mix, 12-month trend, sub areas and latest records." },
+    labs: { title: "Lab track", desc: "Public OpenAI and Anthropic AI4Math results and solved problems, in chronological order, each with its original source." },
     search: { title: "Search", desc: "Full-site search across research events, papers, topics, models and benchmarks." },
     about: { title: "About", desc: "The AI4Math Ecosystem Radar: research, people, institutions, funding and policy events, each with a link back to its original source." },
     methodology: { title: "Glossary — how to read the labels", desc: "Definitions of evidence levels, source tiers, event classes, verification states, AI involvement and the direction axis." },
@@ -406,6 +421,18 @@ const en = {
     demoEntry: "demo / example entry",
     venueMissing: "Publication details not recorded",
     howToReadLabels: "How to read these labels",
+  },
+
+  labs: {
+    label: "Lab track",
+    title: "Frontier-lab progress on AI4Math",
+    sub: "Public OpenAI and Anthropic work that speaks directly to mathematics: what was solved, what artifact was released, and where to check it. Newest first; every record keeps a discussion slot.",
+    openai: "OpenAI",
+    anthropic: "Anthropic",
+    count: { one: "{n} record", many: "{n} records" },
+    sectionEmpty: "Records for this lab are being compiled and will appear here.",
+    pageEmpty: "The lab track is being compiled: each lab's work will be entered year by year, with its original announcement and paper links preserved.",
+    howToRead: "These records use the same fields as the feed: direction axis, evidence level, source tier and AI role; see the label guide for the rules.",
   },
 
   search: {

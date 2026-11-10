@@ -29,6 +29,14 @@ export type ResearchArea = (typeof RESEARCH_AREAS)[number];
 export type EventDirection = "ai4math" | "math4ai" | "both";
 
 /**
+ * Frontier labs with a dedicated track under /labs. The track collects the
+ * lab's own AI4Math work (results, released artifacts, solved problems), so a
+ * record carries a lab only when the lab is the actor, not merely the venue.
+ */
+export const LABS = ["openai", "anthropic"] as const;
+export type Lab = (typeof LABS)[number];
+
+/**
  * Controlled sub-area vocabulary, per research area.
  *
  * Sub-areas used to be free text, which fragmented one concept across many
@@ -288,6 +296,12 @@ export interface ResearchEvent {
   /** ISO date, YYYY-MM-DD (day precision; month precision is stored as YYYY-MM-01). */
   date: string;
   /**
+   * Frontier lab whose own AI4Math work this record belongs to. The lab track
+   * (see /labs) groups on it; ordinary paper, ecosystem and blog events leave
+   * it unset.
+   */
+  lab?: Lab;
+  /**
    * Research direction (one of RESEARCH_AREAS). Optional: ecosystem events
    * (People / Institutions / Funding / PolicyCommunity) record an event class
    * instead of a research direction, so they carry no `researchArea`.
@@ -368,6 +382,7 @@ export type ListEvent = Pick<
   | "researchArea"
   | "subArea"
   | "direction"
+  | "lab"
   | "sourceUrl"
   | "paperUrl"
   | "githubUrl"
@@ -433,6 +448,8 @@ export interface RawResearchItem {
   externalId?: string;
   sourceType?: SourceType;
   sourceTier?: SourceTier;
+  /** Set by sources that publish a frontier lab's own work (see LABS). */
+  lab?: Lab;
   eventType?: EventType;
   researchArea?: ResearchArea;
   /** Explicitly opt a source-specific item out of the generic AI4Math gate. */

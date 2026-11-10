@@ -313,6 +313,7 @@ function toEvent(
     significance: text.significance,
     date,
     eventType,
+    lab: item.lab,
     // Ecosystem classes (People / Institutions / Funding / Policy) record an
     // event class, not a research direction: showing one on them would invent
     // a direction the source never declared.

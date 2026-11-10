@@ -93,11 +93,11 @@ export function SearchBox({ variant = "header", autoFocus, initialQuery = "" }: 
         onChange={(e) => setQ(e.target.value)}
         placeholder={c.search.headerPlaceholder}
         aria-label={c.search.headerAria}
-        className="w-32 bg-transparent text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none lg:w-44"
+        className="w-32 bg-transparent text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none lg:w-40"
       />
       <kbd
         title={c.search.kbdHint}
-        className="hidden lg:block rounded border border-ink-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-ink-500"
+        className="hidden xl:block rounded border border-ink-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-ink-500"
       >
         /
       </kbd>

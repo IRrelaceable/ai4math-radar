@@ -37,6 +37,7 @@ export function toListEvent(event: ResearchEvent): ListEvent {
     researchArea: event.researchArea,
     subArea: event.subArea,
     direction: event.direction,
+    lab: event.lab,
     sourceUrl: event.sourceUrl,
     paperUrl: event.paperUrl,
     githubUrl: event.githubUrl,
