@@ -1490,6 +1490,44 @@
     "verificationStatus": "paper_released"
   },
   {
+    "id": "evt_https://www.crm.cat/?p=39145",
+    "title": "The CRM exhibition ‘Les matemàtiques de Gaudí’ moves to the University of Barcelona",
+    "slug": "the-crm-exhibition-les-matem-tiques-de-gaud-moves-to-the-university-of-barcelona",
+    "summary": "After its October run at the UAB, the exhibition Les matemàtiques de Gaudí, produced by the CRM, can be seen at the University of Barcelona's CRAI Biblioteca de Matemàtiques i Informàtica from 2 to 30 November 2026.",
+    "significance": "",
+    "date": "2026-11-03",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/the-crm-exhibition-les-matematiques-de-gaudi-moves-to-the-university-of-barcelona/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:44:10.676Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-03",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "CRM 展览“高迪的数学”移师巴塞罗那大学",
+        "summary": "由 CRM（Centre de Recerca Matemàtica）制作的展览“高迪的数学”（Les matemàtiques de Gaudí）在 UAB 展出一个月后，于 2026 年 11 月 2 日至 30 日在巴塞罗那大学数学与信息学 CRAI 图书馆继续展出。",
+        "significance": "以高迪建筑中的几何为线索，向公众呈现数学与艺术的联系。"
+      }
+    }
+  },
+  {
     "id": "evt_http://terrytao.wordpress.com/?p=18635",
     "title": "Egoless Mathematics in the AI Era",
     "slug": "egoless-mathematics-in-the-ai-era",
@@ -2144,6 +2182,82 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "math4ai"
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=39119",
+    "title": "Advanced Course on Free Boundary Problems Opens the Intensive Weeks of the IRP",
+    "slug": "advanced-course-on-free-boundary-problems-opens-the-intensive-weeks-of-the-irp",
+    "summary": "From 26 to 30 October, around forty researchers attended the Advanced Course on Free Boundary Problems at the CRM, three seven-hour mini-courses given by Bozhidar Velichkov (Università di Pisa), Max Engelstein (University of Minnesota) and Zihui Zhao (Johns Hopkins University). The course was the first of the two intensive weeks of the Intensive Research Programme on Analysis of Free Boundary Problems, which runs until 4 December.",
+    "significance": "",
+    "date": "2026-11-02",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/advanced-course-on-free-boundary-problems-opens-the-intensive-weeks-of-the-irp/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-02",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "自由边界问题高级课程开启 IRP 强化周",
+        "summary": "10 月 26 日至 30 日，约四十名研究者参加了在 CRM 举办的自由边界问题高级课程，由 Bozhidar Velichkov（比萨大学）、Max Engelstein（明尼苏达大学）与 Zihui Zhao（约翰斯·霍普金斯大学）分别讲授三门各七小时的迷你课程。该课程是“自由边界问题分析”强化研究计划两个强化周中的第一周，计划持续至 12 月 4 日。",
+        "significance": "属于分析方向的学术培训动态，反映自由边界问题领域的近期活动。"
+      }
+    }
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=38959",
+    "title": "El CRM rep els estudiants de la prova de nivell de Bojos per les Matemàtiques 2027",
+    "slug": "el-crm-rep-els-estudiants-de-la-prova-de-nivell-de-bojos-per-les-matem-tiques-2027",
+    "summary": "Els aspirants a Bojos per les Matemàtiques 2027 van visitar el Centre de Recerca Matemàtica (CRM) dissabte 24 d’octubre, després de fer la prova de nivell a la Facultat de Ciències i Biociències de la UAB. En acabat, Tomás Sanz (UB-CRM) els va explicar què té a veure l’escalfament d’una barra de ferro amb els àudios de WhatsApp.",
+    "significance": "",
+    "date": "2026-11-02",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/el-crm-rep-els-estudiants-de-la-prova-de-nivell-de-bojos-per-les-matematiques-2027/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-02",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "CRM 接待“为数学疯狂 2027”水平测试的学生",
+        "summary": "10 月 24 日（周六），“为数学疯狂 2027”（Bojos per les Matemàtiques）的候选学生在 UAB 科学与生物科学学院完成水平测试后参观了 CRM。随后，Tomás Sanz（UB-CRM）向他们讲解了加热一根铁棒与 WhatsApp 语音消息之间的关联。",
+        "significance": "面向中学生的数学普及活动，体现研究机构与青年培养的联系。"
+      }
+    }
   },
   {
     "id": "evt_arxiv-2611.02285",
@@ -4318,6 +4432,44 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "both"
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=38554",
+    "title": "Fish schools and growing tissues: a workshop on how collective behaviour emerges",
+    "slug": "fish-schools-and-growing-tissues-a-workshop-on-how-collective-behaviour-emerges",
+    "summary": "The Centre de Recerca Matemàtica (CRM) organised the Barcelona Workshop on Kinetic and Macroscopic Models in Biology with Friends II, held from 7 to 10 September at the Institut d'Estudis Catalans. More than thirty researchers discussed how order at the scale of tissues and animal groups arises from local interactions between individuals, in a programme that included talks by CRM researchers Daria Stepanova and Juan Arellano-Tintó. Two of the speakers, James Sharpe (EMBL Barcelona) and Chiara Villa (CNRS, Université Paris Cité), talked to the CRM about their research.",
+    "significance": "",
+    "date": "2026-10-27",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/fish-schools-and-growing-tissues-a-workshop-on-how-collective-behaviour-emerges/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-27",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "鱼群与生长中的组织：集体行为如何涌现",
+        "summary": "CRM 于 9 月 7 日至 10 日在加泰罗尼亚研究学院（Institut d'Estudis Catalans）举办第二届“生物学中的动理学与宏观模型”巴塞罗那研讨会。三十余名研究者讨论了组织与动物群体尺度的秩序如何从个体间的局部互动中涌现，CRM 研究者 Daria Stepanova 与 Juan Arellano-Tintó 也在会上作报告；报告人 James Sharpe（EMBL Barcelona）与 Chiara Villa（CNRS、巴黎西岱大学）接受了 CRM 的访谈。",
+        "significance": "展示动理学与宏观模型在生物学集体行为研究中的活跃应用。"
+      }
+    }
   },
   {
     "id": "evt_arxiv-2610.36396",
@@ -7327,6 +7479,44 @@
     "direction": "math4ai"
   },
   {
+    "id": "evt_https://www.crm.cat/?p=38470",
+    "title": "The CRM opens the academic year and unveils its Directors’ Gallery",
+    "slug": "the-crm-opens-the-academic-year-and-unveils-its-directors-gallery",
+    "summary": "The CRM opens the academic year and unveils its Directors’ Gallery was reported by CRM — Centre de Recerca Matemàtica.",
+    "significance": "",
+    "date": "2026-10-19",
+    "eventType": "People",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/the-crm-opens-the-academic-year-and-unveils-its-directors-gallery/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:26.046Z",
+    "createdAt": "2026-11-10T06:38:26.046Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-19",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "CRM 开启新学年并揭幕历任主任画廊",
+        "summary": "CRM（Centre de Recerca Matemàtica）举行新学年开幕活动，并为“历任主任画廊”（Directors' Gallery）揭幕；源站仅给出这一简讯，未提供更多细节。",
+        "significance": "属于机构动态短讯，记录 CRM 的年度活动与机构沿革展示。"
+      }
+    }
+  },
+  {
     "id": "evt_arxiv-2610.25357",
     "title": "Studying proof data with proof theory: the case of AI-generated mathematics",
     "slug": "studying-proof-data-with-proof-theory-the-case-of-ai-generated-mathematics",
@@ -7920,6 +8110,74 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "math4ai"
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3913",
+    "title": "How to Formalize All of Mathematics",
+    "slug": "how-to-formalize-all-of-mathematics",
+    "summary": "(This is a guest post, written by Jeremy Avigad, Kevin Buzzard, Johan Commelin, Rémy Degenne, Kim Morrison, Oliver Nash and Adam Topaz.) Mathematicians’ reactions to last week’s big OpenAI release range from excitement to frustration, but one thing is clear:…",
+    "significance": "",
+    "date": "2026-10-16",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/10/16/how-to-formalize-all-of-mathematics/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-16",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "如何把全部数学形式化",
+        "summary": "这篇客座文章由 Jeremy Avigad、Kevin Buzzard、Johan Commelin、Rémy Degenne、Kim Morrison、Oliver Nash 与 Adam Topaz 合写。作者们指出，数学家对上周 OpenAI 重大发布的反应从兴奋到沮丧不一而足，并由此展开关于如何把全部数学形式化的讨论。",
+        "significance": "由形式化数学的核心实践者集体发声，讨论大规模 AI 形式化成果出现后该领域的方向选择。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Jeremy Avigad",
+              "role": "客座博文作者"
+            },
+            {
+              "name": "Kevin Buzzard",
+              "role": "客座博文作者"
+            },
+            {
+              "name": "Johan Commelin",
+              "role": "客座博文作者"
+            },
+            {
+              "name": "Rémy Degenne",
+              "role": "客座博文作者"
+            },
+            {
+              "name": "Kim Morrison",
+              "role": "客座博文作者"
+            },
+            {
+              "name": "Oliver Nash",
+              "role": "客座博文作者"
+            },
+            {
+              "name": "Adam Topaz",
+              "role": "客座博文作者"
+            }
+          ]
+        }
+      }
+    }
   },
   {
     "id": "evt_arxiv-2610.22698",
@@ -11233,6 +11491,52 @@
       }
     ],
     "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_http://gilkalai.wordpress.com/?p=32744",
+    "title": "Updates: Sharing AI progress on mathematics (amazing!); and my lecture plans",
+    "slug": "updates-sharing-ai-progress-on-mathematics-amazing-and-my-lecture-plans",
+    "summary": "With Danny and Sharon Kleitman and Michel Goemans at the MIT Endicott house. Update: There are many reactions and emerging details on the new 700 or so papers released by Open AI. On Persiflage there is a very interesting post…",
+    "significance": "",
+    "date": "2026-10-07",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://gilkalai.wordpress.com/2026/10/07/updates-sharing-ai-progress-on-mathematics-amazing-and-my-lecture-plans/",
+    "authors": [
+      "Gil Kalai"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.579Z",
+    "createdAt": "2026-11-10T06:38:29.579Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-07",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "更新：分享 AI 在数学上的进展（令人惊叹！）以及我的讲座计划",
+        "summary": "Gil Kalai 在博文中提到与 Danny 和 Sharon Kleitman、Michel Goemans 在 MIT Endicott House 的合影，并更新了 OpenAI 新发布的约 700 篇论文所引发的众多反应与新细节；他特别提到 Persiflage 上有一篇很有意思的文章。",
+        "significance": "数学家对大规模 AI 数学成果的公开回应与持续跟踪。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Gil Kalai",
+              "role": "博客作者"
+            }
+          ]
+        }
+      }
+    }
   },
   {
     "id": "evt_github-openai-math",
@@ -21571,6 +21875,50 @@
     "direction": "math4ai"
   },
   {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3886",
+    "title": "FLT: Anthropic has beaten me to it",
+    "slug": "flt-anthropic-has-beaten-me-to-it",
+    "summary": "I guess technically it was revealed to the world by a coffee shop in Islington on Insta, but an hour later it was officially announced by Anthropic: one of their internal models, using the prove2.me platform, has formalized a complete…",
+    "significance": "",
+    "date": "2026-09-04",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-09-04",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "费马大定理：Anthropic 抢先了一步",
+        "summary": "Kevin Buzzard 称，此事最初由伦敦 Islington 的一家咖啡店在 Instagram 上透露，一小时后 Anthropic 正式宣布：其内部模型借助 prove2.me 平台完成了一项完整的形式化工作（源摘要在此处截断）。",
+        "significance": "记录 AI 系统完成费马大定理相关形式化的公开宣布，是形式化数学与 AI 交叉的标志性事件之一。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Kevin Buzzard",
+              "role": "博客作者"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
     "id": "evt_arxiv-2609.04043",
     "title": "Extending concurrent separation logic to the hardware level to verify the xv6 OS kernel on RISC-V with AI agents",
     "slug": "extending-concurrent-separation-logic-to-the-hardware-level-to-verify-the-xv6-os-kernel-on-risc-v-with-ai-agents",
@@ -23053,6 +23401,50 @@
     }
   },
   {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3829",
+    "title": "Human mathematicians are being outcounterexampled",
+    "slug": "human-mathematicians-are-being-outcounterexampled",
+    "summary": "It’s been an interesting few weeks for counterexamples. This post is basically my perspective of what has been going on in the world of formalization, AI tools and, in particular, counterexamples. Unit distance Two months ago today (20th May 2026),…",
+    "significance": "",
+    "date": "2026-07-20",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/07/20/human-mathematicians-are-being-outcounterexampled/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-07-20",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "人类数学家在反例上被超越",
+        "summary": "Kevin Buzzard 回顾近几周在形式化、AI 工具、尤其是反例领域发生的事情。文中以单位距离问题为例，从 2026 年 5 月 20 日以来的进展谈起（源摘要在此处截断）。",
+        "significance": "从反例入手观察 AI 工具如何改变数学发现的节奏与人类数学家的角色。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Kevin Buzzard",
+              "role": "博客作者"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
     "id": "evt_4188 at https://www.math.ubc.ca",
     "title": "Twelve UBC Mathematics Faculty Members Awarded NSERC Discovery Grants",
     "slug": "twelve-ubc-mathematics-faculty-members-awarded-nserc-discovery-grants",
@@ -23859,6 +24251,50 @@
       "projects": [
         "Maryam Mirzakhani New Frontiers Prize"
       ]
+    }
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3810",
+    "title": "Formalizing Fermat workshop",
+    "slug": "formalizing-fermat-workshop",
+    "summary": "I’m organizing a workshop in London on July 6th to 10th (2026) whose goal is to work on my EPSRC-funded project formalizing Fermat’s Last theorem in Lean. The initial aim of the project was to reduce FLT to theorems known…",
+    "significance": "",
+    "date": "2026-05-15",
+    "eventType": "Institutions",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/05/15/formalizing-fermat-workshop/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-05-15",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "费马大定理形式化工作坊",
+        "summary": "Kevin Buzzard 将于 2026 年 7 月 6 日至 10 日在伦敦组织工作坊，围绕其 EPSRC 资助的“用 Lean 形式化费马大定理”项目展开。项目的初始目标是把 FLT 归约到已知定理（源摘要在此处截断）。",
+        "significance": "以工作坊形式推进费马大定理的 Lean 形式化，是长期形式化工程的社区协作节点。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Kevin Buzzard",
+              "role": "博客作者"
+            }
+          ]
+        }
+      }
     }
   },
   {
@@ -25758,6 +26194,50 @@
     "direction": "ai4math"
   },
   {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3745",
+    "title": "Formalization of Erdős problems",
+    "slug": "formalization-of-erd-s-problems",
+    "summary": "[This is a guest post by Boris Alexeev. Now over to Boris.] I’m here to tell you about various exciting developments centering on Erdős problems, especially involving the formalization of old and new mathematics using artificial intelligence. Background As is…",
+    "significance": "",
+    "date": "2025-12-05",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2025/12/05/formalization-of-erdos-problems/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2025-12-05",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "Erdős 问题的形式化",
+        "summary": "Boris Alexeev 的客座博文介绍围绕 Erdős 问题的一系列进展，尤其涉及借助人工智能对旧有与新近数学成果的形式化。文章先交代了背景（源摘要在此处截断）。",
+        "significance": "汇集 AI 辅助形式化在 Erdős 问题上的进展，反映该方向从零散尝试走向系统推进。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Boris Alexeev",
+              "role": "客座博文作者"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
     "id": "evt_https://www.ipam.ucla.edu/?p=13759",
     "title": "Wilfrid Gangbo receives 2026 AMS Award",
     "slug": "wilfrid-gangbo-receives-2026-ams-award",
@@ -25984,6 +26464,50 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "ai4math"
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3711",
+    "title": "Formal or not formal? That is the question in AI for theorem proving.",
+    "slug": "formal-or-not-formal-that-is-the-question-in-ai-for-theorem-proving",
+    "summary": "So it’s an interesting time for computers-doing-mathematics. A couple of interesting things happened in the last few days, which have inspired me to write about the question more broadly. First there is the question on whether computers will ever prove…",
+    "significance": "",
+    "date": "2025-10-22",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2025/10/22/formal-or-not-formal-that-is-the-question-in-ai-for-theorem-proving/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2025-10-22",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "形式化与否：AI 定理证明中的关键问题",
+        "summary": "Kevin Buzzard 认为这是“计算机做数学”的有趣时期：近几日发生的几件事促使他更广泛地讨论这一问题，首先要问的是计算机究竟会不会证明（源摘要在此处截断）。",
+        "significance": "讨论形式化与非形式化路线在 AI 定理证明中的取舍，是该领域方法论争论的代表性文本。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Kevin Buzzard",
+              "role": "博客作者"
+            }
+          ]
+        }
+      }
+    }
   },
   {
     "id": "evt_arxiv-2510.08988",
@@ -26302,6 +26826,50 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "ai4math"
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3653",
+    "title": "AI at IMO 2025: a round-up",
+    "slug": "ai-at-imo-2025-a-round-up",
+    "summary": "Setting the scene The 2025 International Mathematics Olympiad has come and gone. Reminder: this is an exam for high-school kids across the world (each country typically sends six kids), comprising of two 4.5-hour exams each containing three questions, so six…",
+    "significance": "",
+    "date": "2025-08-03",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2025/08/03/ai-at-imo-2025-a-round-up/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-10T06:38:29.500Z",
+    "createdAt": "2026-11-10T06:38:29.500Z",
+    "updatedAt": "2026-11-10T06:44:10.677Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2025-08-03",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "2025 年 IMO 上的 AI：综述",
+        "summary": "文章先交代背景：2025 年国际数学奥林匹克（IMO）已经结束。这是面向全球高中生的考试（每个国家通常派出六名学生），由两场各 4.5 小时的考试组成，每场三道题，共六题（源摘要在此处截断）。",
+        "significance": "系统梳理当年 AI 系统在 IMO 赛题上的表现，是评估数学推理能力的重要参照。",
+        "metadata": {
+          "people": [
+            {
+              "name": "Kevin Buzzard",
+              "role": "博客作者"
+            }
+          ]
+        }
+      }
+    }
   },
   {
     "id": "evt_arxiv-2507.18885",
