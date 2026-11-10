@@ -555,5 +555,9 @@
   "formalization-of-erd-s-problems": "bf10f3a26e4fc4bd184405ac58b3fb3c5a9f99020290b86c4996492b6534a1eb",
   "formal-or-not-formal-that-is-the-question-in-ai-for-theorem-proving": "7629a49afc68019603191dca16e22b83edf9fb5cecce0ad56ec926a21d624ff9",
   "ai-at-imo-2025-a-round-up": "99271623b535851a81b5bce221b6d931554fcd121087c5a8368b8413e5ea8650",
-  "updates-sharing-ai-progress-on-mathematics-amazing-and-my-lecture-plans": "52ca7ad28aaf14894bde6a2f46109a6b9ce7a991fcbebfe1c2164a0657f61b9d"
+  "updates-sharing-ai-progress-on-mathematics-amazing-and-my-lecture-plans": "52ca7ad28aaf14894bde6a2f46109a6b9ce7a991fcbebfe1c2164a0657f61b9d",
+  "biverify-closing-the-loop-between-backward-and-forward-verification-for-mathematical-self-correction": "7254ddf8624dbe936e8358f026baf18315a2eab5ecb78ed7980f7741662984d3",
+  "statopia-a-prover-library-ecosystem-for-automated-formalization-and-proof-discovery-in-statistics": "d2ba6573f61b2036bf0676580d45c6224400adcec053399b27c26b81c60d9c2d",
+  "improving-analytic-constants-via-interpretable-ai-guided-lean-proof-refinement": "f09f2e1f9fe13a703318d1ccee4f27706e9a2e5a23959e4916c3e042ad31e6a8",
+  "introducing-alphaproof-code-a-breakthrough-in-verifying-complex-software-at-depth": "aae811f4a8416489368c915bb887a5b4f30d0e15f2f5c455ae36230e2706357f"
 }
