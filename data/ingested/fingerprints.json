@@ -559,5 +559,14 @@
   "biverify-closing-the-loop-between-backward-and-forward-verification-for-mathematical-self-correction": "7254ddf8624dbe936e8358f026baf18315a2eab5ecb78ed7980f7741662984d3",
   "statopia-a-prover-library-ecosystem-for-automated-formalization-and-proof-discovery-in-statistics": "d2ba6573f61b2036bf0676580d45c6224400adcec053399b27c26b81c60d9c2d",
   "improving-analytic-constants-via-interpretable-ai-guided-lean-proof-refinement": "f09f2e1f9fe13a703318d1ccee4f27706e9a2e5a23959e4916c3e042ad31e6a8",
-  "introducing-alphaproof-code-a-breakthrough-in-verifying-complex-software-at-depth": "aae811f4a8416489368c915bb887a5b4f30d0e15f2f5c455ae36230e2706357f"
+  "introducing-alphaproof-code-a-breakthrough-in-verifying-complex-software-at-depth": "aae811f4a8416489368c915bb887a5b4f30d0e15f2f5c455ae36230e2706357f",
+  "proofcoder-continuous-reasoning-for-automated-software-verification": "6cc78664a18b0172e8c0f0d6a7ecbe4e2a7774501ff6159a2ce3bf2b14c8e7de",
+  "agentic-ai-meets-formal-verification-in-the-era-of-agentic-hardware-development": "c16344686c9e13c242c0ecbad1b700146f7a862989a18e31326e5034c78fb0ec",
+  "g-del-s-incompleteness-theorems-in-grounded-arithmetic": "bcd6df0f40eef1cdb1c8529c6ab4ad8ed8d665e2517f227cb4372073caa50ed8",
+  "curriculum-proof-repair-with-learned-counterexamples": "8886692e80373b734d3abd005f66351c62e33cc44413bb81c71031945cc55626",
+  "megrez-a-knowledge-guided-agent-for-formal-mathematics-over-mk-set-theory": "0aaacad70a0a5af8eafdafb32cd516ba7231debf9d802d4431f8266edd7ad356",
+  "no-finite-rulebook-can-certify-every-safe-program-an-impossibility-theorem-for-gatekeeping-ai-agents": "a9de9634c9aeac2e50e99a13a117529bc8a2bebd047a013b9b6447aad7ff37cf",
+  "trust-but-verify-audit-and-attribute-a-human-in-the-loop-framework-for-checking-ai-produced-research-results": "93e1099d354f480a1ac372bc97e394f31335de099513403955bc11bea62c48d0",
+  "compile-gated-lean-proof-refactoring-with-enterprise-agent-practices-a-model-per-step-under-a-us-3-cap-followed-by-programmatic-rewrite-rules": "e29051b816c348e83f1ca84c7907c679f628966034826a9a356715cf5eb4a764",
+  "jagged-walls-and-unknown-edges-a-workshop-on-free-boundary-problems": "820137e3ba4d6592fce67872b4c9890ec2e034ca172c91ea3cca7423c7fff5d2"
 }

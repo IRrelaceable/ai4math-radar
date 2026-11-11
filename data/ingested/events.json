@@ -32,6 +32,328 @@
     "verificationStatus": "claimed"
   },
   {
+    "id": "evt_arxiv-2611.14106",
+    "title": "ProofCoder: Continuous Reasoning for Automated Software Verification",
+    "slug": "proofcoder-continuous-reasoning-for-automated-software-verification",
+    "summary": "Formal verification using proof assistants provides strong correctness guarantees for software, but constructing proofs remains labor-intensive and requires significant expertise. Recent approaches based on large language models (LLMs) have shown promise in automating proof synthesis. However, these approaches typically constrain the model to a rigid tactic-generation loop, in which the surrounding system controls premise retrieval, proof-state management, and backtracking. We introduce ProofCoder, an agentic proof-synthesis system for Rocq that approaches theorem proving from a coding-agent perspective. Rather than generating tactics within a fixed loop, ProofCoder reasons continuously throughout proof search and uses proof-assistant feedback to decide when to gather additional information, inspect proof states, revise previously generated proof fragments, or backtrack to an earlier point in the proof. This allows it to iteratively construct, repair, and refine proofs, at either tactic-level or whole-proof granularity. We evaluate ProofCoder on 280 challenging verification tasks from the AutoRocq Benchmark. On the best-performing configurations, ProofCoder increases proof success from 47% to 60% over the state-of-theart AutoRocq system, corresponding to a 27.7% relative improvement at approximately half the cost. Our ablations identify continuous reasoning as a key design choice: without it, the agent solves fewer lemmas at substantially higher cost, backtracks four to six times more often, and more frequently discards its own revisions. Whole-proof and tactic-level generation achieve similar success rates but follow distinct search and repair strategies. These results suggest that effective automated software verification requires more than improved tactic selection: continuous reasoning and feedback-guided proof revision are critical ingredients for robust proof synthesis.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.14106",
+    "paperUrl": "https://arxiv.org/abs/2611.14106",
+    "authors": [
+      "Martim Afonso",
+      "Inês Lynce",
+      "Maurizio Morisio",
+      "João F. Ferreira"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.13705",
+    "title": "Agentic AI Meets Formal Verification in the Era of Agentic Hardware Development",
+    "slug": "agentic-ai-meets-formal-verification-in-the-era-of-agentic-hardware-development",
+    "summary": "As AI agents become increasingly capable of generating and optimizing hardware circuits, ensuring the correctness of AI-generated designs becomes more important. Meanwhile, advances in AI lower the barriers to developing and applying formal methods, creating new opportunities to automate and improve hardware verification. This invited paper presents an overview of the methodologies and applications of hardware formal methods in the AI era. First, we examine how agentic AI advances hardware formal methods across three levels: specification, proof construction, and reasoning engines. Second, we discuss how formal methods support reliable AI-driven hardware development through RTL generation, debugging, and correctness-preserving optimization. We review representative research alongside our recent contributions, highlighting key technical advances and insights from experimental results. Finally, we discuss future research opportunities toward proof-native hardware development, where formal reasoning could become an integral part of autonomous hardware design.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Engineering & tool agents",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13705",
+    "paperUrl": "https://arxiv.org/abs/2611.13705",
+    "authors": [
+      "Wenji Fang",
+      "Yuchao Wu",
+      "Jing Wang",
+      "Zhiyao Xie"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.13697",
+    "title": "Gödel's Incompleteness Theorems in Grounded Arithmetic",
+    "slug": "g-del-s-incompleteness-theorems-in-grounded-arithmetic",
+    "summary": "Reflective Grounded Arithmetic (RGA) is a paracomplete arithmetic in which every term is a program and truth is grounded evaluation. RGA discharges a hypothesis only when it proves the hypothesis decided. This paper shows, in a machine-checked Isabelle/HOL development, how Gödel's incompleteness theorems hold for RGA and for systems built on it. RGA's implication is material and RGA has the disjunction property, so the implications the textbook proof of the second theorem uses fail while its entailments and rules hold: Gödel's proof survives as entailments. RGA does not prove its consistency sentence Con, and RGA derives its own second theorem as the entailment $\\mathit{Con}\\vdash\\neg\\mathit{Pr}(\\ulcorner\\mathit{Con}\\urcorner)$ and as one sentence quantified over proofs. The second theorem is then proved once, for every Gödel extension of RGA: an entailment relation on RGA's language, closed under RGA's rules, with a checker that meets three structural conditions, NEC, D3 and EXPL as proof transformers, D1 as closed acceptance, and consistency. D2 is not among the conditions. RGA with its checker is one instance. Inductive Grounded Arithmetic (IGA), RGA with ground induction, is another, its checker adding one rule detector, and IGA does not derive its consistency sentence for it. Adoption, a reflection rule whose premise is a derived warrant that the checker accepts computed proofs of every instance of a universal, gives consistent extensions RGA$^+$ and IGA$^+$. RGA$^+$ derives RGA's consistency sentence and IGA$^+$ derives RGA's and IGA's, so each strictly extends its base, and IGA$^+$ both. The second theorem holds at every adopted notation claim, and adopting Turing's code for that claim's checker derives its consistency sentence, so no claim certifies itself. Whether IGA alone derives RGA's consistency sentence is open, and the paper names what two routes to an answer need.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13697",
+    "paperUrl": "https://arxiv.org/abs/2611.13697",
+    "authors": [
+      "Bryan Ford"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.13627",
+    "title": "Curriculum proof repair with learned counterexamples",
+    "slug": "curriculum-proof-repair-with-learned-counterexamples",
+    "summary": "Language models (LMs) have substantially lowered the barrier to applying formal verification for building reliable and secure software. Existing approaches commonly follow the verifier-in-the-loop paradigm, but the verifier often provides only coarse, binary pass/fail feedback, which offers little actionable signal on how the proof should be repaired. Recent work shows that counterexamples provide more actionable feedback by grounding proof failures in concrete program states, but generating useful ones at inference time requires costly iterative refinement. We present TopoVerus, an LM-based framework for Verus proof repair that internalizes counterexample-guided diagnosis as a model capability, producing useful counterexamples in a single pass. Our key insight is to train counterexample generation not as a standalone validation task, but as a data-driven diagnostic objective: a counterexample is useful when conditioning on it helps the model produce a safe, verifier-passing proof. Given a failed Verus proof and verifier error, TopoVerus generates a structured source-level counterexample, repair rationale, and repaired proof in one trajectory, optimized with reinforcement learning from Verus feedback and a proof-code safety gate. To guide the order of invariant repairs, TopoVerus introduces a curriculum with a topological graph reward based on invariant dependencies derived from inductiveness tests, which encourages counterexample generation to follow the same topological order. Across seven Verus benchmarks with 471 problems, TopoVerus achieves 61.6%/72.2% weighted-average Safe-Pass@1/Safe-Pass@3, outperforming the strongest baseline, Claude Sonnet 4.5, by 5.7/6.3 points. We also show that TopoVerus's learned counterexamples can directly augment the reasoning of existing LM-based proof repair approaches, improving their success rate by 64.3% compared to chain-of-thought diagnostics.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Prompting & decoding",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13627",
+    "paperUrl": "https://arxiv.org/abs/2611.13627",
+    "authors": [
+      "Yuechun Sun",
+      "Jun Yang",
+      "Kexin Pei"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.13613",
+    "title": "Megrez: A Knowledge-Guided Agent for Formal Mathematics over MK Set Theory",
+    "slug": "megrez-a-knowledge-guided-agent-for-formal-mathematics-over-mk-set-theory",
+    "summary": "General-purpose coding agents equipped with proof-assistant tools have shown strong performance on standalone competition problems, yet cumulative textbook formalization inside a low-resource mathematical library still faces three obstacles: aligning textbook concepts with library declarations, keeping long-horizon search synchronized with live proof states, and integrating locally verified proofs reliably into a growing codebase. We present Megrez, a knowledge-guided formalization agent for Rocq libraries built on Morse--Kelley (MK) set theory. Megrez coordinates a general coding agent through three mechanisms: (1) a source-rebuildable knowledge graph merging formal declarations, compiler references, and curated metadata to support retrieval via Chinese aliases, concept clusters, proof dependencies, and multi-lane full-text ranking; (2) a feedback-driven 1--5 tactic short-burst proving loop paired with a goal-local branch ledger and exponential-interval structured reflection; and (3) a three-check acceptance pipeline (statement fidelity, axiom auditing, and full builds) coupled with a multi-corpus Provider stack and a candidate-bound recoverable batch state machine. Deployment and evaluation on a point-set topology corpus demonstrate effective cross-chapter formalization and scalable premise retrieval.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13613",
+    "paperUrl": "https://arxiv.org/abs/2611.13613",
+    "authors": [
+      "Tiancheng Xu",
+      "Wensheng Yu"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Formalization",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=39289",
+    "title": "Jagged walls and unknown edges: a workshop on free boundary problems",
+    "slug": "jagged-walls-and-unknown-edges-a-workshop-on-free-boundary-problems",
+    "summary": "From 2 to 6 November, the Workshop on Free Boundary Problems brought together more than fifty registered participants from institutions in eleven countries at the CRM. Over five days they heard 21 talks on elliptic and parabolic free boundaries and on geometric measure theory and harmonic analysis in rough domains, with speakers including Guy David, Svitlana Mayboroda, Susanna Terracini and Robin Neumayer. The workshop was the second intensive week of the Intensive Research Programme on Analysis of Free Boundary Problems, which continues at the CRM until 4 December. The post Jagged walls and unknown edges: a workshop on free boundary problems first appeared on Centre de Recerca Matemàtica .",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/jagged-walls-and-unknown-edges-a-workshop-on-free-boundary-problems/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:15:10.430Z",
+    "createdAt": "2026-11-11T05:15:10.430Z",
+    "updatedAt": "2026-11-11T05:15:10.430Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
+    "id": "evt_arxiv-2611.13367",
+    "title": "No finite rulebook can certify every safe program: an impossibility theorem for gatekeeping AI agents",
+    "slug": "no-finite-rulebook-can-certify-every-safe-program-an-impossibility-theorem-for-gatekeeping-ai-agents",
+    "summary": "An AI assistant writes small programs, and a gatekeeper must decide, from the code alone, whether each one may run. Suppose the rules are fixed: never perform a forbidden action, never let the output depend on a secret, always answer eventually. Can two rulebooks, one listing what is allowed and one listing what is not, both be complete, if every rule must be backed by evidence that a machine can check in finite time? We prove that they cannot. Checkable evidence can only establish what a finite record settles, and ``never'' and ``eventually'' are never settled by a finite record. For prohibitions the failure is one-sided: every violation can be caught by watching, but no safe program can be cleared for good. For confidentiality and responsiveness, neither side can be. We characterise exactly which rules about visible behaviour evidence can confirm, and we show that any sound rulebook of $n$ bits omits a compliant program of about $n$ bits. A time limit makes everything checkable, but only by running the program for essentially the whole limit, so a finite machine is not a feasible one. Finally, we show what a gatekeeper can still guarantee: not a verdict on every program, but a checkable list that contains everything it must allow and nothing it must refuse. Simulations on 2.2 million random programs and on self-referential adversaries show that the obstruction is adversarial rather than typical, and that the one error a longer test never removes is the liveness part of confidentiality.",
+    "significance": "",
+    "date": "2026-11-09",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Engineering & tool agents",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13367",
+    "paperUrl": "https://arxiv.org/abs/2611.13367",
+    "authors": [
+      "Tomas Perez-Acle"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-09",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.13042",
+    "title": "Trust, but verify, audit and attribute: a human-in-the-loop framework for checking AI-produced research results",
+    "slug": "trust-but-verify-audit-and-attribute-a-human-in-the-loop-framework-for-checking-ai-produced-research-results",
+    "summary": "Artificial intelligence (AI) systems now produce research results in bulk: in October 2026 a single laboratory released more than 700 AI-generated mathematics manuscripts, only part of them with machine-checked proofs. Such volumes will be checked mostly by AI agents that call specialised software. A passing check certifies only the artefact that was checked. For proofs translated into the proof assistant Lean, it has been shown that this artefact may state something other than the author's text, and that deciding whether a translation is faithful is undecidable in general. The human researcher therefore stays in the loop, and human and AI contributions must be recorded. We propose a domain-independent, human-in-the-loop framework for checking AI-produced results. Validated, agent-usable tools with different grounds of trust check the results; a fidelity audit asks whether each check addressed the claim as stated; the human decides at fixed points; and a dialog report attributes the work to the human and to the AI. We describe two automatic implementations of the tool layer, for mathematics (Wolfram Language, MATLAB, Lean) and statistics (Python and R), and run the mathematical one on a two-claim example. An ambiguous claim was split into two readings, one refuted and one proved.",
+    "significance": "",
+    "date": "2026-11-09",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13042",
+    "paperUrl": "https://arxiv.org/abs/2611.13042",
+    "authors": [
+      "György Eigner",
+      "Patrik P. Süli",
+      "Roland Hollós"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-09",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.13011",
+    "title": "Compile-Gated Lean Proof Refactoring with Enterprise Agent Practices: A Model per Step under a US\\$3 Cap, Followed by Programmatic Rewrite Rules",
+    "slug": "compile-gated-lean-proof-refactoring-with-enterprise-agent-practices-a-model-per-step-under-a-us-3-cap-followed-by-programmatic-rewrite-rules",
+    "summary": "Our closed-track entry (Arena username Vexorium-Agent) scored 86.31 points on the final board (L = 77.07, H = 81.86, Z = 100) over the 60 final problems, against 33.33 for the reference proofs, 8th at the deadline (top: 92.57), for US\\$166.33 at list prices with every call counted (per problem: mean US\\$2.772, at most US\\$2.874; US\\$3 cap). Three practices carry the entry. First, each paid stage runs the model that measured best per dollar for it among the 9 we tested in our own harness: GPT-6.1 Sol the early sessions, GPT-6.1 Terra the later ones and the tail at 70% of Sol's cost per turn, and Gemini 4 Argon the review and repair; Sol also runs the style rewrite. Second, what our development and research runs learned ships as compiler-checked programmatic rewrite rules rather than prompt text (+0.93 points from rules fixed before the release; +0.26 and +0.30, in sample, from passes built or switched on after the release). Third, every call is recorded and reviewed before each change (all 9 board scores came within -0.063 to +0.015 points of our meter's prediction). The harness, gate and many of these rules also serve our open-track entry. We report the full bill and the spread of three runs.",
+    "significance": "",
+    "date": "2026-11-09",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13011",
+    "paperUrl": "https://arxiv.org/abs/2611.13011",
+    "authors": [
+      "Bobber Cheng"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:14:35.888Z",
+    "createdAt": "2026-11-11T05:14:35.888Z",
+    "updatedAt": "2026-11-11T05:14:35.888Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-09",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
     "id": "evt_https://scottaaronson.blog/?p=10295",
     "title": "Aaronson-Ambainis Conjecture proved! (By AI, of course)",
     "slug": "aaronson-ambainis-conjecture-proved-by-ai-of-course",
