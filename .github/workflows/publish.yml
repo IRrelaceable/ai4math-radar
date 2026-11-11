@@ -43,6 +43,7 @@ jobs:
       - name: Resolve base path
         run: |
           REPO="${GITHUB_REPOSITORY#*/}"
+          OWNER="${GITHUB_REPOSITORY_OWNER}"
           if [ -n "${{ vars.SITE_BASE }}" ]; then
             BASE="${{ vars.SITE_BASE }}"
           elif [[ "$REPO" == *.github.io ]]; then
@@ -51,7 +52,19 @@ jobs:
             BASE="/$REPO"
           fi
           echo "SITE_BASE=$BASE" >> "$GITHUB_ENV"
-          echo "site base: ${BASE:-(root)}"
+
+          # Absolute origin for OpenGraph / metadata URLs. Set the repository
+          # variable SITE_URL when the site is served from a custom domain.
+          if [ -n "${{ vars.SITE_URL }}" ]; then
+            SITE_URL="${{ vars.SITE_URL }}"
+          elif [[ "$REPO" == *.github.io ]]; then
+            SITE_URL="https://${OWNER}.github.io"
+          else
+            SITE_URL="https://${OWNER}.github.io${BASE}"
+          fi
+          SITE_URL="${SITE_URL%/}"
+          echo "NEXT_PUBLIC_SITE_URL=$SITE_URL" >> "$GITHUB_ENV"
+          echo "site base: ${BASE:-(root)}  site url: $SITE_URL"
 
       - name: Ingest new events
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync)

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SearchBox } from "@/components/search/SearchBox";
 import { LangToggle } from "@/components/layout/LangToggle";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { useT } from "@/lib/i18n/context";
 import { sitePathOf } from "@/lib/site";
 
@@ -14,6 +15,8 @@ export function Header() {
   const pathname = sitePathOf(usePathname()).replace(/\/+$/, "") || "/";
   const { t } = useT();
 
+  // Methodology and data sources stay reachable from the footer; the bar
+  // itself carries only the section-level routes.
   const NAV = [
     { href: "/latest", label: t.nav.latest },
     { href: "/timeline", label: t.nav.timeline },
@@ -23,39 +26,48 @@ export function Header() {
     { href: "/about", label: t.nav.about },
   ];
 
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur">
       <div className="container-page flex h-16 items-center gap-4 sm:gap-6">
-        <Link href="/" prefetch className="flex min-w-0 items-center gap-2.5 shrink-0">
+        <Link
+          href="/"
+          prefetch
+          aria-label={t.nav.brand}
+          className="flex min-w-0 shrink-0 items-center gap-2.5"
+        >
           <span className="flex h-8 w-8 items-center justify-center rounded-md bg-ink-900 font-mono text-sm text-white">
             ∑
           </span>
-          <span className="max-w-[11rem] truncate text-[15px] font-semibold tracking-tight text-ink-900 sm:max-w-none">
+          {/* Phones show only the wordmark; the descriptive half of the name
+              would push the search/lang/menu cluster past a 360px viewport. */}
+          <span className="truncate text-[15px] font-semibold tracking-tight text-ink-900 sm:hidden">
+            {t.nav.brandShort}
+          </span>
+          <span className="hidden max-w-[11rem] truncate text-[15px] font-semibold tracking-tight text-ink-900 sm:inline sm:max-w-none">
             {t.nav.brand}
           </span>
         </Link>
 
         {/* Active state is an underline anchored to the header rule, not a
             filled chip — one less rounded box competing with the content. */}
-        <nav className="hidden lg:flex min-w-0 flex-1 self-stretch items-center overflow-hidden">
-          {NAV.map((item) => {
-            const active =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                prefetch
-                className={`flex h-full items-center border-b-2 px-2.5 text-[13px] transition-colors ${
-                  active
-                    ? "border-accent-600 font-medium text-ink-900"
-                    : "border-transparent text-ink-500 hover:text-ink-900"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav className="hidden min-w-0 flex-1 self-stretch items-center lg:flex">
+          {NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              prefetch
+              className={`flex h-full items-center border-b-2 px-2 text-[13px] transition-colors ${
+                isActive(item.href)
+                  ? "border-accent-600 font-medium text-ink-900"
+                  : "border-transparent text-ink-500 hover:text-ink-900"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-3">
@@ -72,23 +84,7 @@ export function Header() {
           </Link>
           <SearchBox variant="header" />
           <LangToggle />
-          <details className="lg:hidden relative">
-            <summary className="list-none cursor-pointer rounded-md border border-ink-200 px-2.5 py-1.5 text-sm text-ink-700">
-              {t.nav.menu}
-            </summary>
-            <div className="absolute right-0 top-10 w-44 rounded-md border border-ink-200 bg-white p-1.5 shadow-lg">
-              {NAV.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  prefetch
-                  className="block rounded px-3 py-2 text-sm text-ink-700 hover:bg-ink-50"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </details>
+          <MobileMenu items={NAV} />
         </div>
       </div>
     </header>

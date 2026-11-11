@@ -14,7 +14,7 @@ export function EventGrid({ events }: { events: ListEvent[] }) {
   }
 
   return (
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
       {events.map((e) => (
         <EventCard key={e.id} event={e} />
       ))}

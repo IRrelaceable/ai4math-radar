@@ -16,12 +16,14 @@ export const dict = {
       timeline: "时间线",
       topics: "研究方向",
       labs: "实验室进展",
-      math4ai: "Math4AI 方向",
+      math4ai: "Math4AI 视角",
       sources: "数据来源",
       about: "关于",
       menu: "菜单",
+      close: "关闭",
       search: "搜索",
       brand: "AI4Math 生态雷达",
+      brandShort: "AI4Math",
       searchPlaceholder: "搜索事件、论文、模型、Benchmark…",
     },
     common: {
@@ -48,7 +50,7 @@ export const dict = {
       evidenceShort: "证据",
     },
     home: {
-      heroLabel: "AI4Math Ecosystem Radar",
+      heroLabel: "AI4Math 生态雷达",
       heroSubtitle: "追踪 AI for Mathematics 的研究、人物、机构、资助、教育与政策共同体动态。",
       heroTitle: "AI for Mathematics 的进展与生态",
       latestHeading: "最新动态",
@@ -72,10 +74,11 @@ export const dict = {
       metaResearchArea: "研究方向",
       metaEvidence: "证据等级",
       metaSourceTier: "来源层级",
-      metaProvenance: "记录方式",
-      provenanceCurated: "固定条目",
-      provenanceCuratedHint:
-        "随语料一次性写入，不随抓取更新；新事件全部由抓取管线自动生成",
+      metaProvenance: "条目来源",
+      provenanceCurated: "编制条目",
+      provenanceCuratedHint: "由编辑整理，并对照公开资料核对其中的事实与链接。",
+      automatedProvenance: "公开渠道同步",
+      automatedProvenanceHint: "来自实验室、期刊与预印本平台的公开更新，尚未经过独立核验。",
       tocLabel: "本页目录",
       whatHappened: "发生了什么",
       problemAddressed: "针对的问题",
@@ -160,7 +163,7 @@ export const dict = {
       discussion: "讨论",
       discussionPending: "讨论区即将开放",
       discussionHint:
-        "每个事件下方都会保留一个讨论位，围绕这篇工作提问、补充证据或指出问题；上线后按事件归档，中英文界面共用同一条讨论串。",
+        "每篇工作下方都可以提问、补充证据或指出问题，讨论区开放后即可参与。",
       discussionPlaceholder: "写下你的问题或补充（尚未开放）",
       discussionButton: "发表",
     },
@@ -238,8 +241,10 @@ export const dict = {
       sources: "Data sources",
       about: "About",
       menu: "Menu",
+      close: "Close",
       search: "Search",
       brand: "AI4Math Ecosystem Radar",
+      brandShort: "AI4Math",
       searchPlaceholder: "Search events, papers, models, benchmarks…",
     },
     common: {
@@ -293,10 +298,11 @@ export const dict = {
       metaResearchArea: "Research area",
       metaEvidence: "Evidence",
       metaSourceTier: "Source tier",
-      metaProvenance: "Provenance",
-      provenanceCurated: "Fixed entry",
-      provenanceCuratedHint:
-        "Written once into the corpus and not refreshed by ingest; new events all come from the pipeline",
+      metaProvenance: "Record source",
+      provenanceCurated: "Compiled entry",
+      provenanceCuratedHint: "Compiled by the editors and checked against the public sources linked here.",
+      automatedProvenance: "Public-channel update",
+      automatedProvenanceHint: "From public lab, journal and preprint updates; not independently verified.",
       tocLabel: "On this page",
       problemAddressed: "Problem addressed",
       whyMatters: "Why does it matter?",
@@ -381,7 +387,7 @@ export const dict = {
       discussion: "Discussion",
       discussionPending: "Discussion opens soon",
       discussionHint:
-        "Every event keeps a discussion slot: ask about the work, add evidence, or flag a problem. Threads will be archived per event and shared across the Chinese and English views.",
+        "Every entry has a place for questions, extra evidence or corrections. The discussion area will open soon.",
       discussionPlaceholder: "Your question or addition (not open yet)",
       discussionButton: "Post",
     },
@@ -451,3 +457,18 @@ export const dict = {
 } as const;
 
 export type Dict = (typeof dict)["zh"];
+
+/**
+ * Compile-time key parity between the two dictionaries.
+ *
+ * `server.ts` and `context.tsx` cast `dict[lang]` to `Dict`, which hides a
+ * missing key on the English side from the type checker and only shows up as
+ * an empty label in the exported HTML. This structural guard keeps the cast
+ * but makes `tsc --noEmit` fail whenever `en` loses a key that `zh` has.
+ */
+type KeyShape<T> = T extends readonly unknown[]
+  ? unknown
+  : T extends object
+    ? { [K in keyof T]: KeyShape<T[K]> }
+    : unknown;
+const _enKeyParity: KeyShape<(typeof dict)["zh"]> = dict.en;

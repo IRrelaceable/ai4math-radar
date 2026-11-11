@@ -3,9 +3,10 @@
 // Primary data unit = ResearchEvent (a trackable research progress item),
 // with Paper / Model / Benchmark / Dataset / RelatedWork attached to it.
 //
-// Provider is PostgreSQL. The application still runs without a database:
-// when DATABASE_URL is not set, lib/db falls back to the bundled demo store
-// built from data/seed/events.ts (see README).
+// Provider is PostgreSQL. This backend is optional: the published site is a
+// static export that never opens a database connection. When DATABASE_URL is
+// unset, lib/db uses the file-based store built from data/seed + data/ingested
+// (see README). This schema is retained for local experiments only.
 
 generator client {
   provider = "prisma-client-js"

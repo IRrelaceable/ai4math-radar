@@ -21,10 +21,10 @@ const zh = {
   /** Browser tab metadata (used by each page's `generateMetadata`). */
   meta: {
     latest: { title: "最新 AI4Math 生态事件", desc: "AI for Mathematics 的研究、人物、机构与教育、资助与政策共同体事件，可按五类筛选。" },
-    math4ai: { title: "Math4AI 方向", desc: "研究对象是 AI 系统本身的科研事件——改进训练方法、用数学理论改进算法、解释模型的数学性质——按「研究对象 → 核心目标 → 实际贡献」三步判定，含双向兼有的事件。" },
+    math4ai: { title: "Math4AI 方向", desc: "研究对象是 AI 系统本身的科研事件——改进训练方法、用数学理论改进算法、解释模型的数学性质——按研究对象、核心目标与实际贡献区分，含双向兼有的事件。" },
     timeline: { title: "时间线", desc: "按年份回看已记录的 AI4Math 事件，含逐年记录量与事件类别构成。" },
     topics: { title: "研究方向", desc: "六个研究方向的索引：方向轴构成、近 12 个月走势、子方向与最近记录。" },
-    labs: { title: "实验室进展", desc: "OpenAI 与 Anthropic 在 AI4Math 上公开发布的成果与已解决的问题，按时间排列，每条记录保留原始来源。" },
+    labs: { title: "实验室进展", desc: "{range} 年 OpenAI、Anthropic、二者联合支持及独立研究者公开的数学成果时间线，共 {n} 条，按年份编排，每条附原始来源链接。" },
     search: { title: "搜索", desc: "全站搜索：研究事件、论文、方向、模型与 Benchmark。" },
     about: { title: "关于", desc: "AI4Math 生态雷达：追踪研究进展、人物、机构、资助与政策事件，每条记录都保留原始来源链接。" },
     methodology: { title: "标签释义——如何阅读这些标签", desc: "证据等级、来源层级、事件类型、核验状态、AI 参与程度与方向轴的标签释义。" },
@@ -57,7 +57,7 @@ const zh = {
   math4ai: {
     label: "方向轴",
     title: "Math4AI：数学服务 AI 的进展",
-    sub: "数学作为方法、理论或测试场，研究对象是 AI 系统本身的事件——训练方法、算法改进与模型性质解释。判定按“研究对象 → 核心目标 → 实际贡献”三步进行；双向兼有的也在此列出，可继续按事件类别、研究方向与时间筛选。",
+    sub: "数学作为方法、理论或测试场，研究对象是 AI 系统本身的事件——训练方法、算法改进与模型性质解释。按研究对象、核心目标与实际贡献区分；双向兼有的也在此列出，可继续按事件类别、研究方向与时间筛选。",
   },
 
   /** app/timeline/page.tsx */
@@ -144,6 +144,7 @@ const zh = {
   /** app/research/[slug]/page.tsx — extras beyond the core `detail.*` keys. */
   detail: {
     crumbEvent: "生态事件",
+    crumbResearch: "研究进展",
     demoEntry: "示例 / 演示条目",
     venueMissing: "未记录发表信息",
     howToReadLabels: "如何阅读这些标签",
@@ -152,14 +153,61 @@ const zh = {
   /** app/labs/page.tsx */
   labs: {
     label: "实验室进展",
-    title: "两家前沿实验室在 AI4Math 上的进展",
-    sub: "OpenAI 与 Anthropic 公开发布、且与数学直接相关的成果：解决了什么问题、给出了什么产物、留下了什么可核对的链接。按时间由新到旧排列，每条记录下方都保留讨论位。",
+    title: "前沿实验室与独立研究者的 AI4Math 进展",
+    sub: "按年份回看 {range} 年 OpenAI、Anthropic、二者联合支持及独立研究者的数学成果：新证明、候选证明、形式化工件与评测结果。每条都附有原始论文或公告，方便回到出处核对。",
     openai: "OpenAI",
     anthropic: "Anthropic",
     count: { one: "{n} 条记录", many: "{n} 条记录" },
-    sectionEmpty: "这一分类的记录正在整理，补齐后会出现在这里。",
-    pageEmpty: "实验室进展正在整理中：两家的成果会按年份逐条录入，并保留原始公告与论文链接。",
-    howToRead: "这批条目与信息流共用同一套字段：方向轴、证据等级、来源层级与 AI 参与程度，规则见标签释义。",
+    sectionEmpty: "这一分类暂无记录。",
+    pageEmpty: "暂无实验室动态。",
+    howToRead: "信息流中的条目带有证据等级与来源层级标记，含义见标签释义。",
+
+    /** Editorial research archive imported from the source timeline document. */
+    archive: {
+      label: "研究档案",
+      title: "AI4Math 进展时间线 · {range}",
+      intro: "按年份整理 OpenAI、Anthropic、二者联合支持及独立研究者的数学成果，共 {n} 条。展开任意一条可查看研究问题、结果、参与人与原始来源。",
+      caveat: "日期为成果公开日，不一定是研究完成日；只能精确到月的记录保留到月。竞赛题、已知定理的形式化与重现，与首次解决开放问题不同；预印本与候选证明尚未经过独立验证。",
+      readingTitle: "如何阅读这份时间线",
+      filterAll: "全部",
+      filterOpenai: "OpenAI 相关",
+      filterAnthropic: "Anthropic 相关",
+      filterJoint: "联合",
+      filterIndependent: "独立",
+      badge: { openai: "OpenAI", anthropic: "Anthropic", joint: "联合", independent: "独立" },
+      sampleTag: "样例",
+      sampleNote: "标为「样例」的条目摘自同一批 722 篇手稿，只作抽样展示，不另计为独立成果。",
+      recordCount: "{n} 条",
+      recordCountOne: "{n} 条",
+      yearCount: "{n} 条",
+      yearCountOne: "{n} 条",
+      yearOnly: "{y} 年",
+      dateConvention: "公开日期",
+      fields: {
+        attribution: "归属",
+        problem: "研究问题",
+        result: "结果",
+        model: "模型",
+        people: "参与人",
+        division: "人与模型分工",
+        verification: "验证情况",
+        scope: "适用范围",
+        extras: "补充说明",
+        sources: "来源",
+        related: "相关条目",
+      },
+      expand: "查看完整核查记录",
+      collapse: "收起核查记录",
+      baselinesTitle: "相关模型能力背景",
+      baselinesHint: "以下两个发布提供当时的能力参照。评测条件不同，分数不宜直接比较。",
+      sourceNote: "资料核对截至 2026-10-16。时间线持续更新，未列出的成果不代表未发生。",
+    },
+
+    /** Recent lab items picked up by the automated ingest pipeline. */
+    automated: {
+      title: "近期动态",
+      hint: "来自两家实验室及官方渠道的近期条目，按实验室分组。",
+    },
   },
 
   /** app/search/page.tsx */
@@ -303,10 +351,10 @@ const en = {
   /** Browser tab metadata (used by each page's `generateMetadata`). */
   meta: {
     latest: { title: "Latest AI4Math Ecosystem Events", desc: "Research, people, institutions & education, funding and policy events in AI for Mathematics, filterable by class." },
-    math4ai: { title: "Math4AI direction", desc: "Research events whose object is the AI system itself — training methods, mathematically grounded algorithms, analyses of model properties — judged by research object → core goal → actual contribution, co-primary events included." },
+    math4ai: { title: "Math4AI direction", desc: "Research events whose object is the AI system itself — training methods, mathematically grounded algorithms, analyses of model properties — grouped by research object, core goal and actual contribution, co-primary events included." },
     timeline: { title: "Timeline", desc: "Browse recorded AI4Math events year by year, with a density overview and class mix." },
     topics: { title: "Topics", desc: "Index of six research directions: direction-axis mix, 12-month trend, sub areas and latest records." },
-    labs: { title: "Lab track", desc: "Public OpenAI and Anthropic AI4Math results and solved problems, in chronological order, each with its original source." },
+    labs: { title: "Lab track", desc: "A {range} timeline of {n} public mathematical results from OpenAI, Anthropic, jointly supported efforts and independent researchers, arranged by year, each with its original source link." },
     search: { title: "Search", desc: "Full-site search across research events, papers, topics, models and benchmarks." },
     about: { title: "About", desc: "The AI4Math Ecosystem Radar: research, people, institutions, funding and policy events, each with a link back to its original source." },
     methodology: { title: "Glossary — how to read the labels", desc: "Definitions of evidence levels, source tiers, event classes, verification states, AI involvement and the direction axis." },
@@ -335,7 +383,7 @@ const en = {
   math4ai: {
     label: "Direction axis",
     title: "Math4AI: mathematics in service of AI",
-    sub: "Events where mathematics is the method, theory or testbed and the object is the AI system — training methods, algorithm improvements and analyses of model properties. Judged by research object → core goal → actual contribution; co-primary events appear here too, and the usual class, research-area and time filters still apply.",
+    sub: "Events where mathematics is the method, theory or testbed and the object is the AI system — training methods, algorithm improvements and analyses of model properties. Grouped by research object, core goal and actual contribution; co-primary events appear here too, and the usual class, research-area and time filters still apply.",
   },
 
   timeline: {
@@ -418,6 +466,7 @@ const en = {
 
   detail: {
     crumbEvent: "Ecosystem event",
+    crumbResearch: "Research progress",
     demoEntry: "demo / example entry",
     venueMissing: "Publication details not recorded",
     howToReadLabels: "How to read these labels",
@@ -425,14 +474,61 @@ const en = {
 
   labs: {
     label: "Lab track",
-    title: "Frontier-lab progress on AI4Math",
-    sub: "Public OpenAI and Anthropic work that speaks directly to mathematics: what was solved, what artifact was released, and where to check it. Newest first; every record keeps a discussion slot.",
+    title: "Frontier labs and independent researchers in AI4Math",
+    sub: "A year-by-year view ({range}) of public mathematical results from OpenAI, Anthropic, jointly supported efforts and independent researchers: new proofs, candidate proofs, formalization artifacts and evaluations. Every record links back to the original paper or announcement.",
     openai: "OpenAI",
     anthropic: "Anthropic",
     count: { one: "{n} record", many: "{n} records" },
-    sectionEmpty: "Records for this lab are being compiled and will appear here.",
-    pageEmpty: "The lab track is being compiled: each lab's work will be entered year by year, with its original announcement and paper links preserved.",
-    howToRead: "These records use the same fields as the feed: direction axis, evidence level, source tier and AI role; see the label guide for the rules.",
+    sectionEmpty: "No records in this category yet.",
+    pageEmpty: "No lab updates yet.",
+    howToRead: "Feed entries carry evidence-level and source-tier marks; see the label guide for what they mean.",
+
+    /** Editorial research archive imported from the source timeline document. */
+    archive: {
+      label: "Research archive",
+      title: "AI4Math progress timeline · {range}",
+      intro: "Public mathematical results from OpenAI, Anthropic, jointly supported efforts and independent researchers, arranged by year ({n} records in total). Each entry shows its date, attribution, result and links to the original sources.",
+      caveat: "A date is when a result became public, not necessarily when the work was done; month-level records stay at month precision. Contest problems, formalizations and rediscoveries differ from solving an open problem for the first time, and preprints and candidate proofs have not been independently verified.",
+      readingTitle: "How to read this timeline",
+      filterAll: "All",
+      filterOpenai: "OpenAI-related",
+      filterAnthropic: "Anthropic-related",
+      filterJoint: "Joint",
+      filterIndependent: "Independent",
+      badge: { openai: "OpenAI", anthropic: "Anthropic", joint: "Joint", independent: "Independent" },
+      sampleTag: "sample",
+      sampleNote: "Entries marked “sample” are drawn from one batch of 722 manuscripts; they illustrate the batch and are not counted as separate results.",
+      recordCount: "{n} records",
+      recordCountOne: "{n} record",
+      yearCount: "{n} records",
+      yearCountOne: "{n} record",
+      yearOnly: "{y}",
+      dateConvention: "Date published",
+      fields: {
+        attribution: "Attribution",
+        problem: "Research problem",
+        result: "Result",
+        model: "Model",
+        people: "People",
+        division: "Human / model split",
+        verification: "Verification",
+        scope: "Scope",
+        extras: "Additional detail",
+        sources: "Sources",
+        related: "Related entries",
+      },
+      expand: "Full verification record",
+      collapse: "Hide verification record",
+      baselinesTitle: "Related model capabilities",
+      baselinesHint: "These two releases give context for the period. Evaluation conditions differ, so the scores are not directly comparable.",
+      sourceNote: "Sources checked through 2026-10-16. The timeline keeps growing; a result missing here does not mean it did not happen.",
+    },
+
+    /** Recent lab items picked up by the automated ingest pipeline. */
+    automated: {
+      title: "Recent updates",
+      hint: "Recent entries from the two labs and their official channels, grouped by lab.",
+    },
   },
 
   search: {

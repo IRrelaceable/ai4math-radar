@@ -412,4 +412,19 @@ body {
   .disclosure[open] > summary .disclosure-sign::after {
     content: "\2212";
   }
+
+  /* Swap the collapsible label without JS. Used by the archive record's
+     optional verification notes, which stay closed by default. */
+  .verification-toggle > summary .when-closed {
+    display: inline;
+  }
+
+  .verification-toggle[open] > summary .when-closed,
+  .verification-toggle > summary .when-open {
+    display: none;
+  }
+
+  .verification-toggle[open] > summary .when-open {
+    display: inline;
+  }
 }

@@ -16,6 +16,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "test": "vitest run",
+    "publish": "node scripts/build-site.mjs",
+    "publish:full": "npm run sync && node scripts/build-site.mjs",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",

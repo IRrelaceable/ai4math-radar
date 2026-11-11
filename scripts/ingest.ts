@@ -6,7 +6,7 @@ import {
   readIngestedFingerprints,
   writeIngestedFingerprints,
 } from "@/lib/db/ingested";
-import { readSourceStatuses, updateSourceStatus } from "@/lib/db/sourceStatus";
+import { backoffMs, readSourceStatuses, updateSourceStatus } from "@/lib/db/sourceStatus";
 import { getLiveResearchSources, type ResearchSource } from "@/lib/sources";
 import { writeStaticData } from "@/lib/buildDataset";
 
@@ -21,6 +21,7 @@ import { writeStaticData } from "@/lib/buildDataset";
  *   npm run sync -- --source=arxiv        # one source (repeatable)
  *   npm run sync -- --source=arxiv --since=2026-09-01 --limit=100
  *   npm run sync -- --dry                 # fetch + classify, persist nothing
+ *   npm run sync -- --all --force        # ignore failure backoff, retry all sources
  *
  * Without `--since`, each source resumes from the cursor stored by its last
  * successful run.
@@ -39,13 +40,15 @@ interface Options {
   since?: string;
   limit: number;
   dry: boolean;
+  force: boolean;
 }
 
 function parseArgs(argv: string[]): Options {
-  const options: Options = { all: false, sources: [], limit: DEFAULT_LIMIT, dry: false };
+  const options: Options = { all: false, sources: [], limit: DEFAULT_LIMIT, dry: false, force: false };
   for (const arg of argv) {
     if (arg === "--all") options.all = true;
     else if (arg === "--dry") options.dry = true;
+    else if (arg === "--force") options.force = true;
     else if (arg.startsWith("--source=")) options.sources.push(arg.slice("--source=".length));
     else if (arg.startsWith("--since=")) options.since = arg.slice("--since=".length);
     else if (arg.startsWith("--limit=")) {
@@ -79,7 +82,7 @@ async function main() {
       });
 
   if (selected.length === 0) {
-    console.log(`Usage: npm run sync -- [--all | --source=<id> ...] [--since=YYYY-MM-DD] [--limit=N] [--dry]`);
+    console.log(`Usage: npm run sync -- [--all | --source=<id> ...] [--since=YYYY-MM-DD] [--limit=N] [--dry] [--force]`);
     console.log(`Available sources: ${Object.keys(registry).join(", ")}`);
     return;
   }
@@ -92,10 +95,36 @@ async function main() {
   let added = 0;
   let updated = 0;
   let failed = 0;
+  let skipped = 0;
+  // A manually selected source, a dry run and --force are explicit retries;
+  // only the scheduled full sweep honours the cooldown.
+  const applyBackoff = !options.dry && !options.force && options.sources.length === 0;
 
   for (const [index, source] of selected.entries()) {
-    const since = options.since ?? statuses[source.id]?.cursor;
+    const previous = statuses[source.id];
+    const since = options.since ?? previous?.cursor;
     const startedAt = new Date().toISOString();
+
+    if (applyBackoff) {
+      const failures =
+        previous?.consecutiveFailures ?? (previous?.status === "error" ? 1 : 0);
+      const waitMs = backoffMs(failures);
+      const lastAttempt = previous?.lastAttemptAt
+        ? Date.parse(previous.lastAttemptAt)
+        : Number.NaN;
+      const elapsedMs = Number.isFinite(lastAttempt)
+        ? Date.now() - lastAttempt
+        : Number.POSITIVE_INFINITY;
+      if (waitMs > 0 && elapsedMs < waitMs) {
+        skipped += 1;
+        console.log(
+          `[${index + 1}/${selected.length}] ${source.id} skipped: ${failures} consecutive ` +
+            `failure(s), retry in ${Math.ceil((waitMs - elapsedMs) / 60_000)} min (--force overrides)`
+        );
+        continue;
+      }
+    }
+
     console.log(
       `[${index + 1}/${selected.length}] ${source.id}${since ? ` since ${since}` : ""}`
     );
@@ -156,7 +185,9 @@ async function main() {
     }
   }
 
-  console.log(`\nDone: +${added} new, ~${updated} updated, ${failed} source(s) failed.`);
+  console.log(
+    `\nDone: +${added} new, ~${updated} updated, ${failed} source(s) failed, ${skipped} cooled down.`
+  );
 
   if (!options.dry) {
     const rows = await writeStaticData();
@@ -166,7 +197,8 @@ async function main() {
   }
 
   // A partial failure still updates the site; a total failure should be red in CI.
-  if (failed > 0 && failed === selected.length) process.exit(1);
+  // Cooled-down sources are known-bad, so they count on the failed side.
+  if (failed > 0 && failed + skipped === selected.length) process.exit(1);
 }
 
 main().catch((error) => {

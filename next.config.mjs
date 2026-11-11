@@ -32,6 +32,9 @@ const nextConfig = {
     NEXT_PUBLIC_SITE_LANG: lang,
     NEXT_PUBLIC_SITE_BASE: siteBase,
     NEXT_PUBLIC_BASE_PATH: basePath,
+    // Published origin for OpenGraph / metadata URLs; empty locally so
+    // app/layout.tsx falls back to the dev origin instead of a fake domain.
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? "",
   },
 };
 

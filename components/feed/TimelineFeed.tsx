@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -88,13 +88,6 @@ export function TimelineFeed() {
     return () => window.removeEventListener("hashchange", openFromHash);
   }, []);
 
-  if (error) {
-    return <p className="text-sm text-rose-600">{c.feed.loadError}</p>;
-  }
-  if (!data) {
-    return <p className="text-sm text-ink-500">{c.feed.loading}</p>;
-  }
-
   const rawType = params.get("type") ?? "";
   const type = (EVENT_TYPES as readonly string[]).includes(rawType)
     ? (rawType as EventType)
@@ -105,70 +98,105 @@ export function TimelineFeed() {
     : undefined;
   const q = (params.get("q") ?? "").trim();
 
-  const filtered = data.events.filter(
-    (e) =>
-      (!type || e.eventType === type) &&
-      (!tier || e.sourceTier === tier) &&
-      (!q || matchesQuery(listSearchText(e), q))
-  );
-  const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+  // All heavy derivations are memoized so filtering only recomputes when the
+  // dataset or the active filters change — never on a render that only toggles
+  // an open/closed year. Guarded for the pre-load state where `data` is null.
+  const { sorted, groups, years, overviewYears, jumps, recentMonths, earliest, latest } =
+    useMemo(() => {
+      const events = data?.events ?? [];
+      const filtered = events.filter(
+        (e) =>
+          (!type || e.eventType === type) &&
+          (!tier || e.sourceTier === tier) &&
+          (!q || matchesQuery(listSearchText(e), q))
+      );
+      const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
 
-  const groups = new Map<string, Map<string, ListEvent[]>>();
-  for (const event of sorted) {
-    const year = event.date.slice(0, 4);
-    const month = event.date.slice(0, 7);
-    const months = groups.get(year) ?? new Map<string, ListEvent[]>();
-    const items = months.get(month) ?? [];
-    items.push(event);
-    months.set(month, items);
-    groups.set(year, months);
-  }
-  const years = [...groups.entries()]
-    .sort((a, b) => b[0].localeCompare(a[0]))
-    .map(([year, months]) => {
-      const byType: Partial<Record<EventType, number>> = {};
-      let count = 0;
-      for (const list of months.values()) {
-        for (const event of list) {
-          count += 1;
-          if (event.eventType) {
-            byType[event.eventType] = (byType[event.eventType] ?? 0) + 1;
-          }
-        }
+      const groups = new Map<string, Map<string, ListEvent[]>>();
+      for (const event of sorted) {
+        const year = event.date.slice(0, 4);
+        const month = event.date.slice(0, 7);
+        const months = groups.get(year) ?? new Map<string, ListEvent[]>();
+        const items = months.get(month) ?? [];
+        items.push(event);
+        months.set(month, items);
+        groups.set(year, months);
       }
-      return { year, months, count, byType };
-    });
+      const years = [...groups.entries()]
+        .sort((a, b) => b[0].localeCompare(a[0]))
+        .map(([year, months]) => {
+          const byType: Partial<Record<EventType, number>> = {};
+          let count = 0;
+          for (const list of months.values()) {
+            for (const event of list) {
+              count += 1;
+              if (event.eventType) {
+                byType[event.eventType] = (byType[event.eventType] ?? 0) + 1;
+              }
+            }
+          }
+          return { year, months, count, byType };
+        });
 
-  const overviewYears = [...years]
-    .reverse()
-    .map(({ year, count }) => ({ year, count }));
-  const earliest = sorted[sorted.length - 1]?.date ?? "";
-  const latest = sorted[0]?.date ?? "";
+      const overviewYears = [...years]
+        .reverse()
+        .map(({ year, count }) => ({ year, count }));
+      const earliest = sorted[sorted.length - 1]?.date ?? "";
+      const latest = sorted[0]?.date ?? "";
 
-  // Recent years each get a chip; older eras stay aggregated so the sticky
-  // bar remains scannable. The overview strip above carries the real density.
-  const RECENT_YEAR = 2020;
-  const jumps: { label: string; count: number; anchor: string }[] = [];
-  const decades = new Map<string, { count: number; anchor: string }>();
-  for (const { year, count } of years) {
-    if (Number(year) >= RECENT_YEAR) {
-      jumps.push({ label: year, count, anchor: `year-${year}` });
-      continue;
-    }
-    const label = `${year.slice(0, 3)}0s`;
-    const entry = decades.get(label);
-    if (entry) entry.count += count;
-    else decades.set(label, { count, anchor: `year-${year}` });
+      // Recent years each get a chip; older eras stay aggregated so the sticky
+      // bar remains scannable. The overview strip above carries the real density.
+      const RECENT_YEAR = 2020;
+      const jumps: { label: string; count: number; anchor: string }[] = [];
+      const decades = new Map<string, { count: number; anchor: string }>();
+      for (const { year, count } of years) {
+        if (Number(year) >= RECENT_YEAR) {
+          jumps.push({ label: year, count, anchor: `year-${year}` });
+          continue;
+        }
+        const label = `${year.slice(0, 3)}0s`;
+        const entry = decades.get(label);
+        if (entry) entry.count += count;
+        else decades.set(label, { count, anchor: `year-${year}` });
+      }
+      for (const [label, { count, anchor }] of decades) jumps.push({ label, count, anchor });
+
+      // Walk the newest records, not the calendar: a gap month with no events
+      // should not consume one of the three open slots. Recomputed after filters,
+      // so a filtered archive always shows something on the first screen.
+      const recentMonths = new Set<string>();
+      for (const event of sorted) {
+        recentMonths.add(event.date.slice(0, 7));
+        if (recentMonths.size >= RECENT_MONTH_COUNT) break;
+      }
+
+      return {
+        sorted,
+        groups,
+        years,
+        overviewYears,
+        jumps,
+        recentMonths,
+        earliest,
+        latest,
+      };
+    }, [data, type, tier, q]);
+
+  const presentTypes = useMemo(
+    () =>
+      [
+        ...new Set(
+          (data?.events ?? []).map((e) => e.eventType).filter((ty): ty is EventType => Boolean(ty))
+        ),
+      ],
+    [data]
+  );
+
+  if (error) {
+    return <p className="text-sm text-rose-600">{c.feed.loadError}</p>;
   }
-  for (const [label, { count, anchor }] of decades) jumps.push({ label, count, anchor });
-
-  // Walk the newest records, not the calendar: a gap month with no events
-  // should not consume one of the three open slots. Recomputed after filters,
-  // so a filtered archive always shows something on the first screen.
-  const recentMonths = new Set<string>();
-  for (const event of sorted) {
-    recentMonths.add(event.date.slice(0, 7));
-    if (recentMonths.size >= RECENT_MONTH_COUNT) break;
+  if (!data) {
+    return <p className="text-sm text-ink-500">{c.feed.loading}</p>;
   }
 
   const toggleYear = (year: string) => {
@@ -194,10 +222,6 @@ export function TimelineFeed() {
       return next;
     });
   };
-
-  const presentTypes = [
-    ...new Set(data.events.map((e) => e.eventType).filter((ty): ty is EventType => Boolean(ty))),
-  ];
 
   const openMonth = (month: string) =>
     document.getElementById(`month-${month}`)?.querySelector("details")?.setAttribute("open", "");

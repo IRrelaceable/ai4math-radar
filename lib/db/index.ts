@@ -14,13 +14,16 @@ const globalStore = globalThis as unknown as {
 };
 
 /**
- * Single entry point used by pages and API routes.
+ * Single entry point for the build-time data layer.
  *
- * Data source selection (the "front-end -> API -> data layer -> ResearchEvent"
- * main line of the project):
+ * The published site is a static export: pages call `getStore()` while they are
+ * prerendered, and there are no API routes or runtime database queries.
  *
- *   DATABASE_URL set   -> PrismaStore   (PostgreSQL, requires `prisma db push` + `db:seed`)
- *   DATABASE_URL unset -> SeedStore     (bundled dataset + ingested cache, zero configuration)
+ *   DATABASE_URL unset -> SeedStore    (bundled corpus + ingested JSON; the
+ *                                      default and the only published path)
+ *   DATABASE_URL set   -> PrismaStore  (optional PostgreSQL backend for local
+ *                                      experiments; requires `prisma db push`
+ *                                      and `db:seed`)
  *
  * Both stores are cached on globalThis: rebuilding the seed store re-merges and
  * re-validates hundreds of events on every call, which showed up as jank when

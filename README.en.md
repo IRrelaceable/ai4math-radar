@@ -34,7 +34,7 @@ into a single dataset. Every event keeps its original source link, evidence leve
 verification record. Filter by area, class, time or evidence level, or follow a field on
 the timeline to see how it got here.
 
-Current dataset: **~650 events**, dating back to **1956**, across **6 research areas**.
+Current dataset: **685 events** (558 collected automatically by the ingest pipeline), dating back to **1956**, across **6 research areas**.
 
 ## Design principles
 
@@ -74,8 +74,9 @@ fields stay empty; items without a confirmable source URL are dropped.
 | Areas | `/topics` · `/topics/[topic]` | Direction-axis mix, 12-month trend, sub areas and latest records for six areas; detail pages add trends, papers, models, benchmarks and events |
 | Event detail | `/research/[slug]` | What happened, key facts, evidence and status, related events, plus **citation links** and **related events** as separate sections |
 | Search | `/search` | Results grouped by event, paper, area, model and benchmark |
+| Lab track | `/labs` | 52 frontier-lab archive records (2020–2026, grouped by year, filterable by OpenAI / Anthropic / joint / independent attribution; four batch-sample entries are tagged and counted once; each shows its result and source links, and the Chinese site keeps the verbatim verification notes behind a disclosure), plus recent lab updates below |
 | Math4AI entry | `/math4ai` | Direction-axis feed: events where mathematics is the method or theory and the object is the AI system (co-primary included) |
-| About | `/about` | What the site tracks, the five event classes, how to read the E/S labels, and the public source registry (the old `/sources` route redirects here) |
+| About | `/about` | What the site tracks, the five event classes, how to read the E/S labels, and the public source registry (the old `/sources` route redirects here; `/research-map` redirects to `/topics`) |
 | Glossary | `/methodology` | Definitions for all six label groups: evidence level, source tier, event class, verification state, AI involvement and direction axis |
 
 **Citation links and related events**: the detail page keeps the two relations apart.
@@ -85,6 +86,25 @@ conclusions carry over. "Related events" groups co-occurring people, institution
 and models into timelines — co-occurrence signals association, not causation. Short chains
 collapse to one line, remaining threads stay expandable and long chains mark the current
 position.
+
+**Frontier-lab research archive**: the main `/labs` archive comes from the
+*Anthropic / OpenAI AI4Math progress timeline* (sources checked through 2026-10-16):
+52 records spanning 2020–2026 with 116 original source links, stored in
+`data/lab-archive/records.ts`. Each record keeps nine fields — attribution and nature,
+problem and field, result, model, people, human/AI division, date and verification,
+scope and follow-up, and original sources. Chinese wording is verbatim from the
+archive; English provides translated headlines, result summaries, attribution and
+date conventions. The verbatim verification record is Chinese-only, so the Chinese
+site keeps it behind a per-entry disclosure and the English site does not show it.
+This is curated separately and is **not merged into the event dataset**:
+several records share one paper URL (entries 14–17 all come from `arXiv:2511.16072`,
+and 45–48 are samples of the same 722-manuscript batch), so URL-based deduplication
+would silently drop them. Archive records cross-link to site events citing the same
+source; recent lab updates are listed separately below. **The public view shows date, attribution, result and source links**, with record counts, year grouping and an attribution filter; the editorial conventions and collection mechanism are not reader-facing. Every archive entry and every event page also carries a discussion slot that is not open yet.
+The archive distinguishes in-house work, third-party use of a lab's models,
+collaborations, independent evaluations and later independent follow-ups;
+"manuscript claims", "candidate proof" and "under review" do not mean independent
+verification. `records.test.ts` guards the dataset's integrity.
 
 **Trust model**: evidence levels E0–E4 (independent replication / testable artifact /
 research record / originator claim / no evidence) and source tiers S0–S4 are labelled
@@ -117,6 +137,10 @@ Data policy:
 
 - Never invent results, arXiv IDs or URLs; leave unverifiable fields empty and drop items
   whose source URL cannot be confirmed.
+- The direction axis (ai4math / math4ai / both) is assigned only to research events with a
+  `researchArea`. Ecosystem classes — people, institutions, funding, policy — are grouped by
+  event class and carry no direction. Research items whose model judgement fails also stay
+  empty; `npm run backfill:direction` fills them once a live model is configured.
 - Publisher-reported results are recorded as originator claims with denominators kept
   (e.g. counted by published statements, not by proven theorems).
 - Ingested entries go straight into the stream; there is no manual review queue, and
@@ -131,6 +155,10 @@ exported as HTML, and there is no server process or database. Sources are regist
 merged with the bundled events, deduplicated, and turned into the Chinese and English
 datasets at build time. Citation links between events are backfilled from OpenAlex
 reference lists via `npm run backfill:citations` (idempotent, safe to re-run).
+
+`prisma/` and `DATABASE_URL` are kept for local experiments only: setting them
+switches `getStore()` to PostgreSQL, while the published build always uses the
+file-based dataset from `data/seed` + `data/ingested` and opens no connection.
 
 Publishing is handled by [`.github/workflows/publish.yml`](.github/workflows/publish.yml):
 on every push to `main`, every 6 hours, or on manual dispatch. Scheduled and manual runs

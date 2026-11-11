@@ -16,12 +16,38 @@ export interface SourceSyncStatus {
   lastAttemptAt?: string;
   lastSuccessAt?: string;
   lastError?: string;
+  /** Runs in a row that ended in an error; drives the retry backoff. */
+  consecutiveFailures?: number;
   cursor?: string;
   accepted?: number;
   added?: number;
   updated?: number;
   rejected?: number;
   total?: number;
+}
+
+/** Sync cadence of the scheduled job; one failure costs at least one full interval. */
+export const BACKOFF_BASE_MS = 6 * 60 * 60 * 1000;
+export const BACKOFF_MAX_MS = 48 * 60 * 60 * 1000;
+
+/**
+ * Exponential cooldown for a source that keeps failing (6h → 12h → 24h → 48h).
+ * A 429 / 403 / timeout is usually not fixed by hammering the endpoint every
+ * scheduled run, so repeated failures progressively space out the retries.
+ */
+export function backoffMs(failures: number): number {
+  if (failures <= 0) return 0;
+  return Math.min(BACKOFF_BASE_MS * 2 ** Math.min(failures - 1, 3), BACKOFF_MAX_MS);
+}
+
+/** Pure bookkeeping helper, kept separate so the retry policy is testable. */
+export function nextFailureCount(
+  status: SourceSyncState,
+  previous: number | undefined
+): number {
+  if (status === "success") return 0;
+  if (status === "error") return (previous ?? 0) + 1;
+  return previous ?? 0;
 }
 
 export function readSourceStatuses(): Record<string, SourceSyncStatus> {
@@ -44,13 +70,19 @@ export function updateSourceStatus(
   patch: Partial<Omit<SourceSyncStatus, "id">> & { label?: string }
 ): SourceSyncStatus {
   const existing = readSourceStatuses()[id];
+  const status = patch.status ?? existing?.status ?? "idle";
   const next = {
     ...existing,
     ...patch,
     id,
     label: patch.label ?? existing?.label ?? id,
-    status: patch.status ?? existing?.status ?? "idle",
+    status,
   } as SourceSyncStatus;
+  // Only an explicit success/error result changes the streak; a cursor-only
+  // update must not inflate it.
+  if (patch.status) {
+    next.consecutiveFailures = nextFailureCount(patch.status, existing?.consecutiveFailures);
+  }
   // A successful run supersedes the previous failure; a stale message on the
   // sources page made a recovered feed look broken.
   if (next.status === "success" && patch.lastError === undefined) {

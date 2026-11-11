@@ -1,5 +1,296 @@
 [
   {
+    "id": "evt_arxiv-2611.14106",
+    "title": "ProofCoder: Continuous Reasoning for Automated Software Verification",
+    "slug": "proofcoder-continuous-reasoning-for-automated-software-verification",
+    "summary": "Formal verification using proof assistants provides strong correctness guarantees for software, but constructing proofs remains labor-intensive and requires significant expertise. Recent approaches based on large language models (LLMs) have shown promise in automating proof synthesis. However, these approaches typically constrain the model to a rigid tactic-generation loop, in which the surrounding system controls premise retrieval, proof-state management, and backtracking. We introduce ProofCoder, an agentic proof-synthesis system for Rocq that approaches theorem proving from a coding-agent perspective. Rather than generating tactics within a fixed loop, ProofCoder reasons continuously throughout proof search and uses proof-assistant feedback to decide when to gather additional information, inspect proof states, revise previously generated proof fragments, or backtrack to an earlier point in the proof. This allows it to iteratively construct, repair, and refine proofs, at either tactic-level or whole-proof granularity. We evaluate ProofCoder on 280 challenging verification tasks from the AutoRocq Benchmark. On the best-performing configurations, ProofCoder increases proof success from 47% to 60% over the state-of-theart AutoRocq system, corresponding to a 27.7% relative improvement at approximately half the cost. Our ablations identify continuous reasoning as a key design choice: without it, the agent solves fewer lemmas at substantially higher cost, backtracks four to six times more often, and more frequently discards its own revisions. Whole-proof and tactic-level generation achieve similar success rates but follow distinct search and repair strategies. These results suggest that effective automated software verification requires more than improved tactic selection: continuous reasoning and feedback-guided proof revision are critical ingredients for robust proof synthesis.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Agent-based proving",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.14106",
+    "paperUrl": "https://arxiv.org/abs/2611.14106",
+    "authors": [
+      "Martim Afonso",
+      "Inês Lynce",
+      "Maurizio Morisio",
+      "João F. Ferreira"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "translations": {
+      "zh": {
+        "title": "ProofCoder：面向自动化软件验证的持续推理",
+        "summary": "形式化验证借助证明助手为软件提供强正确性保证，但构造证明仍然耗时且依赖专家经验。现有基于大语言模型的方法通常把模型限制在固定的策略生成循环中，由外围系统负责前提检索、证明状态管理与回溯。ProofCoder 是一个面向 Rocq 的智能体式证明合成系统，从编码智能体的视角做定理证明：它在整个证明搜索过程中持续推理，并依据证明助手的反馈决定何时补充信息、查看证明状态、修改此前生成的证明片段，或回溯到更早的节点，从而在策略级或整证明粒度上迭代构造、修复与精炼证明。在 AutoRocq Benchmark 的 280 个困难验证任务上，最佳配置把证明成功率从 47% 提升到 60%，相对提升 27.7%，成本约为原来的一半。消融实验显示持续推理是关键设计：去掉它后，智能体解决的引理更少、成本明显更高、回溯次数增加 4 至 6 倍，也更常丢弃自己的修改。整证明生成与策略级生成成功率相近，但搜索与修复策略不同。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.13705",
+    "title": "Agentic AI Meets Formal Verification in the Era of Agentic Hardware Development",
+    "slug": "agentic-ai-meets-formal-verification-in-the-era-of-agentic-hardware-development",
+    "summary": "As AI agents become increasingly capable of generating and optimizing hardware circuits, ensuring the correctness of AI-generated designs becomes more important. Meanwhile, advances in AI lower the barriers to developing and applying formal methods, creating new opportunities to automate and improve hardware verification. This invited paper presents an overview of the methodologies and applications of hardware formal methods in the AI era. First, we examine how agentic AI advances hardware formal methods across three levels: specification, proof construction, and reasoning engines. Second, we discuss how formal methods support reliable AI-driven hardware development through RTL generation, debugging, and correctness-preserving optimization. We review representative research alongside our recent contributions, highlighting key technical advances and insights from experimental results. Finally, we discuss future research opportunities toward proof-native hardware development, where formal reasoning could become an integral part of autonomous hardware design.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13705",
+    "paperUrl": "https://arxiv.org/abs/2611.13705",
+    "authors": [
+      "Wenji Fang",
+      "Yuchao Wu",
+      "Jing Wang",
+      "Zhiyao Xie"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "translations": {
+      "zh": {
+        "title": "智能体 AI 与形式化验证：智能体硬件开发时代",
+        "summary": "随着 AI 智能体越来越能生成与优化硬件电路，确保 AI 生成设计的正确性愈发重要；与此同时，AI 的进展降低了形式化方法的使用门槛，为自动化并改进硬件验证带来新机会。这篇特邀论文综述 AI 时代硬件形式化方法的方法与应用：先考察智能体 AI 如何在规约、证明构造与推理引擎三个层面推进硬件形式化方法，再讨论形式化方法如何通过 RTL 生成、调试与保持正确性的优化，支撑可靠的 AI 驱动硬件开发。文中回顾代表性研究与作者近期工作，并讨论迈向“证明原生”硬件开发的未来方向——让形式化推理成为自主硬件设计的组成部分。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.13697",
+    "title": "Gödel's Incompleteness Theorems in Grounded Arithmetic",
+    "slug": "g-del-s-incompleteness-theorems-in-grounded-arithmetic",
+    "summary": "Reflective Grounded Arithmetic (RGA) is a paracomplete arithmetic in which every term is a program and truth is grounded evaluation. RGA discharges a hypothesis only when it proves the hypothesis decided. This paper shows, in a machine-checked Isabelle/HOL development, how Gödel's incompleteness theorems hold for RGA and for systems built on it. RGA's implication is material and RGA has the disjunction property, so the implications the textbook proof of the second theorem uses fail while its entailments and rules hold: Gödel's proof survives as entailments. RGA does not prove its consistency sentence Con, and RGA derives its own second theorem as the entailment $\\mathit{Con}\\vdash\\neg\\mathit{Pr}(\\ulcorner\\mathit{Con}\\urcorner)$ and as one sentence quantified over proofs. The second theorem is then proved once, for every Gödel extension of RGA: an entailment relation on RGA's language, closed under RGA's rules, with a checker that meets three structural conditions, NEC, D3 and EXPL as proof transformers, D1 as closed acceptance, and consistency. D2 is not among the conditions. RGA with its checker is one instance. Inductive Grounded Arithmetic (IGA), RGA with ground induction, is another, its checker adding one rule detector, and IGA does not derive its consistency sentence for it. Adoption, a reflection rule whose premise is a derived warrant that the checker accepts computed proofs of every instance of a universal, gives consistent extensions RGA$^+$ and IGA$^+$. RGA$^+$ derives RGA's consistency sentence and IGA$^+$ derives RGA's and IGA's, so each strictly extends its base, and IGA$^+$ both. The second theorem holds at every adopted notation claim, and adopting Turing's code for that claim's checker derives its consistency sentence, so no claim certifies itself. Whether IGA alone derives RGA's consistency sentence is open, and the paper names what two routes to an answer need.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Formal corpora & libraries",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13697",
+    "paperUrl": "https://arxiv.org/abs/2611.13697",
+    "authors": [
+      "Bryan Ford"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "有根算术中的哥德尔不完备定理",
+        "summary": "反思性有根算术（RGA）是一种准完备算术：每个项都是程序，真值即有根求值；RGA 只有在证明某假设可判定时才将其消去。本文在 Isabelle/HOL 机器检验的开发中说明，哥德尔不完备定理如何对 RGA 及建立在其上的系统成立。RGA 的蕴涵是实质蕴涵且具有析取性质，因此教科书第二定理证明所用的蕴涵不再成立，但其蕴涵式与规则仍成立——哥德尔的证明以蕴涵式的形式保留下来。RGA 不能证明自身的一致性语句 Con，并能把第二定理导出为 Con ⊢ ¬Pr(⌜Con⌝)，以及一条对证明作全称量化的语句。随后该定理对 RGA 的每个哥德尔扩张一次性得证：一个在 RGA 语言上的蕴涵关系，对 RGA 规则封闭，其检查器满足 NEC、D3、EXPL 三条结构性条件（作为证明变换器）、D1（封闭接受）与一致性，但不要求 D2。RGA 加其检查器是一个实例；在 RGA 上加入地面归纳（ground induction）的 IGA 是另一个，其检查器多一条规则检测器。采纳规则——前提是检查器接受全称命题各实例计算证明的派生凭据——给出满足一致性的扩张 RGA⁺ 与 IGA⁺；二者严格扩张各自的基础系统。第二定理在每个被采纳的记号主张处成立，因此没有主张能为自己出具证明。IGA 单独能否导出 RGA 的一致性语句仍是开放问题，文中指出回答所需的两种路径。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.13627",
+    "title": "Curriculum proof repair with learned counterexamples",
+    "slug": "curriculum-proof-repair-with-learned-counterexamples",
+    "summary": "Language models (LMs) have substantially lowered the barrier to applying formal verification for building reliable and secure software. Existing approaches commonly follow the verifier-in-the-loop paradigm, but the verifier often provides only coarse, binary pass/fail feedback, which offers little actionable signal on how the proof should be repaired. Recent work shows that counterexamples provide more actionable feedback by grounding proof failures in concrete program states, but generating useful ones at inference time requires costly iterative refinement. We present TopoVerus, an LM-based framework for Verus proof repair that internalizes counterexample-guided diagnosis as a model capability, producing useful counterexamples in a single pass. Our key insight is to train counterexample generation not as a standalone validation task, but as a data-driven diagnostic objective: a counterexample is useful when conditioning on it helps the model produce a safe, verifier-passing proof. Given a failed Verus proof and verifier error, TopoVerus generates a structured source-level counterexample, repair rationale, and repaired proof in one trajectory, optimized with reinforcement learning from Verus feedback and a proof-code safety gate. To guide the order of invariant repairs, TopoVerus introduces a curriculum with a topological graph reward based on invariant dependencies derived from inductiveness tests, which encourages counterexample generation to follow the same topological order. Across seven Verus benchmarks with 471 problems, TopoVerus achieves 61.6%/72.2% weighted-average Safe-Pass@1/Safe-Pass@3, outperforming the strongest baseline, Claude Sonnet 4.5, by 5.7/6.3 points. We also show that TopoVerus's learned counterexamples can directly augment the reasoning of existing LM-based proof repair approaches, improving their success rate by 64.3% compared to chain-of-thought diagnostics.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Agent-based proving",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13627",
+    "paperUrl": "https://arxiv.org/abs/2611.13627",
+    "authors": [
+      "Yuechun Sun",
+      "Jun Yang",
+      "Kexin Pei"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "translations": {
+      "zh": {
+        "title": "用学习到的反例做课程式证明修复",
+        "summary": "语言模型显著降低了使用形式化验证构建可靠软件的门槛，但现有“验证器在环”方法通常只得到粗粒度的通过或失败信号，难以指出证明应如何修复。反例能把失败落到具体程序状态，提供更可操作的反馈，但推理时生成有用反例需要昂贵的迭代精炼。本文提出 TopoVerus：一个面向 Verus 证明修复的语言模型框架，把反例引导的诊断内化为模型能力，一次生成即可给出有用反例。关键洞见是把反例生成训练成数据驱动的诊断目标——只有当以反例为条件能帮助模型产出安全且通过验证器的证明时，反例才算有用。给定失败的 Verus 证明与验证器报错，TopoVerus 在一次轨迹中生成结构化源码级反例、修复理由与修复后的证明，并用来自 Verus 反馈的强化学习与证明代码安全门优化。为安排不变式修复的顺序，它引入由归纳性测试推导出的不变式依赖拓扑图奖励，使反例生成遵循相同的拓扑顺序。在含 471 道题的 7 个 Verus 基准上，TopoVerus 的加权平均 Safe-Pass@1/Safe-Pass@3 为 61.6%/72.2%，比最强基线 Claude Sonnet 4.5 高 5.7/6.3 个百分点；其学到的反例还能直接增强现有基于语言模型的证明修复方法，相比思维链诊断把成功率提高 64.3%。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.13613",
+    "title": "Megrez: A Knowledge-Guided Agent for Formal Mathematics over MK Set Theory",
+    "slug": "megrez-a-knowledge-guided-agent-for-formal-mathematics-over-mk-set-theory",
+    "summary": "General-purpose coding agents equipped with proof-assistant tools have shown strong performance on standalone competition problems, yet cumulative textbook formalization inside a low-resource mathematical library still faces three obstacles: aligning textbook concepts with library declarations, keeping long-horizon search synchronized with live proof states, and integrating locally verified proofs reliably into a growing codebase. We present Megrez, a knowledge-guided formalization agent for Rocq libraries built on Morse--Kelley (MK) set theory. Megrez coordinates a general coding agent through three mechanisms: (1) a source-rebuildable knowledge graph merging formal declarations, compiler references, and curated metadata to support retrieval via Chinese aliases, concept clusters, proof dependencies, and multi-lane full-text ranking; (2) a feedback-driven 1--5 tactic short-burst proving loop paired with a goal-local branch ledger and exponential-interval structured reflection; and (3) a three-check acceptance pipeline (statement fidelity, axiom auditing, and full builds) coupled with a multi-corpus Provider stack and a candidate-bound recoverable batch state machine. Deployment and evaluation on a point-set topology corpus demonstrate effective cross-chapter formalization and scalable premise retrieval.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13613",
+    "paperUrl": "https://arxiv.org/abs/2611.13613",
+    "authors": [
+      "Tiancheng Xu",
+      "Wensheng Yu"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Formalization",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "Megrez：面向 MK 集合论形式化数学的知识引导智能体",
+        "summary": "配备证明助手工具的通用编码智能体在独立竞赛题上表现强劲，但在低资源数学库中累积式地形式化教材仍面临三道障碍：把教材概念与库中声明对齐、让长程搜索与实时证明状态保持同步、把局部验证过的证明可靠地并入不断增长的代码库。本文提出 Megrez——一个面向基于 Morse–Kelley（MK）集合论的 Rocq 库的知识引导形式化智能体，通过三种机制协调通用编码智能体：（1）可重建源头的知识图谱，合并形式声明、编译器引用与整理后的元数据，支持中文别名、概念簇、证明依赖与多路全文排序检索；（2）反馈驱动的、每次 1 至 5 个策略的短脉冲证明循环，配合目标局部支路账本与指数间隔的结构化反思；（3）三检验收管线（陈述忠实度、公理审计与完整构建），配合多语料 Provider 栈与候选约束的可恢复批处理状态机。在点集拓扑语料上的部署与评测显示了有效的跨章形式化与可扩展的前提检索。"
+      }
+    }
+  },
+  {
+    "id": "evt_https://deepmind.google/blog/introducing-alphaproof-code/",
+    "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
+    "slug": "introducing-alphaproof-code-a-breakthrough-in-verifying-complex-software-at-depth",
+    "summary": "AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal’s core encryption.",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Agent-based proving",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://deepmind.google/blog/introducing-alphaproof-code/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:53:19.185Z",
+    "createdAt": "2026-11-11T05:53:19.185Z",
+    "updatedAt": "2026-11-11T05:53:19.185Z",
+    "evidenceLevel": "E3",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "AlphaProof Code 发布：深度验证复杂软件的突破",
+        "summary": "AlphaProof Code 智能体在 Lean 中写下三百万行经机器检验的证明，用于验证 Signal 的核心加密实现。"
+      }
+    }
+  },
+  {
+    "id": "evt_https://www.crm.cat/?p=39289",
+    "title": "Jagged walls and unknown edges: a workshop on free boundary problems",
+    "slug": "jagged-walls-and-unknown-edges-a-workshop-on-free-boundary-problems",
+    "summary": "From 2 to 6 November, the Workshop on Free Boundary Problems brought together more than fifty registered participants from institutions in eleven countries at the CRM. Over five days they heard 21 talks on elliptic and parabolic free boundaries and on geometric measure theory and harmonic analysis in rough domains, with speakers including Guy David, Svitlana Mayboroda, Susanna Terracini and Robin Neumayer. The workshop was the second intensive week of the Intensive Research Programme on Analysis of Free Boundary Problems, which continues at the CRM until 4 December. The post Jagged walls and unknown edges: a workshop on free boundary problems first appeared on Centre de Recerca Matemàtica .",
+    "significance": "",
+    "date": "2026-11-10",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.crm.cat/jagged-walls-and-unknown-edges-a-workshop-on-free-boundary-problems/",
+    "authors": [
+      "Pau Varela"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:45.162Z",
+    "createdAt": "2026-11-11T05:54:45.162Z",
+    "updatedAt": "2026-11-11T05:54:45.162Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-10",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "参差边界与未知边缘：自由边界问题研讨会",
+        "summary": "11 月 2 日至 6 日，自由边界问题研讨会在 CRM 举行，来自 11 个国家机构的 50 多名注册者参加。五天内共安排 21 场报告，主题涵盖椭圆与抛物型自由边界，以及粗糙区域上的几何测度论与调和分析；报告人包括 Guy David、Svitlana Mayboroda、Susanna Terracini 与 Robin Neumayer。该研讨会是“自由边界问题分析”密集研究计划的第二个强化周，该计划在 CRM 持续到 12 月 4 日。"
+      }
+    }
+  },
+  {
     "id": "evt_anthropic-news:https://www.anthropic.com/claude-fable-and-mythos-5-2",
     "title": "Introducing Claude Fable 5.2 and Claude Mythos 5.2",
     "slug": "introducing-claude-fable-5-2-and-claude-mythos-5-2",
@@ -44,6 +335,133 @@
         "significance": "公开模型在 30 小时内、以极少监督完成费马大定理形式化，且证明远短于人类引导的首版——大规模智能体团队已经能以单个证明器达不到的规模和速度推进形式化。",
         "aiRoleDescription": "1,000 个 Claude Fable 5.2 智能体在 30 小时内完整形式化了费马大定理，自行组织协作，并按中间定理陈述清单评估进度。",
         "humanContribution": "Anthropic 设置了预发布测试，并提供用于评分的中间定理陈述清单；公告将人工介入描述为极少。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.13367",
+    "title": "No finite rulebook can certify every safe program: an impossibility theorem for gatekeeping AI agents",
+    "slug": "no-finite-rulebook-can-certify-every-safe-program-an-impossibility-theorem-for-gatekeeping-ai-agents",
+    "summary": "An AI assistant writes small programs, and a gatekeeper must decide, from the code alone, whether each one may run. Suppose the rules are fixed: never perform a forbidden action, never let the output depend on a secret, always answer eventually. Can two rulebooks, one listing what is allowed and one listing what is not, both be complete, if every rule must be backed by evidence that a machine can check in finite time? We prove that they cannot. Checkable evidence can only establish what a finite record settles, and ``never'' and ``eventually'' are never settled by a finite record. For prohibitions the failure is one-sided: every violation can be caught by watching, but no safe program can be cleared for good. For confidentiality and responsiveness, neither side can be. We characterise exactly which rules about visible behaviour evidence can confirm, and we show that any sound rulebook of $n$ bits omits a compliant program of about $n$ bits. A time limit makes everything checkable, but only by running the program for essentially the whole limit, so a finite machine is not a feasible one. Finally, we show what a gatekeeper can still guarantee: not a verdict on every program, but a checkable list that contains everything it must allow and nothing it must refuse. Simulations on 2.2 million random programs and on self-referential adversaries show that the obstruction is adversarial rather than typical, and that the one error a longer test never removes is the liveness part of confidentiality.",
+    "significance": "",
+    "date": "2026-11-09",
+    "eventType": "Research",
+    "researchArea": "Mathematical Agents",
+    "subArea": "Engineering & tool agents",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13367",
+    "paperUrl": "https://arxiv.org/abs/2611.13367",
+    "authors": [
+      "Tomas Perez-Acle"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-09",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "translations": {
+      "zh": {
+        "title": "没有有限规则手册能为所有安全程序出具证明：面向 AI 智能体把关的不可能性定理",
+        "summary": "设想一个 AI 助手编写小程序，把关者必须仅凭代码判断每个程序能否运行。规则固定为：不得执行被禁止的动作，不得让输出依赖秘密，必须最终给出答案。如果每条规则都必须有机器能在有限时间内检验的证据支撑，那么“列出允许”与“列出禁止”的两本规则手册能否同时完备？本文证明不能。可检验证据只能确定有限记录所能确定的事，而“永不”与“最终”都不由有限记录确定。对禁止类规则，失败是单侧的：每次违规都能通过观察抓到，但没有安全程序能被永久放行；对保密性与响应性，两侧都无法确定。文中刻画了关于可见行为的哪些规则能被证据确认，并证明任何 n 位的健全规则手册都会漏掉约 n 位的合规程序。加上时间限制会让一切可检验，但需要几乎跑满整个时限，因此有限机器并不等于可行机器。最后给出把关者仍能保证的东西：不是对每个程序给出裁决，而是一份可检验清单，包含它必须允许的一切，且不含它必须拒绝的一切。220 万个随机程序与自指对手的模拟显示，这种障碍是对抗性的而非普遍性的，而延长测试始终无法消除的错误，是保密性中的活性部分。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.13042",
+    "title": "Trust, but verify, audit and attribute: a human-in-the-loop framework for checking AI-produced research results",
+    "slug": "trust-but-verify-audit-and-attribute-a-human-in-the-loop-framework-for-checking-ai-produced-research-results",
+    "summary": "Artificial intelligence (AI) systems now produce research results in bulk: in October 2026 a single laboratory released more than 700 AI-generated mathematics manuscripts, only part of them with machine-checked proofs. Such volumes will be checked mostly by AI agents that call specialised software. A passing check certifies only the artefact that was checked. For proofs translated into the proof assistant Lean, it has been shown that this artefact may state something other than the author's text, and that deciding whether a translation is faithful is undecidable in general. The human researcher therefore stays in the loop, and human and AI contributions must be recorded. We propose a domain-independent, human-in-the-loop framework for checking AI-produced results. Validated, agent-usable tools with different grounds of trust check the results; a fidelity audit asks whether each check addressed the claim as stated; the human decides at fixed points; and a dialog report attributes the work to the human and to the AI. We describe two automatic implementations of the tool layer, for mathematics (Wolfram Language, MATLAB, Lean) and statistics (Python and R), and run the mathematical one on a two-claim example. An ambiguous claim was split into two readings, one refuted and one proved.",
+    "significance": "",
+    "date": "2026-11-09",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13042",
+    "paperUrl": "https://arxiv.org/abs/2611.13042",
+    "authors": [
+      "György Eigner",
+      "Patrik P. Süli",
+      "Roland Hollós"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-09",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "信任，但要验证、审计与归因：核验 AI 产出研究结果的人在环框架",
+        "summary": "AI 系统正在批量产出研究结果：2026 年 10 月，单个实验室发布了 700 多份 AI 生成的数学手稿，其中只有一部分带有机器检验的证明。这样的体量主要由调用专用软件的 AI 智能体来核查，而一次通过的检查只证明被检查的那个工件。对于翻译成 Lean 的证明，已有工作表明，工件所陈述的内容可能不同于作者原文，而判断翻译是否忠实一般是不可判定的。因此人类研究者仍需留在环中，人与 AI 的贡献必须分别记录。本文提出一个领域无关、人在环的核验框架：由具有不同信任基础、经验证且智能体可用的工具检查结果；忠实度审计追问每项检查是否针对所陈述的主张；人类在固定节点做决定；对话式报告把工作归因到人与 AI。文中给出数学（Wolfram Language、MATLAB、Lean）与统计（Python、R）两套工具层的自动实现，并在一个含两项主张的数学例子上运行：一条有歧义的主张被拆成两种读法，其中一种被反驳，另一种被证明。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.13011",
+    "title": "Compile-Gated Lean Proof Refactoring with Enterprise Agent Practices: A Model per Step under a US\\$3 Cap, Followed by Programmatic Rewrite Rules",
+    "slug": "compile-gated-lean-proof-refactoring-with-enterprise-agent-practices-a-model-per-step-under-a-us-3-cap-followed-by-programmatic-rewrite-rules",
+    "summary": "Our closed-track entry (Arena username Vexorium-Agent) scored 86.31 points on the final board (L = 77.07, H = 81.86, Z = 100) over the 60 final problems, against 33.33 for the reference proofs, 8th at the deadline (top: 92.57), for US\\$166.33 at list prices with every call counted (per problem: mean US\\$2.772, at most US\\$2.874; US\\$3 cap). Three practices carry the entry. First, each paid stage runs the model that measured best per dollar for it among the 9 we tested in our own harness: GPT-6.1 Sol the early sessions, GPT-6.1 Terra the later ones and the tail at 70% of Sol's cost per turn, and Gemini 4 Argon the review and repair; Sol also runs the style rewrite. Second, what our development and research runs learned ships as compiler-checked programmatic rewrite rules rather than prompt text (+0.93 points from rules fixed before the release; +0.26 and +0.30, in sample, from passes built or switched on after the release). Third, every call is recorded and reviewed before each change (all 9 board scores came within -0.063 to +0.015 points of our meter's prediction). The harness, gate and many of these rules also serve our open-track entry. We report the full bill and the spread of three runs.",
+    "significance": "",
+    "date": "2026-11-09",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13011",
+    "paperUrl": "https://arxiv.org/abs/2611.13011",
+    "authors": [
+      "Bobber Cheng"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-09",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "编译门控的 Lean 证明重构与企业级智能体实践：每步一模型、3 美元上限，再以程序化改写规则收尾",
+        "summary": "我们的闭源赛道作品（Arena 用户名 Vexorium-Agent）在 60 道决赛题上以 86.31 分位列最终榜（L = 77.07，H = 81.86，Z = 100），参考证明为 33.33 分；截止时排名第 8（最高 92.57），按标价计费共 166.33 美元，所有调用均计入（每题均值 2.772 美元，最高 2.874 美元，上限 3 美元）。三项实践支撑了该作品：第一，每个付费阶段使用自建评测中单位成本表现最好的模型——早期会话用 GPT-6.1 Sol，后期会话与尾段用 GPT-6.1 Terra（每轮成本为 Sol 的 70%），审查与修复用 Gemini 4 Argon，Sol 还负责风格改写。第二，把开发与研究运行中学到的东西固化为经编译器检查的程序化改写规则，而不是提示词文本（发布前固定的规则带来 +0.93 分；发布后构建或启用的流程在样本内分别带来 +0.26 与 +0.30 分）。第三，每次调用都被记录，并在每次改动前复核（9 次榜单得分与计量预测的偏差在 -0.063 到 +0.015 分之间）。同一套 harness、门控与许多规则也服务于我们的公开赛道作品。文中报告完整账单与三次运行的波动。"
       }
     }
   },
@@ -115,6 +533,137 @@
     "verificationStatus": "claimed"
   },
   {
+    "id": "evt_arxiv-2611.13007",
+    "title": "Just AI Governance and the Forbidden-Boundary Principle",
+    "slug": "just-ai-governance-and-the-forbidden-boundary-principle",
+    "summary": "Artificial intelligence (AI) increasingly shapes consequential decisions, yet predictive accuracy is not a sufficient justification for delegated authority. This conceptual study develops an integrated framework for assessing just AI across normative, data, model, and governance layers. Drawing on plural theories of justice, sociotechnical fairness research, and publicly available governance standards, it maps six justice requirements to observable evidence, decision rights, and remedies. It proposes a two-stage evaluation rule: exclude uses that fail independently justified minimum rights constraints, then compare eligible alternatives across multiple performance and governance criteria. As an explicitly limited normative analogy, Genesis chapter 2 motivates a Forbidden-Boundary Principle (FBP), under which an AI agent must not execute externally consequential actions outside pre-authorized boundaries. The resulting First-Principle Safe-Stop Protocol (FPSSP) comprises an independently governed policy monitor, a mandatory execution gate, a restricted or alternative safe-state controller, immutable-oriented audit trails, and accountable human authorization for recovery. We distinguish this normative and traceability contribution from existing Simplex and runtime assurance architectures; we do not claim a novel safety switch or formal proof of universal ethical compliance. A policy schema, threat model, test matrix, outcome definitions, and a prospective comparison design make the proposal falsifiable. No FPSSP implementation, experimental dataset, numerical improvement, or verified latency bound is reported. The framework supports future evaluation rather than constituting evidence of operational safety.",
+    "significance": "",
+    "date": "2026-11-08",
+    "eventType": "PolicyCommunity",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.13007",
+    "paperUrl": "https://arxiv.org/abs/2611.13007",
+    "authors": [
+      "Na Young Ahn"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "verificationHistory": [
+      {
+        "date": "2026-11-08",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "translations": {
+      "zh": {
+        "title": "正义的 AI 治理与禁界原则",
+        "summary": "AI 越来越多地参与重大决策，但预测准确并不足以构成授权正当性。这项概念研究提出一个跨规范、数据、模型与治理四个层面的综合评估框架。它借鉴多元正义理论、社会技术公平研究与公开治理标准，把六项正义要求映射到可观察证据、决策权与救济手段，并提出两阶段评估规则：先排除违反独立证成的最低权利约束的用途，再在合格备选方案之间按多项性能与治理标准比较。作为明确受限的规范性类比，文章以《创世记》第 2 章引出“禁界原则”（FBP）：AI 智能体不得在预先授权的边界之外执行有外部后果的动作。由此形成的“第一原理安全停止协议”（FPSSP）包括独立治理的策略监视器、强制执行的闸门、受限或替代的安全状态控制器、面向不可篡改的审计轨迹，以及恢复时的人类问责授权。作者把这一规范性与可追溯性贡献与现有的 Simplex 与运行时保证架构区分开，不主张新的安全开关，也不主张普遍伦理合规的形式证明。政策模式、威胁模型、测试矩阵、结果定义与前瞻性比较设计使该提案可被证伪。文中未报告 FPSSP 实现、实验数据集、数值改进或经验证的时延界；该框架用于支持后续评估，本身不构成运行安全的证据。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.11368",
+    "title": "BiVerify: Closing the Loop Between Backward and Forward Verification for Mathematical Self-Correction",
+    "slug": "biverify-closing-the-loop-between-backward-and-forward-verification-for-mathematical-self-correction",
+    "summary": "Large language models (LLMs) have made substantial progress in mathematical reasoning but still produce incorrect solutions to complex problems, indicating the need for more reliable self-correction mechanisms. Mathematical self-correction typically identifies errors through verification, which can proceed backward or forward. The two directions provide complementary verification capabilities. Backward verification checks a candidate answer against the original constraints, bypassing complex intermediate reasoning, but cannot ensure correct reasoning or objective completeness. Forward verification follows the problem conditions and current solution, enabling it to locate reasoning errors and assess objective completeness, but may overlook key constraints in complex solution chains. We propose BiVerify, a dynamically scheduled framework for bidirectional mathematical verification. BiVerify begins with backward verification to screen the answer against the original constraints, followed by forward verification of the reasoning process; subsequent direction switching, state resetting, and re-verification are governed by verification outcomes. Upon failure, the system revises the candidate or verification flow until the same candidate passes both directions. We also introduce shared mathematical tools that separate logical reasoning from precise computation. We systematically evaluate BiVerify on five challenging mathematical reasoning benchmarks using multiple mainstream DeepSeek, GPT, and Gemini models. BiVerify exceeds the strongest representative public baseline evaluated in this work by 13.5 percentage points in average accuracy, with the margin reaching 31.2 percentage points on GPT. Further analysis shows that BiVerify's overall performance exceeds that of either verification direction alone.",
+    "significance": "",
+    "date": "2026-11-08",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Reasoning & self-improvement",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.11368",
+    "paperUrl": "https://arxiv.org/abs/2611.11368",
+    "authors": [
+      "Rui Zou",
+      "Xin Zhao",
+      "Mengqi Wei",
+      "Ji-Rong Wen"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-08",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "BiVerify：以双向验证闭环实现数学自我纠错",
+        "summary": "大语言模型在数学推理上进展显著，但仍会对复杂问题给出错误解答，说明需要更可靠的自我纠错机制。数学纠错通常通过验证发现错误，而验证可分为后向与前向，两者能力互补：后向验证用原始约束检查候选答案，绕过复杂的中间推理，但无法保证推理正确或目标完备；前向验证沿问题条件与当前解答推进，能定位推理错误并评估目标完备性，却可能在复杂解答链中忽略关键约束。本文提出 BiVerify——一个动态调度的双向数学验证框架：先做后向验证，按原始约束筛除答案，再对推理过程做前向验证；后续的方向切换、状态重置与再验证由验证结果决定；失败时修改候选答案或验证流程，直到同一候选通过两个方向。文中还引入把逻辑推理与精确计算分开的共享数学工具，并在五个具有挑战性的数学推理基准上，用多种主流 DeepSeek、GPT 与 Gemini 模型系统评测。BiVerify 的平均准确率比本工作中评测的最强代表性公开基线高 13.5 个百分点，在 GPT 上差距达到 31.2 个百分点；进一步分析显示，其整体表现优于任一单独验证方向。"
+      }
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.11110",
+    "title": "Statopia: A Prover--Library Ecosystem for Automated Formalization and Proof Discovery in Statistics",
+    "slug": "statopia-a-prover-library-ecosystem-for-automated-formalization-and-proof-discovery-in-statistics",
+    "summary": "Theoretical results in statistics and machine learning rest on long, technically delicate proofs, and fluent arguments generated by large language models are not necessarily correct. Automated formalization makes such arguments mechanically checkable, and automated proving goes further by discovering machine-checked proofs for statements whose proofs are incomplete or missing altogether. Both require reconstructing assumptions from source materials, accessing specialized mathematical infrastructure and managing long proof developments. We present Statopia, an ecosystem that jointly develops Statopia Prover, an independent agent specialized for formalizing and proving results in statistics and machine learning, and Statlib, a Lean~4 library built with the prover and organized for automated use. The prover controls its own execution without relying on external coding agents. It is built for formal proof discovery and checking existing proofs. A natural-language proof, when available, guides its search but is not required: from a statement alone, the prover develops the argument itself and constructs a Lean proof. Its workflow integrates source preparation, statement review, library supported planning and proof construction. Dynamic proof dependency graphs and task groups support parallel, resumable proof development. Statlib's shared definitions and theorem interfaces are organized for retrieval and composition by agents, and its coverage of statistics keeps expanding. Verified results and usage feedback from the prover inform reviewed library updates, so that proof development drives this expansion. A cross-platform application provides an interactive workspace for uploading source files and running tasks locally or in the cloud.",
+    "significance": "",
+    "date": "2026-11-08",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.11110",
+    "paperUrl": "https://arxiv.org/abs/2611.11110",
+    "authors": [
+      "Ziyuan Chen",
+      "Tong Gan",
+      "Wei Zhang",
+      "Ruofei Fang",
+      "Boyue Tang",
+      "Zhenhua Lin",
+      "Fang Yao"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-08",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "Statopia：面向统计学自动形式化与证明发现的证明器与数学库生态",
+        "summary": "统计学与机器学习的理论结果依赖冗长而技术精细的证明，大语言模型生成的流畅论证未必正确。自动形式化让这类论证可被机器检验，自动证明则更进一步：为证明不完整甚至缺失的陈述发现机器检验的证明。二者都需要从原始材料重建假设、访问专门的数学基础设施，并管理长程证明开发。本文提出 Statopia 生态，联合开发 Statopia Prover 与 Statlib：前者是专为统计学与机器学习结果的形式化与证明而构建的独立智能体，后者是用该证明器构建、面向自动化使用而组织的 Lean 4 库。证明器自行控制执行，不依赖外部编码智能体，既面向新证明的发现，也用于检查已有证明。若有自然语言证明可引导搜索，但没有也能从陈述本身发展论证并构造 Lean 证明。其工作流整合源材料准备、陈述审查、依托数学库的规划与证明构造；动态证明依赖图与任务组支持并行、可恢复的证明开发。Statlib 的共享定义与定理接口按便于智能体检索与组合的方式组织，统计学覆盖范围持续扩大。经检验的结果与证明器的使用反馈会转化为经审阅的库更新，使证明开发推动库的扩展；跨平台应用提供上传源文件并本地或云端运行任务的交互工作区。"
+      }
+    }
+  },
+  {
     "id": "evt_arxiv-2611.10800",
     "title": "Enhancing Mathematical Reasoning in Turkish Large Language Models with Search-Based Inference and Model Merging",
     "slug": "enhancing-mathematical-reasoning-in-turkish-large-language-models-with-search-based-inference-and-model-merging",
@@ -181,6 +730,54 @@
       }
     ],
     "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.10961",
+    "title": "Improving Analytic Constants via Interpretable AI-Guided Lean Proof Refinement",
+    "slug": "improving-analytic-constants-via-interpretable-ai-guided-lean-proof-refinement",
+    "summary": "AI agents are increasingly capable of discovering new mathematical results, yet their reasoning and generated proofs can be difficult to understand and verify. We introduce an interpretable framework for AI-guided mathematical discovery, focused on improving quantitative bounds on analytic constants. Our key insight is that existing proofs often contain slack in intermediate lemmas, which can be tightened without reconstructing the entire argument. To exploit this structure, we represent proofs as partially-formalized Lean blueprints: human-interpretable dependency graphs of definitions, lemmas, and theorems. An AI agent then iteratively refines the Lean code while preserving the blueprint's dependency structure, allowing local improvements to automatically propagate to a verified final bound. This interpretable structure allows humans to inspect the agent's refinements and understand how local improvements propagate to the final theorem. For Grothendieck's constant ($\\mathcal{K}_G$), we obtain $$ \\mathcal{K}_G \\leq \\fracπ{2\\log(1+\\sqrt{2})} - 10^{-17}, $$ an explicit numerical improvement over Krivine's 1977 bound. For Korenblum's constant ($\\mathcal{K}_K$), we obtain $$ \\mathcal{K}_K \\geq 0.356565, $$ improving Wang's 2025 bound of $0.3554$. Our experiments demonstrate the potential of both partial formalization and iterative agentic refinement for interpretable mathematical discovery.",
+    "significance": "",
+    "date": "2026-11-07",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.10961",
+    "paperUrl": "https://arxiv.org/abs/2611.10961",
+    "authors": [
+      "Rahul Saha",
+      "Alan Li",
+      "Anton Xue",
+      "Swarat Chaudhuri",
+      "Adam Klivans",
+      "Pravesh K. Kothari",
+      "Raghu Meka"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:52:57.791Z",
+    "createdAt": "2026-11-11T05:52:57.791Z",
+    "updatedAt": "2026-11-11T05:52:57.791Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Formalization",
+    "verificationHistory": [
+      {
+        "date": "2026-11-07",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "以可解释的 AI 引导 Lean 证明精炼改进解析常数",
+        "summary": "AI 智能体越来越能发现新的数学结果，但其推理与生成的证明往往难以理解和核验。本文提出一个可解释的 AI 引导数学发现框架，聚焦改进解析常数的定量界。关键观察是：现有证明的中间引理常常留有余量，可以在不重建整个论证的情况下收紧。为利用这一结构，作者把证明表示为部分形式化的 Lean 蓝图——由定义、引理与定理构成的人工可读依赖图；AI 智能体在保持蓝图依赖结构的前提下迭代精炼 Lean 代码，使局部改进自动传播为经检验的最终界，人类也能查看智能体的精炼，并理解局部改进如何传到最终定理。对于 Grothendieck 常数，得到 K_G ≤ π/(2 log(1+√2)) − 10^-17，相对 Krivine 1977 年的界有显式数值改进；对于 Korenblum 常数，得到 K_K ≥ 0.356565，优于 Wang 2025 年的 0.3554。实验显示了部分形式化与迭代式智能体精炼在可解释数学发现上的潜力。"
+      }
+    }
   },
   {
     "id": "evt_arxiv-2611.09822",
@@ -5995,6 +6592,43 @@
     "direction": "ai4math"
   },
   {
+    "id": "evt_https://www.icmat.es/?p=21859",
+    "title": "The Small Institute of Mathematics expands its reach in Torrejón de Ardoz",
+    "slug": "the-small-institute-of-mathematics-expands-its-reach-in-torrej-n-de-ardoz",
+    "summary": "The Gauss Mathematics Circle of Torrejón de Ardoz opens this October for students from Guadalajara and the Henares Corridor, from 4th year of Primary School to 2nd year of Secondary School. The initiative is free of charge and has the support of the Small Institute of Mathematics (PIM) of ICMAT and the Institute of Interdisciplinary […] La entrada The Small Institute of Mathematics expands its reach in Torrejón de Ardoz se publicó primero en ICMAT .",
+    "significance": "",
+    "date": "2026-10-23",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.icmat.es/news/23-10-26-en/",
+    "authors": [
+      "ICMAT"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:28.279Z",
+    "createdAt": "2026-11-11T05:54:28.279Z",
+    "updatedAt": "2026-11-11T05:54:28.279Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-23",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "小数学研究所将覆盖范围扩展到 Torrejón de Ardoz",
+        "summary": "Torrejón de Ardoz 的高斯数学圈于本月开放，面向 Guadalajara 与 Henares 走廊的四年级小学生至初二学生。该计划免费，由 ICMAT 的小数学研究所（PIM）与跨学科研究所支持。"
+      }
+    }
+  },
+  {
     "id": "evt_arxiv-2610.31810",
     "title": "PaperFormalizer: Author-in-the-Loop Autoformalization of Research Papers in Lean",
     "slug": "paperformalizer-author-in-the-loop-autoformalization-of-research-papers-in-lean",
@@ -8764,6 +9398,43 @@
       "institutions": [
         "Simons Foundation"
       ]
+    }
+  },
+  {
+    "id": "evt_https://www.icmat.es/?p=21830",
+    "title": "Diego Córdoba (ICMAT-CSIC) to give the talk “Navier-Stokes and AI: a new frontier in mathematical research” at the CSIC Auditorium",
+    "slug": "diego-c-rdoba-icmat-csic-to-give-the-talk-navier-stokes-and-ai-a-new-frontier-in-mathematical-research-at-the-csic-auditorium",
+    "summary": "On Monday 19 October at 13:00, Diego Córdoba, research professor at the Spanish National Research Council (CSIC) at ICMAT, will give a public talk in the CSIC auditorium. He will explain his strategy for studying singularities in the equations of fluids, recognised as a precedent for recent announcements, obtained with the support of artificial intelligence […] La entrada Diego Córdoba (ICMAT-CSIC) to give the talk “Navier-Stokes and AI: a new frontier in mathematical research” at the CSIC Auditorium se publicó primero en ICMAT .",
+    "significance": "",
+    "date": "2026-10-15",
+    "eventType": "People",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.icmat.es/news/15-10-26-2-en/",
+    "authors": [
+      "ICMAT"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:28.279Z",
+    "createdAt": "2026-11-11T05:54:28.279Z",
+    "updatedAt": "2026-11-11T05:54:28.279Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-15",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "ICMAT-CSIC 的 Diego Córdoba 将在 CSIC 礼堂作报告《Navier–Stokes 与 AI：数学研究的新前沿》",
+        "summary": "10 月 19 日（周一）13:00，西班牙国家研究委员会（CSIC）驻 ICMAT 的研究教授 Diego Córdoba 将在 CSIC 礼堂作公开报告。他将讲解研究流体方程奇点问题的策略——这被视为近期若干公告的先例，那些结果是在人工智能支持下得到的。"
+      }
     }
   },
   {
@@ -13700,6 +14371,43 @@
     "verificationStatus": "paper_released"
   },
   {
+    "id": "evt_https://www.icmat.es/?p=21660",
+    "title": "Jezabel Curbelo, the recipient of Spain’s National Young Researchers Award who Began her Research Career at ICMAT",
+    "slug": "jezabel-curbelo-the-recipient-of-spain-s-national-young-researchers-award-who-began-her-research-career-at-icmat",
+    "summary": "ICMAT Alumni Jezabel Curbelo (1987, Los Realejos, Tenerife) Current position (as of 01 October 2026): Professor at the Universitat Politècnica de Catalunya Research area: Geophysics and fluid dynamics PhD thesis at ICMAT: “Instabilities in geophysical fluid dynamics: the influence of symmetry and temperature dependent viscosity in convection”, supervised by Ana María Mancho (ICMAT-CSIC). Defence date: […] La entrada Jezabel Curbelo, the recipient of Spain’s National Young Researchers Award who Began her Research Career at ICMAT se publicó primero en ICMAT .",
+    "significance": "",
+    "date": "2026-10-02",
+    "eventType": "People",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.icmat.es/news/interviews/icmat-alumni/02-10-26-en/",
+    "authors": [
+      "ICMAT"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:28.279Z",
+    "createdAt": "2026-11-11T05:54:28.279Z",
+    "updatedAt": "2026-11-11T05:54:28.279Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-02",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "Jezabel Curbelo：在 ICMAT 开启研究生涯的西班牙国家青年研究者奖得主",
+        "summary": "ICMAT 校友 Jezabel Curbelo（1987 年生于特内里费 Los Realejos）现任加泰罗尼亚理工大学教授，研究方向为地球物理与流体力学。她在 ICMAT 完成的博士论文题为《地球物理流体动力学中的不稳定性：对称性与温度相关黏度在对流中的作用》，导师为 Ana María Mancho（ICMAT-CSIC）。"
+      }
+    }
+  },
+  {
     "id": "evt_arxiv-2610.02525",
     "title": "Learning What to Investigate Next: Meta-Reasoning for Long-Horizon Research Agents",
     "slug": "learning-what-to-investigate-next-meta-reasoning-for-long-horizon-research-agents",
@@ -14435,6 +15143,43 @@
     "direction": "ai4math"
   },
   {
+    "id": "evt_https://www.icmat.es/?p=21672",
+    "title": "Mathematics Intensive Program welcomes new cohort and embraces collaborative work",
+    "slug": "mathematics-intensive-program-welcomes-new-cohort-and-embraces-collaborative-work",
+    "summary": "Four new Mathematics students from the Complutense University of Madrid, all from state schools, are joining the Mathematics Intensive Program (MIP), adding to the four students from the first cohort. As a new feature, the programme is introducing supervised working groups, in which participants will work together on advanced mathematical problems throughout the academic year. […] La entrada Mathematics Intensive Program welcomes new cohort and embraces collaborative work se publicó primero en ICMAT .",
+    "significance": "",
+    "date": "2026-10-01",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.icmat.es/news/01-10-26-en/",
+    "authors": [
+      "ICMAT"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:28.279Z",
+    "createdAt": "2026-11-11T05:54:28.279Z",
+    "updatedAt": "2026-11-11T05:54:28.279Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-10-01",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "数学强化计划迎来新一届学生并推行协作工作",
+        "summary": "四名来自马德里康普顿斯大学、均出身公立学校的新生加入数学强化计划（MIP），加上第一届的四名学生。该计划新设导师指导的工作小组，参与者将在整个学年中共同研究高阶数学问题。"
+      }
+    }
+  },
+  {
     "id": "evt_arxiv-2610.00656",
     "title": "Lingtai: What Concept Geometry Reveals--and Does Not Reveal--About LLM Inference",
     "slug": "lingtai-what-concept-geometry-reveals-and-does-not-reveal-about-llm-inference",
@@ -14973,6 +15718,43 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "math4ai"
+  },
+  {
+    "id": "evt_https://www.icmat.es/?p=21636",
+    "title": "Fluid mathematics at the European Researchers’ Night",
+    "slug": "fluid-mathematics-at-the-european-researchers-night",
+    "summary": "ICMAT at the 2026 European Researchers’ Night. Images of the ICMAT workshop and fair: Laura M. Iraola/ICMAT; podcast images: Ricardo Domingo On 25 September, Andrés Laín, Mencía Reborido and José Antonio Fuentes, predoctoral researchers at ICMAT, brought the mathematics and physical laws behind fluid-related phenomena to the 2026 European Researchers’ Night. Held at Espacio Fundación […] La entrada Fluid mathematics at the European Researchers’ Night se publicó primero en ICMAT .",
+    "significance": "",
+    "date": "2026-09-30",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.icmat.es/news/30-09-26-en/",
+    "authors": [
+      "ICMAT"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:28.279Z",
+    "createdAt": "2026-11-11T05:54:28.279Z",
+    "updatedAt": "2026-11-11T05:54:28.279Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-09-30",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "欧洲研究者之夜上的流体数学",
+        "summary": "9 月 25 日，ICMAT 的博士生 Andrés Laín、Mencía Reborido 与 José Antonio Fuentes 在 2026 年欧洲研究者之夜上，向公众介绍流体相关现象背后的数学与物理定律。活动在 Espacio Fundación 举行。"
+      }
+    }
   },
   {
     "id": "evt_arxiv-2609.38492",
@@ -15525,6 +16307,43 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "math4ai"
+  },
+  {
+    "id": "evt_https://www.icmat.es/?p=21605",
+    "title": "The Small Institute of Mathematics launches its fifth year",
+    "slug": "the-small-institute-of-mathematics-launches-its-fifth-year",
+    "summary": "The Small Institute of Mathematics (PIM) began the 2026–2027 academic year on 18 September. Around 140 students aged between 12 and 18 meet every Friday at ICMAT to solve problems and delve deeper into their passion for mathematics. PIM classes began on 18 September and will take place every Friday, from 5.30 to 8.00 pm, […] La entrada The Small Institute of Mathematics launches its fifth year se publicó primero en ICMAT .",
+    "significance": "",
+    "date": "2026-09-29",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.icmat.es/news/latest/29-09-26-en/",
+    "authors": [
+      "ICMAT"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:28.279Z",
+    "createdAt": "2026-11-11T05:54:28.279Z",
+    "updatedAt": "2026-11-11T05:54:28.279Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-09-29",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "小数学研究所迎来第五年",
+        "summary": "小数学研究所（PIM）于 9 月 18 日开始 2026–2027 学年。约 140 名 12 至 18 岁的学生每周五在 ICMAT 聚会，解题并深入探索数学。课程自 9 月 18 日起每周五 17:30 至 20:00 进行。"
+      }
+    }
   },
   {
     "id": "evt_arxiv-2609.36303",
@@ -17262,6 +18081,43 @@
     ],
     "verificationStatus": "paper_released",
     "direction": "math4ai"
+  },
+  {
+    "id": "evt_https://www.icmat.es/?p=21570",
+    "title": "ICMAT dedicates a scientific meeting to the use of artificial intelligence in mathematical research",
+    "slug": "icmat-dedicates-a-scientific-meeting-to-the-use-of-artificial-intelligence-in-mathematical-research",
+    "summary": "From 14 to 16 September, ICMAT organised the workshop AI in Mathematics days at ICMAT, which brought together more than 100 researchers both in person and online. Three courses were held on the use of artificial intelligence tools in mathematical research, as well as on mathematical formalisation, led by international researchers. A few days ago, […] La entrada ICMAT dedicates a scientific meeting to the use of artificial intelligence in mathematical research se publicó primero en ICMAT .",
+    "significance": "",
+    "date": "2026-09-24",
+    "eventType": "Institutions",
+    "sourceType": "news",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.icmat.es/news/24-09-26-en/",
+    "authors": [
+      "ICMAT"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-11T05:54:28.279Z",
+    "createdAt": "2026-11-11T05:54:28.279Z",
+    "updatedAt": "2026-11-11T05:54:28.279Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-09-24",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed",
+    "translations": {
+      "zh": {
+        "title": "ICMAT 举办科学会议，聚焦人工智能在数学研究中的应用",
+        "summary": "9 月 14 日至 16 日，ICMAT 举办“数学中的 AI”研讨会，100 多名研究者以线下与线上方式参加。会议开设三门课程，由国际研究者讲授人工智能工具在数学研究中的使用以及数学形式化。"
+      }
+    }
   },
   {
     "id": "evt_arxiv-2609.28442",

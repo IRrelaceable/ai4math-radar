@@ -62,7 +62,7 @@ export function EventCard({ event }: { event: ListEvent }) {
             {t.trust.direction[event.direction]}
           </span>
         )}
-        {areaLabel && <span className="truncate text-ink-400">{areaLabel}</span>}
+        {areaLabel && <span className="min-w-0 truncate text-ink-400">{areaLabel}</span>}
         <time dateTime={event.date} className="ml-auto shrink-0 font-mono text-[10px] text-ink-400">
           {formatDate(event.date, lang)}
         </time>

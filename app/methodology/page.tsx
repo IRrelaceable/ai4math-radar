@@ -98,36 +98,40 @@ export default function GlossaryPage() {
   ];
 
   return (
-    <div className="container-page max-w-5xl py-10 lg:py-14">
-      <header className="max-w-3xl">
-        <div className="mono-label mb-2">{m.label}</div>
-        <h1 className="h-display">{m.title}</h1>
-        <p className="lede mt-4">{m.intro}</p>
-      </header>
+    <div className="container-page py-10 lg:py-14">
+      {/* A narrower reading column, left-aligned with the site container so the
+          title lines up with the header and every other page. */}
+      <div className="max-w-5xl">
+        <header className="max-w-3xl">
+          <div className="mono-label mb-2">{m.label}</div>
+          <h1 className="h-display">{m.title}</h1>
+          <p className="lede mt-4">{m.intro}</p>
+        </header>
 
-      <p className="mt-7 rounded-md border border-ink-200 bg-ink-50 px-4 py-3 text-sm leading-relaxed text-ink-700">
-        {m.note}
-      </p>
+        <p className="mt-7 rounded-md border border-ink-200 bg-ink-50 px-4 py-3 text-sm leading-relaxed text-ink-700">
+          {m.note}
+        </p>
 
-      <div className="mt-11 gap-x-12 md:columns-2">
-        {groups.map((group) => (
-          <Legend key={group.title} {...group} />
-        ))}
+        <div className="mt-11 gap-x-12 md:columns-2">
+          {groups.map((group) => (
+            <Legend key={group.title} {...group} />
+          ))}
+        </div>
+
+        <section id="direction-note" className="mt-8 border-t border-ink-100 pt-5">
+          <p className="text-sm leading-relaxed text-ink-500">{m.directionHint}</p>
+        </section>
+
+        <nav className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-ink-100 pt-6 text-sm">
+          <span className="mono-label">{m.seeAlso}</span>
+          <Link href="/about#sources" className="link-quiet">
+            {m.linkSources} →
+          </Link>
+          <Link href="/latest" className="link-quiet">
+            {m.linkLatest} →
+          </Link>
+        </nav>
       </div>
-
-      <section id="direction-note" className="mt-8 border-t border-ink-100 pt-5">
-        <p className="text-sm leading-relaxed text-ink-500">{m.directionHint}</p>
-      </section>
-
-      <nav className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-ink-100 pt-6 text-sm">
-        <span className="mono-label">{m.seeAlso}</span>
-        <Link href="/about#sources" className="link-quiet">
-          {m.linkSources} →
-        </Link>
-        <Link href="/latest" className="link-quiet">
-          {m.linkLatest} →
-        </Link>
-      </nav>
     </div>
   );
 }

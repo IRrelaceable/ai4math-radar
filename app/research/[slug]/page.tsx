@@ -22,6 +22,16 @@ import { getLang, t } from "@/lib/i18n/server";
 import { localizeEvent, localizeEvents, displayArea, displaySubArea } from "@/lib/i18n/localize";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 
+// Module-level cache: every detail page calls listEvents() to build entity
+// threads and neighbour lists. The store content is identical across all ~685
+// renders in a single build, so compute it once and reuse it instead of
+// re-filtering the corpus on every page.
+let cachedAllEvents: ResearchEvent[] | null = null;
+async function getAllEvents(): Promise<ResearchEvent[]> {
+  if (!cachedAllEvents) cachedAllEvents = await getStore().listEvents();
+  return cachedAllEvents;
+}
+
 /** Every stored event gets its own page; unknown slugs are not exported. */
 export async function generateStaticParams() {
   const events = await getStore().listEvents();
@@ -48,8 +58,8 @@ export default async function ResearchDetailPage({
   const event = localizeEvent(found, lang);
 
   // One store pass powers both contextual blocks: the entity threads and the
-  // chronological neighbours in the same research area.
-  const allEvents = await store.listEvents();
+  // chronological neighbours in the same research area. Cached across renders.
+  const allEvents = await getAllEvents();
   const entityThreads = threadsForEvent(
     buildEntityThreads(allEvents),
     event.slug,
@@ -259,7 +269,9 @@ export default async function ResearchDetailPage({
           </>
         )}
         <span className="mx-2 text-ink-300">/</span>
-        <span className="text-ink-700">{p.detail.crumbEvent}</span>
+        <span className="text-ink-700">
+          {event.researchArea ? p.detail.crumbResearch : p.detail.crumbEvent}
+        </span>
       </div>
 
       {/* Below lg the rail is dropped, so the same section links fold into a
@@ -536,7 +548,7 @@ export default async function ResearchDetailPage({
                 ? d.detail.areaAround.replace("{area}", displayArea(event.researchArea, lang))
                 : d.detail.typeAround.replace("{type}", d.trust.type[event.eventType!])}
             </SectionTitle>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {neighbourEvents.map((e) => (
                 <EventCard key={e.id} event={e} />
               ))}
@@ -605,16 +617,22 @@ export default async function ResearchDetailPage({
                 {formatDateLong(event.lastSyncedAt, lang)}
               </MetaRow>
             )}
-            {/* Only fixed corpus entries are marked; every other record comes
-                from the ingest pipeline, so stating that would be noise. */}
-            {(event.provenance ?? "curated") === "curated" && (
+            {/* Both kinds of entry name where the record came from in plain
+                language; the internal collection mechanism is not exposed. */}
+            {(event.provenance ?? "curated") === "curated" ? (
               <MetaRow label={d.detail.metaProvenance}>
                 {d.detail.provenanceCurated}
               </MetaRow>
+            ) : (
+              <MetaRow label={d.detail.metaProvenance}>
+                {d.detail.automatedProvenance}
+              </MetaRow>
             )}
           </dl>
-          {(event.provenance ?? "curated") === "curated" && (
+          {(event.provenance ?? "curated") === "curated" ? (
             <p className="mt-3 text-xs text-ink-500">{d.detail.provenanceCuratedHint}</p>
+          ) : (
+            <p className="mt-3 text-xs text-ink-500">{d.detail.automatedProvenanceHint}</p>
           )}
         </aside>
       </div>
