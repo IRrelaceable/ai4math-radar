@@ -1,5 +1,65 @@
 [
   {
+    "id": "evt_http://terrytao.wordpress.com/?p=18701",
+    "title": "Lean Grimoire",
+    "slug": "lean-grimoire",
+    "summary": "Back in July, I started experimenting with using modern coding agents to build a number of mathematical visualization applets. With the extremely hectic events of the last few months, I had to set those projects aside; but I recently found a bit of time to work on one such project that I had started back […]",
+    "significance": "",
+    "date": "2026-11-12",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://terrytao.wordpress.com/2026/11/11/lean-grimoire/",
+    "authors": [
+      "Terence Tao"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-12T14:50:43.744Z",
+    "createdAt": "2026-11-12T14:50:43.744Z",
+    "updatedAt": "2026-11-12T14:50:43.744Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-12",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
+    "id": "evt_http://xenaproject.wordpress.com/?p=3911",
+    "title": "“…and the proof is checked in Lean”",
+    "slug": "and-the-proof-is-checked-in-lean",
+    "summary": "This post is an attempt to explain in simple terms how to interpret claims of the form “this theorem is correct because it was checked in Lean”. The summary is: there is an important signal that can be extracted from … Continue reading →",
+    "significance": "",
+    "date": "2026-11-12",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://xenaproject.wordpress.com/2026/11/12/and-the-proof-is-checked-in-lean/",
+    "authors": [],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-12T14:50:44.287Z",
+    "createdAt": "2026-11-12T14:50:44.287Z",
+    "updatedAt": "2026-11-12T14:50:44.287Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-12",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_arxiv-2611.14106",
     "title": "ProofCoder: Continuous Reasoning for Automated Software Verification",
     "slug": "proofcoder-continuous-reasoning-for-automated-software-verification",
