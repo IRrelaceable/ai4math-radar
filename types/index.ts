@@ -200,10 +200,6 @@ export const RESEARCH_EVENT_TYPES = [
 ] as const;
 export type ResearchEventType = (typeof RESEARCH_EVENT_TYPES)[number];
 
-/** Primary feed chips: All + the five ecosystem classes. */
-export const FEED_FILTERS = ["All", ...EVENT_TYPES] as const;
-export type FeedFilter = (typeof FEED_FILTERS)[number];
-
 /**
  * Names stated in the source, extracted for cross-event threads. Kept apart
  * from `metadata` (which describes an ecosystem event's own subject) and from
@@ -360,9 +356,6 @@ export interface ResearchEvent {
   createdAt: string;
   updatedAt: string;
 }
-
-/** Normalized shape returned by every API route (camelCase, arrays kept as arrays). */
-export type ResearchEventDTO = ResearchEvent;
 
 /**
  * The part of an event every list surface needs (feed, timeline, topic
