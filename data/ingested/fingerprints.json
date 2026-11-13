@@ -92,7 +92,7 @@
   "call-for-nominations-for-austms-prizes-awards-and-fellowships-2026": "ec7d47c2e67135bb83c3bf3287fdde4dd11900927bf06b322e87477c7b0ab6dd",
   "congratulations-to-professor-john-cannon": "00cba3895f5bc28b0af8f5ac00330c4c494ef49f77ce099b14a897e9355d5947",
   "call-for-expressions-of-interest-for-science-meets-parliament-2026": "5cd6ae8e3bd6d69dcdd71f364a750bbd19e916b25a59619f764c3b687e4151d4",
-  "call-for-applications-matrix-challenge-workshop-human-ai-collaboration-on-open-smmc-problems": "1087fa73c6cfdd92aab4a15bf8ee370a7bac4772e4f8d7c7d000eabe6d0eb887",
+  "call-for-applications-matrix-challenge-workshop-human-ai-collaboration-on-open-smmc-problems": "4fbee83fb68eac88d6fcd1e0fe68663ee1e6bcec9eeaa9bdf64ed3d9ffef8374",
   "adelaide-university-joins-as-associate-member": "9e74c742e1a271b49a9721ec8a3e694a9cf9ca89af16548978a3d92f2b0d3cf6",
   "the-university-of-sydney-joins-as-associate-member": "97f17126712a949889bd909be74f8f12a70f66ee42c68940d51367e4663e1379",
   "open-call-for-phd-student-research-symposium-eois": "7a81d0850a8ae45f44812cc51e2c4edf8c7b4b4bf0138ea85c85a83aefc7a3b3",
@@ -579,5 +579,11 @@
   "icmat-dedicates-a-scientific-meeting-to-the-use-of-artificial-intelligence-in-mathematical-research": "91dc9785dcebbbb2faf9bfc0d57c50cb393b814f6a3064fe6c12c52546157a8f",
   "jagged-walls-and-unknown-edges-a-workshop-on-free-boundary-problems": "820137e3ba4d6592fce67872b4c9890ec2e034ca172c91ea3cca7423c7fff5d2",
   "lean-grimoire": "fca0df13689d93ef11c38927412e2f3244dde897d715e09a16987dc11e81abd4",
-  "and-the-proof-is-checked-in-lean": "524a90bb1e6f17a0abff185a7cded53267c18a5ad6fba0c3b9096d64829d4e05"
+  "and-the-proof-is-checked-in-lean": "524a90bb1e6f17a0abff185a7cded53267c18a5ad6fba0c3b9096d64829d4e05",
+  "ai-has-its-own-style-in-mathematical-proving": "a3be100ae6afe73e033aa93b2b77d98ef5af9a5b9e278c9a993f2a687a8f30f8",
+  "davinci-prover-agent-native-mid-training-for-formal-theorem-proving": "5136e26fb8fd726bed52b25b3c0d2de47358c0b7f6dd1e3f60a9fe8e051e24a2",
+  "a-diophantine-definition-of-mathbb-z-in-mathbb-q": "e9ecd7c85261b87428478ede5c757856bc3abd699b49eb254c1f80301722d0d6",
+  "show-your-work-in-swahili-reinforcement-learning-for-native-language-mathematical-reasoning": "c242c24d84a737582575d4b1735ef9f382a65b84d703fba0be97e9e1f8246363",
+  "when-is-proof-step-verification-worth-its-cost-operating-requirements-of-certify-or-decline-verification-for-open-weight-mathematical-reasoning": "c6091d22d48b79964358c000f777e58e4c47babf48e5d43a917c592ecd7a5dd3",
+  "a-multi-prover-interactive-protocol-for-certification-of-resolution-refutations": "5d6380f9abf371f5577561631b3c442e4f26e0da67630bf21f9ba15a090b626c"
 }
