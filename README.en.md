@@ -7,7 +7,7 @@
 Turning progress scattered across arXiv, conference proceedings, lab blogs, university news
 and foundation announcements into one filterable, traceable, navigable timeline.
 
-**English** · [中文](README.md) · [Weekly updates](project_management.md)
+**English** · [中文](README.md) · [Weekly updates](project_management.md) · [Live site](https://irrelaceable.github.io/ai4math-radar/)
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
@@ -34,7 +34,7 @@ into a single dataset. Every event keeps its original source link, evidence leve
 verification record. Filter by area, class, time or evidence level, or follow a field on
 the timeline to see how it got here.
 
-Current dataset: **685 events** (558 collected automatically by the ingest pipeline), dating back to **1956**, across **6 research areas**.
+Current dataset: **714 events** (583 collected automatically by the ingest pipeline), dating back to **1956**, across **6 research areas**.
 
 ## Design principles
 
@@ -72,7 +72,7 @@ fields stay empty; items without a confirmable source URL are dropped.
 | Feed | `/latest` | Class / area / time / evidence / tier filters, search, card and compact views |
 | Timeline | `/timeline` | Year-by-year density overview and class mix; the three newest months open by default, sparse years open fully, dense months group by day; search, deep links, class filter |
 | Areas | `/topics` · `/topics/[topic]` | Direction-axis mix, 12-month trend, sub areas and latest records for six areas; detail pages add trends, papers, models, benchmarks and events |
-| Event detail | `/research/[slug]` | What happened, key facts, evidence and status, related events, plus **citation links** and **related events** as separate sections |
+| Event detail | `/research/[slug]` | What happened, key facts, AI involvement, evidence and status, related events, plus **citation links** and **related events** as separate sections |
 | Search | `/search` | Results grouped by event, paper, area, model and benchmark |
 | Lab track | `/labs` | 52 frontier-lab archive records (2020–2026, grouped by year, filterable by OpenAI / Anthropic / joint / independent attribution; four batch-sample entries are tagged and counted once; each shows its result and source links, and the Chinese site keeps the verbatim verification notes behind a disclosure), plus recent lab updates below |
 | Math4AI entry | `/math4ai` | Direction-axis feed: events where mathematics is the method or theory and the object is the AI system (co-primary included) |
@@ -101,10 +101,10 @@ several records share one paper URL (entries 14–17 all come from `arXiv:2511.1
 and 45–48 are samples of the same 722-manuscript batch), so URL-based deduplication
 would silently drop them. Archive records cross-link to site events citing the same
 source; recent lab updates are listed separately below. **The public view shows date, attribution, result and source links**, with record counts, year grouping and an attribution filter; the editorial conventions and collection mechanism are not reader-facing. Every archive entry and every event page also carries a discussion slot that is not open yet.
-The archive distinguishes in-house work, third-party use of a lab's models,
-collaborations, independent evaluations and later independent follow-ups;
-"manuscript claims", "candidate proof" and "under review" do not mean independent
-verification. `records.test.ts` guards the dataset's integrity.
+The archive groups records into four tracks — OpenAI-related, Anthropic-related, joint,
+and independent third-party evaluation; "manuscript claims", "candidate proof" and
+"under review" do not mean independent verification. `records.test.ts` guards the
+dataset's integrity.
 
 **Trust model**: evidence levels E0–E4 (independent replication / testable artifact /
 research record / originator claim / no evidence) and source tiers S0–S4 are labelled
