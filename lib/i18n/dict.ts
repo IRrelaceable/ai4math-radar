@@ -51,8 +51,10 @@ export const dict = {
     },
     home: {
       heroLabel: "AI4Math 生态雷达",
-      heroSubtitle: "追踪 AI for Mathematics 的研究、人物、机构、资助、教育与政策共同体动态。",
       heroTitle: "AI for Mathematics 的进展与生态",
+      heroTitleLead: "AI for Mathematics",
+      heroTitleTail: "的进展与生态",
+      heroSubtitle: "追踪 AI for Mathematics 的研究、人物、机构、资助、教育与政策共同体动态。",
       latestHeading: "最新动态",
       latestHeadingSub: "科研与生态两条线并行更新，先看发生了什么，再顺着实体进入脉络。",
       researchRail: "最新科研进展",
@@ -272,8 +274,10 @@ export const dict = {
     },
     home: {
       heroLabel: "AI4Math Ecosystem Radar",
-      heroSubtitle: "Track research, people, institutions, funding, education and policy across AI for Mathematics.",
       heroTitle: "AI for Mathematics: progress and ecosystem",
+      heroTitleLead: "AI for Mathematics",
+      heroTitleTail: "progress and ecosystem",
+      heroSubtitle: "Track research, people, institutions, funding, education and policy across AI for Mathematics.",
       latestHeading: "Latest activity",
       latestHeadingSub:
         "Research and ecosystem updates run in parallel — scan what happened, then follow an entity into its thread.",

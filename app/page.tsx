@@ -14,11 +14,6 @@ import { displayArea, localizeEvents } from "@/lib/i18n/localize";
  *  past the first screen. */
 const HOME_RAIL_COUNT = 5;
 
-/** Class colours come from the shared [data-type] tokens in globals.css, so
-    this distribution, the entry row below and the event cards cannot drift
-    apart. Each segment declares its own class via `data-type`. */
-const TYPE_FILL = "type-fill";
-
 export default async function HomePage() {
   const lang = getLang();
   const d = t(lang);
@@ -29,8 +24,6 @@ export default async function HomePage() {
   const typeCounts = Object.fromEntries(
     EVENT_TYPES.map((type) => [type, all.filter((e) => e.eventType === type).length])
   ) as Record<(typeof EVENT_TYPES)[number], number>;
-  const typeTotal = Object.values(typeCounts).reduce((sum, n) => sum + n, 0) || 1;
-
   const researchLatest = latest.filter((e) => e.eventType === "Research");
   const ecosystemLatest = latest.filter((e) => e.eventType !== "Research");
 
@@ -51,17 +44,26 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero — white, two-column. The left column is the pitch and search; the
-          right column is a data anchor (headline counts + class distribution)
-          so the first screen has a visual centre instead of one grey block
-          holding two numbers and a row of identical chips. */}
+      {/* Hero — a cover-style masthead over two columns. The left column is the
+          pitch and search; the right column holds only the two headline counts,
+          since the full class breakdown sits directly below the fold. */}
       <section className="border-b border-ink-200">
-        <div className="container-page py-10 sm:py-14">
+        <div className="cover-grid container-page py-10 sm:py-14">
+          <div className="mb-8 flex items-baseline justify-between gap-6 border-b border-ink-200 pb-3">
+            <span className="mono-label">{d.home.heroLabel}</span>
+            {latest[0] && (
+              <span className="whitespace-nowrap font-mono text-[10px] tracking-[0.08em] text-ink-500">
+                {p.timeline.overview.updated} {formatDate(latest[0].date, lang)}
+              </span>
+            )}
+          </div>
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
             <div className="max-w-2xl">
-              <div className="mono-label mb-4">{d.home.heroLabel}</div>
-              <h1 className="h-display">{d.home.heroTitle}</h1>
-              <p className="lede mt-4 max-w-prose">{d.home.heroSubtitle}</p>
+              <h1 aria-label={d.home.heroTitle}>
+                <span className="cover-title-lead">{d.home.heroTitleLead}</span>
+                <span className="cover-title-tail">{d.home.heroTitleTail}</span>
+              </h1>
+              <p className="lede mt-5 max-w-prose">{d.home.heroSubtitle}</p>
 
               <div className="mt-7 max-w-xl">
                 <SearchBox variant="hero" />
@@ -81,56 +83,24 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <aside className="lg:border-l lg:border-ink-200 lg:pl-8">
-              <dl className="divide-y divide-ink-100 border-y border-ink-200">
-                <div className="flex items-baseline justify-between gap-4 py-4">
-                  <dd className="font-mono text-[40px] font-semibold leading-none tracking-[-0.04em] text-ink-900">
+            <aside className="lg:border-l lg:border-ink-200 lg:bg-white lg:pl-8">
+              <dl className="grid grid-cols-2 gap-x-6 border-y border-ink-200 lg:block lg:divide-y lg:divide-ink-100">
+                <div className="py-4 lg:flex lg:items-baseline lg:justify-between lg:gap-4">
+                  <dd className="font-mono text-[38px] font-semibold leading-none tracking-[-0.04em] text-ink-900 lg:text-[48px]">
                     {all.length}
                   </dd>
-                  <dt className="mono-label text-right">{d.home.statsEvents}</dt>
+                  <dt className="mono-label mt-2 lg:mt-0 lg:text-right">{d.home.statsEvents}</dt>
                 </div>
-                <div className="flex items-baseline justify-between gap-4 py-4">
-                  <dd className="font-mono text-[40px] font-semibold leading-none tracking-[-0.04em] text-ink-900">
+                <div className="border-l border-ink-100 py-4 pl-6 lg:flex lg:items-baseline lg:justify-between lg:gap-4 lg:border-l-0 lg:pl-0">
+                  <dd className="font-mono text-[38px] font-semibold leading-none tracking-[-0.04em] text-ink-900 lg:text-[48px]">
                     {topics.length}
                   </dd>
-                  <dt className="mono-label text-right">{d.home.statsAreas}</dt>
+                  <dt className="mono-label mt-2 lg:mt-0 lg:text-right">{d.home.statsAreas}</dt>
                 </div>
               </dl>
 
-              {/* Five-class composition, read as one bar rather than five pills. */}
-              <div className="mt-6">
-                <div className="mono-label mb-2">{d.home.browseByType}</div>
-                <div className="flex h-2 w-full overflow-hidden rounded-sm bg-ink-100" aria-hidden="true">
-                  {EVENT_TYPES.map((type) => (
-                    <span
-                      key={type}
-                      data-type={type}
-                      className={TYPE_FILL}
-                      style={{ width: `${(typeCounts[type] / typeTotal) * 100}%` }}
-                    />
-                  ))}
-                </div>
-                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-                  {EVENT_TYPES.map((type) => (
-                    <span key={type} className="inline-flex items-center gap-1.5 text-[11px] text-ink-500">
-                      <span
-                        data-type={type}
-                        className={`h-2 w-2 rounded-sm ${TYPE_FILL}`}
-                        aria-hidden="true"
-                      />
-                      <span className="font-mono text-ink-700">{typeCounts[type]}</span>
-                      {d.trust.type[type]}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
               {latest[0] && (
-                <div className="mt-6 flex items-baseline justify-between gap-3 border-t border-ink-100 pt-4 text-[11px] text-ink-500">
-                  <span>
-                    <span className="mr-1">{p.timeline.overview.updated}</span>
-                    <span className="font-mono">{formatDate(latest[0].date, lang)}</span>
-                  </span>
+                <div className="mt-5 text-right text-[11px] text-ink-500">
                   <Link href="/about#sources" className="link-quiet">
                     {d.nav.sources} →
                   </Link>
@@ -146,7 +116,7 @@ export default async function HomePage() {
       <section className="border-b border-ink-200 bg-ink-50/60">
         <div className="container-page flex flex-wrap items-center gap-x-6 gap-y-3 py-4">
           <span className="mono-label">{d.home.browseByType}</span>
-          <nav className="flex flex-1 flex-wrap items-center gap-x-6 gap-y-2">
+          <nav className="order-2 flex w-full flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-6 lg:order-none lg:w-auto lg:flex-1">
             {EVENT_TYPES.map((type) => (
               <Link
                 key={type}
@@ -162,7 +132,10 @@ export default async function HomePage() {
               </Link>
             ))}
           </nav>
-          <Link href="/latest" className="text-[13px] font-medium text-accent-700 hover:underline">
+          <Link
+            href="/latest"
+            className="order-1 ml-auto text-[13px] font-medium text-accent-700 hover:underline lg:order-none lg:ml-0"
+          >
             {d.home.viewLatest} →
           </Link>
         </div>
