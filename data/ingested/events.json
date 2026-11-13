@@ -176,6 +176,115 @@
     "verificationStatus": "paper_released"
   },
   {
+    "id": "evt_arxiv-2611.17042",
+    "title": "Infrastructure for Verifiable AI: Where Proof Costs Go and How Hardware Can Help",
+    "slug": "infrastructure-for-verifiable-ai-where-proof-costs-go-and-how-hardware-can-help",
+    "summary": "Users of artificial intelligence services, including those powered by large language models and other transformer-based models, need assurance that inference and training follow the declared computation without exposing private models or data. Zero-knowledge proofs can provide this assurance, but proof generation remains expensive. Hardware acceleration research often reports gains for individual cryptographic operations, leaving their effect on the full cost of proving neural-network workloads, particularly large transformer models, unclear. We introduce a four-layer framework linking verifiable AI workloads, proof systems, cryptographic kernels and hardware platforms, use it to review the literature, and add original measurements of six provers and seven kernels to identify which costs matter in practice. Our measurements show that the dominant cost changes with the proof system and input length. In low-rank fine-tuning, the cost of opening commitments to fixed model weights remains nearly constant across input lengths from 64 to 2048, while the work associated with intermediate values grows. A 13-billion-parameter fine-tuning configuration exceeds the capacity of a 40-gigabyte graphics processor but completes on an 80-gigabyte device, showing why capacity must be assessed alongside execution time. Our kernel profiling further identifies instruction issue and synchronization limits that a bandwidth-only model misses. We use these findings to assess graphics processors, reconfigurable logic, custom chips and existing artificial intelligence accelerators. The resulting research agenda connects proof-friendly numeric formats, reuse of fixed-weight commitments, heterogeneous execution and shared benchmarks to the measured bottlenecks. Effective acceleration requires selecting hardware and proof-system optimizations around the cost profile of the target workload.",
+    "significance": "",
+    "date": "2026-11-12",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Math-specialized models",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.17042",
+    "paperUrl": "https://arxiv.org/abs/2611.17042",
+    "authors": [
+      "Yihan Xia",
+      "Wenxin Xu",
+      "Taotao Wang"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-13T14:09:54.096Z",
+    "createdAt": "2026-11-13T14:09:54.096Z",
+    "updatedAt": "2026-11-13T14:09:54.096Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-12",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.16886",
+    "title": "LLM-Assisted Verification in Dafny",
+    "slug": "llm-assisted-verification-in-dafny",
+    "summary": "Formal verification of complex algorithms requires expertise in program specification, invariant construction, mathematical proof, and the management of automated theorem provers. Although large language models (LLMs) can generate program code and proof fragments, reliably developing complete machine-checked verifications remains challenging: it requires an iterative process of constructing and validating specifications and invariants, building proofs, diagnosing solver failures, and optimizing verification performance. This paper presents a systematic ten-step workflow for LLM-assisted verification of scientific algorithms using the Dafny verification system. The workflow integrates algorithm formalization, contract development, empirical invariant validation, proof construction, bottleneck profiling, and resource-driven proof optimization. We applied the workflow using Antrhopic's Claude Opus 5 and Opus 5.5 models, combining LLM-driven development with automated testing and verification feedback, while retaining human oversight for correctness-critical decisions and strategic interventions. We evaluate the approach on 37 complex algorithms from graph theory and labelled transition systems. Notably, we verified the Hopfcroft-Tarjan triconnectivity test, demonstrating that even highly challenging algorithmic verification tasks can be carried out through a structured LLM-assisted workflow. Many of our machine-checked verifications were obtained within hours to a few days of interactive development. Our results suggest that LLM-assisted workflows can shift the role of the human verifier from detailed proof construction toward supervision, specification review, and strategic guidance.",
+    "significance": "",
+    "date": "2026-11-12",
+    "eventType": "Research",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Math-specialized models",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.16886",
+    "paperUrl": "https://arxiv.org/abs/2611.16886",
+    "authors": [
+      "Wieger Wesselink",
+      "Kees Huizing",
+      "Huub van de Wetering"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-13T14:09:54.097Z",
+    "createdAt": "2026-11-13T14:09:54.097Z",
+    "updatedAt": "2026-11-13T14:09:54.097Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "System",
+    "verificationHistory": [
+      {
+        "date": "2026-11-12",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
+    "id": "evt_arxiv-2611.16759",
+    "title": "Propositional Dynamic Logic without tests does not have Craig Interpolation",
+    "slug": "propositional-dynamic-logic-without-tests-does-not-have-craig-interpolation",
+    "summary": "It was shown recently by Borzechowski et al. (2026) that Propositional Dynamic Logic (PDL) has Craig Interpolation. Whether test-free PDL, i.e. PDL without the `?' operator, has interpolation remained open. Here we answer this question in the negative with a counterexample: a test-free PDL validity for which no test-free interpolant exists. The validity only uses one atomic program and the Kleene star, so it implies that the basic modal logic K extended with the reflexive transitive closure does not have interpolation, as previously shown by Studer (2009). The example was originally obtained using LLMs and Lean. We describe our methodology and provide links to all prompts, LLM output summaries as well as the Lean proof.",
+    "significance": "",
+    "date": "2026-11-12",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.16759",
+    "paperUrl": "https://arxiv.org/abs/2611.16759",
+    "authors": [
+      "Malvin Gattinger"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-13T14:09:54.097Z",
+    "createdAt": "2026-11-13T14:09:54.097Z",
+    "updatedAt": "2026-11-13T14:09:54.097Z",
+    "evidenceLevel": "E2",
+    "researchEventType": "Proof",
+    "verificationHistory": [
+      {
+        "date": "2026-11-12",
+        "evidenceLevel": "E2",
+        "status": "paper_released",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "paper_released"
+  },
+  {
     "id": "evt_arxiv-2611.16104",
     "title": "Show Your Work in Swahili: Reinforcement Learning for Native-Language Mathematical Reasoning",
     "slug": "show-your-work-in-swahili-reinforcement-learning-for-native-language-mathematical-reasoning",
