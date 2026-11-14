@@ -1,5 +1,36 @@
 [
   {
+    "id": "evt_http://terrytao.wordpress.com/?p=18722",
+    "title": "Introducing MathHelm: A Place to discuss AI-generated papers",
+    "slug": "introducing-mathhelm-a-place-to-discuss-ai-generated-papers",
+    "summary": "[This is a guest post by the MathHelm scientific committee, whose membership is listed at the bottom of this post. -T.] Mathematics depends on our regular conversations with colleagues and with the wider public. They help us share ideas, deepen our collective understanding, see where the field stands, and decide what to explore next. They […]",
+    "significance": "",
+    "date": "2026-11-14",
+    "eventType": "People",
+    "sourceType": "blog",
+    "sourceTier": "S2",
+    "sourceUrl": "https://terrytao.wordpress.com/2026/11/13/introducing-mathhelm-a-place-to-discuss-ai-generated-papers/",
+    "authors": [
+      "Terence Tao"
+    ],
+    "relatedWorks": [],
+    "isDemo": false,
+    "provenance": "automated",
+    "lastSyncedAt": "2026-11-14T05:29:32.764Z",
+    "createdAt": "2026-11-14T05:29:32.764Z",
+    "updatedAt": "2026-11-14T05:29:32.764Z",
+    "evidenceLevel": "E3",
+    "verificationHistory": [
+      {
+        "date": "2026-11-14",
+        "evidenceLevel": "E3",
+        "status": "claimed",
+        "note": "Default evidence level derived from the record's links on the event date."
+      }
+    ],
+    "verificationStatus": "claimed"
+  },
+  {
     "id": "evt_http://terrytao.wordpress.com/?p=18701",
     "title": "Lean Grimoire",
     "slug": "lean-grimoire",

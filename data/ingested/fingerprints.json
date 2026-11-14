@@ -588,5 +588,6 @@
   "a-multi-prover-interactive-protocol-for-certification-of-resolution-refutations": "5d6380f9abf371f5577561631b3c442e4f26e0da67630bf21f9ba15a090b626c",
   "infrastructure-for-verifiable-ai-where-proof-costs-go-and-how-hardware-can-help": "53034e7029b5d18ff29864a40469c6a785067fe95eb0ac83c64c4ee5493ceb7d",
   "llm-assisted-verification-in-dafny": "193459a1f56a53e54cb01f39b8a218ab877eee0dd083a77eab9de86446a6ceb8",
-  "propositional-dynamic-logic-without-tests-does-not-have-craig-interpolation": "616d884916b26d770cf9ad9c6839712183894bcd3fdb06e59a9ba704523e4027"
+  "propositional-dynamic-logic-without-tests-does-not-have-craig-interpolation": "616d884916b26d770cf9ad9c6839712183894bcd3fdb06e59a9ba704523e4027",
+  "introducing-mathhelm-a-place-to-discuss-ai-generated-papers": "4b3190a0103b91770f3ca5129c2d67257d47c46b1212af26f0cceca3ee785a8d"
 }
