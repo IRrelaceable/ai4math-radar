@@ -5,8 +5,8 @@ import type {
   AiRoleLevel,
   EvidenceLevel,
   EventType,
+  PublicationStatus,
   SourceTier,
-  VerificationStatus,
 } from "@/types";
 import { useT } from "@/lib/i18n/context";
 import { pagesDict } from "@/lib/i18n/dict.pages";
@@ -46,9 +46,20 @@ export function TrustPill({
 }
 
 /** Long label for the tooltip, in the reader's language. */
-function longLabel(lang: "zh" | "en", kind: "evidence" | "tier" | "type", code: string): string {
+function longLabel(
+  lang: "zh" | "en",
+  kind: "evidence" | "tier" | "type" | "publication",
+  code: string
+): string {
   const m = pagesDict[lang].methodology;
-  const table = kind === "evidence" ? m.evidenceDesc : kind === "tier" ? m.tierDesc : m.typeDesc;
+  const table =
+    kind === "evidence"
+      ? m.evidenceDesc
+      : kind === "tier"
+        ? m.tierDesc
+        : kind === "publication"
+          ? m.publicationDesc
+          : m.typeDesc;
   return (table as Record<string, string>)[code] ?? code;
 }
 
@@ -89,21 +100,19 @@ export function SourceTierPill({ tier }: { tier: SourceTier }) {
   );
 }
 
-export function VerificationStatusPill({ status }: { status: VerificationStatus }) {
+/**
+ * Publication stage. green = formally published, amber = preprint. The tooltip
+ * spells out that arXiv is not peer review.
+ */
+export function PublicationStatusPill({ status }: { status: PublicationStatus }) {
   const { t, lang } = useT();
   const tone =
-    status === "independently_verified"
+    status === "published"
       ? "chip border-emerald-300 bg-emerald-50 text-emerald-800"
-      : status === "disputed" || status === "retracted"
-        ? "chip border-rose-300 bg-rose-50 text-rose-700"
-        : status === "corrected" || status === "under_verification"
-          ? "chip border-amber-300 bg-amber-50 text-amber-800"
-          : "chip";
-  const description =
-    pagesDict[lang].methodology.verificationDesc[status] ?? t.trust.verification[status];
+      : "chip border-amber-300 bg-amber-50 text-amber-800";
   return (
-    <span title={description} className={tone}>
-      {t.trust.verification[status]}
+    <span title={longLabel(lang, "publication", status)} className={tone}>
+      {t.trust.publication[status]}
     </span>
   );
 }

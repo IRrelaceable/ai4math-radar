@@ -33,7 +33,7 @@ export type EventDirection = "ai4math" | "math4ai" | "both";
  * lab's own AI4Math work (results, released artifacts, solved problems), so a
  * record carries a lab only when the lab is the actor, not merely the venue.
  */
-export const LABS = ["openai", "anthropic"] as const;
+export const LABS = ["openai", "anthropic", "deepmind"] as const;
 export type Lab = (typeof LABS)[number];
 
 /**
@@ -123,28 +123,29 @@ export type SourceType =
  */
 
 /**
- * How far the core event description is corroborated right now.
- *
- * This is a state, not a score: a paper can be released while its claim is
- * still disputed, and machine-checking a proof does not by itself settle
- * priority or acceptance. Transitions are append-only in
- * `verificationHistory`; the current state never rewrites the past.
+ * Where a result stands in the publication process — a separate axis from
+ * evidence. Derived fully automatically from source links: an arXiv link means
+ * preprint; a proceedings/publisher record means published. No link pattern
+ * establishes acceptance, withdrawal or non-publication, so those stages are
+ * not modelled; an event with neither link simply has no status.
  */
-export const VERIFICATION_STATUSES = [
-  "claimed",
-  "paper_released",
-  "under_verification",
-  "partially_verified",
-  "independently_verified",
-  "disputed",
-  "corrected",
-  "retracted",
-] as const;
-export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
+export const PUBLICATION_STATUSES = ["preprint", "published"] as const;
+export type PublicationStatus = (typeof PUBLICATION_STATUSES)[number];
+
+/** An append-only correction to a formally published record (erratum/corrigendum). */
+export interface PublicationCorrection {
+  date: string;
+  note: string;
+  /** Chinese note for the zh UI; English stays the source text. */
+  noteZh?: string;
+  /** Link to the original erratum / corrigendum notice. */
+  sourceUrl?: string;
+}
 
 /**
- * How the source attributes the reported work between AI systems and humans.
- * Only meaningful for Research events that report an AI-produced result.
+ * How the source attributes the reported research work between AI systems and humans.
+ * Unmarked events have no `aiRole` yet; missing means "not audited", never an
+ * enum value. All four levels are assigned after checking the source.
  */
 export const AI_ROLE_LEVELS = [
   "autonomous",
@@ -156,22 +157,71 @@ export type AiRoleLevel = (typeof AI_ROLE_LEVELS)[number];
 
 export interface AiRole {
   level: AiRoleLevel;
-  /** What the AI system did, in the source's terms. Omitted when it says nothing. */
+  /** Code, proofs, formalization, hypotheses, experiments, autonomous research, etc. */
   description?: string;
 }
 
 /** How mature the public evidence is: claim -> record -> artifact -> replay. */
-export const EVIDENCE_LEVELS = ["E0", "E1", "E2", "E3", "E4"] as const;
+export const EVIDENCE_LEVELS = ["E0", "E1", "E2", "E3"] as const;
 export type EvidenceLevel = (typeof EVIDENCE_LEVELS)[number];
 
 /** Where the evidence comes from: primary research -> official -> independent -> media -> community. */
 export const SOURCE_TIERS = ["S0", "S1", "S2", "S3", "S4"] as const;
 export type SourceTier = (typeof SOURCE_TIERS)[number];
 
+/** Canonical definition of each source type. Single source of truth for labels/scope. */
+export const SOURCE_TIER_DEFINITIONS: Record<
+  SourceTier,
+  { zh: string; en: string; scopeZh: string; scopeEn: string }
+> = {
+  S0: {
+    zh: "原始研究记录",
+    en: "Primary research record",
+    scopeZh: "论文、预印本、正式研究记录、原始代码等",
+    scopeEn: "Papers, preprints, formal research records, original code",
+  },
+  S1: {
+    zh: "官方公告",
+    en: "Official announcement",
+    scopeZh: "研究机构、实验室、企业和作者的官方公告",
+    scopeEn: "Official announcements from institutions, labs, companies and authors",
+  },
+  S2: {
+    zh: "独立学术佐证",
+    en: "Independent academic corroboration",
+    scopeZh: "独立学术复核、独立研究报告、独立复现实验",
+    scopeEn: "Independent academic review, reports and replication studies",
+  },
+  S3: {
+    zh: "科技媒体报道",
+    en: "Technology media report",
+    scopeZh: "科技媒体、新闻报道",
+    scopeEn: "Technology press and news reporting",
+  },
+  S4: {
+    zh: "社区线索",
+    en: "Community lead",
+    scopeZh: "社区讨论、社交媒体线索等",
+    scopeEn: "Community discussion and social-media leads",
+  },
+};
 
 /**
- * The five primary ecosystem event classes. Research subtypes such as
- * Discovery / Proof / Benchmark remain available as `researchEventType`.
+ * A single source attached to an event or update.
+ * `tier` is the S0–S4 source type; `sourceType` (arxiv/blog/...) remains the
+ * channel on the event itself to avoid a naming collision.
+ */
+export interface Source {
+  title?: string;
+  url: string;
+  publishedAt?: string;
+  tier: SourceTier;
+  collectedAt?: string;
+}
+
+
+/**
+ * The five primary ecosystem event classes.
  * Legacy `Education` records normalize into `Institutions` (see
  * normalizeEventType), so education events remain a distinct branch of
  * institution metadata rather than their own top-level class.
@@ -184,21 +234,6 @@ export const EVENT_TYPES = [
   "PolicyCommunity",
 ] as const;
 export type EventType = (typeof EVENT_TYPES)[number];
-
-/** Legacy research-only subtypes retained for provenance and research filters. */
-export const RESEARCH_EVENT_TYPES = [
-  "Discovery",
-  "Proof",
-  "Formalization",
-  "Competition",
-  "System",
-  "Benchmark",
-  "Dataset",
-  "Infrastructure",
-  "Commentary",
-  "Controversy",
-] as const;
-export type ResearchEventType = (typeof RESEARCH_EVENT_TYPES)[number];
 
 /**
  * Names stated in the source, extracted for cross-event threads. Kept apart
@@ -241,16 +276,6 @@ export interface EcosystemMetadata {
   };
 }
 
-export interface VerificationRecord {
-  date: string;
-  evidenceLevel: EvidenceLevel;
-  /** State reached at this entry; older records may predate the vocabulary. */
-  status?: VerificationStatus;
-  note?: string;
-  /** Chinese note for the zh UI; English stays the source text. */
-  noteZh?: string;
-}
-
 export type RelationType = "previous" | "followup" | "related";
 
 export interface RelatedWork {
@@ -258,6 +283,57 @@ export interface RelatedWork {
   url?: string;
   relation: RelationType;
   note?: string;
+}
+
+/**
+ * A source record's place in a durable Event. "report" marks a media re-report:
+ * it adds a Source to the Event but never a timeline Update. Links are
+ * append-only: later ingests add records instead of rewriting earlier ones.
+ */
+export const EVENT_UPDATE_KINDS = [
+  "initial",
+  "followup",
+  "verification",
+  "correction",
+  "retraction",
+  "report",
+] as const;
+export type EventUpdateKind = (typeof EVENT_UPDATE_KINDS)[number];
+
+/** The four tracking relations; only same-event appends an Update. */
+export const EVENT_RELATIONS = [
+  "same-event",
+  "same-project",
+  "related-event",
+  "independent",
+] as const;
+export type EventRelation = (typeof EVENT_RELATIONS)[number];
+
+export const RELATED_KINDS = ["reproduction", "overturn", "related"] as const;
+export type RelatedKind = (typeof RELATED_KINDS)[number];
+
+export interface EventLink {
+  /** Stable Event id, distinct from a source record's slug. */
+  eventId: string;
+  kind: EventUpdateKind;
+  relation: EventRelation;
+  /** How the assignment was made; curated assignments are never overwritten. */
+  matchedBy: "seed" | "heuristic" | "llm" | "curated";
+  /** Candidate source record that established a non-initial match, if any. */
+  matchedToSlug?: string;
+  reason?: string;
+  /** same-project: the new Event belongs to this Project. */
+  projectId?: string;
+  /** related-event: an explicit edge to another Event, never a merge. */
+  relatedTo?: { eventId: string; kind: RelatedKind; reason?: string };
+}
+
+/** A project with a shared goal or research inheritance; never force-created. */
+export interface Project {
+  id: string;
+  name: string;
+  aliases?: string[];
+  desc: { zh: string; en: string };
 }
 
 /** A publication attached to a ResearchEvent (many-to-many in the database). */
@@ -308,6 +384,8 @@ export interface ResearchEvent {
   direction?: EventDirection;
   sourceType: SourceType;
   sourceUrl: string;
+  /** All sources attached to this event; derived from links when absent. */
+  sources?: Source[];
   paperUrl?: string;
   githubUrl?: string;
   papers?: Paper[];
@@ -317,6 +395,8 @@ export interface ResearchEvent {
   benchmark?: string[];
   dataset?: string[];
   relatedWorks: RelatedWork[];
+  /** Parent Event and this record's place in its progress log. */
+  tracking?: EventLink;
   /** Bullet list for the "Key Contribution" section. */
   keyContributions?: string[];
   /** The problem this work addresses. */
@@ -327,17 +407,16 @@ export interface ResearchEvent {
   /* ---- trust model (all optional; derived by lib/verification when absent) ---- */
   evidenceLevel?: EvidenceLevel;
   sourceTier?: SourceTier;
-  verificationHistory?: VerificationRecord[];
-  /** Current verification state; the last history entry is authoritative. */
-  verificationStatus?: VerificationStatus;
+  /** Publication stage, derived from links at read time; never manually annotated. */
+  publicationStatus?: PublicationStatus;
+  /** Errata / corrigenda appended after formal publication. */
+  publicationCorrections?: PublicationCorrection[];
   /** How the source divides the reported work between AI and humans. */
   aiRole?: AiRole;
   /** What named humans contributed, in the source's terms. */
   humanContribution?: string;
   /** Primary ecosystem class. Normalized to Research when absent in legacy data. */
   eventType?: EventType;
-  /** Optional legacy research subtype (Discovery, Proof, Benchmark, ...). */
-  researchEventType?: ResearchEventType;
   /** Type-specific ecosystem details; represented as JSON by Prisma. */
   metadata?: EcosystemMetadata;
   /** Named people / institutions / projects / systems stated by the source. */
@@ -357,6 +436,24 @@ export interface ResearchEvent {
   updatedAt: string;
 }
 
+/** The two derived classification facets of one record (see lib/dimensions). */
+export interface EventFacets {
+  cap?: string;
+  math: string[];
+}
+
+/**
+ * Reader-facing "what is currently collected" for one list card. `count` is
+ * the number of source records currently in this Event line, including media
+ * re-reports (i.e. TrackedEvent.progress.length), NOT the number of timeline
+ * updates. It describes the current archive state, never a claim about whether
+ * the real-world event has future developments.
+ */
+export interface TrackingSummary {
+  eventId: string;
+  count: number;
+}
+
 /**
  * The part of an event every list surface needs (feed, timeline, topic
  * archive, search). Detail-only prose and provenance stay on the server so the
@@ -371,12 +468,12 @@ export type ListEvent = Pick<
   | "significance"
   | "date"
   | "eventType"
-  | "researchEventType"
   | "researchArea"
   | "subArea"
   | "direction"
   | "lab"
   | "sourceUrl"
+  | "sources"
   | "paperUrl"
   | "githubUrl"
   | "papers"
@@ -387,8 +484,20 @@ export type ListEvent = Pick<
   | "dataset"
   | "evidenceLevel"
   | "sourceTier"
-  | "verificationStatus"
->;
+  | "publicationStatus"
+  | "publicationCorrections"
+  | "tracking"
+> & {
+  /** Set only when the record belongs to a published (tracked) Event. */
+  eventId?: string;
+  /** Current collection state of this record's Event line; on every card. */
+  trackingSummary: TrackingSummary;
+  /**
+   * Derived from the RAW record at build time — before localization and
+   * summary truncation — so every surface shares the same facet caliber.
+   */
+  facets: EventFacets;
+};
 
 export type EntityKind = "person" | "institution" | "project" | "system";
 
@@ -402,6 +511,45 @@ export interface EntityThread {
   events: ResearchEvent[];
 }
 
+/** A public, durable Event assembled from one or more source records. */
+export interface TrackedEvent {
+  id: string;
+  title: string;
+  summary: string;
+  startedAt: string;
+  latestAt: string;
+  researchArea?: ResearchArea;
+  eventType?: EventType;
+  entities: EventEntities;
+  /** Every attached source record, including media re-reports. */
+  progress: EventUpdate[];
+  projectId?: string;
+  relations: EventRelationEdge[];
+}
+
+/** One append-only step; kind "report" is source-only, not an Update. */
+export interface EventUpdate {
+  id: string;
+  eventId: string;
+  eventSlug: string;
+  date: string;
+  kind: EventUpdateKind;
+  title: string;
+  summary: string;
+  sourceUrl: string;
+  /** All sources for this update; derived from sourceUrl when absent. */
+  sources?: Source[];
+  evidenceLevel?: EvidenceLevel;
+  publicationStatus?: PublicationStatus;
+}
+
+export interface EventRelationEdge {
+  fromEventId: string;
+  toEventId: string;
+  kind: RelatedKind;
+  reason?: string;
+}
+
 /**
  * Build-time dataset consumed by the client-rendered lists. One file per
  * language under public/data; a static export cannot answer queries.
@@ -410,6 +558,18 @@ export interface StaticDataset {
   generatedAt: string;
   events: ListEvent[];
   topics: TopicStat[];
+  sourceStats?: SourceStats;
+}
+
+/** Two distinct counts per source type: source records vs. distinct events. */
+export interface SourceStats {
+  /** Total number of source records across all events. */
+  totalSources: number;
+  /** Per-tier breakdown. */
+  byTier: Record<
+    SourceTier,
+    { sources: number; events: number }
+  >;
 }
 
 export interface TopicStat {

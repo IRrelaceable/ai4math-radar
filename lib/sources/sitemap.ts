@@ -14,7 +14,7 @@ export interface SitemapSourceOptions {
   defaultEventType?: EventType;
   defaultResearchArea?: ResearchArea;
   sourceTier?: SourceTier;
-  /** Frontier lab whose own work this site publishes (see /labs). */
+  /** Frontier lab whose own work this site publishes. */
   lab?: Lab;
   allowNonAI4Math?: boolean;
   includeKeywords?: string[];

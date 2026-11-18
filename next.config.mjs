@@ -18,8 +18,8 @@ const basePath = `${siteBase}${lang === "en" ? "/en" : ""}`;
 const nextConfig = {
   output: "export",
   trailingSlash: true,
-  // Keeping build and dev output apart stops a production build from wiping the
-  // running dev server's chunks (which served an unstyled page until restart).
+  // A custom distDir keeps the exported HTML out of the dev trees, but Next
+  // still writes build intermediates to .next — stop dev before publishing.
   distDir: process.env.NEXT_DIST_DIR || ".next",
   basePath: basePath || undefined,
   images: { unoptimized: true },

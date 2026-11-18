@@ -38,7 +38,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Allen Newell", "J. C. Shaw", "Herbert A. Simon"],
     institution: "Carnegie Institute of Technology; RAND Corporation",
-    researchEventType: "Proof",
     evidenceLevel: "E2",
     aiRole: {
       level: "autonomous",
@@ -81,7 +80,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["H. Gelernter", "J. R. Hansen", "D. W. Loveland"],
     institution: "IBM Research",
-    researchEventType: "Proof",
     evidenceLevel: "E2",
     aiRole: {
       level: "autonomous",
@@ -130,7 +128,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["James R. Slagle"],
     institution: "Massachusetts Institute of Technology",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Heuristic goal-reduction search for symbolic integration",
@@ -167,7 +164,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["John Alan Robinson"],
     institution: "Rice University",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "A single sound and complete inference rule for first-order logic",
@@ -202,7 +198,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["N. G. de Bruijn"],
     institution: "Technische Hogeschool Eindhoven (now Eindhoven University of Technology)",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "A formal language for complete mathematical texts",
@@ -239,7 +234,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["William A. Martin", "Richard J. Fateman"],
     institution: "MIT Project MAC",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Integrated symbolic algebra and calculus",
@@ -276,7 +270,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Robin Milner"],
     institution: "University of Cambridge",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Tactic-based interactive proof",
@@ -311,7 +304,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Robert S. Boyer", "J Strother Moore"],
     institution: "University of Edinburgh",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Automatic proof by induction for Lisp functions",
@@ -340,7 +332,6 @@ export const events: ResearchEvent[] = [
       "https://www.cas.cn/zt/hyzt/ysdh21st/ysfc/202406/t20240621_5022393.shtml",
     authors: ["Wu Wen-tsün"],
     institution: "Institute of Systems Science, Chinese Academy of Sciences",
-    researchEventType: "Proof",
     evidenceLevel: "E3",
     keyContributions: [
       "Algebraic formulation of elementary geometry theorems",
@@ -377,7 +368,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Douglas B. Lenat"],
     institution: "Stanford University",
-    researchEventType: "Discovery",
     evidenceLevel: "E2",
     aiRole: {
       level: "autonomous",
@@ -421,7 +411,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Michael J. Gordon", "Robin Milner", "Christopher P. Wadsworth"],
     institution: "University of Edinburgh",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Working LCF proof assistant",
@@ -462,7 +451,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Bruce W. Char", "Keith O. Geddes", "Gaston H. Gonnet"],
     institution: "University of Waterloo",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Portable symbolic computation system",
@@ -490,7 +478,6 @@ export const events: ResearchEvent[] = [
     sourceUrl: "https://rocq-prover.org/doc/V8.20.1/refman/history.html",
     authors: ["Gérard Huet", "Thierry Coquand"],
     institution: "Inria",
-    researchEventType: "System",
     evidenceLevel: "E3",
     keyContributions: [
       "Implementation of the Calculus of Constructions",
@@ -527,7 +514,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Douglas J. Howe"],
     institution: "Cornell University",
-    researchEventType: "Formalization",
     evidenceLevel: "E2",
     keyContributions: [
       "Constructive type-theory proof assistant",
@@ -562,7 +548,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Michael J. C. Gordon"],
     institution: "University of Cambridge",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Higher-order logic instantiation of LCF",
@@ -595,7 +580,6 @@ export const events: ResearchEvent[] = [
     sourceUrl: "https://www.cl.cam.ac.uk/archive/mjcg/papers/HolHistory.pdf",
     authors: ["Michael J. C. Gordon", "Thomas F. Melham"],
     institution: "University of Cambridge",
-    researchEventType: "System",
     evidenceLevel: "E3",
     keyContributions: [
       "Distributed HOL system release",
@@ -637,7 +621,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Siemion Fajtlowicz"],
     institution: "University of Houston",
-    researchEventType: "Discovery",
     evidenceLevel: "E2",
     aiRole: {
       level: "autonomous",
@@ -672,7 +655,6 @@ export const events: ResearchEvent[] = [
     sourceUrl: "https://rocq-prover.org/doc/V8.20.1/refman/history.html",
     authors: ["Coq development team"],
     institution: "Inria",
-    researchEventType: "System",
     evidenceLevel: "E3",
     keyContributions: [
       "Calculus of Inductive Constructions as Coq's foundation",
@@ -714,7 +696,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Lawrence C. Paulson"],
     institution: "University of Cambridge",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Generic LCF-style framework",
@@ -748,7 +729,6 @@ export const events: ResearchEvent[] = [
       },
     ],
     authors: ["QED Manifesto contributors"],
-    researchEventType: "Infrastructure",
     evidenceLevel: "E2",
     keyContributions: [
       "A public call for a universal formal mathematics corpus",
@@ -784,7 +764,6 @@ export const events: ResearchEvent[] = [
       },
     ],
     authors: ["Geoff Sutcliffe", "Christian Suttner"],
-    researchEventType: "Benchmark",
     evidenceLevel: "E2",
     keyContributions: [
       "Common TPTP problem set and evaluation protocol",
@@ -821,7 +800,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["William McCune"],
     institution: "Argonne National Laboratory",
-    researchEventType: "Discovery",
     evidenceLevel: "E2",
     aiRole: {
       level: "autonomous",

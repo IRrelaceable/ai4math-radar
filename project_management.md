@@ -2,6 +2,126 @@
 
 按周记录 AI4Math 生态雷达的进展，最新在前。只记录已经完成的改动与结果。
 
+## 2026-11-17（信息架构清理）
+
+- 目标用户确认为「关注 AI4Math 进展的研究者/研究生」；转化类改动（订阅、讨论区）本次不动。
+- 删除 6 个历史遗留路由：`/research-map`、`/topics`（索引）、`/sources`、`/evolution`（4 个跳转壳，曾存在 `/research-map → /topics → /tech` 双重跳转），以及 `/events`、`/events/[id]`（长期事件聚合页，仅 2 条脉络）。追踪数据模型与详情页内嵌的「持续追踪」章节保留。
+- 清理查询层遗留：移除 `FeedControls` 的「旧方向（旧链接）」下拉、`?area=` 过滤、7 个旧主题别名映射（LEGACY_TOPIC_SLUGS）；筛选统一收敛到四维 facet（cap / math / method / tech）。
+- 修链接与文案：`/topics/[topic]` 方向档案降级为纯归档（移出所有导航、面包屑与 CTA 改指向 `/tech` 与 `/latest?cap=`），Footer 的「方向档案」改为「技术图谱」；详情页与事件卡片移除指向已删 `/events/[id]` 的「追踪进展」按钮。
+- 同步中英字典：删除 meta.events / meta.sources / meta.topics、sources.moved*、components.feed.legacyGroup 等死键；保留详情页追踪章节仍用的 events.* 键。README 中英功能表同步更新。
+- 决策：方向档案 6 页保留为旧链接可访问的归档（用户选「降级」）；`ListEvent.eventId` 剩构建层沿用的无害死数据，未清理（牵动构建管线，收益不足）。
+- 验证：typecheck 0 错误 / 218 项测试通过 / 中英静态构建成功（739 页）；全仓扫描确认无指向已删路由的链接、无旧参数与别名残留。
+
+## 2026-11-17（主题 5 改名「数学发现」）
+
+- 跨轴审计（588 科研事件交叉分布）结论：六主题名单成立；与领域轴正交（几何 82 散六主题）、与工具轴相关不等价（Lean 179 散六主题）；与方法轴证明主题 85% 重叠属视角差异、已由「cap 不入徽章」设计处理。唯一真冲突：主题 5 旧名「数学发现与符号计算」收编方法轴技术名，而符号计算方法 61 条仅 17 条在该主题，同名不同外延。
+- 经用户同意显示名收敛为**数学发现 / Mathematical Discovery**；符号计算归方法/工具轴承载。id `discovery-symbolic`、记录、计数不变；存储键 researchArea、/topics 旧方向档案与方法轴「符号计算」标签保留旧名。
+- 验证：typecheck 0 / lint 0 / 218 项测试；中英下拉选项、/tech 卡片、methodology 释义实测新名、旧全名 0；中英静态导出成功（755 页/语言），产物与客户端 chunk 含新名；导出后 dev 已重启。
+- 遗留：映射层优先级修法（证明双信号 > 推理/智能体等三条）与上游错标手工改判仍待用户批准，未动。
+- 注：导出后重启 dev 与并行会话的信息架构清理（删工具轴与 /tech、清 `.next`）撞车退出；改名文案在当前树仍存续（typecheck 0）。dev 暂停、dist 仍为四维旧版，待用户统一指令再重启/重导。
+
+## 2026-11-17（维1 改名「研究主题」）
+
+- 用户质疑「全部能力」语义不明，诊断为轴名问题：该轴分类的是研究线路，六个取值里「AI 的数学基础」「基准与数据集」并非能力，名实不符。经用户同意改显示名为**研究主题 / Research theme**，复位项「全部主题 / All themes」；其余三轴名实相符不动。
+- 触点一次改全：筛选下拉（dimGroups/dimAlls）、/tech 维度 1 标题与提示、主题×技术交叉表头、methodology 维度释义、首页统计标签与「活跃主题」bar、热度副标题、中英 README。内部键 `cap`/`capabilityOf`/`CAPABILITIES` 与派生逻辑不变，零数据改动；/labs「模型能力背景」指模型真实能力，保留。
+- 验证：残留扫描 0；typecheck 0 / lint 0 / 218 项测试；CDP 实测中英 latest/tech/home/methodology 新文案齐全（en 统计标签经 CSS 大写渲染为 THEMES，非缺失），截图确认筛选栏无溢出；中英静态导出成功（755 页/语言），产物 HTML 与客户端 chunk 均含新文案；导出后 dev 已重启。
+
+## 2026-11-17（维度徽章移入卡片脚注）
+
+- 按用户指示解决「部分事件无维度命中导致卡片内容不齐」：撤掉独立徽章行，徽章移入 footer 的 E/S 信任码之后、共用左列；每张卡片块结构相同，徽章列内换行，右侧动作链接保持首行。
+- footer 左列加 `min-h-[18px]` 消除有/无徽章卡片 2px 高差；1496×1210 三列网格实测每行 footer 顶缘与高度一致（573/767、H31）。
+- 详情页徽章行与徽章去重逻辑（命中证明助手工具时省略 formal-proof 徽章）不变。
+- 验证：typecheck 0 / lint 0 / 218 项测试；CDP DOM 探针 + 截图目验徽章顺序与行对齐；中英静态导出成功（Next 计数 755 页/语言、714+714 详情页），payload facets 缺失 0，编译产物含新 footer 结构；导出后 dev 已重启。
+
+## 2026-11-17（维度筛选拆为四个独立下拉）
+
+- 用户拍板：单一「全部维度」分组下拉拆成**能力 / 领域 / 方法 / 工具四个独立小下拉**（否掉单一大下拉与自定义 combobox 两个方案）。每个下拉只列本维度有数据的取值（6/7/5/6），收起时显示「全部能力／全部领域／全部方法／全部工具」，控件自解释。
+- 多维可叠加：feed 层本就按 AND 组合 facet 参数，零改动；实测 cap=neuro-symbolic-proving 234 条、叠加 tech=lean4 124 条、单 tech 185 条，与 facets 计数一致。选任一维度清旧 `area`；旧 `?area=` 链接仅在激活时显示临时第五下拉（实测 Geometry 51 条），选旧方向清四维。
+- 清掉 optgroup 分组死代码；`FilterSelect` 加 `title` 显示截断选项全文；中英新增 `dimAlls` 文案键，删 `dimLabel/dimAll`。
+- 验证：typecheck 0 / lint 0 / 218 项测试；浏览器实测中英两站下拉文案与选项数、叠加与清除语义、旧链接临时下拉；截图确认筛选栏换行整齐无溢出。
+- 导出排障：`/_document` PageNotFoundError 反复出现的根因是 **dev 与 publish 共用 `.next` 互写**（孤儿进程、外部重启都会触发）。`taskkill /T` 杀整树、确认 3000/3001/3100 释放、清 `.next`/`.next-en` 后中英导出成功（各 755 页）；导出后重启 dev。
+
+## 2026-11-17（四维词表收敛：31 → 24 个取值）
+
+- 回应「每个维度的方向能不能减少一点」：按全语料真实命中数（714 条 / 588 科研）裁并长尾。**AI 能力保持 6**（最小档 45 条，无长尾，合并损失区分度）；**数学领域 9→7**：代数+数论→「代数与数论」31、分析+PDE→「分析与微分方程」14，几何 87 / 组合 15 / 概率统计 20 / 优化 21 / 数学物理 12 保留；**研究方法 6→5**：数值计算+建模仿真→「数值计算与建模」34；**技术与工具 10→6**：Mathlib 并入「Lean 4 / Mathlib」185，Mathematica / Maple / SageMath / MATLAB 四个长尾（4/1/2/1）合并为「计算机代数与数值系统」（cas）7，Coq 18 / Isabelle 28 / HOL Light 11 / MCTS 6 保留。
+- 形式化证明与自动定理证明保持分开（差集两侧有真实反例，沿用同日口径）。合并桶保留原正则优先级顺序（每个旧分支一条 entry、共享 id），逐条命中语义不变；facets 构建期派生、不落存储，零数据迁移、完全可逆。
+- `Technology` 加可选 `zhName` 与 `techName()` 助手：合并组是描述性词组，中文界面显示「计算机代数与数值系统」（徽章、/tech 卡片、专题页标题与面包屑、交叉表头、筛选下拉同一口径）；Lean 4 / Mathlib 等专名保持英文。`FORMAL_PROOF_TOOLS` 去掉 mathlib（已并入 lean4）。
+- 中英文案同步：`dict.pages.ts` 的 dimensionDesc 与 tech meta、README 功能表与 Roadmap 的专题页数 10→6。
+- 验证：typecheck 0 / lint 0 / 218 项测试（新增 5 项收敛回归）；中英 payload 714+714、facets 缺失 0、孤儿 id 0、zh 1259 KB / en 1159 KB；停 dev 后清一次被中断写坏的 `.next` 缓存，中英静态导出成功（714+714 详情页、每语言 6 个技术专题页、.nojekyll）；产物抽查：/tech 中英合并标签齐全、旧标签 0，详情页徽章 cas 7 / lean4 185 与 payload 一致，旧 /tech/mathlib 等链接 0；导出后 3000/3001 dev 已重启。
+
+## 2026-11-17（formal-proof 口径修复与徽章去重）
+
+- 回应「Lean 4 不就是形式化证明」：回源证实旧 7 条「反例」全是正则漏判——METHOD_PATTERNS 词干后误加 `\b`（formalization／autoformalization 整词永不命中）、`Lean4` 连写不命中 `\blean\b`；且方法轴只看 title+summary 而工具轴还看 `entities.systems`，输入不同源。
+- 修复：formal-proof 改词干 `\w*` + `lean\s?4` + autoformali；`researchMethodsOf` 文本并入 `entities.systems`（与 `technologiesOf` 同输入）。全语料 formal-proof 223→275，**lean4 ⇒ formal-proof 反例 0**；方法轴计数 atp 75 / symbolic 61 / discovery 37 / numerical 18 / modeling 17。
+- 显示去重（推翻同日早先「双徽章」裁定）：命中证明助手／形式化库工具徽章（`FORMAL_PROOF_TOOLS` = lean4 / mathlib / coq / isabelle / hol-light）时省略 formal-proof 徽章——工具已蕴含方法；无工具的 61 条仍显方法徽章。筛选下拉与 /tech 计数仍用完整 facets。daVinci 卡片单徽章［Lean 4］，详情页［分析］［Lean 4］。
+- 新增 3 项回归测试（连写 Lean4／词干 formalization／entities 同源），共 213 项；typecheck 0 / lint 0；中英导出验收（714+714、facets 缺失 0、zh/en 分歧 0、payload formal-proof 275）；三张 1496×1210 截图重拍目验。
+- 遗留盘点：同类词干+尾 `\b` 漏判仍在 conjectur／homolog／inequalit／theorem prov 等别名上（数学领域与方法轴），待下一轮统一修；本轮不动以保审计清晰。
+
+## 2026-11-17（卡片脚注与能力徽章收敛）
+
+- 卡片 footer 证据等级删除中文释义文字（研究记录／单方声明等），只留色条 + E 码 + S 徽章；释义改为悬停 tooltip（中文）。详情页与证据筛选下拉保留全称（解释与筛选场景）。
+- cap 撤出全部逐事件徽章：卡片徽章行、紧凑行、时间线行、详情页 chips 只显数学领域／研究方法／技术与工具三个文本派生轴；cap 只保留筛选下拉、`/tech` 分组、首页「试试」入口与活跃能力分布、TrendPanel。
+- 理由：cap 是旧 researchArea 方向细分的粗粒度映射（`capabilityOf`），与方法轴口径重叠（神经符号证明 234 条中 186 条同时命中 formal-proof / automated-theorem-proving），与描述轴混摆一行属分类／描述混淆。收敛后 daVinci-Prover 卡片徽章为［形式化证明］［Lean 4］。
+- Lean 4 与形式化证明保留双徽章：工具轴 vs 方法轴（223 / 182 / 交集 175），差集两侧有真实反例（Isabelle 承载形式化证明；AutoGraphForge 以 Lean 为发现验证载体），不合并。
+- 验证：typecheck 0 / lint 0 / 211 项测试；卡片／紧凑／时间线／详情四 surface 实测无 cap 徽章、footer 只留 E 码；中英静态导出验收（714 + 714 详情页、.nojekyll、topics 跳转壳、facets 缺失 0）；三张 1496×1210 截图重拍目验。
+
+## 2026-11-16（方向轴并入技术图谱）
+
+- 旧「研究方向」轴并入四维技术图谱：导航「研究方向」由「技术图谱」承接；`/topics` 索引改为跳转壳（meta-refresh → `/tech`），`/topics/[topic]` 保留为方向档案、页脚留低频入口；旧 `?area=` 链接仍可用，在下拉「旧方向（旧链接）」分组中只显示有数据的值。
+- `/latest` 四个维度合为一个分组下拉（AI 能力 6 / 数学领域 9 / 研究方法 6 / 技术与工具 10，选项全部从数据派生）；事件卡新增四维徽章，只显命中、置于 footer 之上保持行对齐；紧凑行只显能力 + 数学领域；生态事件不带徽章。
+- 首页「试试」标签与「活跃能力」 bars、时间线徽章改走能力轴（`/latest?cap=`）；六能力计数 234 / 142 / 65 / 53 / 49 / 45。
+- 修复客户端与服务端徽章口径分歧：facets 改为构建期从原始英文记录派生一次、随 payload 下发（`ListEvent.facets`）；客户端摘要截断（600 字）与中文本地化不再影响派生，「分析」组恢复、zh/en facets 完全一致；payload zh 1259 KB / en 1159 KB。
+- `/methodology` 新增第七组「分类维度」释义并链接 `/tech`；README 中英同步（功能表、Roadmap），自动收录数更正为 583。
+- 验证：typecheck 0 / lint 0 / 211 项测试；中英静态导出成功；实测 `math:analysis` → 2 条、`?cap=neuro-symbolic-proving` → 234 条、旧 `?area=Geometry` → 51 条，详情页与卡片徽章一致，英文站分组下拉与徽章全英文。
+
+## 2026-11-16（四维分类 facet 与研究图谱）
+
+- 回应「Lean 独大 / 几何与证明不算 AI 能力」的讨论，把分类改为四个正交、可选的派生 facet：AI 能力、数学领域、研究方法、技术与工具。全部由标题 / 摘要 / 子方向 / 方向轴确定性派生（`lib/dimensions.ts`），不写入存储、不改历史，零 LLM 额度。
+- 能力轴删除「几何」与「定理证明」两个非能力标签：几何 math4ai 归「AI 的数学基础」、ai4math 几何求解归「数学推理」；证明的 AI 侧（proof search / autoformalization / agent proving）保留为「神经符号证明与自动形式化」，纯数理逻辑归「AI 的数学基础」。能力轴对研究事件全覆盖（未标注 0）。
+- 数学领域 9 分支、研究方法 6 类（可多选）作为可选 facet：通用 AI 方法工作允许缺省（领域未标注 408/588、方法未标注 250/588），缺省本身是信息，不强行归类。
+- 技术目录扩 HOL Light / Mathematica / Maple / SageMath / MATLAB（命中 11/4/1/1/1）；Lean 4 仍独大（176）属领域现实，靠多轴浏览缓解而非拆维。
+- `/tech` 索引升级为四维图谱：三个 facet 分区（计数 + 占比 + 最近记录 + 未标注卡片）+ 技术专题卡 + 「能力 × 技术」交叉表；来源详情页新增四维徽章行。旧 `/topics` 暂留作遗留方向档案，二期再迁，避免一次断全站链接。
+- 验证：typecheck 0 / lint 0 / 211 项测试通过（新增 9 项维度测试）；数据 zh 1205 KB / en 1105 KB；中英静态导出成功（清一次损坏的 `.next` 缓存后），产物抽查四维分区、交叉表、未标注卡片与详情页徽章均正确。
+- 修复导出与开发服务器共用构建目录的冲突：`build-site.mjs` 原先清空并写入 `.next`（live dev server 的目录），导致 dev 的 CSS 404、3000 端口整页无样式。改用独立 `NEXT_DIST_DIR=.next-build`；并适配 Next 14 行为——自定义 distDir 时导出产物直接写进 distDir（脚本 build 后 rename 成 `out/`），而构建中间产物仍写 `.next`，故 **publish 前必须停 dev（3000/3001）、导出后重启**，隔离目录 alone 不够。
+
+## 2026-11-16（五关系追踪模型与技术图谱）
+
+- 按新设计把追踪模型改为 Source / Event / Update 三层与五种关系：`same-event` 追加 Update、`same-project` 新建 Event 挂到 Project、`related-event` 只建关联边、`same-technology` 共享技术标签、`independent` 保持独立。媒体转载与同一论文的重复记录只追加 Source（`kind: report`），不进时间线、不改事件标题与起止日期；复现 / 反驳只建 reproduction / overturn 边，不覆盖历史。
+- `lib/tracking.ts` 取代 `lib/stories.ts`，路由口径经五轮回填校准：身份实体只认人物 / 机构 / 项目（系统归技术轴）；same-event 需同论文、或同人 + 标题相似 ≥0.4、或同名系列 Part 编号延续；标题年份不同判不同届；复现 cues 只看标题；Project 成员只认标题与 `entities.projects`，摘要里提及工具不算归属；LLM 复核只送身份重叠候选（61 条 ≈ 1.6 万 token，待额度）。
+- 回填关系分布：same-technology 110 / independent 473 / same-project 1 / same-event 3（含 1 条同论文 source-only）。发布 Event 4 个：Podcasts 系列 3 次 Update、AI Scientist 2 次、DeepSeek-Prover 2 次、GitHub 仓库发布 1 次（Project 成员）。Navier–Stokes 争议条因 seed 与 arXiv 为同一论文，正确降为单 Event + 附加来源。
+- 技术图谱：`lib/technologies.ts` 目录（Lean 4 / Mathlib / Coq / Isabelle / MCTS）按别名确定性匹配；新增 `/tech` 与 `/tech/[id]`，含关联事件 / 研究团队 / 关联项目三项计数（Lean 4：182 / 23 / 1）。导航「技术图谱」替换「演化追踪」，`/evolution` 保留旧链重定向，`lib/evolution.ts` 死代码删除。
+- 详情页 Event 化：来源详情页新增「所属事件」块（Project 徽章、技术徽章、迷你时间线、其他来源、关联事件）；`/events/[id]` 单列其他来源与关联事件区。
+- 验证：typecheck 0 错误 / lint 0 警告 / 202 项测试通过；静态数据 zh 1205 KB / en 1105 KB（714 事件、6 方向）；中英静态导出各 754 页（`/events/[id]` 4 页、`/tech` 索引 + 5 个技术页），产物抽查事件索引、技术计数与详情页追踪块均正确。
+
+## 2026-11-16（追踪口径收敛：只发布真脉络）
+
+- 明确多数事件只有一次记录、并不存在持续进展，取消「为每条来源记录生成脉络页」的做法。新增 `publishedStories()`，只保留至少两步的脉络；构建期由 `publishedStoryIdBySlug()` 生成 `slug → storyId` 索引并写入静态数据集。
+- 事件卡片、来源详情页与方向页仅在记录属于已发布脉络时显示「追踪进展」；`/events` 只列真脉络并补中英空态；`/events/[id]` 的静态参数也只为真脉络生成，不再导出 710 个单条空壳脉络页。
+- 中英 README 的功能表、Roadmap 与数据更新段落同步新口径；顺带把「583 条自动采集」修正为实际的 587 条。
+- typecheck 0 错误 / lint 0 警告 / 27 个测试文件 195 项测试通过；中文站静态导出验证通过，页面数由 1456 降至 746（`/events/[id]` 由 712 页收敛为 2 页）。双语字典键一致性由编译期校验覆盖。
+
+## 2026-11-16（按长期事件重构追踪模型）
+
+- 参考 AIHOT 的“同一件事只出现一次、旧事仅在有后续进展时再次出现”原则，将单条 `ResearchEvent` 明确为**来源记录**，新增稳定 `storyId`、进展类型与匹配来源；原 URL、证据和详情页不被覆盖。
+- 新增 `lib/stories.ts`：把来源记录聚合成 `TrackedStory` 与 append-only `StoryProgress`；未迁移的历史记录仍有由不可变事件 ID 推导的稳定单条故事，避免迁移时丢失历史或破坏链接。
+- 新增 `/events` 与 `/events/[id]`：长期事件页按时间列出每一次进展，并可回到原来源记录、原始链接及相关实体搜索；来源详情页加入对应事件脉络入口。
+- 采集流程新增候选匹配：先以实体、关键词、论文标识在五年窗口中检索，强匹配自动追加，歧义候选仅在已配置的 LLM 下复核；不确定时新建故事。`npm run backfill:stories` 可为已采集记录补写链接，重复运行安全。
+- 首批人工复核的 DeepSeek-Prover 与 AI Scientist 版本序列作为多步骤故事示例；不将“同领域”“引用”误当成同一事件，其他历史记录保持独立，待后续逐条策展。
+- 可选 Prisma 模型同步加入故事字段与索引。typecheck 通过；27 个测试文件共 193 项测试通过。
+
+### 同日调整：追踪回归事件卡片
+
+- 移除一级导航中的「演化追踪」：它不再作为独立看板。每张事件卡片新增「追踪进展」，直达该记录所属的 `/events/[id]` 时间线；来源详情页保留同一入口。
+- `/evolution` 保留为旧链接兼容地址，自动回到最新事件流，避免形成第二个信息入口。
+
+## 2026-11-16（持续演化事件追踪）
+
+- 新增 `/evolution`：以滚动 90 天作为观察窗，在一页中汇总新近记录、状态**确实发生跃迁**的核验历史，以及在窗口前后连续出现的人物、机构、项目与系统线索；每项均可回到事件页、搜索或标签说明复查。
+- 演化面板直接从现有事件库推导，不另建手工 watchlist；定时采集和静态重建后会自动更新，避免两份数据产生漂移。
+- 桌面与移动导航均加入「演化追踪」，并补齐中英文元数据、文案和单元测试。
+- 加固 `build-site.mjs` 的 Windows 生成目录清理：对 `out/`、`dist/` 做短暂文件锁重试与显式存在性校验，双语导出在已有产物时更稳定。
+- typecheck 通过；26 个测试文件共 190 项测试通过；中英双语静态导出均成功。
+
 ## 2026-11-11（实验室研究档案）
 
 依据《Anthropic 与 OpenAI AI4Math 进展时间线（2020 年至 2026 年 10 月 16 日）》补齐 `/labs` 的历史进展：

@@ -9,13 +9,19 @@
  * from arXiv:2511.16072, and 45–48 are samples of the same 722-manuscript batch).
  * Feeding them into SeedStore would silently merge them on source URL.
  *
- * Chinese prose is verbatim from the source archive. English titles, summaries,
- * attribution labels and date notes are condensed editorial translations;
- * the detailed verification / scope / division-of-labour notes remain in the
- * original Chinese to preserve their precise wording.
+ * Chinese prose for entries 1–52 is verbatim from the source archive. English
+ * titles, summaries, attribution labels and date notes are condensed editorial
+ * translations; the detailed verification / scope / division-of-labour notes
+ * remain in the original Chinese to preserve their precise wording.
+ *
+ * Entries 53–55 (DeepMind milestones, 2023–2024) are NOT from that document.
+ * They were compiled from primary sources (Nature papers and official DeepMind
+ * announcements) and verified on 2026-11-18; each record's verification field
+ * states its source basis so it is never presented as verbatim source-archive
+ * prose. They fill the 2023-H2–2024 gap and add the DeepMind track.
  */
 
-export type LabTrack = "openai" | "anthropic" | "joint" | "independent";
+export type LabTrack = "openai" | "anthropic" | "deepmind" | "joint" | "independent";
 
 export interface LabSource {
   url: string;
@@ -1053,6 +1059,61 @@ export const LAB_ARCHIVE: LabArchiveRecord[] = [
     { url: "https://openai.com/index/sharing-ai-progress-in-mathematics/", label: { zh: "OpenAI更新", en: "OpenAI update" } },
     ],
   },
+  {
+    id: "lab-53", n: 53, date: "2023-12-14", dateLabel: "2023年12月14日",
+    dateNoteEn: "Official announcement date; the Nature paper appeared in volume 625 (2024).", track: "deepmind",
+    attribution: { zh: "Google DeepMind 自研", en: "Google DeepMind in-house" },
+    nature: { zh: "搜索方法与可验证发现", en: "Search method and verified discoveries" },
+    title: { zh: "FunSearch 用程序搜索在组合数学中得到可验证的新构造", en: "FunSearch finds verifiable new constructions in combinatorics via program search" },
+    problem: "领域：极值组合学、算法。目标是让大语言模型在可自动判分的程序空间里搜索，产出能被独立验算的数学构造，而非只生成无法核验的自然语言答案。两个应用是 cap set 问题与在线装箱问题。",
+    result: { zh: "在 cap set 问题上，FunSearch 在 8 维找到大小 512 的 cap set，改进了当时已知构造；论文称这是约二十年来该问题构造上的最大改进。在线装箱上进化出的启发式在仿真与 OR-Library 实例上优于常见的 first-fit、best-fit。", en: "FunSearch found a cap set of size 512 in dimension 8, improving the best known construction — described as the largest advance on the problem in about twenty years. Evolved online bin-packing heuristics beat first-fit and best-fit baselines. Outputs are verifiable programs, not free-form answers." },
+    model: "FunSearch：预训练大语言模型 + 自动评估器 + 基于岛屿的进化搜索；配套软件在 GitHub 开源，但原实验所用模型、沙箱与分布式设施未包含",
+    people: "Bernardino Romera-Paredes；Mohammadamin Barekatain；Alexander Novikov；Matej Balog；Pawan Kumar；Emilien Dupont；Francisco J. R. Ruiz；Jordan Ellenberg；Pengming Wang；Omar Fawzi；Pushmeet Kohli；Alhussein Fawzi 等",
+    division: "AI：生成候选程序，自动评估器按测试用例判分并筛掉错误或幻觉程序，高分程序入库存入下一轮提示。 人类：给出问题规格、评估函数与程序骨架，并检视、简化最终构造。",
+    verification: "口径说明：本条非源文件逐字记录，依据一手来源编辑，2026-11-18 核实。日期取 DeepMind 官方公告日 2023-12-14；论文见 Nature doi:10.1038/s41586-023-06924-6（卷 625，页 468–475）。结果是可由评估器与研究者独立验算的程序。",
+    scope: "cap set 与装箱上的改进是构造/启发式层面的可验证新结果，不等于解决开放猜想的完整证明；开源软件不含原模型与分布式设施，复现完整搜索需自建基础设施。",
+    extras: [],
+    sources: [
+    { url: "https://deepmind.google/discover/blog/funsearch-making-new-discoveries-in-mathematical-sciences-using-large-language-models/", label: { zh: "官方公告", en: "Official announcement" } },
+    { url: "https://www.nature.com/articles/s41586-023-06924-6", label: { zh: "Nature 论文", en: "Nature paper" } },
+    ],
+  },
+  {
+    id: "lab-54", n: 54, date: "2024-01-17", dateLabel: "2024年1月17日",
+    dateNoteEn: "Nature publication date (vol. 625, pp. 476–482).", track: "deepmind",
+    attribution: { zh: "Google DeepMind 自研", en: "Google DeepMind in-house" },
+    nature: { zh: "神经符号证明系统", en: "Neuro-symbolic proving system" },
+    title: { zh: "AlphaGeometry 不依赖人类示范解决奥赛级几何题", en: "AlphaGeometry solves olympiad geometry without human demonstrations" },
+    problem: "领域：欧几里得平面几何、自动定理证明。目标是在竞赛时限内证明奥赛级几何题，难点在于题目常需引入原陈述中没有的辅助点、线、圆，而传统符号系统难以做到这类构造。",
+    result: { zh: "在 IMO-AG-30 基准（2000—2022 年 IMO 几何题）上，AlphaGeometry 在标准时限内解决 30 题中的 25 题，接近人类金牌选手平均 25.9 题的水平，显著高于此前基于吴方法的自动系统解决的 10 题。论文还给出人类可读证明。", en: "AlphaGeometry solved 25 of 30 problems on the IMO-AG-30 benchmark within the standard time limit, near the 25.9 average of a human gold medalist and well above the previous automated record of 10 (Wu's method). It produces human-readable proofs." },
+    model: "AlphaGeometry：神经语言模型 + 符号演绎引擎；语言模型从约一亿条合成定理与证明中从零训练，未使用人类书写示范",
+    people: "Trieu H. Trinh；Yuhuai Wu；Quoc V. Le；He He；Thang Luong",
+    division: "AI：语言模型在符号引擎无法继续时提出辅助构造，符号引擎穷举可推导事实，两者交替直到找到证明；训练数据为自动生成。 人类：设计系统与合成数据生成流程，撰写论文。",
+    verification: "口径说明：本条非源文件逐字记录，依据一手来源编辑，2026-11-18 核实。日期取 Nature 论文首次发表日 2024-01-17（卷 625，页 476–482；2024-02-23 的作者更正不改变首发日）。论文为同行评审。",
+    scope: "25/30 是特定基准（2000—2022 IMO 几何题）的成绩，不代表解决研究级开放问题；系统为几何专用、依赖合成数据与领域规则，作者明确指出向其他数学领域推广仍是开放问题。",
+    extras: [],
+    sources: [
+    { url: "https://www.nature.com/articles/s41586-023-06747-5", label: { zh: "Nature 论文", en: "Nature paper" } },
+    ],
+  },
+  {
+    id: "lab-55", n: 55, date: "2024-07-25", dateLabel: "2024年7月25日",
+    dateNoteEn: "Official DeepMind announcement date.", track: "deepmind",
+    attribution: { zh: "Google DeepMind 自研", en: "Google DeepMind in-house" },
+    nature: { zh: "形式化推理与几何系统", en: "Formal reasoning and geometry systems" },
+    title: { zh: "AlphaProof 与 AlphaGeometry 2 在 IMO 2024 达银牌水平", en: "AlphaProof and AlphaGeometry 2 reach silver-medal standard at IMO 2024" },
+    problem: "领域：形式化数学推理、竞赛数学。目标是在 2024 年 IMO 真实赛题上评测 AI 系统，覆盖代数、组合、几何、数论；题目由人工翻译成形式语言，解答按 IMO 评分规则计分。",
+    result: { zh: "联合系统解决 6 题中的 4 题，得 28/42 分（每题满分计），达当年银牌区间上沿——金牌线为 29 分。AlphaProof 解决两道代数题与一道数论题（含当届仅 5 名选手解出的最难题），AlphaGeometry 2 在数十秒内证明几何题；两道组合题未解。评分由 Timothy Gowers 与 Joseph Myers 完成。", en: "The combined system solved 4 of 6 problems and scored 28/42, the top of the silver-medal range (gold started at 29). AlphaProof solved two algebra and one number-theory problem — including the hardest problem, solved by only five contestants; AlphaGeometry 2 proved the geometry problem in seconds. Both combinatorics problems stayed unsolved. Solutions were graded by Timothy Gowers and Joseph Myers." },
+    model: "AlphaProof：预训练语言模型 + AlphaZero 强化学习，在 Lean 中搜索并验证证明，并由 Gemini 微调模型把自然语言题目形式化；AlphaGeometry 2：基于 Gemini、以更多合成数据训练的神经符号几何系统",
+    people: "AlphaProof 与 AlphaGeometry 团队（DeepMind）；评分：Timothy Gowers（菲尔兹奖得主、IMO 金牌）、Joseph Myers（两届 IMO 金牌、2024 IMO 选题委员会主席）",
+    division: "AI：AlphaProof 在 Lean 中生成并验证证明，用已验证证明强化语言模型，赛期持续对自生成变体强化；AlphaGeometry 2 提出几何构造并完成证明。 人类：把赛题人工翻译为形式语言；按 IMO 规则独立评分。",
+    verification: "口径说明：本条非源文件逐字记录，依据一手来源编辑，2026-11-18 核实。日期取 DeepMind 官方公告日 2024-07-25；官方页面注明 AlphaProof 方法论论文于 2025-11-12 发表在 Nature。证明在 Lean 中可形式核验，评分由具名数学家完成。",
+    scope: "题目在赛前被人工翻译成形式语言，与选手在自然语言下解题的条件不同；系统解题耗时从数分钟到约三天，不满足选手两场各 4.5 小时的时限；两道组合题未解，不能表述为六题全解或达到金牌。",
+    extras: [],
+    sources: [
+    { url: "https://deepmind.google/blog/ai-solves-imo-problems-at-silver-medal-level/", label: { zh: "官方公告", en: "Official announcement" } },
+    ],
+  },
 ];
 
 /** Background capability baselines listed separately in the source archive. */
@@ -1064,7 +1125,7 @@ export const LAB_BASELINES = [
 ];
 
 /** Grouping + lookup helpers shared by the UI and the integrity tests. */
-export const LAB_TRACKS: LabTrack[] = ["openai", "anthropic", "joint", "independent"];
+export const LAB_TRACKS: LabTrack[] = ["openai", "anthropic", "deepmind", "joint", "independent"];
 
 export function archiveYears(records: LabArchiveRecord[] = LAB_ARCHIVE): string[] {
   return [...new Set(records.map((r) => r.date.slice(0, 4)))].sort().reverse();

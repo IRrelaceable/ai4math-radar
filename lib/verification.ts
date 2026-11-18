@@ -5,11 +5,10 @@ import { resolveSourceTier as resolveCatalogSourceTier } from "./sources/catalog
 import type {
   EvidenceLevel,
   EventType,
+  PublicationStatus,
   ResearchEvent,
-  ResearchEventType,
+  Source,
   SourceTier,
-  VerificationRecord,
-  VerificationStatus,
 } from "../types";
 
 /**
@@ -38,48 +37,22 @@ const OVERRIDES: Partial<
   "numinamath-aimo-progress-prize-1": { evidenceLevel: "E3" },
   "alphaevolve-gemini-coding-agent-algorithms": { evidenceLevel: "E3" },
   // Synthetic examples produced by the mock pipeline — not research evidence.
-  "placeholder-event": { evidenceLevel: "E4" },
+  "placeholder-event": { evidenceLevel: "E3" },
 };
 
 export interface TrustModel {
   evidenceLevel: EvidenceLevel;
   sourceTier: SourceTier;
   eventType: EventType;
-  researchEventType?: ResearchEventType;
-  verificationHistory: VerificationRecord[];
-}
-
-export function deriveResearchEventType(
-  event: Pick<ResearchEvent, "researchArea" | "title"> &
-    Partial<Pick<ResearchEvent, "benchmark" | "dataset" | "subArea">>
-): ResearchEventType {
-  if (event.researchArea === "Benchmarks & Datasets") return "Benchmark";
-  const blob = [event.title, event.subArea, ...(event.benchmark ?? []), ...(event.dataset ?? [])]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-  if (/\bimo\b|aimo|olympiad|putnam/.test(blob)) return "Competition";
-  switch (event.researchArea) {
-    case "Theorem Proving & Formal Mathematics":
-      // The merged area covers both proof search and the formalization stack;
-      // the sub-area is what still separates them.
-      return event.subArea === "Autoformalization" ||
-        event.subArea === "Formal corpora & libraries" ||
-        event.subArea === "Proof assistant tooling"
-        ? "Formalization"
-        : "Proof";
-    case "Mathematical Discovery & Symbolic Computation":
-      return "Discovery";
-    default:
-      return "System";
-  }
 }
 
 function deriveEvidenceLevel(event: ResearchEvent): EvidenceLevel {
   if (event.githubUrl) return "E1";
   if (event.paperUrl || (event.papers ?? []).length > 0) return "E2";
-  if (event.sourceUrl) return "E3";
-  return "E4";
+  // No inspectable artifact or research record — a bare claim at best.
+  // E4 ("no public evidence") was removed: every indexed event has a sourceUrl,
+  // so the fallback is always a single-party claim (E3).
+  return "E3";
 }
 
 function deriveSourceTier(event: ResearchEvent): SourceTier {
@@ -93,53 +66,66 @@ function deriveSourceTier(event: ResearchEvent): SourceTier {
   return "S1";
 }
 
-function deriveHistory(
-  event: ResearchEvent,
-  evidence: EvidenceLevel
-): VerificationRecord[] {
-  const first: EvidenceLevel = evidence === "E4" ? "E3" : evidence;
-  const firstStatus = deriveVerificationStatus(evidence);
-  const history: VerificationRecord[] = [
-    {
-      date: event.date,
-      evidenceLevel: first,
-      status: firstStatus,
-      note: "Default evidence level derived from the record's links on the event date.",
-    },
-  ];
-  if (evidence === "E0" || evidence === "E1") {
-    history.push({
-      date: event.date,
-      evidenceLevel: evidence,
-      status: deriveVerificationStatus(evidence),
-      note:
-        evidence === "E0"
-          ? "Independent check is publicly recorded."
-          : "Inspectable artifact (code, proofs or data) is publicly available.",
-    });
+/** Link type deterministically indicates the publication stage — there is no
+ *  manual annotation step. A preprint server (arXiv) hosts non-peer-reviewed
+ *  drafts; a conference proceedings or publisher record (ACL Anthology, PMLR,
+ *  NeurIPS, IJCAI, CEUR, publisher DOI) is a formal publication. Repository
+ *  deposits (zenodo) and technical reports (RAND) are neither, so they stay
+ *  unset. Stages such as acceptance or withdrawal cannot be read from a link
+ *  and are not modelled. */
+const PREPRINT_HOST = /(^|\.)arxiv\.org$/i;
+const PUBLISHED_HOST = /(^|\.)(aclanthology\.org|proceedings\.mlr\.press|papers\.nips\.cc|ijcai\.org|ceur-ws\.org)$/i;
+/** zenodo is a repository, not a formal publisher. */
+const REPOSITORY_DOI = /^10\.5281\//;
+
+function linkStage(url?: string): PublicationStatus | undefined {
+  if (!url) return undefined;
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return undefined;
   }
-  return history;
+  if (PREPRINT_HOST.test(u.hostname)) return "preprint";
+  if (PUBLISHED_HOST.test(u.hostname)) return "published";
+  if (/(^|\.)doi\.org$/i.test(u.hostname)) {
+    const doi = u.pathname.replace(/^\/+/, "");
+    if (doi.startsWith("10.48550/")) return "preprint"; // arXiv DOI
+    if (REPOSITORY_DOI.test(doi)) return undefined; // zenodo deposit
+    return "published"; // publisher DOI
+  }
+  return undefined;
+}
+
+/** Furthest stage wins: a published record supersedes an arXiv draft. */
+function derivePublicationStatus(event: ResearchEvent): PublicationStatus | undefined {
+  const urls = [event.paperUrl, ...(event.papers ?? []).map((p) => p.url), event.sourceUrl];
+  const stages = urls.map(linkStage);
+  if (stages.includes("published")) return "published";
+  if (stages.includes("preprint")) return "preprint";
+  return undefined;
 }
 
 /**
- * Conservative state derived from the link type alone.
- *
- * A released paper is not a verified claim, and a public artifact is not an
- * independent replay; only E0 records an actual independent check. Disputed,
- * corrected and retracted states are never inferred — a source must say so.
+ * Build the source list from the links an event already carries. Read-time
+ * derivation only — the 714 stored events are untouched. The event's tier
+ * labels the primary source; papers and code are added as S0 records.
  */
-function deriveVerificationStatus(evidence: EvidenceLevel): VerificationStatus | undefined {
-  switch (evidence) {
-    case "E0":
-      return "independently_verified";
-    case "E1":
-    case "E2":
-      return "paper_released";
-    case "E3":
-      return "claimed";
-    default:
-      return undefined;
-  }
+export function deriveSources(event: ResearchEvent, tier: SourceTier): Source[] {
+  const collectedAt = event.lastSyncedAt ?? event.updatedAt;
+  const sources: Source[] = [];
+  const push = (url?: string, sourceTier: SourceTier = tier, title?: string) => {
+    if (url && !sources.some((s) => s.url === url)) {
+      sources.push({ url, tier: sourceTier, publishedAt: event.date, collectedAt, title });
+    }
+  };
+  // Paper links are primary research records (S0).
+  push(event.paperUrl, "S0");
+  for (const paper of event.papers ?? []) push(paper.url, "S0", paper.title);
+  push(event.githubUrl, "S0");
+  // The declared source link carries the event's own tier.
+  push(event.sourceUrl, tier);
+  return sources;
 }
 
 /** Fill any missing trust-model fields with conservative, rule-derived values. */
@@ -148,27 +134,16 @@ export function applyTrustModel(event: ResearchEvent): ResearchEvent {
   const evidenceLevel = override.evidenceLevel ?? event.evidenceLevel ?? deriveEvidenceLevel(event);
   const sourceTier = event.sourceTier ?? deriveSourceTier(event);
   const eventType = override.eventType ?? event.eventType ?? "Research";
-  const researchEventType =
-    event.researchEventType ??
-    (eventType === "Research" ? deriveResearchEventType(event) : undefined);
-  const verificationHistory =
-    event.verificationHistory ?? deriveHistory(event, evidenceLevel);
-  // The current state is the latest state recorded, unless the record pins one
-  // explicitly. Never recompute a disputed/corrected/retracted state from links.
-  const lastRecordedStatus = [...verificationHistory]
-    .reverse()
-    .find((record) => record.status)?.status;
-  const verificationStatus =
-    event.verificationStatus ?? lastRecordedStatus ?? deriveVerificationStatus(evidenceLevel);
+  const publicationStatus = derivePublicationStatus(event);
+  const sources = event.sources?.length ? event.sources : deriveSources(event, sourceTier);
 
   return {
     ...event,
     evidenceLevel,
     sourceTier,
     eventType,
-    researchEventType,
-    verificationHistory,
-    verificationStatus,
+    publicationStatus,
+    sources,
   };
 }
 

@@ -7,7 +7,8 @@ import { createPortal } from "react-dom";
 import { useT } from "@/lib/i18n/context";
 import { sitePathOf } from "@/lib/site";
 
-type NavItem = { href: string; label: string };
+export type NavItem = { href: string; label: string };
+export type NavGroup = { label?: string; items: NavItem[] };
 
 /**
  * Slide-in navigation drawer for small screens.
@@ -17,7 +18,7 @@ type NavItem = { href: string; label: string };
  * scroll, closes on backdrop tap, Escape, or any navigation, and is reachable
  * (role="dialog" + aria-modal) for keyboard and screen-reader users.
  */
-export function MobileMenu({ items }: { items: NavItem[] }) {
+export function MobileMenu({ groups }: { groups: NavGroup[] }) {
   const [open, setOpen] = useState(false);
   const pathname = sitePathOf(usePathname()).replace(/\/+$/, "") || "/";
   const { t } = useT();
@@ -98,24 +99,31 @@ export function MobileMenu({ items }: { items: NavItem[] }) {
               </button>
             </div>
 
-            <ul className="space-y-1">
-              {items.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    prefetch
-                    onClick={() => setOpen(false)}
-                    className={`block rounded-md px-3 py-2.5 text-[15px] ${
-                      isActive(item.href)
-                        ? "bg-ink-100 font-medium text-ink-900"
-                        : "text-ink-700 hover:bg-ink-50"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {groups.map((group, gi) => (
+              <div key={gi} className={gi > 0 ? "mt-5 border-t border-ink-100 pt-4" : ""}>
+                {group.label && (
+                  <div className="mono-label mb-2 px-3">{group.label}</div>
+                )}
+                <ul className="space-y-1">
+                  {group.items.map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        prefetch
+                        onClick={() => setOpen(false)}
+                        className={`block rounded-md px-3 py-2.5 text-[15px] ${
+                          isActive(item.href)
+                            ? "bg-ink-100 font-medium text-ink-900"
+                            : "text-ink-700 hover:bg-ink-50"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </nav>
           </div>,
           document.body

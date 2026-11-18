@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fill, pagesDict } from "@/lib/i18n/dict.pages";
+import { pagesDict } from "@/lib/i18n/dict.pages";
 import {
   LAB_ARCHIVE,
   LAB_BASELINES,
@@ -22,13 +22,13 @@ function leaves(value: unknown, prefix = ""): string[] {
 }
 
 describe("frontier-lab archive", () => {
-  it("contains all 52 records with stable, sequential ids", () => {
-    expect(LAB_ARCHIVE).toHaveLength(52);
+  it("contains all 55 records with stable, sequential ids", () => {
+    expect(LAB_ARCHIVE).toHaveLength(55);
     LAB_ARCHIVE.forEach((record, index) => {
       expect(record.id).toBe(`lab-${String(index + 1).padStart(2, "0")}`);
       expect(record.n).toBe(index + 1);
     });
-    expect(new Set(LAB_ARCHIVE.map((r) => r.id)).size).toBe(52);
+    expect(new Set(LAB_ARCHIVE.map((r) => r.id)).size).toBe(55);
   });
 
   it("uses sortable ISO dates within the documented 2020–2026 range", () => {
@@ -39,7 +39,7 @@ describe("frontier-lab archive", () => {
       expect(record.dateLabel.length).toBeGreaterThan(0);
     }
     expect(archiveYears()).toEqual(["2026", "2025", "2024", "2023", "2022", "2021", "2020"]);
-    expect(archiveByYear().flatMap((g) => g.records)).toHaveLength(52);
+    expect(archiveByYear().flatMap((g) => g.records)).toHaveLength(55);
     // Newest first inside every year, original sequence as a tie-breaker.
     for (const group of archiveByYear()) {
       for (let i = 1; i < group.records.length; i++) {
@@ -90,7 +90,7 @@ describe("frontier-lab archive", () => {
   });
 
   it("preserves one or more verifiable https source links per record", () => {
-    expect(LAB_ARCHIVE.reduce((n, r) => n + r.sources.length, 0)).toBe(116);
+    expect(LAB_ARCHIVE.reduce((n, r) => n + r.sources.length, 0)).toBe(120);
     for (const record of LAB_ARCHIVE) {
       expect(record.sources.length, record.id).toBeGreaterThan(0);
       for (const source of record.sources) {
@@ -117,8 +117,14 @@ describe("frontier-lab archive", () => {
     }
     expect(counts.joint).toBe(1);
     expect(counts.independent).toBe(5);
+    expect(counts.deepmind).toBe(3);
     // Joint work and independent reviews must not collapse into one bucket.
     expect(counts.joint).toBeLessThan(counts.openai);
+    // DeepMind entries are primary-source compiled, not verbatim from the
+    // original timeline document; their verification field must say so.
+    for (const r of LAB_ARCHIVE.filter((r) => r.track === "deepmind")) {
+      expect(r.verification).toContain("非源文件逐字记录");
+    }
   });
 
   it("marks the four 722-collection samples without counting them as extra results", () => {
@@ -129,8 +135,8 @@ describe("frontier-lab archive", () => {
       expect(record.scope).toContain("722");
       expect(record.track).toBe("openai");
     }
-    // Every other record is a standalone entry.
-    expect(LAB_ARCHIVE.filter((r) => !r.sample)).toHaveLength(48);
+    // Every other record is a standalone entry (48 original + 3 DeepMind).
+    expect(LAB_ARCHIVE.filter((r) => !r.sample)).toHaveLength(51);
   });
 
   it("keeps the two background baselines separate from the 52 records", () => {
@@ -150,16 +156,16 @@ describe("frontier-lab archive", () => {
  */
 describe("archive page copy", () => {
   it("mirrors every zh archive label in en", () => {
-    const zh = leaves(pagesDict.zh.labs.archive).sort();
-    const en = leaves(pagesDict.en.labs.archive).sort();
+    const zh = leaves(pagesDict.zh.tasks.archive).sort();
+    const en = leaves(pagesDict.en.tasks.archive).sort();
     expect(en).toEqual(zh);
     expect(zh.length).toBeGreaterThan(20);
-    const zhAutomated = leaves(pagesDict.zh.labs.automated).sort();
-    expect(leaves(pagesDict.en.labs.automated).sort()).toEqual(zhAutomated);
+    const zhAutomated = leaves(pagesDict.zh.tasks.automated).sort();
+    expect(leaves(pagesDict.en.tasks.automated).sort()).toEqual(zhAutomated);
   });
 
   it("translates every English archive label", () => {
-    const enArchive = pagesDict.en.labs.archive;
+    const enArchive = pagesDict.en.tasks.archive;
     const strings = leaves(enArchive).map((path) =>
       path.split(".").reduce<unknown>((node, key) => (node as Record<string, unknown>)[key], enArchive)
     );
@@ -167,21 +173,18 @@ describe("archive page copy", () => {
       expect(typeof value).toBe("string");
       expect(hasChinese(value as string)).toBe(false);
     }
-    expect(hasChinese(pagesDict.en.labs.automated.title)).toBe(false);
-    expect(hasChinese(pagesDict.en.labs.automated.hint)).toBe(false);
+    expect(hasChinese(pagesDict.en.tasks.automated.title)).toBe(false);
+    expect(hasChinese(pagesDict.en.tasks.automated.hint)).toBe(false);
   });
 
-  it("updates the labs page subtitle and metadata in both languages", () => {
+  it("describes the published task stage in both languages", () => {
     for (const lang of ["zh", "en"] as const) {
       const p = pagesDict[lang];
-      expect(p.labs.sub.length).toBeGreaterThan(40);
-      expect(p.meta.labs.desc).toContain("{n}");
-      expect(p.meta.labs.desc).toContain("{range}");
-      expect(fill(p.meta.labs.desc, { n: LAB_ARCHIVE.length, range: "2020—2026" })).toContain(
-        String(LAB_ARCHIVE.length)
-      );
-      expect(p.labs.archive.title).toContain("{range}");
-      expect(p.labs.archive.intro).toContain("{n}");
+      expect(p.tasks.sub.length).toBeGreaterThan(40);
+      expect(p.meta.tasks.desc).toContain("OpenAI");
+      expect(p.meta.tasks.desc).toContain("Anthropic");
+      expect(p.tasks.archive.title).toContain("{range}");
+      expect(p.tasks.archive.intro).toContain("{n}");
     }
   });
 });

@@ -8,6 +8,7 @@ import { extractEcosystemMetadata, type ExtractedMetadata } from "./metadata";
 import { extractContribution, type ExtractedContribution } from "./contribution";
 import { extractNamedEntities } from "./entities";
 import { classifyDirection } from "./direction";
+import { enrichResearchItem } from "./enrich";
 import { fingerprintItem } from "@/lib/db/ingested";
 
 export interface PipelineStepResult {
@@ -132,32 +133,38 @@ export async function runPipeline(
     pending.push({ normalized, effective, slug, fingerprint });
   }
 
-  // Summarization is one network round-trip per accepted item and dominates
-  // sync time (a 25-item arXiv batch ran ~4 minutes sequentially). A small
-  // window keeps a batch near a minute without hammering the provider.
+  // Research items now get all four extractions in ONE network round-trip via
+  // enrichResearchItem (summary+zh, AI/human attribution, entities, direction).
+  // Ecosystem events still use the per-field calls: their metadata shape varies
+  // by event class and has no merged equivalent. A small concurrency window
+  // keeps a batch fast without hammering the provider.
   const LLM_CONCURRENCY = 4;
   const results = await mapWithConcurrency(pending, LLM_CONCURRENCY, async (entry) => {
-    const text = await summarize(entry.normalized, entry.effective);
-    // People / Institutions / Funding / Policy events carry structured details
-    // instead of a research area; Research items skip the extra call.
     const eventType = entry.normalized.eventType ?? "Research";
-    const metadata =
-      eventType === "Research"
-        ? undefined
-        : await extractEcosystemMetadata(entry.normalized, eventType);
-    // Research items get a second small call that records how the source
-    // divides the reported result between AI and humans. It stays separate
-    // from the summary so a tooling or benchmark paper is not mislabelled as
-    // an AI-produced result.
-    const contribution =
-      eventType === "Research" ? await extractContribution(entry.normalized) : undefined;
-    // Named entities are what place the event on a person/institution/project
-    // timeline; they come from the source text, never from a feed byline.
-    const entities = await extractNamedEntities(entry.normalized);
-    // The direction axis is judged from the just-written summary under the
-    // fixed rubric; ecosystem items carry an event class instead and skip it.
-    const direction =
-      eventType === "Research" && entry.effective.researchArea
+
+    if (eventType === "Research") {
+      const merged = await enrichResearchItem(entry.normalized, entry.effective);
+      if (merged) {
+        return {
+          text: {
+            summary: merged.summary,
+            significance: merged.significance,
+            titleZh: merged.titleZh,
+            summaryZh: merged.summaryZh,
+            significanceZh: merged.significanceZh,
+          },
+          metadata: undefined,
+          contribution: merged.aiRole ? { en: merged.aiRole, zh: merged.aiRole.zh } : undefined,
+          entities: merged.entities,
+          direction: merged.direction,
+        };
+      }
+      // Fallback: a failed/unparseable merged reply must not lose the event.
+      // Individual callers keep their own retry and validation logic.
+      const text = await summarize(entry.normalized, entry.effective);
+      const contribution = await extractContribution(entry.normalized);
+      const entities = await extractNamedEntities(entry.normalized);
+      const direction = entry.effective.researchArea
         ? await classifyDirection({
             title: entry.normalized.title,
             summary: text.summary,
@@ -165,7 +172,13 @@ export async function runPipeline(
             subArea: entry.effective.subArea,
           })
         : undefined;
-    return { text, metadata, contribution, entities, direction };
+      return { text, metadata: undefined, contribution, entities, direction };
+    }
+
+    const text = await summarize(entry.normalized, entry.effective);
+    const metadata = await extractEcosystemMetadata(entry.normalized, eventType);
+    const entities = await extractNamedEntities(entry.normalized);
+    return { text, metadata, contribution: undefined, entities, direction: undefined };
   });
 
   pending.forEach((entry, index) => {

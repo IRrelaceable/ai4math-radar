@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import type { RawResearchItem, ResearchEvent } from "@/types";
+import { assertValidTracking } from "@/lib/tracking";
 
 /**
  * File-backed cache for pipeline output (V2).
@@ -92,6 +93,8 @@ export function appendIngestedEvents(events: ResearchEvent[]): {
   let added = 0;
   let updated = 0;
   for (const event of events) {
+    // Last line of defence: nothing without a valid Event link may be written.
+    assertValidTracking(event);
     const previous = bySlug.get(event.slug);
     if (previous) updated += 1;
     else added += 1;

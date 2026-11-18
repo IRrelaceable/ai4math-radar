@@ -88,6 +88,7 @@ async function main() {
         subArea: e.subArea,
         sourceType: e.sourceType,
         sourceUrl: e.sourceUrl,
+        sources: e.sources as unknown as Prisma.InputJsonValue | undefined,
         paperUrl: e.paperUrl,
         githubUrl: e.githubUrl,
         problem: e.problem,
@@ -101,19 +102,18 @@ async function main() {
         evidenceLevel: e.evidenceLevel ?? "E2",
         sourceTier: e.sourceTier ?? "S0",
         eventType: e.eventType ?? "Research",
-        researchEventType: e.researchEventType,
+        publicationStatus: e.publicationStatus ?? null,
+        publicationCorrections:
+          e.publicationCorrections === undefined
+            ? Prisma.DbNull
+            : (e.publicationCorrections as unknown as Prisma.InputJsonValue),
         metadata:
           e.metadata === undefined
             ? Prisma.DbNull
             : (e.metadata as unknown as Prisma.InputJsonValue),
         provenance: e.provenance ?? "curated",
-        verificationRecords: {
-          create: (e.verificationHistory ?? []).map((r) => ({
-            date: toUtcDate(r.date),
-            evidenceLevel: r.evidenceLevel,
-            note: r.note,
-          })),
-        },
+        eventId: e.tracking?.eventId,
+        tracking: e.tracking ? (e.tracking as unknown as Prisma.InputJsonValue) : Prisma.DbNull,
         eventPapers: { create: paperIds.map((paperId) => ({ paperId })) },
         eventAuthors: { create: authorIds.map((authorId) => ({ authorId })) },
         relatedWorks: {

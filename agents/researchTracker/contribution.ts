@@ -22,6 +22,7 @@ export interface ExtractedContribution {
   };
 }
 
+// Unmarked events are left without an aiRole; there is no "unknown" enum value.
 const LEVELS: readonly AiRoleLevel[] = [
   "autonomous",
   "assisted",
@@ -29,12 +30,17 @@ const LEVELS: readonly AiRoleLevel[] = [
   "not_applicable",
 ];
 
-const SYSTEM =
+/**
+ * Judgment rules only — no output-format instruction. Shared by the legacy
+ * per-field extractor and the merged enrichment call, which supplies its own
+ * single output schema. Keeping the format out of the rubric is what lets one
+ * merged reply use one JSON shape across all extraction tasks.
+ */
+export const CONTRIBUTION_RULES =
   "You attribute a reported research result to AI systems and humans for an AI-for-Mathematics tracker. " +
-  "Reply with a single JSON object and nothing else: no markdown fence, no commentary. " +
   "Use only facts stated in the supplied title and abstract. Choose exactly one level:\n" +
-  "- autonomous: the source states an AI system produced the proof, solution, conjecture or discovery " +
-  "with no or minimal human direction.\n" +
+  "- autonomous: the source explicitly says an AI system carried out core research tasks (ideation, " +
+  "proof, experiment, code, write-up) with no or minimal human direction.\n" +
   "- assisted: the source reports mathematical results obtained by its own AI system — proofs, " +
   "solutions, conjectures, discoveries, or benchmark scores earned by that system — while humans built, " +
   "trained, curated data for, steered, formalized or checked it. This is the normal reading of a paper " +
@@ -45,6 +51,10 @@ const SYSTEM =
   "problem set or another dataset/corpus release, a conference, education, funding, policy or community " +
   "milestone, a result produced only by humans (including historical results), or pure tooling that " +
   "reports no results.\n" +
+  "Using an agent, generating code, or automatic execution does not by itself establish autonomous; " +
+  "autonomy requires an explicit no/minimal-human-direction claim about the core research work. " +
+  "In descriptions, name the participation mode when stated: code generation, proof search, " +
+  "formalization, hypothesis generation, experiment, or autonomous research workflow. " +
   "Never call work autonomous when the source only announces a capability or a score; that is assisted. " +
   "A deterministic symbolic tool, compiler, metaprogram or script is not an AI system, and the word " +
   "\"automatically\" alone never establishes an AI role; such work is not_applicable. " +
@@ -54,6 +64,11 @@ const SYSTEM =
   "or two short sentences. Also include a \"zh\" object with the same two prose keys translated into " +
   "Simplified Chinese; keep personal names, model names, Lean identifiers and abbreviations in their " +
   "original spelling, do not invent Chinese transliterations, and use no gendered pronouns.";
+
+/** Legacy per-field extractor prompt: rules plus its own output-format line. */
+export const CONTRIBUTION_SYSTEM =
+  "Reply with a single JSON object and nothing else: no markdown fence, no commentary. " +
+  CONTRIBUTION_RULES;
 
 const TRANSLATE_SYSTEM =
   "Translate the supplied English prose values into Simplified Chinese. " +
@@ -146,13 +161,13 @@ export async function extractContribution(
 
   try {
     let parsed = parseContributionResponse(
-      await provider.complete(prompt, { system: SYSTEM, maxTokens: 700 })
+      await provider.complete(prompt, { system: CONTRIBUTION_SYSTEM, maxTokens: 700 })
     );
     // Providers occasionally answer with an empty completion; one repeat is
     // enough and keeps a whole event from silently losing its attribution.
     if (!parsed) {
       parsed = parseContributionResponse(
-        await provider.complete(prompt, { system: SYSTEM, maxTokens: 700 })
+        await provider.complete(prompt, { system: CONTRIBUTION_SYSTEM, maxTokens: 700 })
       );
     }
     if (!parsed || parsed.en.level === "not_applicable") return parsed;

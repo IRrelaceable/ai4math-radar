@@ -10,7 +10,7 @@ export interface RssSourceOptions {
   defaultEventType?: EventType;
   defaultResearchArea?: ResearchArea;
   sourceTier?: SourceTier;
-  /** Frontier lab whose own work this feed publishes (see /labs). */
+  /** Frontier lab whose own work this feed publishes. */
   lab?: Lab;
   allowNonAI4Math?: boolean;
   /**
@@ -151,6 +151,8 @@ export function parseFeedBlock(block: string): {
   url?: string;
   publishedAt?: string;
   summary?: string;
+  /** Short feed description retained for the existing keyword-selection rules. */
+  excerpt?: string;
   authors?: string[];
 } {
   const rawTitle = tag(block, "title");
@@ -160,11 +162,15 @@ export function parseFeedBlock(block: string): {
     tag(block, "published") ??
     tag(block, "updated") ??
     tag(block, "dc:date");
+  // WordPress descriptions are often teasers ending in "Continue reading".
+  // Prefer the article body when the feed supplies it, then fall back to a
+  // summary-only feed. This also gives the classifier the article's context.
   const summary =
-    tag(block, "description") ??
-    tag(block, "summary") ??
+    tag(block, "content:encoded") ??
     tag(block, "content") ??
-    tag(block, "content:encoded");
+    tag(block, "description") ??
+    tag(block, "summary");
+  const excerpt = tag(block, "description") ?? tag(block, "summary");
 
   return {
     id: tag(block, "guid") ?? link,
@@ -172,6 +178,7 @@ export function parseFeedBlock(block: string): {
     url: link ? decodeEntities(link) : undefined,
     publishedAt: safeDate(date),
     summary: summary ? stripHtml(summary) : undefined,
+    excerpt: excerpt ? stripHtml(excerpt) : undefined,
     authors: feedAuthors(block),
   };
 }
@@ -289,7 +296,7 @@ export function createRssSource(options: RssSourceOptions): ResearchSource {
         if (since && parsed.publishedAt && parsed.publishedAt < since) continue;
         const keywordText = matchTitleOnly
           ? parsed.title
-          : `${parsed.title} ${parsed.summary ?? ""}`;
+          : `${parsed.title} ${parsed.excerpt ?? parsed.summary ?? ""}`;
         if (excludeKeywords?.length && mentionsKeyword(keywordText, excludeKeywords)) continue;
         if (includeKeywords?.length && !mentionsKeyword(keywordText, includeKeywords)) continue;
         if (

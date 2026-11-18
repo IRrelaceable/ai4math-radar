@@ -18,6 +18,10 @@ import path from "node:path";
 const root = process.cwd();
 const dist = path.join(root, "dist");
 const out = path.join(root, "out");
+// Next 14 with a custom distDir writes the static export INTO that distDir
+// (no out/ is produced), and its build intermediates still go to .next — so
+// a live dev server must be stopped before publishing, not merely isolated.
+const nextBuild = path.join(root, ".next-build");
 const siteBase = (process.env.SITE_BASE ?? "").replace(/\/+$/, "");
 
 function run(cmd, args, env) {
@@ -33,15 +37,33 @@ function run(cmd, args, env) {
 }
 
 function build(lang) {
-  fs.rmSync(out, { recursive: true, force: true });
+  clearDirectory(out);
+  // Each language is a separate static export. Clearing Next's transient
+  // build tree avoids Windows retaining a chunk directory between exports.
+  clearDirectory(nextBuild);
   run("npx", ["next", "build"], {
     SITE_LANG: lang,
     SITE_BASE: siteBase,
+    NEXT_DIST_DIR: ".next-build",
     MSYS_NO_PATHCONV: "1",
   });
-  if (!fs.existsSync(out)) {
-    console.error(`[build] next build produced no out/ for ${lang}`);
+  // With a custom distDir Next 14 exports straight into it; normalise to out/.
+  if (!fs.existsSync(nextBuild)) {
+    console.error(`[build] next build produced no export for ${lang}`);
     process.exit(1);
+  }
+  fs.renameSync(nextBuild, out);
+}
+
+/**
+ * Windows can hold a just-produced static directory briefly while an indexer
+ * or preview process releases it. Retry the generated-output cleanup and
+ * fail explicitly if a stale directory still remains before a rename.
+ */
+function clearDirectory(dir) {
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+  if (fs.existsSync(dir)) {
+    throw new Error(`[build] could not clear generated directory: ${dir}`);
   }
 }
 
@@ -53,16 +75,19 @@ function keepOnly(lang, dir) {
 console.log(`[build] SITE_BASE=${siteBase || "(root)"}`);
 run("npx", ["tsx", "scripts/build-data.ts"]);
 
-fs.rmSync(dist, { recursive: true, force: true });
+clearDirectory(dist);
 
 build("zh");
+// A just-finished prior local build may recreate dist through a preview or
+// file indexer between the initial cleanup and this atomic replacement.
+clearDirectory(dist);
 fs.renameSync(out, dist);
 keepOnly("zh", dist);
 
 build("en");
 fs.mkdirSync(path.join(dist, "en"), { recursive: true });
 fs.cpSync(out, path.join(dist, "en"), { recursive: true });
-fs.rmSync(out, { recursive: true, force: true });
+clearDirectory(out);
 keepOnly("en", path.join(dist, "en"));
 
 // GitHub Pages otherwise hands the tree to Jekyll, which drops `_next/`.

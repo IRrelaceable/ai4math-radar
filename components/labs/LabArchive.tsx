@@ -13,7 +13,7 @@ import {
   type LabTrack,
 } from "@/data/lab-archive/records";
 
-type Labels = PagesDict["labs"]["archive"];
+type Labels = PagesDict["tasks"]["archive"];
 type Filter = LabTrack | "all";
 export interface RelatedEvent {
   slug: string;
@@ -24,6 +24,7 @@ export interface RelatedEvent {
 const TRACK_CLASS: Record<LabTrack, string> = {
   openai: "border-[#cdd3fb] bg-[#eef0ff] text-[#33409e]",
   anthropic: "border-[#efd3a4] bg-[#fdf3e3] text-[#85500e]",
+  deepmind: "border-[#b7e4d4] bg-[#eaf7f1] text-[#0f6b52]",
   joint: "border-[#dacdf5] bg-[#f2edfc] text-[#583e91]",
   independent: "border-[#cbd5e1] bg-[#f1f5f9] text-[#475569]",
 };
@@ -242,6 +243,7 @@ export function LabArchive({
     { value: "all", label: labels.filterAll },
     { value: "openai", label: labels.filterOpenai },
     { value: "anthropic", label: labels.filterAnthropic },
+    { value: "deepmind", label: labels.filterDeepmind },
     { value: "joint", label: labels.filterJoint },
     { value: "independent", label: labels.filterIndependent },
   ];

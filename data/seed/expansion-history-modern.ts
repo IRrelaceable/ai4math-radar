@@ -38,7 +38,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Josef Urban"],
     institution: "Charles University, Prague",
-    researchEventType: "Benchmark",
     evidenceLevel: "E2",
     keyContributions: [
       "Translated Mizar into TPTP format for ATP use",
@@ -75,7 +74,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Josef Urban"],
     institution: "Charles University, Prague",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Learned premise selection from Mizar proofs",
@@ -117,7 +115,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Sascha Böhme", "Tobias Nipkow"],
     institution: "Technische Universität München",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Relevance filtering to select facts for ATPs",
@@ -169,7 +166,6 @@ export const events: ResearchEvent[] = [
       "Enrico Tassi",
       "Laurent Théry",
     ],
-    researchEventType: "Formalization",
     evidenceLevel: "E2",
     keyContributions: [
       "End-to-end Coq formalization of the Feit–Thompson theorem",
@@ -218,7 +214,6 @@ export const events: ResearchEvent[] = [
       "Jakob von Raumer",
     ],
     institution: "Microsoft Research",
-    researchEventType: "System",
     evidenceLevel: "E1",
     keyContributions: [
       "Public Lean repository created on 2013-07-17",
@@ -254,7 +249,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Cezary Kaliszyk", "Josef Urban"],
     institution: "University of Innsbruck",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Premise selection for HOL Light goals",
@@ -289,7 +283,6 @@ export const events: ResearchEvent[] = [
       },
     ],
     authors: ["Cezary Kaliszyk", "Josef Urban"],
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "ATP integration for Mizar goals",
@@ -352,7 +345,6 @@ export const events: ResearchEvent[] = [
       "Ky Khac Vu",
       "Roland Zumkeller",
     ],
-    researchEventType: "Formalization",
     evidenceLevel: "E2",
     keyContributions: [
       "Complete formal proof of the Kepler conjecture",
@@ -400,7 +392,6 @@ export const events: ResearchEvent[] = [
       "Josef Urban",
     ],
     institution: "Google Brain; Charles University",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Deep sequence models for premise selection",
@@ -441,7 +432,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Daniel Whalen"],
     institution: "University of Washington",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Neural guidance for HOL4 proof search",
@@ -477,7 +467,6 @@ export const events: ResearchEvent[] = [
       },
     ],
     authors: ["Cezary Kaliszyk", "Josef Urban", "Jiří Vyskočil"],
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Context-based learning from aligned informal–formal corpora",
@@ -518,7 +507,6 @@ export const events: ResearchEvent[] = [
       "Cezary Kaliszyk",
     ],
     institution: "Google Brain; University of Innsbruck",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Deep-network guidance for clause selection",
@@ -559,7 +547,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Cezary Kaliszyk", "François Chollet", "Christian Szegedy"],
     institution: "University of Innsbruck; Google Brain",
-    researchEventType: "Dataset",
     evidenceLevel: "E2",
     keyContributions: [
       "Annotated HOL Light proof-step dataset",
@@ -588,7 +575,6 @@ export const events: ResearchEvent[] = [
     githubUrl: "https://github.com/leanprover-community/mathlib3",
     authors: ["leanprover-community"],
     institution: "leanprover-community",
-    researchEventType: "Infrastructure",
     evidenceLevel: "E1",
     keyContributions: [
       "Community-maintained Lean 3 mathematics library",
@@ -634,7 +620,6 @@ export const events: ResearchEvent[] = [
       "Ramana Kumar",
       "Michael Norrish",
     ],
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Learned tactic sequences from HOL4 proofs",
@@ -669,7 +654,6 @@ export const events: ResearchEvent[] = [
       },
     ],
     authors: ["Qingxiang Wang", "Cezary Kaliszyk", "Josef Urban"],
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Neural sequence models for informal-to-formal translation",
@@ -714,7 +698,6 @@ export const events: ResearchEvent[] = [
       "Henryk Michalewski",
       "Mirek Olšák",
     ],
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Proof search as a reinforcement-learning problem",
@@ -760,7 +743,6 @@ export const events: ResearchEvent[] = [
       "Ilya Sutskever",
     ],
     institution: "UC Berkeley; OpenAI",
-    researchEventType: "Infrastructure",
     evidenceLevel: "E2",
     keyContributions: [
       "Coq-based interactive proving environment",
@@ -801,7 +783,6 @@ export const events: ResearchEvent[] = [
       "Pushmeet Kohli",
     ],
     institution: "DeepMind",
-    researchEventType: "Dataset",
     evidenceLevel: "E2",
     keyContributions: [
       "Large procedurally generated mathematics dataset",
@@ -843,7 +824,6 @@ export const events: ResearchEvent[] = [
       "Stewart Wilcox",
     ],
     institution: "Google",
-    researchEventType: "Benchmark",
     evidenceLevel: "E2",
     keyContributions: [
       "HOL Light environment for learning agents",
@@ -884,7 +864,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Kaiyu Yang", "Jia Deng"],
     institution: "Princeton University",
-    researchEventType: "Infrastructure",
     evidenceLevel: "E2",
     keyContributions: [
       "Coq environment and dataset spanning 71 projects",
@@ -925,7 +904,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Mingzhe Wang", "Jia Deng"],
     institution: "Princeton University",
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Joint theorem generator and prover training",
@@ -961,7 +939,6 @@ export const events: ResearchEvent[] = [
     ],
     authors: ["Stanislas Polu", "Ilya Sutskever"],
     institution: "OpenAI",
-    researchEventType: "Discovery",
     evidenceLevel: "E2",
     aiRole: {
       level: "autonomous",

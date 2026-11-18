@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { buildTrends } from "@/lib/trends";
-import { slugify } from "@/lib/utils";
-import type { ResearchArea, ResearchEvent } from "@/types";
+import type { ResearchEvent } from "@/types";
+import { CAPABILITIES, facetLabel } from "@/lib/dimensions";
 import { getLang } from "@/lib/i18n/server";
 import { componentsDict } from "@/lib/i18n/dict.components";
-import { displayArea } from "@/lib/i18n/localize";
 
 /**
  * Momentum panel: recorded activity in the last N days vs the previous window.
@@ -61,13 +60,13 @@ export function TrendPanel({
       {rising.length > 0 && (
         <ul className="space-y-2">
           {rising.map((t) => (
-            <li key={t.area} className="flex items-center gap-3">
+            <li key={t.capability} className="flex items-center gap-3">
               <Link
-                href={`/topics/${slugify(t.area)}`}
+                href={`/latest?cap=${encodeURIComponent(t.capability)}`}
                 className="w-44 shrink-0 truncate text-sm font-medium hover:text-accent-700"
-                title={t.area}
+                title={facetLabel(CAPABILITIES, t.capability, lang)}
               >
-                {displayArea(t.area as ResearchArea, lang)}
+                {facetLabel(CAPABILITIES, t.capability, lang)}
               </Link>
               <div className="flex h-2 flex-1 items-center gap-1.5" aria-hidden>
                 <div

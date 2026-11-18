@@ -1,4 +1,5 @@
 import type { ResearchEvent } from "@/types";
+import { capabilityOf } from "@/lib/dimensions";
 
 /**
  * Trend detection: where is the recorded activity concentrating right now?
@@ -6,8 +7,8 @@ import type { ResearchEvent } from "@/types";
  * This is a count of tracked events, not a claim about scientific significance —
  * pair it with the verification labels before drawing conclusions.
  */
-export interface AreaTrend {
-  area: string;
+export interface CapabilityTrend {
+  capability: string;
   recent: number;
   previous: number;
   delta: number;
@@ -22,8 +23,8 @@ export interface TrendSummary {
   windowDays: number;
   totalRecent: number;
   totalPrevious: number;
-  topRising: AreaTrend[];
-  all: AreaTrend[];
+  topRising: CapabilityTrend[];
+  all: CapabilityTrend[];
 }
 
 const MS_PER_DAY = 86_400_000;
@@ -37,28 +38,29 @@ export function buildTrends(
   const currentStart = now - windowDays * MS_PER_DAY;
   const previousStart = now - 2 * windowDays * MS_PER_DAY;
 
-  const byArea = new Map<string, { recent: ResearchEvent[]; previous: ResearchEvent[] }>();
+  const byCapability = new Map<string, { recent: ResearchEvent[]; previous: ResearchEvent[] }>();
 
   for (const event of events) {
-    // Trends track research directions; ecosystem events have none.
-    if (!event.researchArea) continue;
+    // Trends track the capability axis; ecosystem events carry no facet.
+    const capability = capabilityOf(event);
+    if (!capability) continue;
     const t = Date.parse(event.date);
     if (Number.isNaN(t)) continue;
-    const entry = byArea.get(event.researchArea) ?? { recent: [], previous: [] };
+    const entry = byCapability.get(capability) ?? { recent: [], previous: [] };
     if (t >= currentStart) entry.recent.push(event);
     else if (t >= previousStart) entry.previous.push(event);
-    byArea.set(event.researchArea, entry);
+    byCapability.set(capability, entry);
   }
 
-  const all: AreaTrend[] = [...byArea.entries()]
-    .map(([area, buckets]) => {
+  const all: CapabilityTrend[] = [...byCapability.entries()]
+    .map(([capability, buckets]) => {
       const recent = buckets.recent.sort((a, b) => b.date.localeCompare(a.date));
       const previous = buckets.previous;
       const delta = recent.length - previous.length;
       const ratio =
         previous.length === 0 ? (recent.length > 0 ? Infinity : 1) : recent.length / previous.length;
       return {
-        area,
+        capability,
         recent: recent.length,
         previous: previous.length,
         delta,
@@ -70,7 +72,7 @@ export function buildTrends(
     })
     .filter((t) => t.recent > 0 || t.previous > 0)
     .sort(
-      (a, b) => b.recent - a.recent || b.delta - a.delta || a.area.localeCompare(b.area)
+      (a, b) => b.recent - a.recent || b.delta - a.delta || a.capability.localeCompare(b.capability)
     );
 
   return {

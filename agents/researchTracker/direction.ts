@@ -137,6 +137,18 @@ const RUBRIC = [
 
 export const DIRECTION_SYSTEM = RUBRIC.join("\n");
 
+/**
+ * Judgment rules only — no competing output-format line. The merged enrichment
+ * call supplies one schema where direction is a single string, so the legacy
+ * "reply with researchObject/coreGoal/... JSON" instruction is removed here.
+ * Boundary examples stay: they are the calibrated core of the rubric.
+ */
+export const DIRECTION_RULES = RUBRIC.filter(
+  (line) =>
+    !line.startsWith("Reply with one JSON object") &&
+    !line.startsWith("Write researchObject, coreGoal")
+).join("\n");
+
 /** Bump when the rubric changes so cached judgements can be told apart. */
 export const DIRECTION_RUBRIC_VERSION = "2026-11-09b";
 

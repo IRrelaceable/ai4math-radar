@@ -33,6 +33,8 @@ model ResearchEvent {
 
   sourceType String
   sourceUrl  String
+  /// All sources attached to this event (JSON array of {title,url,publishedAt,tier,collectedAt}).
+  sources    Json?
   paperUrl   String?
   githubUrl  String?
   problem    String?
@@ -50,19 +52,27 @@ model ResearchEvent {
   isDemo Boolean @default(false)
 
   /// Trust model — objective, observable corroboration labels.
-  /// E0..E4 - maturity of the public evidence
+  /// E0..E3 - maturity of the public evidence
   evidenceLevel      String  @default("E2")
   /// S0..S4 - where the evidence comes from
   sourceTier         String  @default("S0")
   /// Primary ecosystem class: Research | People | Institutions | Funding | Education | PolicyCommunity.
   eventType          String?
-  /// Legacy research subtype: Discovery | Proof | Formalization | Benchmark | ...
-  researchEventType  String?
+  /// Publication stage (preprint|published), derived from source links.
+  /// Separate from evidence: a preprint is not peer review.
+  publicationStatus       String?
+  /// Errata / corrigenda appended after formal publication (JSON array).
+  publicationCorrections  Json?
   /// Type-specific ecosystem details (people, grant, course, policy, ...).
   metadata           Json?
   /// curated (hand-curated) | automated (ingest pipeline)
   provenance         String  @default("curated")
   lastSyncedAt       DateTime?
+
+  /// Durable Event identity; source records remain separate rows.
+  eventId            String?
+  /// Full EventLink (kind, relation, matchedBy, project, relation edge).
+  tracking           Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -70,7 +80,6 @@ model ResearchEvent {
   eventPapers  ResearchEventPaper[]
   eventAuthors ResearchEventAuthor[]
   relatedWorks ResearchEventRelatedWork[]
-  verificationRecords VerificationRecord[]
 
   models     Model[]
   benchmarks Benchmark[]
@@ -78,6 +87,7 @@ model ResearchEvent {
 
   @@index([date])
   @@index([researchAreaId])
+  @@index([eventId])
 }
 
 model ResearchArea {
@@ -161,19 +171,6 @@ model ResearchEventRelatedWork {
   note       String?
   /// Optional link to another tracked event (when the target is already in the platform).
   toEventId  String?
-
-  @@index([eventId])
-}
-
-/// Append-only trail of how an event's corroboration state changed over time.
-model VerificationRecord {
-  id            String        @id @default(cuid())
-  eventId       String
-  event         ResearchEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  date          DateTime      @db.Date
-  /// E0..E4
-  evidenceLevel String
-  note          String?
 
   @@index([eventId])
 }

@@ -2,34 +2,55 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getStore } from "@/lib/db";
 import type { RelatedWork, ResearchEvent } from "@/types";
-import { formatDateLong, slugify, sourceHost, arxivIdOf } from "@/lib/utils";
+import { formatDateLong, formatDate, slugify, sourceHost, arxivIdOf } from "@/lib/utils";
 import {
   AiRolePill,
   EvidenceLevelPill,
   EventTypePill,
+  PublicationStatusPill,
   SourceTierPill,
-  VerificationStatusPill,
 } from "@/components/ui/TrustBadges";
 import { LineageTimeline } from "@/components/research/LineageTimeline";
-import { EventCard } from "@/components/research/EventCard";
 import { EntityThreads } from "@/components/research/EntityThreads";
 import { buildEntityThreads, threadsForEvent } from "@/lib/entities";
-import { VerificationHistorySection } from "@/components/research/DetailSections";
+import { PublicationCorrectionsSection } from "@/components/research/DetailSections";
 import { EventDiscussion } from "@/components/research/EventDiscussion";
 import { TocNav } from "@/components/layout/TocNav";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { getLang, t } from "@/lib/i18n/server";
 import { localizeEvent, localizeEvents, displayArea, displaySubArea } from "@/lib/i18n/localize";
 import { pagesDict } from "@/lib/i18n/dict.pages";
+import { buildTrackedEvents, eventIdOf, eventLinkOf, updatesOf } from "@/lib/tracking";
+import { projectById } from "@/data/seed/projects";
+import { DimensionChips } from "@/components/research/DimensionChips";
+import type { TrackedEvent } from "@/types";
 
 // Module-level cache: every detail page calls listEvents() to build entity
-// threads and neighbour lists. The store content is identical across all ~685
-// renders in a single build, so compute it once and reuse it instead of
-// re-filtering the corpus on every page.
+// threads. The store content is identical across all ~685 renders in a single
+// build, so compute it once and reuse it instead of re-filtering on every page.
 let cachedAllEvents: ResearchEvent[] | null = null;
 async function getAllEvents(): Promise<ResearchEvent[]> {
   if (!cachedAllEvents) cachedAllEvents = await getStore().listEvents();
   return cachedAllEvents;
+}
+
+let cachedTrackedBySlug: Map<string, TrackedEvent> | null = null;
+async function getTrackedBySlug(): Promise<Map<string, TrackedEvent>> {
+  if (!cachedTrackedBySlug) {
+    cachedTrackedBySlug = new Map();
+    for (const tracked of buildTrackedEvents(await getAllEvents())) {
+      for (const step of tracked.progress) cachedTrackedBySlug.set(step.eventSlug, tracked);
+    }
+  }
+  return cachedTrackedBySlug;
+}
+
+let cachedSlugByEventId: Map<string, string> | null = null;
+async function getSlugByEventId(): Promise<Map<string, string>> {
+  if (!cachedSlugByEventId) {
+    cachedSlugByEventId = new Map((await getAllEvents()).map((event) => [eventIdOf(event), event.slug]));
+  }
+  return cachedSlugByEventId;
 }
 
 /** Every stored event gets its own page; unknown slugs are not exported. */
@@ -56,10 +77,20 @@ export default async function ResearchDetailPage({
   const found = await store.getEventBySlug(params.slug);
   if (!found) notFound();
   const event = localizeEvent(found, lang);
+  const eventLink = eventLinkOf(found);
 
-  // One store pass powers both contextual blocks: the entity threads and the
-  // chronological neighbours in the same research area. Cached across renders.
+  // One store pass powers both contextual blocks: entity threads and tracking.
+  // Cached across renders.
   const allEvents = await getAllEvents();
+  const tracked = (await getTrackedBySlug()).get(event.slug);
+  const slugByEventId = await getSlugByEventId();
+  const showTracking = Boolean(
+    tracked &&
+      (tracked.projectId ||
+        updatesOf(tracked).length >= 2 ||
+        tracked.relations.length > 0 ||
+        tracked.progress.some((step) => step.kind === "report"))
+  );
   const entityThreads = threadsForEvent(
     buildEntityThreads(allEvents),
     event.slug,
@@ -74,26 +105,6 @@ export default async function ResearchDetailPage({
     ...thread,
     events: thread.events.map((item) => localizedBySlug.get(item.slug) ?? item),
   }));
-  const areaTimeline = event.researchArea
-    ? allEvents.filter((candidate) => candidate.researchArea === event.researchArea)
-    : event.eventType
-      ? allEvents.filter((candidate) => candidate.eventType === event.eventType)
-      : [];
-  const neighbourPool = areaTimeline.sort(
-    (a, b) => a.date.localeCompare(b.date) || a.slug.localeCompare(b.slug)
-  );
-  const areaIndex = neighbourPool.findIndex((candidate) => candidate.slug === event.slug);
-  const neighbourEvents =
-    areaIndex >= 0
-      ? localizeEvents(
-          [
-            ...neighbourPool.slice(Math.max(0, areaIndex - 2), areaIndex),
-            ...neighbourPool.slice(areaIndex + 1, areaIndex + 3),
-          ],
-          lang
-        )
-      : [];
-
   const papers = event.papers ?? [];
   /** The one action a reader most likely wants: open the paper/source. */
   const primaryUrl = event.paperUrl ?? papers[0]?.url ?? event.sourceUrl;
@@ -213,6 +224,7 @@ export default async function ResearchDetailPage({
   // at an anchor this particular record does not have.
   const toc = [
     { id: "what", label: d.detail.whatHappened },
+    ...(showTracking ? [{ id: "tracking", label: p.events.label }] : []),
     ...(keyFactsVisible(event) ? [{ id: "facts", label: d.detail.keyFacts }] : []),
     ...(event.aiRole && event.aiRole.level !== "not_applicable"
       ? [{ id: "ai-role", label: d.detail.aiRole }]
@@ -234,18 +246,8 @@ export default async function ResearchDetailPage({
     ...(relatedOnly.length > 0
       ? [{ id: "related", label: d.detail.relatedWorks }]
       : []),
-    ...((event.verificationHistory?.length ?? 0) > 0
-      ? [{ id: "verification", label: d.detail.verificationHistory }]
-      : []),
-    ...(event.researchArea || event.eventType
-      ? [
-          {
-            id: "more",
-            label: event.researchArea
-              ? d.detail.areaAround.replace("{area}", displayArea(event.researchArea, lang))
-              : d.detail.typeAround.replace("{type}", d.trust.type[event.eventType!]),
-          },
-        ]
+    ...((event.publicationCorrections?.length ?? 0) > 0
+      ? [{ id: "publication-corrections", label: d.detail.publicationCorrections }]
       : []),
     ...(hasEcosystem ? [{ id: "ecosystem", label: d.detail.ecosystemDetails }] : []),
     ...(hasArtifacts ? [{ id: "artifacts", label: d.detail.attachedArtifacts }] : []),
@@ -291,6 +293,11 @@ export default async function ResearchDetailPage({
         {/* Header: type + area + date on one line, then title. */}
         <div className="flex flex-wrap items-center gap-2">
           {event.eventType && <EventTypePill type={event.eventType} />}
+          {eventLink?.kind === "verification" && (
+            <span className="chip border border-ink-200 bg-ink-50 text-ink-700">
+              {p.events.kinds.verification}
+            </span>
+          )}
           {event.researchArea && (
             <span className="text-xs text-ink-500">
               {event.subArea
@@ -317,8 +324,8 @@ export default async function ResearchDetailPage({
         <div className="mt-3 flex flex-wrap items-center gap-2 border-b border-ink-100 pb-4">
           {event.evidenceLevel && <EvidenceLevelPill level={event.evidenceLevel} />}
           {event.sourceTier && <SourceTierPill tier={event.sourceTier} />}
-          {event.verificationStatus && (
-            <VerificationStatusPill status={event.verificationStatus} />
+          {event.publicationStatus && (
+            <PublicationStatusPill status={event.publicationStatus} />
           )}
           {/* Research events on either side of the direction axis carry a chip;
               events outside both sides and ecosystem records carry none. */}
@@ -371,6 +378,8 @@ export default async function ResearchDetailPage({
           </span>
         </div>
 
+        <DimensionChips event={found} lang={lang} />
+
         {/* What happened */}
         <section id="what" className="mt-7 scroll-mt-24">
           <SectionTitle>{d.detail.whatHappened}</SectionTitle>
@@ -382,6 +391,13 @@ export default async function ResearchDetailPage({
             </div>
           )}
         </section>
+
+        {/* Tracking context — the Event this record belongs to: project,
+            technologies, confirmed updates, source-only re-reports and
+            explicit relations to other events. */}
+        {showTracking && tracked && (
+          <TrackingSection tracked={tracked} slugByEventId={slugByEventId} titleBySlug={localizedBySlug} />
+        )}
 
         {/* Key facts — derived purely from existing structured fields.
             Short auto-ingested entries leave the narrative thin, so this
@@ -424,7 +440,7 @@ export default async function ResearchDetailPage({
         {/* Original source — the header button already opens it, so this
             section exists only to list papers the record cites; a lone
             "read the original" link here would repeat the button verbatim. */}
-        {papers.length > 0 && (
+        {(papers.length > 0 || (event.sources?.length ?? 0) > 0) && (
           <section id="source" className="mt-7 scroll-mt-24">
             <SectionTitle>
               {isResearch && papers.length > 0 ? d.detail.relatedPaper : d.detail.source}
@@ -464,6 +480,19 @@ export default async function ResearchDetailPage({
                   </a>
                 </div>
               )}
+              {(event.sources ?? []).map((source) => (
+                <div key={source.url} className="flex items-center justify-between gap-3 px-4 py-3">
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium hover:text-accent-700"
+                  >
+                    {source.title || sourceHost(source.url) || source.url}
+                  </a>
+                  <SourceTierPill tier={source.tier} />
+                </div>
+              ))}
             </div>
           </section>
         )}
@@ -535,31 +564,8 @@ export default async function ResearchDetailPage({
           </section>
         )}
 
-        {/* Verification history — collapsed by default. */}
-        <VerificationHistorySection event={event} />
-
-        {/* Around this event — chronological neighbours in the same area, or
-            in the same event class when the record has no research area
-            (people, institutions, funding, policy). */}
-        {(event.researchArea || event.eventType) && (
-          <section id="more" className="mt-9 scroll-mt-24 border-t border-ink-200 pt-7">
-            <SectionTitle>
-              {event.researchArea
-                ? d.detail.areaAround.replace("{area}", displayArea(event.researchArea, lang))
-                : d.detail.typeAround.replace("{type}", d.trust.type[event.eventType!])}
-            </SectionTitle>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {neighbourEvents.map((e) => (
-                <EventCard key={e.id} event={e} />
-              ))}
-            </div>
-            {neighbourEvents.length === 0 && (
-              <p className="mt-3 text-sm text-ink-500">
-                {event.researchArea ? d.detail.noOtherEvents : d.detail.noOtherTypeEvents}
-              </p>
-            )}
-          </section>
-        )}
+        {/* Errata appended after formal publication, when any exist. */}
+        <PublicationCorrectionsSection corrections={event.publicationCorrections} />
 
         {/* Ecosystem metadata — moved from sidebar to bottom of narrative. */}
         <EcosystemDetails event={event} />
@@ -674,6 +680,7 @@ function keyFactsVisible(event: ResearchEvent): boolean {
   return event.provenance === "automated" || !hasNarrative;
 }
 
+/** Key facts and provenance shown when a record has a narrative. */
 function KeyFactsSection({ event }: { event: ResearchEvent }) {
   const lang = getLang();
   const d = t(lang);
@@ -873,6 +880,126 @@ function EcosystemDetails({ event }: { event: ResearchEvent }) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return <h2 className="section-head h-section">{children}</h2>;
+}
+
+/** The Event context of this source record: project, technologies, updates,
+    source-only re-reports and explicit relations. */
+function TrackingSection({
+  tracked,
+  slugByEventId,
+  titleBySlug,
+}: {
+  tracked: TrackedEvent;
+  slugByEventId: Map<string, string>;
+  titleBySlug: Map<string, { title: string }>;
+}) {
+  const lang = getLang();
+  const p = pagesDict[lang].events;
+  const updates = updatesOf(tracked);
+  const initialCount = updates.filter((step) => step.kind === "initial").length;
+  const changeCount = updates.filter((step) =>
+    step.kind === "followup" || step.kind === "correction" || step.kind === "retraction"
+  ).length;
+  const verificationCount = updates.filter((step) => step.kind === "verification").length;
+  const reports = tracked.progress.filter((step) => step.kind === "report");
+  const project = tracked.projectId ? projectById(tracked.projectId) : undefined;
+
+  return (
+    <section id="tracking" className="mt-7 scroll-mt-24">
+      <SectionTitle>{p.label}</SectionTitle>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {project && (
+          <span
+            title={project.desc[lang]}
+            className="chip border border-accent-200 bg-accent-50 font-medium text-accent-700"
+          >
+            {p.projectTitle} · {project.name}
+          </span>
+        )}
+      </div>
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-600">
+        {initialCount > 0 && <span>
+          <strong className="font-semibold text-ink-900">{initialCount}</strong> {p.initialUnit}
+        </span>}
+        {changeCount > 0 && <span>
+          <strong className="font-semibold text-ink-900">{changeCount}</strong> {p.changesUnit}
+        </span>}
+        {verificationCount > 0 && <span>
+          <strong className="font-semibold text-ink-900">{verificationCount}</strong> {p.verificationUnit}
+        </span>}
+        <span>
+          <strong className="font-semibold text-ink-900">{reports.length}</strong> {p.sourcesUnit}
+        </span>
+        <span>
+          <strong className="font-semibold text-ink-900">{tracked.relations.length}</strong>{" "}
+          {p.relationsUnit}
+        </span>
+      </div>
+      {updates.length >= 2 && (
+        <ol className="mt-4 border-l-2 border-ink-200 pl-5">
+          {updates.map((step) => (
+            <li key={step.id} className="relative pb-4 last:pb-0">
+              <span className="absolute -left-[1.84rem] top-2 h-2 w-2 rounded-full bg-accent-500" />
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <time dateTime={step.date} className="font-mono text-xs text-ink-500">
+                  {formatDate(step.date, lang)}
+                </time>
+                <span className="chip text-[11px]">{p.kinds[step.kind]}</span>
+              </div>
+              <Link
+                href={`/research/${step.eventSlug}`}
+                className="mt-1 block text-sm font-medium text-ink-900 hover:text-accent-700"
+              >
+                {titleBySlug.get(step.eventSlug)?.title ?? step.title}
+              </Link>
+            </li>
+          ))}
+        </ol>
+      )}
+      {reports.length > 0 && (
+        <div className="mt-4">
+          <div className="mono-label mb-1">{p.sourcesTitle}</div>
+          <p className="text-xs text-ink-500">{p.sourcesHint}</p>
+          <ul className="mt-2 space-y-1">
+            {reports.map((step) => (
+              <li key={step.id}>
+                <Link className="link-quiet text-sm" href={`/research/${step.eventSlug}`}>
+                  {titleBySlug.get(step.eventSlug)?.title ?? step.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {tracked.relations.length > 0 && (
+        <div className="mt-4">
+          <div className="mono-label mb-1">{p.relationsTitle}</div>
+          <ul className="mt-2 space-y-1">
+            {tracked.relations.map((edge) => {
+              // An edge is stored on the Event that points outward. On the
+              // target page it appears as an incoming edge, so resolve the
+              // "other" Event from the direction instead of always toEventId.
+              const incoming = edge.fromEventId !== tracked.id;
+              const otherEventId = incoming ? edge.fromEventId : edge.toEventId;
+              const slug = slugByEventId.get(otherEventId);
+              return (
+                <li key={`${edge.fromEventId}:${edge.toEventId}:${edge.kind}`} className="text-sm">
+                  <span className="chip text-[11px]">{p.relationKinds[edge.kind]}</span>{" "}
+                  {slug ? (
+                    <Link href={`/research/${slug}`} className="link-quiet">
+                      {titleBySlug.get(slug)?.title ?? slug}
+                    </Link>
+                  ) : (
+                    <span className="text-ink-500">{otherEventId}</span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
 }
 
 function Facet({

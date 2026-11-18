@@ -114,9 +114,6 @@ describe("Chinese boilerplate map (PHRASE_ZH)", () => {
       for (const w of e.relatedWorks ?? []) {
         if (w.note) expect(PHRASE_ZH[w.note], `relatedWorks note not translated for "${e.slug}"`).toBeTruthy();
       }
-      for (const h of e.verificationHistory ?? []) {
-        if (h.note) expect(PHRASE_ZH[h.note], `history note not translated for "${e.slug}"`).toBeTruthy();
-      }
     }
   });
 

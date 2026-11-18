@@ -11,7 +11,7 @@ export interface GeneratedText {
   significanceZh?: string;
 }
 
-const SYSTEM =
+export const SUMMARIZER_SYSTEM =
   "You are a research analyst for an AI-for-Mathematics tracking platform. " +
   "Reply in plain text using exactly these labels, in this order: " +
   "SUMMARY:, WHY IT MATTERS:, TITLE_ZH:, SUMMARY_ZH:, WHY IT MATTERS_ZH:. " +
@@ -64,7 +64,7 @@ export async function summarize(
       const prompt =
         `Title: ${item.title}\n\nAbstract: ${item.abstract ?? "(none)"}\n\n` +
         `Classification: ${classification.researchArea ?? "ecosystem event"} (${classification.subArea ?? "-"}).`;
-      const out = await provider.complete(prompt, { system: SYSTEM, maxTokens: 1400 });
+      const out = await provider.complete(prompt, { system: SUMMARIZER_SYSTEM, maxTokens: 1400 });
       const sections = parseSections(out);
       const text: GeneratedText = {
         summary: clean(sections.SUMMARY) || fallbackSummary,

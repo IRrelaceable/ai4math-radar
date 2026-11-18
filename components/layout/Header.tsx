@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { SearchBox } from "@/components/search/SearchBox";
 import { LangToggle } from "@/components/layout/LangToggle";
-import { MobileMenu } from "@/components/layout/MobileMenu";
+import { MobileMenu, type NavGroup, type NavItem } from "@/components/layout/MobileMenu";
 import { useT } from "@/lib/i18n/context";
 import { sitePathOf } from "@/lib/site";
 
@@ -15,19 +16,56 @@ export function Header() {
   const pathname = sitePathOf(usePathname()).replace(/\/+$/, "") || "/";
   const { t } = useT();
 
-  // Methodology and data sources stay reachable from the footer; the bar
-  // itself carries only the section-level routes.
-  const NAV = [
+  // Every content section — including the two curated topics — is a first-class
+  // entry. Only site-information pages are grouped behind one dropdown.
+  const primary: NavItem[] = [
     { href: "/latest", label: t.nav.latest },
     { href: "/timeline", label: t.nav.timeline },
-    { href: "/topics", label: t.nav.topics },
-    { href: "/labs", label: t.nav.labs },
+    { href: "/graph", label: t.nav.graph },
+    { href: "/math-archive", label: t.nav.tasks },
     { href: "/math4ai", label: t.nav.math4ai },
-    { href: "/about", label: t.nav.about },
+  ];
+  const siteItems: NavItem[] = [
+    { href: "/about", label: t.footer.about },
+    { href: "/methodology", label: t.footer.methodology },
+    { href: "/about#sources", label: t.footer.sources },
+  ];
+  const mobileGroups: NavGroup[] = [
+    { items: primary },
+    { label: t.footer.site, items: siteItems },
   ];
 
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
+  const [siteOpen, setSiteOpen] = useState(false);
+  const siteRef = useRef<HTMLDivElement>(null);
+
+  // Close on navigation so the menu never lingers over the new page.
+  useEffect(() => {
+    setSiteOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!siteOpen) return;
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (!siteRef.current?.contains(e.target as Node)) setSiteOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSiteOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [siteOpen]);
+
+  const isActive = (href: string) => {
+    const base = href.split("#")[0];
+    return pathname === base || pathname.startsWith(`${base}/`);
+  };
+  const siteActive = siteItems.some((item) => isActive(item.href));
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur">
@@ -54,7 +92,7 @@ export function Header() {
         {/* Active state is an underline anchored to the header rule, not a
             filled chip — one less rounded box competing with the content. */}
         <nav className="hidden min-w-0 flex-1 self-stretch items-center lg:flex">
-          {NAV.map((item) => (
+          {primary.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -68,6 +106,59 @@ export function Header() {
               {item.label}
             </Link>
           ))}
+
+          <div ref={siteRef} className="relative flex h-full">
+            <button
+              type="button"
+              aria-expanded={siteOpen}
+              aria-controls="site-menu"
+              onClick={() => setSiteOpen((open) => !open)}
+              className={`flex h-full items-center gap-1 border-b-2 px-2 text-[13px] transition-colors ${
+                siteOpen || siteActive
+                  ? "border-accent-600 font-medium text-ink-900"
+                  : "border-transparent text-ink-500 hover:text-ink-900"
+              }`}
+            >
+              {t.footer.site}
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className={`transition-transform ${siteOpen ? "rotate-180" : ""}`}
+              >
+                <path d="M2 4L5 7L8 4" />
+              </svg>
+            </button>
+
+            {siteOpen && (
+              <div
+                id="site-menu"
+                className="absolute left-0 top-full z-50 mt-1 w-52 rounded-lg border border-ink-200 bg-white p-1.5 shadow-lg"
+              >
+                {siteItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    prefetch
+                    onClick={() => setSiteOpen(false)}
+                    className={`block rounded-md px-3 py-2 text-[13px] transition-colors ${
+                      isActive(item.href)
+                        ? "bg-ink-100 font-medium text-ink-900"
+                        : "text-ink-700 hover:bg-ink-50 hover:text-ink-900"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-3">
@@ -84,7 +175,7 @@ export function Header() {
           </Link>
           <SearchBox variant="header" />
           <LangToggle />
-          <MobileMenu items={NAV} />
+          <MobileMenu groups={mobileGroups} />
         </div>
       </div>
     </header>

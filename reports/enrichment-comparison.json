@@ -1,0 +1,334 @@
+{
+  "generatedAt": "2026-11-18T03:16:40.538Z",
+  "provider": "openai-compatible",
+  "model": "mimo-v2.6-pro",
+  "usageReported": false,
+  "quotaBlocked": true,
+  "items": 8,
+  "totals": {
+    "legacy": {
+      "calls": 30,
+      "inputTokens": 0,
+      "outputTokens": 0
+    },
+    "merged": {
+      "calls": 8,
+      "inputTokens": 0,
+      "outputTokens": 0
+    },
+    "mergedWorstCaseCalls": 38,
+    "callReduction": 22,
+    "worstCaseCallReduction": -8,
+    "tokenDelta": 0,
+    "tokenDeltaPct": null,
+    "promptChars": {
+      "legacy": {
+        "system": 69966,
+        "user": 25950
+      },
+      "merged": {
+        "system": 81008,
+        "user": 9907
+      },
+      "systemDelta": 11042,
+      "userDelta": -16043
+    }
+  },
+  "quality": {
+    "qualityMeasurable": false,
+    "fallbacks": 8,
+    "mergedSuccess": 0,
+    "fieldsPresent": {
+      "summary": 0,
+      "chinese": 0
+    },
+    "agreement": {
+      "direction": 0,
+      "aiRoleLevel": 0,
+      "aiRoleComparable": 8,
+      "entities": 0
+    }
+  },
+  "items_detail": [
+    {
+      "slug": "a-combinatorial-identities-benchmark-for-theorem-proving-via-automated-theorem-generation",
+      "title": "A Combinatorial Identities Benchmark for Theorem Proving via Automated Theorem Generation",
+      "legacy": {
+        "calls": 4,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10205,
+        "userChars": 3018,
+        "apiErrors": 4,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 1150,
+        "apiErrors": 5,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 5,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    },
+    {
+      "slug": "a-conditional-no-hair-theorem-for-transformers-how-language-models-forget-their-prompt",
+      "title": "A Conditional No-Hair Theorem for Transformers: How Language Models Forget Their Prompt",
+      "legacy": {
+        "calls": 4,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10205,
+        "userChars": 5486,
+        "apiErrors": 4,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 1761,
+        "apiErrors": 5,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 5,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    },
+    {
+      "slug": "a-diophantine-definition-of-mathbb-z-in-mathbb-q",
+      "title": "A Diophantine definition of $\\mathbb{Z}$ in $\\mathbb{Q}$",
+      "legacy": {
+        "calls": 4,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10205,
+        "userChars": 6425,
+        "apiErrors": 4,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 2081,
+        "apiErrors": 5,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 5,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    },
+    {
+      "slug": "a-formal-proof-of-pac-learnability-for-decision-stumps",
+      "title": "A Formal Proof of PAC Learnability for Decision Stumps",
+      "legacy": {
+        "calls": 4,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10205,
+        "userChars": 2550,
+        "apiErrors": 4,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 1033,
+        "apiErrors": 5,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 5,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    },
+    {
+      "slug": "a-formal-proof-of-the-independence-of-the-continuum-hypothesis",
+      "title": "A Formal Proof of the Independence of the Continuum Hypothesis",
+      "legacy": {
+        "calls": 3,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 4368,
+        "userChars": 1319,
+        "apiErrors": 3,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 809,
+        "apiErrors": 4,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 4,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    },
+    {
+      "slug": "a-formalization-of-dedekind-domains-and-class-groups-of-global-fields",
+      "title": "A formalization of Dedekind domains and class groups of global fields",
+      "legacy": {
+        "calls": 3,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 4368,
+        "userChars": 1496,
+        "apiErrors": 3,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 868,
+        "apiErrors": 4,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 4,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    },
+    {
+      "slug": "a-formalization-of-doob-s-martingale-convergence-theorems-in-mathlib",
+      "title": "A Formalization of Doob's Martingale Convergence Theorems in mathlib",
+      "legacy": {
+        "calls": 4,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10205,
+        "userChars": 2830,
+        "apiErrors": 4,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 1103,
+        "apiErrors": 5,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 5,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    },
+    {
+      "slug": "a-formalization-of-forcing-and-the-unprovability-of-the-continuum-hypothesis",
+      "title": "A formalization of forcing and the unprovability of the continuum hypothesis",
+      "legacy": {
+        "calls": 4,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10205,
+        "userChars": 2826,
+        "apiErrors": 4,
+        "quotaBlocked": true
+      },
+      "merged": {
+        "calls": 1,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "usageReported": false,
+        "systemChars": 10126,
+        "userChars": 1102,
+        "apiErrors": 5,
+        "quotaBlocked": true,
+        "fallback": true
+      },
+      "mergedWorstCaseCalls": 5,
+      "match": null,
+      "legacyFields": {
+        "hasSummary": true,
+        "hasChinese": false,
+        "aiRoleLevel": null,
+        "direction": null,
+        "entities": []
+      },
+      "mergedFields": null
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 "use client";
 
+import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   EVIDENCE_LEVELS,
   EVENT_TYPES,
-  RESEARCH_AREAS,
   SOURCE_TIERS,
   TIME_WINDOWS,
   windowStartDate,
@@ -14,6 +14,13 @@ import {
   type SourceTier,
   type TimeWindow,
 } from "@/types";
+import {
+  FACET_KEYS,
+  FACET_VALUES,
+  facetIdsOf,
+  type FacetKey,
+  type FacetValue,
+} from "@/lib/dimensions";
 import { FeedControls } from "@/components/research/FeedControls";
 import { EventGrid } from "@/components/research/EventGrid";
 import { EventRow } from "@/components/research/EventRow";
@@ -52,6 +59,29 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
   const p = pagesDict[lang];
   const c = componentsDict[lang];
 
+  // Hooks stay above the loading/error early returns. "both" serves either
+  // side, so it appears in every direction view.
+  const all = useMemo(() => {
+    const events = data?.events ?? [];
+    return presetDirection
+      ? events.filter((e) => e.direction === presetDirection || e.direction === "both")
+      : events;
+  }, [data, presetDirection]);
+  // Facets ship in the payload, derived at build time from the raw records —
+  // the same caliber as the server, immune to display-text truncation.
+  const facets = useMemo(() => new Map(all.map((e) => [e.id, e.facets])), [all]);
+  // Options are data-derived: a value with no records would only ever yield an
+  // empty result set. The full scale stays documented on /methodology.
+  const presentFacets = useMemo(() => {
+    const present = {} as Record<FacetKey, FacetValue[]>;
+    for (const key of FACET_KEYS) {
+      present[key] = FACET_VALUES[key].filter((v) =>
+        all.some((e) => facetIdsOf(facets.get(e.id)!, key).includes(v.id))
+      );
+    }
+    return present;
+  }, [all, facets]);
+
   if (error) {
     return <p className="text-sm text-rose-600">{c.feed.loadError}</p>;
   }
@@ -59,12 +89,6 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
     return <p className="text-sm text-ink-500">{c.feed.loading}</p>;
   }
 
-  // "both" serves either side, so it appears in every direction view.
-  const all = presetDirection
-    ? data.events.filter(
-        (e) => e.direction === presetDirection || e.direction === "both"
-      )
-    : data.events;
   const eventType = oneOf<EventType>(params.get("type"), EVENT_TYPES);
   const evidence = oneOf<EvidenceLevel>(params.get("evidence"), EVIDENCE_LEVELS);
   const tier = oneOf<SourceTier>(params.get("tier"), SOURCE_TIERS);
@@ -78,17 +102,21 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
   const month = rawTime && /^\d{4}-\d{2}$/.test(rawTime) ? rawTime : undefined;
   const since = window ? windowStartDate(window) : undefined;
 
-  const area = params.get("area");
   const q = (params.get("q") ?? "").trim();
   const model = params.get("model");
   const benchmark = params.get("benchmark");
   const datasetFacet = params.get("dataset");
   const compact = params.get("view") === "compact";
 
+  const facetFilters = FACET_KEYS.map((key) => ({
+    key,
+    value: oneOf(params.get(key), FACET_VALUES[key].map((v) => v.id)),
+  })).filter((f): f is { key: FacetKey; value: string } => Boolean(f.value));
+
   const filtered = all.filter(
     (e) =>
       (!eventType || e.eventType === eventType) &&
-      (!area || e.researchArea === area) &&
+      facetFilters.every((f) => facetIdsOf(facets.get(e.id)!, f.key).includes(f.value)) &&
       (!q || matchesQuery(listSearchText(e), q)) &&
       (!evidence || e.evidenceLevel === evidence) &&
       (!tier || e.sourceTier === tier) &&
@@ -100,10 +128,6 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
       (!month || e.date.startsWith(month))
   );
 
-  // Options are data-derived: a level with no records would only ever yield an
-  // empty result set. The full scale stays documented on /methodology.
-  const presentAreas = new Set(all.map((e) => e.researchArea));
-  const availableAreas = RESEARCH_AREAS.filter((a) => presentAreas.has(a));
   const presentTypes = EVENT_TYPES.filter((type) =>
     all.some((e) => e.eventType === type)
   );
@@ -133,7 +157,7 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
   return (
     <>
       <FeedControls
-        availableAreas={availableAreas}
+        presentFacets={presentFacets}
         total={filtered.length}
         presentEvidence={presentEvidence}
         presentTiers={[...SOURCE_TIERS]}
@@ -143,7 +167,14 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
         compact={compact}
       />
 
-      <div className="mt-6">
+      {!presetDirection && (
+        <div className="mb-4 mt-8 border-b border-ink-200 pb-3">
+          <div className="mono-label mb-1">{p.latest.listEyebrow}</div>
+          <h2 className="h-section">{p.latest.listTitle}</h2>
+        </div>
+      )}
+
+      <div className={presetDirection ? "mt-6" : "mt-4"}>
         {compact ? (
           <div className="overflow-hidden rounded-md border border-ink-200">
             {pageEvents.map((event) => (
@@ -151,7 +182,7 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
             ))}
           </div>
         ) : (
-          <EventGrid events={pageEvents} />
+          <EventGrid events={pageEvents} wide />
         )}
       </div>
 

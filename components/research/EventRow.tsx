@@ -1,9 +1,9 @@
 import Link from "next/link";
 import type { ListEvent } from "@/types";
 import { formatDate } from "@/lib/utils";
-import { displayResearchArea } from "@/lib/i18n/localize";
 import { SITE_LANG } from "@/lib/site";
 import { dict } from "@/lib/i18n/dict";
+import { MATH_TOPICS, facetLabel } from "@/lib/dimensions";
 
 /**
  * Compact list row for the home rails and the compact feed.
@@ -15,12 +15,8 @@ import { dict } from "@/lib/i18n/dict";
 export function EventRow({ event }: { event: ListEvent }) {
   const lang = SITE_LANG;
   const t = dict[lang];
-  const area = displayResearchArea(event, lang);
-  const context = [
-    event.eventType ? t.trust.type[event.eventType] : "",
-    area,
-    event.summary,
-  ]
+  const { math } = event.facets;
+  const context = [event.eventType ? t.trust.type[event.eventType] : "", event.summary]
     .filter(Boolean)
     .join(" · ");
 
@@ -50,6 +46,16 @@ export function EventRow({ event }: { event: ListEvent }) {
             <span className="inline-flex shrink-0 items-center gap-1">
               <span className="direction-dot" data-direction={event.direction} aria-hidden="true" />
               {t.trust.direction[event.direction]}
+            </span>
+          )}
+          {math.map((id) => (
+            <span key={id} className="chip shrink-0 px-1.5 py-0 text-[10px] leading-4">
+              {facetLabel(MATH_TOPICS, id, lang)}
+            </span>
+          ))}
+          {event.trackingSummary.count > 1 && (
+            <span className="shrink-0 whitespace-nowrap text-ink-400">
+              {t.common.lineRecords.replace("{n}", String(event.trackingSummary.count))}
             </span>
           )}
           <span className="truncate">{context}</span>

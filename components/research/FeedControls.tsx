@@ -5,18 +5,14 @@ import {
   EVENT_TYPES,
   type EvidenceLevel,
   type EventType,
-  type ResearchArea,
   type SourceTier,
   type TimeWindow,
 } from "@/types";
+import { FACET_KEYS, facetLabel, type FacetKey, type FacetValue } from "@/lib/dimensions";
 import { useT } from "@/lib/i18n/context";
-import { displayArea } from "@/lib/i18n/localize";
 import { formatMonthYear } from "@/lib/utils";
 import { componentsDict } from "@/lib/i18n/dict.components";
 import { SearchGlyph } from "@/components/ui/SearchGlyph";
-
-/** Adaptive width: shrinks to the label, capped so one long option can't eat the row. */
-const SELECT_CLASS = "select-control max-w-40";
 
 type Option = { value: string; label: string; disabled?: boolean };
 
@@ -38,25 +34,25 @@ function FilterSelect({
   options: Option[];
   onChange: (next: string | undefined) => void;
 }) {
+  const selected = options.find((o) => o.value === value);
   return (
-    <>
-      <label className="sr-only" htmlFor={id}>
-        {label}
-      </label>
+    <div className="min-w-0">
+      <label className="mono-label mb-1.5 block" htmlFor={id}>{label}</label>
       <select
         id={id}
         value={value}
+        title={selected ? selected.label : all}
         onChange={(e) => onChange(e.target.value === allValue ? undefined : e.target.value)}
-        className={SELECT_CLASS}
+        className="select-control w-full !py-2 text-[13px]"
       >
         <option value={allValue}>{all}</option>
-        {options.map((o, i) => (
-          <option key={`${o.value}-${i}`} value={o.value} disabled={o.disabled}>
+        {options.map((o) => (
+          <option key={o.value} value={o.value} disabled={o.disabled}>
             {o.label}
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 }
 
@@ -64,16 +60,17 @@ function FilterSelect({
  * Feed controls for the ecosystem stream.
  *
  * Layout, top to bottom:
- *   1. Event-class tabs as text with an underline (the one primary axis),
+ *   1. Event-class tabs as an underline (the one primary axis),
  *      with the view switch pinned right
- *   2. Search and the four secondary filters on one row, result count right
+ *   2. Search, one select per classification dimension (combinable), then
+ *      time / evidence / tier; result count pinned right. The row wraps.
  *
  * Chips were replaced with tabs so the filter bar no longer competes with the
  * metadata chips inside each event card. State still lives in the URL so
  * results remain shareable.
  */
 export function FeedControls({
-  availableAreas,
+  presentFacets,
   total,
   presentEvidence,
   presentTiers,
@@ -82,7 +79,8 @@ export function FeedControls({
   presentTypes,
   compact,
 }: {
-  availableAreas: ResearchArea[];
+  /** Values with at least one record, per dimension; empty groups are hidden. */
+  presentFacets: Record<FacetKey, FacetValue[]>;
   total: number;
   presentEvidence: EvidenceLevel[];
   presentTiers: SourceTier[];
@@ -103,7 +101,7 @@ export function FeedControls({
 
   const hasAnyFilter = Boolean(
     get("type") ||
-      get("area") ||
+      FACET_KEYS.some((key) => get(key)) ||
       get("time") ||
       q ||
       get("evidence") ||
@@ -155,11 +153,16 @@ export function FeedControls({
     ...presentYears.map((y) => ({ value: y, label: y })),
   ];
 
+  // One select per dimension; values combine with AND semantics in the feed.
+  function setFacet(key: FacetKey, next: string | undefined) {
+    update({ [key]: next });
+  }
+
   return (
-    <div className="space-y-4">
+    <div className="rounded-md border border-ink-200 bg-white p-4 sm:p-5">
       {/* 1. Primary axis: event classes as underline tabs. */}
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-ink-200">
-        <nav className="flex flex-wrap items-center gap-x-5 gap-y-1" aria-label={c.feed.viewLabel}>
+        <nav className="flex flex-wrap items-center gap-x-5 gap-y-1" aria-label={c.feed.classLabel}>
           {(["All", ...(presentTypes ?? EVENT_TYPES)] as const).map((type) => {
             const active = type === "All" ? !get("type") : get("type") === type;
             const label = type === "All" ? t.common.all : t.trust.type[type];
@@ -177,6 +180,9 @@ export function FeedControls({
                     : "border-transparent text-ink-500 hover:text-ink-900"
                 }`}
               >
+                {type !== "All" && (
+                  <span className="type-swatch mr-1.5 align-[-1px]" aria-hidden="true" />
+                )}
                 {label}
               </button>
             );
@@ -214,35 +220,45 @@ export function FeedControls({
         </div>
       </div>
 
-      {/* 2. Search and secondary filters share a row; the count is pinned right. */}
-      <div className="flex flex-wrap items-center gap-2">
-        <form
-          className="flex min-w-[15rem] flex-1 items-center gap-2 rounded-md border border-ink-200 px-3 py-2 focus-within:border-accent-500"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const value = new FormData(e.currentTarget).get("q");
-            update({ q: String(value ?? "").trim() || undefined });
-          }}
-        >
-          <SearchGlyph />
-          <input
-            name="q"
-            defaultValue={q}
-            key={q}
-            placeholder={t.common.searchEvents}
-            aria-label={c.feed.searchAria}
-            className="w-full bg-transparent text-sm placeholder:text-ink-400 focus:outline-none"
-          />
-        </form>
+      {/* One row on desktop; narrower viewports wrap before controls become cramped. */}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[minmax(12rem,1.35fr)_minmax(13.5rem,1.45fr)_minmax(8.5rem,0.8fr)_minmax(7rem,0.7fr)_minmax(9rem,0.85fr)_minmax(9rem,0.85fr)]">
+        <div className="min-w-0 sm:col-span-2 lg:col-span-1">
+          <label className="mono-label mb-1.5 block" htmlFor="feed-search">{c.feed.searchAria}</label>
+          <form
+            className="flex items-center gap-2 rounded-md border border-ink-200 px-3 py-2 focus-within:border-accent-500"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const value = new FormData(e.currentTarget).get("q");
+              update({ q: String(value ?? "").trim() || undefined });
+            }}
+          >
+            <SearchGlyph />
+            <input
+              id="feed-search"
+              name="q"
+              defaultValue={q}
+              key={q}
+              placeholder={t.common.searchEvents}
+              aria-label={c.feed.searchAria}
+              className="w-full bg-transparent text-sm placeholder:text-ink-400 focus:outline-none"
+            />
+          </form>
+        </div>
 
-        <FilterSelect
-          id="filter-area"
-          label={c.feed.areaLabel}
-          value={get("area")}
-          all={c.feed.areaAll}
-          options={availableAreas.map((a) => ({ value: a, label: displayArea(a, lang) }))}
-          onChange={(v) => update({ area: v })}
-        />
+        {FACET_KEYS.map((key) => (
+          <FilterSelect
+            key={key}
+            id={`filter-${key}`}
+            label={c.feed.dimGroups[key]}
+            value={get(key)}
+            all={c.feed.dimAlls[key]}
+            options={presentFacets[key].map((v) => ({
+              value: v.id,
+              label: facetLabel(presentFacets[key], v.id, lang),
+            }))}
+            onChange={(v) => setFacet(key, v)}
+          />
+        ))}
 
         <FilterSelect
           id="filter-time"
@@ -276,7 +292,12 @@ export function FeedControls({
           }))}
           onChange={(v) => update({ tier: v })}
         />
+      </div>
 
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-3">
+        <span className="font-mono text-xs font-medium text-ink-700" role="status" aria-live="polite">
+          {c.feed.resultsCount.replace("{n}", String(total))}
+        </span>
         {hasAnyFilter && (
           <button
             type="button"
@@ -286,10 +307,6 @@ export function FeedControls({
             {c.feed.clearFilters}
           </button>
         )}
-
-        <span className="ml-auto whitespace-nowrap rounded bg-ink-50 px-2 py-1 font-mono text-xs font-medium text-ink-700">
-          {c.feed.resultsCount.replace("{n}", String(total))}
-        </span>
       </div>
     </div>
   );

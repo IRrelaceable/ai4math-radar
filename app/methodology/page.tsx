@@ -3,8 +3,8 @@ import {
   AI_ROLE_LEVELS,
   EVIDENCE_LEVELS,
   EVENT_TYPES,
+  PUBLICATION_STATUSES,
   SOURCE_TIERS,
-  VERIFICATION_STATUSES,
 } from "@/types";
 import { getLang, t } from "@/lib/i18n/server";
 import { pagesDict } from "@/lib/i18n/dict.pages";
@@ -67,11 +67,11 @@ export default function GlossaryPage() {
       })),
     },
     {
-      title: m.legendVerification,
-      entries: VERIFICATION_STATUSES.map((s) => ({
+      title: m.legendPublication,
+      entries: PUBLICATION_STATUSES.map((s) => ({
         key: s,
-        term: d.trust.verification[s],
-        text: m.verificationDesc[s],
+        term: d.trust.publication[s],
+        text: m.publicationDesc[s],
         marker: "text" as const,
       })),
     },
@@ -93,6 +93,16 @@ export default function GlossaryPage() {
         term: m.directionLabels[s],
         text: m.directionDesc[s],
         marker: "direction" as const,
+      })),
+    },
+    {
+      id: "dimensions",
+      title: m.legendDimensions,
+      entries: (["cap", "math"] as const).map((s) => ({
+        key: s,
+        term: m.dimensionLabels[s],
+        text: m.dimensionDesc[s],
+        marker: "text" as const,
       })),
     },
   ];
@@ -120,6 +130,7 @@ export default function GlossaryPage() {
 
         <section id="direction-note" className="mt-8 border-t border-ink-100 pt-5">
           <p className="text-sm leading-relaxed text-ink-500">{m.directionHint}</p>
+          <p className="mt-3 text-sm leading-relaxed text-ink-500">{m.dimensionHint}</p>
         </section>
 
         <nav className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-ink-100 pt-6 text-sm">

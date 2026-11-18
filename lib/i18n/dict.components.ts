@@ -15,8 +15,15 @@ const zh = {
   // components/research/FeedControls.tsx
   feed: {
     searchAria: "搜索生态事件",
-    areaLabel: "研究方向",
-    areaAll: "全部方向",
+    classLabel: "事件类别",
+    dimAlls: {
+      cap: "全部主题",
+      math: "全部领域",
+    },
+    dimGroups: {
+      cap: "研究主题",
+      math: "数学领域",
+    },
     timeLabel: "时间",
     timeAll: "全部时间",
     windows: {
@@ -31,10 +38,10 @@ const zh = {
     resultsCount: "{n} 条结果",
     evidenceLabel: "证据等级",
     evidenceAll: "任意证据等级",
-    tierLabel: "来源层级",
+    tierLabel: "来源类型",
     expandYearMonths: "展开全年",
     collapseYearMonths: "收起全年",
-    tierAll: "任意来源层级",
+    tierAll: "任意来源类型",
     viewLabel: "视图",
     loading: "正在载入事件…",
     loadError: "事件数据载入失败，请刷新页面重试。",
@@ -114,8 +121,15 @@ const en: ComponentsDict = {
   // components/research/FeedControls.tsx
   feed: {
     searchAria: "Search ecosystem events",
-    areaLabel: "Research area",
-    areaAll: "All areas",
+    classLabel: "Event class",
+    dimAlls: {
+      cap: "All themes",
+      math: "All topics",
+    },
+    dimGroups: {
+      cap: "Research theme",
+      math: "Math topic",
+    },
     timeLabel: "Time",
     timeAll: "All time",
     windows: {

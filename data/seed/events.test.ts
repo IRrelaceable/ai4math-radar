@@ -5,10 +5,9 @@ import {
   AI_ROLE_LEVELS,
   EVIDENCE_LEVELS,
   EVENT_TYPES,
+  PUBLICATION_STATUSES,
   RESEARCH_AREAS,
-  RESEARCH_EVENT_TYPES,
   SOURCE_TIERS,
-  VERIFICATION_STATUSES,
 } from "@/types";
 
 /**
@@ -47,29 +46,11 @@ describe("seed data integrity", () => {
     for (const e of events) {
       if (e.researchArea) expect(RESEARCH_AREAS, `${e.slug} area`).toContain(e.researchArea);
       if (e.eventType) expect(EVENT_TYPES, `${e.slug} eventType`).toContain(e.eventType);
-      if (e.researchEventType)
-        expect(RESEARCH_EVENT_TYPES, `${e.slug} researchEventType`).toContain(e.researchEventType);
       if (e.evidenceLevel) expect(EVIDENCE_LEVELS, `${e.slug} evidence`).toContain(e.evidenceLevel);
       if (e.sourceTier) expect(SOURCE_TIERS, `${e.slug} tier`).toContain(e.sourceTier);
-      if (e.verificationStatus)
-        expect(VERIFICATION_STATUSES, `${e.slug} status`).toContain(e.verificationStatus);
+      if (e.publicationStatus)
+        expect(PUBLICATION_STATUSES, `${e.slug} publicationStatus`).toContain(e.publicationStatus);
       if (e.aiRole) expect(AI_ROLE_LEVELS, `${e.slug} aiRole`).toContain(e.aiRole.level);
-      for (const record of e.verificationHistory ?? []) {
-        if (record.status)
-          expect(VERIFICATION_STATUSES, `${e.slug} history status`).toContain(record.status);
-      }
-    }
-  });
-
-  it("keeps the current verification state aligned with the last recorded state", () => {
-    for (const e of events) {
-      if (!e.verificationStatus || !e.verificationHistory?.length) continue;
-      const lastStatus = [...e.verificationHistory].reverse().find((r) => r.status)?.status;
-      if (lastStatus) {
-        expect(lastStatus, `${e.slug} current state must match the last history entry`).toBe(
-          e.verificationStatus
-        );
-      }
     }
   });
 

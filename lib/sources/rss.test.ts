@@ -17,6 +17,35 @@ const feed = `<?xml version="1.0" encoding="UTF-8"?>
 </channel></rss>`;
 
 describe("RSS adapter", () => {
+  it("uses a full WordPress article instead of its truncated description", () => {
+    const parsed = parseFeedBlock(
+      `<item><title>Lean verification</title>` +
+        `<description><![CDATA[The first sentence ... Continue reading →]]></description>` +
+        `<content:encoded><![CDATA[<p>The full article explains four checks for AI-generated Lean code.</p>]]></content:encoded>` +
+        `<link>https://example.com/post</link></item>`
+    );
+    expect(parsed.summary).toBe("The full article explains four checks for AI-generated Lean code.");
+    expect(parsed.excerpt).toBe("The first sentence ... Continue reading →");
+  });
+
+  it("keeps keyword selection on the feed description when full content exists", async () => {
+    const source = createRssSource({
+      id: "mixed-feed",
+      label: "Mixed feed",
+      feedUrl: "https://example.com/feed/",
+      includeKeywords: ["AI"],
+      fetchFn: (async () => ({
+        ok: true,
+        status: 200,
+        text: async () => `<rss><channel><item><title>General news</title>` +
+          `<description>Unrelated update.</description>` +
+          `<content:encoded>One passing reference to AI in a long article.</content:encoded>` +
+          `<link>https://example.com/news</link></item></channel></rss>`,
+      }) as unknown as Response),
+    });
+    expect(await source.fetchRecent({})).toEqual([]);
+  });
+
   it("unwraps CDATA fields instead of stripping them as HTML", () => {
     const block = feed.match(/<item>[\s\S]*?<\/item>/)?.[0] ?? "";
     const parsed = parseFeedBlock(block);

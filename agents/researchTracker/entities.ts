@@ -9,17 +9,29 @@ import { getLLMProvider, type LLMProvider } from "@/lib/llm/provider";
  * subject: a thread is only useful when every link is a stated fact.
  */
 
-const SYSTEM =
+/**
+ * Judgment rules only — no output-format instruction. The merged enrichment
+ * call supplies one authoritative schema and requires all four groups to be
+ * present (empty arrays are the explicit "none" answer).
+ */
+export const ENTITY_RULES =
   "You extract named entities for an AI-for-Mathematics event tracker. " +
-  "Reply with a single JSON object and nothing else: " +
-  '{"people":[],"institutions":[],"projects":[],"systems":[]}. ' +
   "Use only names written in the supplied title and text; copy their spelling exactly. " +
   "Never infer an affiliation, expand an abbreviation, or split a compound name. " +
   "people = named individuals. institutions = named organizations, companies, universities, " +
   "funders and research institutes. projects = named programs, initiatives and collaborations. " +
   "systems = named models, benchmarks, datasets, proof assistants and solvers. " +
   "Do not list the publishing site, newsletter author, journal or the tracker itself. " +
-  "Omit empty groups and reply {} when the text names nothing.";
+  "Always name all four groups explicitly; use an empty array for a group with no names.";
+
+/** Legacy per-field extractor prompt: rules plus its own output-format line. */
+export const ENTITIES_SYSTEM =
+  "Reply with a single JSON object and nothing else: " +
+  '{"people":[],"institutions":[],"projects":[],"systems":[]}. ' +
+  ENTITY_RULES.replace(
+    "Always name all four groups explicitly; use an empty array for a group with no names.",
+    "Omit empty groups and reply {} when the text names nothing."
+  );
 
 const GROUPS = ["people", "institutions", "projects", "systems"] as const;
 
@@ -87,7 +99,7 @@ export async function extractNamedEntities(
     `Text: ${item.abstract?.trim() || "(none)"}\n\n` +
     "Name the people, institutions, projects and systems this text states.";
   try {
-    const response = await provider.complete(prompt, { system: SYSTEM, maxTokens: 500 });
+    const response = await provider.complete(prompt, { system: ENTITIES_SYSTEM, maxTokens: 500 });
     return parseEntityResponse(response);
   } catch (error) {
     console.warn("[ai4math] entity extraction failed.", error);

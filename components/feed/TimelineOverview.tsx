@@ -68,23 +68,27 @@ export function TimelineOverview({
   const span = `${earliest.slice(0, 4)}–${latest.slice(0, 4)}`;
 
   return (
-    <section className="card p-4 sm:p-5">
-      <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
-        <Metric label={labels.total} value={String(total)} />
-        <Metric label={labels.span} value={span} />
-        <Metric label={labels.years} value={String(years.length)} />
-        <Metric label={labels.updated} value={formatDate(latest, lang)} />
-      </dl>
+    <section className="grid gap-7 rounded-md border border-ink-200 bg-white p-5 sm:p-7 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-9">
+      <div className="border-b border-ink-200 pb-5 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-7">
+        <div className="mono-label">{labels.total}</div>
+        <div className="mt-2 font-mono text-[46px] font-medium leading-none tracking-tight text-ink-900">{total}</div>
+        <dl className="mt-6 grid grid-cols-2 gap-x-5 gap-y-5 lg:grid-cols-1">
+          <Metric label={labels.span} value={span} />
+          <Metric label={labels.years} value={String(years.length)} />
+          <Metric label={labels.updated} value={formatDate(latest, lang)} />
+        </dl>
+      </div>
 
-      <div className="mt-5 border-t border-ink-100 pt-4">
-        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+      <div className="min-w-0">
+        <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <div className="mono-label">{labels.density}</div>
-          <div className="font-mono text-[11px] text-ink-400">
-            {fill(labels.peak, { year: peak.year, n: peak.count })} · {labels.scale}
+          <div className="font-mono text-[11px] text-ink-600">
+            {fill(labels.peak, { year: peak.year, n: peak.count })}
           </div>
         </div>
 
-        <div className="grid gap-x-[3px]" style={{ gridTemplateColumns: columns }}>
+        <div className="overflow-x-auto pb-1">
+          <div className="grid min-w-[34rem] gap-x-[3px]" style={{ gridTemplateColumns: columns }}>
           {years.map(({ year, count }) => {
             const ratio = Math.sqrt(count / max);
             return (
@@ -93,12 +97,12 @@ export function TimelineOverview({
                 href={`#year-${year}`}
                 title={`${year} · ${count}`}
                 aria-label={`${year} · ${count}`}
-                className="group flex h-16 min-w-0 items-end border-b border-ink-200"
+                className="group flex h-28 min-w-0 items-end border-b border-ink-200"
               >
                 <span
                   className="block w-full rounded-t-sm transition-all group-hover:ring-2 group-hover:ring-ink-700"
                   style={{
-                    height: `${Math.max(4, Math.round(56 * ratio))}px`,
+                    height: `${Math.max(4, Math.round(100 * ratio))}px`,
                     background: `rgb(59 91 219 / ${(0.28 + 0.72 * ratio).toFixed(2)})`,
                   }}
                 />
@@ -118,19 +122,12 @@ export function TimelineOverview({
               {width <= 2 ? label.slice(2) : label}
             </div>
           ))}
+          </div>
         </div>
 
-        <div className="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          <p className="text-[11px] leading-relaxed text-ink-400">{labels.hint}</p>
-          <div className="flex shrink-0 items-center gap-1" aria-hidden="true">
-            {[0.28, 0.46, 0.64, 0.82, 1].map((alpha) => (
-              <span
-                key={alpha}
-                className="h-2 w-3 rounded-sm"
-                style={{ background: `rgb(59 91 219 / ${alpha})` }}
-              />
-            ))}
-          </div>
+        <div className="mt-3 flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
+          <p className="max-w-xl text-[11px] leading-relaxed text-ink-500">{labels.hint}</p>
+          <span className="font-mono text-[10px] text-ink-400">{labels.scale}</span>
         </div>
       </div>
     </section>

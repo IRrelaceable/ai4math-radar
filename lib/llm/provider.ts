@@ -11,9 +11,22 @@
  *
  * Any OpenAI-compatible chat-completions endpoint works.
  */
+/** Actual token counts returned by the API, when the endpoint reports them. */
+export interface LLMUsage {
+  inputTokens: number;
+  outputTokens: number;
+}
+
+export interface LLMCompleteOptions {
+  system?: string;
+  maxTokens?: number;
+  /** Called once per completion with real usage. Optional: all callers stay compatible. */
+  onUsage?: (usage: LLMUsage) => void;
+}
+
 export interface LLMProvider {
   id: string;
-  complete(prompt: string, options?: { system?: string; maxTokens?: number }): Promise<string>;
+  complete(prompt: string, options?: LLMCompleteOptions): Promise<string>;
 }
 
 /** Deterministic offline provider so the site runs with no API key. */
@@ -37,7 +50,7 @@ export class OpenAICompatibleProvider implements LLMProvider {
 
   constructor(private readonly config: RemoteLLMConfig) {}
 
-  async complete(prompt: string, options?: { system?: string; maxTokens?: number }): Promise<string> {
+  async complete(prompt: string, options?: LLMCompleteOptions): Promise<string> {
     const { apiUrl, apiKey, model } = this.config;
     if (!apiUrl || !apiKey) {
       throw new Error("LLM_API_URL and LLM_API_KEY are required for the openai-compatible provider.");
@@ -66,7 +79,14 @@ export class OpenAICompatibleProvider implements LLMProvider {
     }
     const data = (await res.json()) as {
       choices?: { message?: { content?: string } }[];
+      usage?: { prompt_tokens?: number; completion_tokens?: number };
     };
+    // Report real usage when the endpoint provides it. Never invent numbers:
+    // absent usage is reported as zeros so the comparison script can flag it.
+    options?.onUsage?.({
+      inputTokens: data.usage?.prompt_tokens ?? 0,
+      outputTokens: data.usage?.completion_tokens ?? 0,
+    });
     return data.choices?.[0]?.message?.content ?? "";
   }
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyTrustModel, deriveResearchEventType } from "@/lib/verification";
+import { applyTrustModel } from "@/lib/verification";
 import type { ResearchEvent } from "@/types";
 
 function makeEvent(overrides: Partial<ResearchEvent> = {}): ResearchEvent {
@@ -32,9 +32,24 @@ describe("applyTrustModel — conservative derivation", () => {
     expect(applyTrustModel(makeEvent()).evidenceLevel).toBe("E3");
   });
 
+  it("derives a source list from links without touching stored data", () => {
+    const out = applyTrustModel(
+      makeEvent({
+        paperUrl: "https://arxiv.org/abs/1",
+        githubUrl: "https://github.com/x/y",
+        sourceTier: "S1",
+      })
+    );
+    // Paper + code are S0; the declared source carries the event tier.
+    expect(out.sources?.map((s) => s.tier)).toEqual(["S0", "S0", "S1"]);
+    expect(out.sources?.every((s) => s.publishedAt === "2026-01-01")).toBe(true);
+  });
+
   it("explicit curated fields are never overwritten", () => {
-    const out = applyTrustModel(makeEvent({ evidenceLevel: "E4", sourceTier: "S2" }));
-    expect(out.evidenceLevel).toBe("E4");
+    // E0 is manual-only and differs from the derived default (E3), so a
+    // preserved value proves the explicit field was not recomputed.
+    const out = applyTrustModel(makeEvent({ evidenceLevel: "E0", sourceTier: "S2" }));
+    expect(out.evidenceLevel).toBe("E0");
     expect(out.sourceTier).toBe("S2");
   });
 
@@ -60,64 +75,62 @@ describe("applyTrustModel — conservative derivation", () => {
     const out = applyTrustModel(makeEvent({ sourceUrl: "https://mathandai.org/declaration" }));
     expect(out.sourceTier).toBe("S4");
   });
-  it("eventType defaults to Research and gets a derived subtype", () => {
-    const out = applyTrustModel(
+  it("eventType defaults to Research when absent", () => {
+    expect(applyTrustModel(makeEvent()).eventType).toBe("Research");
+  });
+
+  it("non-Research events keep their class", () => {
+    expect(applyTrustModel(makeEvent({ eventType: "People" })).eventType).toBe("People");
+  });
+
+  it("derives preprint from an arXiv link", () => {
+    const withPaper = applyTrustModel(makeEvent({ paperUrl: "https://arxiv.org/abs/1234.5678" }));
+    expect(withPaper.publicationStatus).toBe("preprint");
+    // An arXiv posting alone is not peer review: it stays preprint, not published.
+    expect(applyTrustModel(makeEvent()).publicationStatus).toBeUndefined();
+  });
+
+  it("auto-derives published from proceedings / publisher links", () => {
+    for (const paperUrl of [
+      "https://aclanthology.org/2022.mathnlp-1.4/",
+      "https://proceedings.mlr.press/v162/aygun22a.html",
+      "https://papers.nips.cc/paper_files/paper/2022/hash/abc-Abstract-Conference.html",
+      "https://doi.org/10.1007/978-3-319-21401-6_26",
+      "https://www.ijcai.org/Proceedings/77-2/Papers/094.pdf",
+      "https://ceur-ws.org/Vol-1234/paper5.pdf",
+    ]) {
+      expect(applyTrustModel(makeEvent({ paperUrl })).publicationStatus).toBe("published");
+    }
+    // A published record supersedes an arXiv draft.
+    const mixed = applyTrustModel(
       makeEvent({
-        researchArea: "Theorem Proving & Formal Mathematics",
-        subArea: "Autoformalization",
+        paperUrl: "https://arxiv.org/abs/1234.5678",
+        papers: [{ url: "https://aclanthology.org/2022.mathnlp-1.4/", title: "proc" }],
       })
     );
-    expect(out.eventType).toBe("Research");
-    expect(out.researchEventType).toBe("Formalization");
+    expect(mixed.publicationStatus).toBe("published");
   });
 
-  it("non-Research events keep no derived research subtype", () => {
-    const out = applyTrustModel(makeEvent({ eventType: "People" }));
-    expect(out.eventType).toBe("People");
-    expect(out.researchEventType).toBeUndefined();
-  });
-
-  it("generates evidence history with an artifact record for E1", () => {
-    const out = applyTrustModel(makeEvent({ sourceType: "github", githubUrl: "https://github.com/x/y" }));
-    expect(out.verificationHistory?.length).toBe(2);
-    // The row is dated to the event, not to ingest time; the note says so.
-    expect(out.verificationHistory?.[0].date).toBe("2026-01-01");
-    expect(out.verificationHistory?.[0].note).toContain("on the event date");
-  });
-
-  it("derives a conservative verification state from the links", () => {
-    expect(applyTrustModel(makeEvent()).verificationStatus).toBe("claimed");
+  it("leaves repository deposits and technical reports unset", () => {
     expect(
-      applyTrustModel(makeEvent({ paperUrl: "https://arxiv.org/abs/1234.5678" })).verificationStatus
-    ).toBe("paper_released");
+      applyTrustModel(makeEvent({ paperUrl: "https://doi.org/10.5281/zenodo.22737750" })).publicationStatus
+    ).toBeUndefined();
     expect(
-      applyTrustModel(
-        makeEvent({ sourceType: "github", githubUrl: "https://github.com/x/y" })
-      ).verificationStatus
-    ).toBe("paper_released");
-    // E0 is the only level that records an actual independent check.
-    expect(
-      applyTrustModel(makeEvent({ evidenceLevel: "E0" })).verificationStatus
-    ).toBe("independently_verified");
+      applyTrustModel(makeEvent({ paperUrl: "https://www.rand.org/pubs/papers/P868.html" })).publicationStatus
+    ).toBeUndefined();
   });
 
-  it("never infers a dispute, correction or retraction", () => {
-    const out = applyTrustModel(makeEvent({ paperUrl: "https://arxiv.org/abs/1234.5678" }));
-    expect(["claimed", "paper_released"]).toContain(out.verificationStatus);
-  });
-
-  it("keeps an explicit state and the last recorded history state", () => {
-    const explicit = applyTrustModel(makeEvent({ verificationStatus: "disputed" }));
-    expect(explicit.verificationStatus).toBe("disputed");
-    const fromHistory = applyTrustModel(
-      makeEvent({
-        verificationHistory: [
-          { date: "2026-01-01", evidenceLevel: "E2", status: "paper_released" },
-          { date: "2026-02-01", evidenceLevel: "E2", status: "under_verification" },
-        ],
-      })
+  it("always derives publication status, ignoring any stored manual value", () => {
+    // The pipeline is fully automatic: a stored publicationStatus (e.g. a legacy
+    // backfill) never overrides the link-derived stage.
+    const withArxiv = applyTrustModel(
+      makeEvent({ publicationStatus: "published", paperUrl: "https://arxiv.org/abs/1234.5678" })
     );
-    expect(fromHistory.verificationStatus).toBe("under_verification");
+    expect(withArxiv.publicationStatus).toBe("preprint");
+    const withStoredPublished = applyTrustModel(
+      makeEvent({ publicationStatus: "published", paperUrl: "https://example.com/paper" })
+    );
+    expect(withStoredPublished.publicationStatus).toBeUndefined();
   });
 
   it("passes AI attribution through untouched", () => {
@@ -132,58 +145,14 @@ describe("applyTrustModel — conservative derivation", () => {
   });
 });
 
-describe("deriveResearchEventType", () => {
-  it("Benchmarks & Datasets area wins", () => {
-    expect(
-      deriveResearchEventType({ researchArea: "Benchmarks & Datasets", title: "New prover" })
-    ).toBe("Benchmark");
-  });
-
-  it("competition keywords win over area", () => {
-    expect(
-      deriveResearchEventType({ researchArea: "Mathematical Reasoning & LLMs", title: "IMO gold" })
-    ).toBe("Competition");
-  });
-
-  it("merged formal area splits by sub-area", () => {
-    expect(
-      deriveResearchEventType({
-        researchArea: "Theorem Proving & Formal Mathematics",
-        subArea: "Proof search",
-        title: "Faster tactic",
-      })
-    ).toBe("Proof");
-    expect(
-      deriveResearchEventType({
-        researchArea: "Theorem Proving & Formal Mathematics",
-        subArea: "Autoformalization",
-        title: "Paper to Lean",
-      })
-    ).toBe("Formalization");
-  });
-
-  it("merged discovery area maps to Discovery", () => {
-    expect(
-      deriveResearchEventType({
-        researchArea: "Mathematical Discovery & Symbolic Computation",
-        subArea: "Equation solving & discovery",
-        title: "New identity",
-      })
-    ).toBe("Discovery");
-  });
-
-  it("unknown areas fall back to System", () => {
-    expect(deriveResearchEventType({ researchArea: "Geometry", title: "Anything" })).toBe("System");
-  });
-});
-
 describe("applyTrustModel derivation rules", () => {
   it("evidence-level rules yield the expected codes", () => {
     const cases: [Partial<ResearchEvent>, string][] = [
       [{ githubUrl: "https://github.com/x/y" }, "E1"],
       [{ paperUrl: "https://arxiv.org/abs/1" }, "E2"],
       [{ sourceUrl: "https://example.com/claim" }, "E3"],
-      [{ sourceUrl: "" }, "E4"],
+      // No links at all also falls back to E3 — E4 has been removed.
+      [{ sourceUrl: "" }, "E3"],
     ];
     for (const [overrides, expected] of cases) {
       expect(applyTrustModel(makeEvent(overrides)).evidenceLevel).toBe(expected);

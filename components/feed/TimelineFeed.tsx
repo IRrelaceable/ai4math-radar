@@ -11,7 +11,6 @@ import {
   type ListEvent,
   type SourceTier,
 } from "@/types";
-import { AreaBadge } from "@/components/ui/AreaBadge";
 import { TimelineControls } from "@/components/research/TimelineControls";
 import { TimelineOverview } from "./TimelineOverview";
 import { useDataset } from "@/lib/useDataset";
@@ -29,6 +28,7 @@ import { pagesDict } from "@/lib/i18n/dict.pages";
 
 /** A year with this few records is cheaper to show in full than to fold. */
 const SPARSE_YEAR_MAX = 12;
+
 /** Beyond this, a month is split into day groups so it keeps navigable anchors. */
 const DENSE_MONTH_MIN = 30;
 /** Months kept open on first load, counted from the newest record backwards. */
@@ -245,7 +245,7 @@ export function TimelineFeed() {
       <li
         key={event.id}
         data-type={event.eventType ?? ""}
-        className={`relative pl-6 ${compact ? "py-1.5" : "py-3"}`}
+        className={`relative pl-6 pr-3 transition-colors hover:bg-ink-50/70 ${compact ? "py-2" : "py-3.5"}`}
       >
         {dot && (
           <span
@@ -278,7 +278,6 @@ export function TimelineFeed() {
               </p>
             )}
             <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-              <AreaBadge area={event.researchArea} subArea={event.subArea} lang={lang} />
               {event.eventType && (
                 <span title={p.methodology.typeDesc[event.eventType]} className="type-chip">
                   <span className="type-bar h-3" aria-hidden="true" />
@@ -339,24 +338,21 @@ export function TimelineFeed() {
         />
       )}
 
-      <div className="mt-7 space-y-4">
-        <TimelineControls presentTypes={presentTypes} />
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-500">
-          <span className="font-mono text-xs">
-            {sorted.length} {sorted.length === 1 ? t.common.event : t.common.events}
-            {type ? ` · ${t.trust.type[type]}` : ""}
-            {q ? ` · ${q}` : ""}
-          </span>
-          <Link href="/latest" className="link-quiet">
-            {p.timeline.feedLink} →
-          </Link>
+      <section id="timeline-records" className="mt-10 scroll-mt-24">
+        <div className="max-w-3xl">
+          <div className="mono-label mb-2">{p.timeline.archiveEyebrow}</div>
+          <h2 className="h-section">{p.timeline.archiveTitle}</h2>
+          <p className="mt-2 text-[13px] leading-relaxed text-ink-600">{p.timeline.archiveIntro}</p>
         </div>
-      </div>
+        <div className="mt-5 rounded-md border border-ink-200 bg-white p-4 sm:p-5">
+          <TimelineControls presentTypes={presentTypes} />
+        </div>
+      </section>
 
       {years.length > 0 && (
         <nav
           aria-label={p.timeline.decadeNav}
-          className="sticky top-16 z-10 -mx-1 mt-6 flex flex-nowrap items-center gap-1 overflow-x-auto border-b border-ink-200 bg-white/95 px-1 py-2 backdrop-blur [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="sticky top-16 z-10 mt-5 flex flex-nowrap items-center gap-1 overflow-x-auto rounded-md border border-ink-200 bg-white/95 px-2 py-2 backdrop-blur [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {jumps.map(({ label, count, anchor }) => (
             <a
@@ -373,7 +369,7 @@ export function TimelineFeed() {
 
       {sorted.length === 0 && <p className="mt-10 text-sm text-ink-500">{p.timeline.empty}</p>}
 
-      <div className="mt-8 space-y-12">
+      <div className="mt-8 space-y-14">
         {years.map(({ year, months, count, byType }) => {
           const sparse = count <= SPARSE_YEAR_MAX;
           const maxMonthCount = Math.max(1, ...[...months.values()].map((l) => l.length));
@@ -393,63 +389,59 @@ export function TimelineFeed() {
               key={year}
               id={`year-${year}`}
               style={{ containIntrinsicSize: `auto ${estimatedHeight}px` }}
-              className="scroll-mt-32 [content-visibility:auto]"
+              className="scroll-mt-32 border-t border-ink-200 pt-6 [content-visibility:auto]"
             >
-              <h2 className="section-head h-section">
-                <span className="font-mono">{year}</span>
-                <span className="font-mono text-xs font-normal text-ink-400">{count}</span>
-                {!sparse && months.size > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => toggleYear(year)}
-                    aria-expanded={expandedYears.has(year)}
-                    className="ml-auto font-sans text-xs font-normal text-ink-500 hover:text-ink-900"
-                  >
-                    {expandedYears.has(year)
-                      ? c.feed.collapseYearMonths
-                      : c.feed.expandYearMonths}
-                  </button>
-                )}
-              </h2>
-
-              {/* Class mix for the year, using the same [data-type] hues as
-                  the cards. Each segment filters the whole archive. */}
-              <div className="-mt-1 mb-3 flex items-center gap-3">
-                <div
-                  className="flex h-1.5 flex-1 overflow-hidden rounded-sm bg-ink-100"
-                  title={p.timeline.overview.composition}
-                >
-                  {EVENT_TYPES.map((ty) => {
-                    const n = byType[ty] ?? 0;
-                    if (!n) return null;
-                    return (
-                      <Link
-                        key={ty}
-                        href={`/timeline/?type=${encodeURIComponent(ty)}`}
-                        data-type={ty}
-                        className="type-fill block h-full transition-opacity hover:opacity-70"
-                        style={{ width: `${(n / count) * 100}%` }}
-                        title={`${t.trust.type[ty]} · ${n}`}
-                        aria-label={`${t.trust.type[ty]} · ${n}`}
-                      />
-                    );
-                  })}
+              <div className="grid gap-5 lg:grid-cols-[10rem_minmax(0,1fr)] lg:gap-8">
+                <div>
+                  <h2 className="font-mono text-[30px] font-medium leading-none tracking-tight text-ink-900">
+                    {year}
+                  </h2>
+                  <div className="mt-2 font-mono text-[12px] text-ink-500">
+                    {count} {count === 1 ? t.common.event : t.common.events}
+                  </div>
+                  <div className="mt-5 flex h-2 w-full max-w-[12rem] overflow-hidden rounded-sm bg-ink-100" title={p.timeline.overview.composition}>
+                    {EVENT_TYPES.map((ty) => {
+                      const n = byType[ty] ?? 0;
+                      if (!n) return null;
+                      return (
+                        <Link
+                          key={ty}
+                          href={`/timeline/?type=${encodeURIComponent(ty)}`}
+                          data-type={ty}
+                          className="type-fill block h-full transition-opacity hover:opacity-70"
+                          style={{ width: `${(n / count) * 100}%` }}
+                          title={`${t.trust.type[ty]} · ${n}`}
+                          aria-label={`${t.trust.type[ty]} · ${n}`}
+                        />
+                      );
+                    })}
+                  </div>
+                  <div className="mono-label mt-2">{p.timeline.overview.composition}</div>
+                  {!sparse && months.size > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => toggleYear(year)}
+                      aria-expanded={expandedYears.has(year)}
+                      className="mt-5 text-left text-xs font-medium text-accent-700 hover:underline"
+                    >
+                      {expandedYears.has(year)
+                        ? c.feed.collapseYearMonths
+                        : c.feed.expandYearMonths}
+                    </button>
+                  )}
                 </div>
-                <span className="mono-label hidden shrink-0 sm:inline">
-                  {p.timeline.overview.composition}
-                </span>
-              </div>
+                <div className="min-w-0 max-w-4xl">
 
               {/* Month index with counts and a density hint, so a 185-event
                   month is visible before the reader expands anything. */}
               {months.size > 1 && (
-                <div className="mb-3 flex flex-wrap gap-1">
+                <div className="mb-4 flex flex-wrap gap-1.5">
                   {[...months.entries()].map(([month, items]) => (
                     <a
                       key={month}
                       href={`#month-${month}`}
                       onClick={() => openMonth(month)}
-                      className="inline-flex items-center gap-1 rounded border border-ink-200 px-1.5 py-0.5 font-mono text-[11px] text-ink-600 hover:border-ink-300 hover:bg-ink-50"
+                      className="inline-flex items-center gap-1.5 rounded border border-ink-200 bg-white px-2 py-1 font-mono text-[11px] text-ink-600 hover:border-accent-300 hover:bg-accent-50"
                     >
                       <span>{formatMonthShort(month, lang)}</span>
                       <span className="text-ink-400">{items.length}</span>
@@ -465,7 +457,7 @@ export function TimelineFeed() {
                 </div>
               )}
 
-              <div className="mt-3 border-l-2 border-ink-200">
+              <div className="border-l-2 border-ink-200">
                 {[...months.entries()].map(([month, items]) => {
                   const dense = items.length > DENSE_MONTH_MIN;
                   const dayGroups = dense ? groupByDay(items) : undefined;
@@ -544,6 +536,8 @@ export function TimelineFeed() {
                     </div>
                   );
                 })}
+              </div>
+                </div>
               </div>
             </section>
           );

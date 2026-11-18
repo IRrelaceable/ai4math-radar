@@ -4,7 +4,7 @@ import { SITE_LANG } from "@/lib/site";
 import { dict } from "@/lib/i18n/dict";
 
 /** Server-rendered card grid: no client state, so the feed ships no card JS. */
-export function EventGrid({ events }: { events: ListEvent[] }) {
+export function EventGrid({ events, wide = false }: { events: ListEvent[]; wide?: boolean }) {
   if (events.length === 0) {
     return (
       <div className="card p-10 text-center text-sm text-ink-500">
@@ -14,7 +14,7 @@ export function EventGrid({ events }: { events: ListEvent[] }) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+    <div className={`grid grid-cols-1 gap-4 md:grid-cols-2 ${wide ? "" : "xl:grid-cols-3"}`}>
       {events.map((e) => (
         <EventCard key={e.id} event={e} />
       ))}

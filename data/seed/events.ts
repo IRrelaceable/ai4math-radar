@@ -463,19 +463,11 @@ const curatedEvents: ResearchEvent[] = [
     model: ["InternLM2-Step-Prover-7B"],
     benchmark: ["miniF2F-test", "ProofNet", "Putnam"],
     dataset: ["Lean-Github (29K theorems from 100+ Lean 4 repos)", "Lean-Workbook (57K formal-informal pairs)"],
-    researchEventType: "Competition",
     evidenceLevel: "E1",
     keyContributions: [
       "LEAN-GitHub: corpus mined from nearly all Lean 4 repositories on GitHub",
       "54.5% miniF2F-test (64 passes), 18.1% ProofNet, 5 Putnam problems solved — publisher-reported",
       "Lean-Workbook: 57K formal-informal pairs including 21 new IMO problems",
-    ],
-    verificationHistory: [
-      {
-        date: "2024-07-25",
-        evidenceLevel: "E1",
-        note: "Official repository release notes (2024.07.25 entry) and arXiv:2407.17227 fetched and confirmed; benchmark numbers and the 5-solved Putnam figure are publisher-reported.",
-      },
     ],
     relatedWorks: [
       {
@@ -1828,9 +1820,9 @@ const curatedEvents: ResearchEvent[] = [
     title: "OpenAI publishes 700+ mathematical manuscripts in a public Lean repository",
     slug: "openai-math-manuscript-collection-release",
     summary:
-      "OpenAI published github.com/openai/math, a Lean repository collecting 722 mathematical manuscripts across 372 result families (2026-10-06). Its own history.md then recorded three withdrawals (a sign error in one manuscript invalidated two dependent papers), 14 revised manuscripts and 13 citation updates, leaving 719 manuscripts; the repository reports Lean formalization for 300 of 719 (~42%) of headline results.",
+      "OpenAI published github.com/openai/math, a Lean repository collecting 722 mathematical manuscripts across 372 result families (2026-10-06), with Lean material that can be inspected and corrected in public.",
     significance:
-      "The first time a lab has put a mass body of AI mathematical output into an inspectable, correctable public form: withdrawals, patches and formalization coverage are logged in the repository itself. It immediately set the agenda for the field's core methodological questions — manuscript count is not a count of established theorems, and a Lean-checking artifact is not the same as verification of the natural-language argument.",
+      "The first time a lab has put a mass body of AI mathematical output into an inspectable, correctable public form. It immediately set the agenda for the field's core methodological questions — manuscript count is not a count of established theorems, and a Lean-checking artifact is not the same as verification of the natural-language argument.",
     problem:
       "Claims about AI-generated mathematics had no shared public record; researchers could not check, count, compare or contest the work.",
     date: "2026-10-06",
@@ -1844,30 +1836,12 @@ const curatedEvents: ResearchEvent[] = [
     institution: "OpenAI",
     model: ["OpenAI frontier models"],
     benchmark: [],
-    dataset: ["openai/math manuscript collection (722 at release; 719 after withdrawals)"],
-    researchEventType: "Discovery",
+    dataset: ["openai/math manuscript collection (722 at release)"],
     evidenceLevel: "E1",
     keyContributions: [
       "722 manuscripts in 372 result families released with inspectable Lean material",
-      "Public correction log: 3 withdrawals, 14 patched manuscripts, 13 citation updates",
-      "Publisher-reported formalization coverage of 300/719 ≈ 42% headline results",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-06",
-        evidenceLevel: "E1",
-        note: "Repository published: 722 manuscripts in 372 result families.",
-      },
-      {
-        date: "2026-10-07",
-        evidenceLevel: "E1",
-        note: "history.md records 3 withdrawals, 14 revised manuscripts, 13 citation updates; 719 manuscripts remain.",
-      },
-      {
-        date: "2026-10-14",
-        evidenceLevel: "E1",
-        note: "Repository reports Lean formalization for 300/719 ≈ 42% of headline results. Publisher-reported; not independently re-checked.",
-      },
+      "Lean formalizations released alongside the manuscripts for public inspection",
+      "An inspectable public record for checking and contesting the claimed results",
     ],
     relatedWorks: [
       {
@@ -1883,6 +1857,40 @@ const curatedEvents: ResearchEvent[] = [
         note: "Companion line on agent autonomy in research-level mathematics",
       },
     ],
+    createdAt: "2026-10-14T00:00:00.000Z",
+    updatedAt: "2026-10-14T00:00:00.000Z",
+  },
+  {
+    id: "evt-openai-math-first-corrections",
+    title: "openai/math logs its first correction round: three withdrawals and fourteen patches (722 → 719)",
+    slug: "openai-math-first-corrections-722-to-719",
+    summary:
+      "The repository's own history.md, dated 2026-10-07 and committed 2026-10-08 UTC, records the first correction round after the release. A sign error in 'Algebraicity of Weil classes on split abelian eightfolds' invalidated a stabilization-trace cancellation argument and the construction used by two dependent papers, so all three manuscripts were withdrawn and the collection fell from 722 to 719. Fourteen other manuscripts were patched, 13 companion papers had their references updated, and six formalizations plus five supporting results were added, bringing reported top-line formalization coverage to 300/719 (about 42%).",
+    significance:
+      "The first time a mass body of AI mathematical output was made inspectable and correctable in public: withdrawals, patches and formalization coverage are logged in the repository itself. This correction round is a change to the released collection that the publisher recorded in the same repository — the manuscript count, the status of specific results and the coverage all moved after publication. It is the substantive first update to the 722-manuscript Event and belongs in its timeline, not only inside the release summary.",
+    problem:
+      "A single sign error propagated through a chain of dependent manuscripts; the published count and coverage had to be corrected in public.",
+    date: "2026-10-08",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
+    subArea: "Verification & corpus scrutiny",
+    direction: "ai4math",
+    aiRole: { level: "not_applicable" },
+    sourceType: "github",
+    sourceUrl: "https://github.com/openai/math/blob/main/history.md",
+    githubUrl: "https://github.com/openai/math/commit/301488868beec11bfd897168433b0a64f5258559",
+    sources: [
+      { url: "https://github.com/openai/math/blob/main/history.md", tier: "S0", publishedAt: "2026-10-07", collectedAt: "2026-10-14T00:00:00.000Z", title: "Revision log (history.md)" },
+      { url: "https://github.com/openai/math/commit/301488868beec11bfd897168433b0a64f5258559", tier: "S0", publishedAt: "2026-10-08", collectedAt: "2026-10-14T00:00:00.000Z", title: "Change commit 3014888" },
+    ],
+    authors: ["OpenAI"],
+    institution: "OpenAI",
+    dataset: ["openai/math manuscript collection (719 active after first-round withdrawals)"],
+    keyContributions: [
+      "Three manuscripts withdrawn after a sign error invalidated two dependent constructions (722 → 719)",
+      "Fourteen manuscripts patched, 13 companion papers' references updated",
+      "Six formalizations and five supporting results added; reported top-line coverage 300/719 (~42%)",
+    ],
+    relatedWorks: [],
     createdAt: "2026-10-14T00:00:00.000Z",
     updatedAt: "2026-10-14T00:00:00.000Z",
   },
@@ -1913,19 +1921,11 @@ const curatedEvents: ResearchEvent[] = [
     model: [],
     benchmark: [],
     dataset: [],
-    researchEventType: "Controversy",
     evidenceLevel: "E2",
     keyContributions: [
       "SCI-hierarchy argument that faithful autoformalisation is uncomputably hard",
       "Worked AI mistranslations of natural-language statements into Lean",
       "Documents a mismatch between a claimed Navier–Stokes proof and its Lean encoding",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-06",
-        evidenceLevel: "E2",
-        note: "Preprint published. Records a methodological dispute; it does not by itself refute the underlying Navier–Stokes claim.",
-      },
     ],
     relatedWorks: [
       {
@@ -1972,24 +1972,11 @@ const curatedEvents: ResearchEvent[] = [
     model: ["Claude (unreleased research version)"],
     benchmark: [],
     dataset: [],
-    researchEventType: "Discovery",
     evidenceLevel: "E1",
     keyContributions: [
       "New 67.2% lower bound, up from a long-standing 41.6%",
       "Lean formalization passing the leanprover comparator",
       "Explicitly not a proof of the Riemann hypothesis",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-08-10",
-        evidenceLevel: "E3",
-        note: "Announced by Anthropic; internal mathematicians validated the paper.",
-      },
-      {
-        date: "2026-08-13",
-        evidenceLevel: "E1",
-        note: "Revised paper published; Lean formalization passes the comparator. Independent published verification not recorded.",
-      },
     ],
     relatedWorks: [
       {
@@ -2030,24 +2017,11 @@ const curatedEvents: ResearchEvent[] = [
     model: ["Claude (research model, multi-agent harness)"],
     benchmark: [],
     dataset: ["Lean 4 (Mathlib-based) FLT development"],
-    researchEventType: "Formalization",
     evidenceLevel: "E1",
     keyContributions: [
       "First end-to-end machine-checked Lean proof of FLT",
       "Multi-agent workflow on Prove2Me with a theorem DAG",
       "Comparator-verified statement match with Mathlib's FLT",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-09-04",
-        evidenceLevel: "E3",
-        note: "Announced by Anthropic with the artifact repository.",
-      },
-      {
-        date: "2026-09-04",
-        evidenceLevel: "E1",
-        note: "Artifact publicly available and Lean-checked by the compiler; independent community re-check not recorded.",
-      },
     ],
     relatedWorks: [
       {
@@ -2099,19 +2073,11 @@ const curatedEvents: ResearchEvent[] = [
     model: [],
     benchmark: [],
     dataset: [],
-    researchEventType: "Discovery",
     evidenceLevel: "E2",
     keyContributions: [
       "Deterministic O(n^1.9992) 3SUM and O(n^2.9995) APSP",
       "New thin matrix product algorithm on sparse lopsided graphs",
       "Refutes 3SUM/APSP and related conjectures via known reductions",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-05",
-        evidenceLevel: "E2",
-        note: "76-page preprint posted; community review ongoing.",
-      },
     ],
     relatedWorks: [
       {
@@ -2157,19 +2123,11 @@ const curatedEvents: ResearchEvent[] = [
     model: ["AxiomProver"],
     benchmark: [],
     dataset: [],
-    researchEventType: "Formalization",
     evidenceLevel: "E2",
     keyContributions: [
       "Multivariable Euler product for the Tamagawa product",
       "Distributional statistics for Tamagawa numbers",
       "Results autoformalized in Lean by AxiomProver",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-07",
-        evidenceLevel: "E2",
-        note: "Preprint posted; autoformalization claimed by the authors.",
-      },
     ],
     relatedWorks: [
       {
@@ -2221,19 +2179,11 @@ const curatedEvents: ResearchEvent[] = [
     model: ["AI co-mathematician"],
     benchmark: ["FrontierMath Tier 4 (reported 48%)"],
     dataset: [],
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "Stateful, asynchronous human-agent research workspace",
       "Tracks failed hypotheses and refines user intent",
       "Reported FrontierMath Tier 4 state of the art",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-05-07",
-        evidenceLevel: "E2",
-        note: "v1 posted; v2 (2026-05-13) adds citations. Benchmark numbers are author-reported.",
-      },
     ],
     relatedWorks: [
       {
@@ -2292,19 +2242,11 @@ const curatedEvents: ResearchEvent[] = [
     model: ["Aletheia (Gemini Deep Think)"],
     benchmark: ["Bloom's Erdős Conjectures database (700 open problems)"],
     dataset: [],
-    researchEventType: "System",
     evidenceLevel: "E2",
     keyContributions: [
       "End-to-end research agent: generate, verify, revise in natural language",
       "Semi-autonomous sweep of 700 open problems with four autonomous solutions",
       "Proposes autonomy/novelty levels and human–AI interaction cards",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-02-10",
-        evidenceLevel: "E2",
-        note: "v1 posted; v3 (2026-03-06) adds FirstProof summary. Milestones are author-reported.",
-      },
     ],
     relatedWorks: [
       {
@@ -2384,20 +2326,12 @@ const curatedEvents: ResearchEvent[] = [
       "Wendelin Werner",
       "Efim Zelmanov",
     ],
-    researchEventType: "Commentary",
     evidenceLevel: "E1",
     keyContributions: [
       "Frames the AI companies' benchmark-driven problem solving as a severe misalignment with mathematical values, not as progress for mathematics",
       "Solving problems is a tool and proxy for conceptual understanding; mass production of true/false statements could destroy fertile ground",
       "Flags rushed announcements: no time for writeups, method isolation or citation \u2014 attribution and plagiarism concerns",
       "Names students and ideas as the profession's most precious resources, dependent on a human transmission chain",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-09-11",
-        evidenceLevel: "E1",
-        note: "Full text, all 28 signatories and the Zenodo DOI fetched from mathandai.org on 2026-10-22; corroboration: Terence Tao's blog post of 2026-09-11. The status covers the publication event and its signatories; the declaration's assessments of AI companies' impact are the signatories' stated position, not independently verified facts.",
-      },
     ],
     relatedWorks: [
       {
@@ -2438,19 +2372,11 @@ const curatedEvents: ResearchEvent[] = [
     sourceUrl: "https://www.ahmath.org/statements",
     authors: ["Association for Human Mathematics \u2014 Communications Working Group"],
     institution: "Association for Human Mathematics",
-    researchEventType: "Commentary",
     evidenceLevel: "E2",
     keyContributions: [
       "Rejects the premise that the October 6 release advances mathematics; calls it a demonstration of power, not scholarship",
       "Points to OpenAI's disregard of the Advisory Group on Mathematics and AI's central premise",
       "Urges mathematicians to discontinue work with OpenAI \u2014 the first explicit boycott call from an organized mathematical body",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-07",
-        evidenceLevel: "E2",
-        note: "Statement text fetched from ahmath.org/statements on 2026-10-22; repost verified on Tao's blog (2026-10-07). The status covers the publication of the statement; its allegations about OpenAI's conduct are the association's stated position.",
-      },
     ],
     relatedWorks: [
       {
@@ -2497,19 +2423,11 @@ const curatedEvents: ResearchEvent[] = [
     ],
     authors: ["Terence Tao"],
     institution: "California Institute of Technology (AIM Public Lecture Series)",
-    researchEventType: "Commentary",
     evidenceLevel: "E1",
     keyContributions: [
       "Three-stage framing: Math 1.0, the current AI-disrupted state, and a community-sustaining Math 2.0",
       "Shifts the goal from automated problem solving to tools that sustain mathematicians and understanding",
       "Slides published and content merged into Tao's living summary of views on AI",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-10",
-        evidenceLevel: "E1",
-        note: "Lecture held 2026-10-09 evening (per the author's 2026-10-10 post); slides PDF and the Caltech event page linked from the post were verified on 2026-10-22. The vision described is the speaker's stated position.",
-      },
     ],
     relatedWorks: [
       {
@@ -2550,19 +2468,11 @@ const curatedEvents: ResearchEvent[] = [
     authors: ["SAIR Foundation"],
     institution: "SAIR Foundation",
     model: ["Kimi K3", "DeepSeek V4.1 Flash", "GLM 5.3 Flash", "GLM 5.3", "Nemotron 3"],
-    researchEventType: "Infrastructure",
     evidenceLevel: "E1",
     keyContributions: [
       "Open frontier models under community data governance: private by default, consent before training, rules set in public",
       "Team accounts with mutually visible prompts \u2014 addressing the declaration's attribution and process concerns",
       "Per-project cloud machines with Lean+Mathlib, SageMath, PARI/GP preinstalled; donated compute and free academic accounts",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-16",
-        evidenceLevel: "E1",
-        note: "Platform live and feature list (model lineup, data-sovereignty terms, team accounts) fetched from openmathmodel.org on 2026-10-22, matching Terence Tao's same-day announcement. Capability claims remain publisher-reported; no independent benchmark of the hosted models was found.",
-      },
     ],
     relatedWorks: [
       {
@@ -2597,18 +2507,10 @@ const curatedEvents: ResearchEvent[] = [
       "https://www.simonsfoundation.org/news/simons-foundation-launches-15m-effort-to-help-mathematicians-navigate-ai-era/",
     authors: ["Simons Foundation"],
     institution: "Simons Foundation",
-    researchEventType: "Commentary",
     evidenceLevel: "E2",
     keyContributions: [
       "$15M committed to initiatives centered on mathematics in the AI era",
       "Call for workshops and community programs, relayed by leading mathematicians",
-    ],
-    verificationHistory: [
-      {
-        date: "2026-10-15",
-        evidenceLevel: "E2",
-        note: "Press release page and headline fetched 2026-10-22; program description relayed via Terence Tao's 2026-10-15 post. The full press-release body was not retrievable in this session, so details beyond \u201Cworkshops and other initiatives\u201D are deliberately not recorded.",
-      },
     ],
     relatedWorks: [
       {
@@ -2640,16 +2542,14 @@ const curatedEvents: ResearchEvent[] = [
  * Ecosystem reclassification for already-verified events.
  *
  * These entries stay exactly as curated at the source level; only their
- * primary event class and type-specific metadata change. The former legacy
- * subtype is intentionally not retained as a Research subtype for these rows.
+ * primary event class and type-specific metadata change.
  */
 
 const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
-  "eventType" | "researchEventType" | "metadata"
+  "eventType" | "metadata"
 >>> = {
   "tao-math-2-0-caltech-lecture": {
     eventType: "People",
-    researchEventType: undefined,
     metadata: {
       people: [{
         name: "Terence Tao",
@@ -2660,7 +2560,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
   },
   "fields-medallists-misalignment-declaration": {
     eventType: "PolicyCommunity",
-    researchEventType: undefined,
     metadata: {
       policy: {
         kind: "Open declaration",
@@ -2672,7 +2571,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
   },
   "ahm-statement-openai-math-release": {
     eventType: "PolicyCommunity",
-    researchEventType: undefined,
     metadata: {
       policy: {
         kind: "Public statement",
@@ -2684,7 +2582,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
   },
   "sair-open-math-os-release": {
     eventType: "Institutions",
-    researchEventType: undefined,
     metadata: {
       initiatives: ["Open Math OS"],
       projects: ["Collaborative mathematical research on open frontier models"],
@@ -2692,7 +2589,6 @@ const ecosystemOverrides: Partial<Record<string, Pick<ResearchEvent,
   },
   "simons-foundation-15m-ai-mathematics-effort": {
     eventType: "Funding",
-    researchEventType: undefined,
     metadata: {
       funding: {
         organization: "Simons Foundation",

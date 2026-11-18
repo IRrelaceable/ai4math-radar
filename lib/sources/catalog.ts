@@ -19,7 +19,7 @@ export interface SourceDefinition {
   defaultResearchArea?: ResearchArea;
   /** Editorial evidence tier; the sync UI groups sources into S0-S4 boards. */
   sourceTier: SourceTier;
-  /** Marks every accepted record as this frontier lab's own work (see /labs). */
+  /** Marks every accepted record as this frontier lab's own work. */
   lab?: Lab;
   allowNonAI4Math?: boolean;
   /** Narrow a broad feed to relevant items (see RssSourceOptions.includeKeywords). */
@@ -92,7 +92,7 @@ const INSTITUTE_EVENT_RULES: { keywords: string[]; eventType: EventType }[] = [
 export const OFFICIAL_SOURCE_DEFINITIONS: SourceDefinition[] = [
   // Official lab / company blogs and news RSS.
   { id: "openai-news", label: "OpenAI News", mode: "rss", url: "https://openai.com/news/rss.xml", sourceType: "news", defaultEventType: "Research", sourceTier: "S1", lab: "openai" },
-  { id: "deepmind-blog", label: "Google DeepMind Blog", mode: "rss", url: "https://deepmind.google/blog/rss.xml", sourceType: "news", defaultEventType: "Research", sourceTier: "S1" },
+  { id: "deepmind-blog", label: "Google DeepMind Blog", mode: "rss", url: "https://deepmind.google/blog/rss.xml", sourceType: "news", defaultEventType: "Research", sourceTier: "S1", lab: "deepmind" },
   { id: "google-ai-blog", label: "Google AI Blog", mode: "rss", url: "https://blog.google/technology/ai/rss/", sourceType: "news", defaultEventType: "Research", sourceTier: "S1" },
   // Anthropic publishes no RSS at all, and model announcements land on
   // root-level slugs ("/claude-fable-and-mythos-5-2") rather than under /news,

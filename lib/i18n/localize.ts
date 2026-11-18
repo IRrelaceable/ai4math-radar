@@ -32,7 +32,7 @@ const AREA_ZH: Record<ResearchArea, string> = {
   "Mathematical Agents": "数学智能体",
   "Mathematical Discovery & Symbolic Computation": "数学发现与符号计算",
   Geometry: "几何",
-  "Benchmarks & Datasets": "基准与数据集",
+  "Benchmarks & Datasets": "评测、基准与数学数据资源",
 };
 
 const SUBAREA_ZH: Record<string, string> = {
@@ -73,13 +73,6 @@ const SUBAREA_ZH: Record<string, string> = {
 export function displayArea(area: ResearchArea | undefined, lang: Lang): string {
   if (!area) return "";
   return lang === "zh" ? AREA_ZH[area] ?? area : area;
-}
-
-export function displayResearchArea(
-  event: { researchArea?: ResearchArea },
-  lang: Lang
-): string {
-  return displayArea(event.researchArea, lang);
 }
 
 export function displaySubArea(subArea: string | undefined, lang: Lang): string | undefined {
@@ -159,9 +152,9 @@ export function localizeEvent<T extends ResearchEvent>(event: T, lang: Lang): T 
         }
       : undefined,
     humanContribution: overlay?.humanContribution ?? event.humanContribution,
-    verificationHistory: event.verificationHistory?.map((r) => ({
-      ...r,
-      note: r.noteZh ?? phrase(r.note) ?? r.note,
+    publicationCorrections: event.publicationCorrections?.map((c) => ({
+      ...c,
+      note: c.noteZh ?? phrase(c.note) ?? c.note,
       noteZh: undefined,
     })),
     relatedWorks: event.relatedWorks?.map((w) => ({ ...w, note: phrase(w.note) ?? w.note })),

@@ -12,7 +12,6 @@ const INCLUDE = {
   eventPapers: { include: { paper: true } },
   eventAuthors: { include: { author: true } },
   relatedWorks: true,
-  verificationRecords: { orderBy: { date: "asc" as const } },
 };
 
 function toIsoDate(value: unknown): string {
@@ -47,6 +46,7 @@ function mapEvent(row: any): ResearchEvent {
     subArea: row.subArea ?? undefined,
     sourceType: row.sourceType,
     sourceUrl: row.sourceUrl,
+    sources: (row.sources as ResearchEvent["sources"]) ?? undefined,
     paperUrl: row.paperUrl ?? undefined,
     githubUrl: row.githubUrl ?? undefined,
     papers,
@@ -63,14 +63,12 @@ function mapEvent(row: any): ResearchEvent {
     evidenceLevel: row.evidenceLevel ?? "E2",
     sourceTier: row.sourceTier ?? "S0",
     eventType: row.eventType ?? undefined,
-    researchEventType: row.researchEventType ?? undefined,
+    publicationStatus: row.publicationStatus ?? undefined,
+    publicationCorrections:
+      (row.publicationCorrections as ResearchEvent["publicationCorrections"]) ?? undefined,
     metadata: (row.metadata ?? undefined) as ResearchEvent["metadata"],
     provenance: row.provenance ?? "curated",
-    verificationHistory: (row.verificationRecords ?? []).map((r: any) => ({
-      date: toIsoDate(r.date),
-      evidenceLevel: r.evidenceLevel,
-      note: r.note ?? undefined,
-    })),
+    tracking: (row.tracking ?? undefined) as ResearchEvent["tracking"],
     createdAt: toIsoDate(row.createdAt),
     updatedAt: toIsoDate(row.updatedAt),
   });

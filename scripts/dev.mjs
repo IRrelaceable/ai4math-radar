@@ -14,7 +14,14 @@ import { startSyncServer } from "./sync-server.mjs";
 await startSyncServer();
 
 const servers = [
-  spawn("npx next dev -p 3000", { stdio: "inherit", shell: true, env: process.env }),
+  // A dedicated distDir keeps the dev tree away from `.next`, which `next build`
+  // (static export) overwrites; sharing it left the dev router serving 404s for
+  // its own compiled routes and client chunks.
+  spawn("npx next dev -p 3000", {
+    stdio: "inherit",
+    shell: true,
+    env: { ...process.env, NEXT_DIST_DIR: ".next-dev" },
+  }),
   spawn("npx next dev -p 3001", {
     stdio: "inherit",
     shell: true,

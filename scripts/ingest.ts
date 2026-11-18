@@ -9,6 +9,8 @@ import {
 import { backoffMs, readSourceStatuses, updateSourceStatus } from "@/lib/db/sourceStatus";
 import { getLiveResearchSources, type ResearchSource } from "@/lib/sources";
 import { writeStaticData } from "@/lib/buildDataset";
+import { linkIncomingEvents } from "@/lib/tracking";
+import { missingChineseCardFields } from "@/lib/i18n/quality";
 
 /**
  * Run the ingest pipeline outside Next.
@@ -90,7 +92,8 @@ async function main() {
   const statuses = readSourceStatuses();
   // Seed/stored events already own their slugs; a record that shares a headline
   // gets a hashed suffix instead of replacing the existing event.
-  const existingUrls = new Map((await getStore().listEvents()).map((e) => [e.slug, e.sourceUrl]));
+  const existingRecords = await getStore().listEvents();
+  const existingUrls = new Map(existingRecords.map((e) => [e.slug, e.sourceUrl]));
 
   let added = 0;
   let updated = 0;
@@ -137,11 +140,33 @@ async function main() {
         existingUrls,
       });
 
+      // A source record is never overwritten by event matching: a confirmed
+      // follow-up receives the same durable event id and becomes another
+      // append-only progress step. This makes the scheduled job the one place
+      // where source ingestion, event matching and static publication meet.
+      const eventLinked =
+        result.accepted.length > 0
+          ? await linkIncomingEvents(result.accepted, existingRecords)
+          : result.accepted;
+      if (!options.dry) {
+        const untranslated = eventLinked
+          .map((event) => ({ slug: event.slug, fields: missingChineseCardFields(event) }))
+          .filter((entry) => entry.fields.length > 0);
+        if (untranslated.length > 0) {
+          throw new Error(
+            `Chinese translation incomplete for ${untranslated.length} event(s): ` +
+            untranslated.map((entry) => `${entry.slug} (${entry.fields.join(", ")})`).join("; ")
+          );
+        }
+      }
       let persisted: { added: number; updated: number; total: number } | undefined;
-      if (!options.dry && result.accepted.length > 0) {
-        persisted = appendIngestedEvents(result.accepted);
+      if (!options.dry && eventLinked.length > 0) {
+        persisted = appendIngestedEvents(eventLinked);
         writeIngestedFingerprints(result.fingerprints);
-        for (const event of result.accepted) existingUrls.set(event.slug, event.sourceUrl);
+        for (const event of eventLinked) {
+          existingUrls.set(event.slug, event.sourceUrl);
+          existingRecords.push(event);
+        }
       }
 
       const latestDate =

@@ -1,15 +1,18 @@
 import type {
+  EventFacets,
   ListEvent,
   ResearchArea,
   ResearchEvent,
   SearchGroup,
   SearchResult,
   TopicStat,
+  TrackingSummary,
 } from "@/types";
 import type { Lang } from "@/lib/i18n/dict";
 import { dict } from "@/lib/i18n/dict";
 import { displayArea } from "@/lib/i18n/localize";
 import { matchesQuery, truncateText } from "@/lib/utils";
+import { eventLinkOf } from "@/lib/tracking";
 
 /**
  * Client-side view over the build-time dataset (public/data/<lang>.json).
@@ -23,9 +26,25 @@ import { matchesQuery, truncateText } from "@/lib/utils";
 const SUMMARY_MAX = 600;
 const SIGNIFICANCE_MAX = 400;
 
-/** Project a stored event onto the fields list surfaces render. */
-export function toListEvent(event: ResearchEvent): ListEvent {
+/**
+ * Project a stored event onto the fields list surfaces render.
+ * `eventId` is supplied by the build-time index: present only for a published
+ * (tracked) Event. `trackingSummary` describes the current collection state of
+ * this record's Event line and is present on every card.
+ * `facets` must be derived from the RAW record (facetsOf before localization
+ * and truncation) — display text here is localized and clamped, so deriving
+ * from it would silently diverge from the server-side facet caliber.
+ */
+export function toListEvent(
+  event: ResearchEvent,
+  eventId: string | undefined,
+  facets: EventFacets,
+  trackingSummary: TrackingSummary
+): ListEvent {
   return {
+    ...(eventId ? { eventId } : {}),
+    trackingSummary,
+    facets,
     id: event.id,
     slug: event.slug,
     title: event.title,
@@ -33,12 +52,12 @@ export function toListEvent(event: ResearchEvent): ListEvent {
     significance: truncateText(event.significance, SIGNIFICANCE_MAX),
     date: event.date,
     eventType: event.eventType,
-    researchEventType: event.researchEventType,
     researchArea: event.researchArea,
     subArea: event.subArea,
     direction: event.direction,
     lab: event.lab,
     sourceUrl: event.sourceUrl,
+    sources: event.sources,
     paperUrl: event.paperUrl,
     githubUrl: event.githubUrl,
     papers: event.papers,
@@ -49,7 +68,9 @@ export function toListEvent(event: ResearchEvent): ListEvent {
     dataset: event.dataset,
     evidenceLevel: event.evidenceLevel,
     sourceTier: event.sourceTier,
-    verificationStatus: event.verificationStatus,
+    publicationStatus: event.publicationStatus,
+    publicationCorrections: event.publicationCorrections,
+    tracking: eventLinkOf(event),
   };
 }
 
