@@ -1,5 +1,1191 @@
 [
   {
+    "id": "evt-harvard-cmsa-ken-ono-math-ai-2026-11-18",
+    "slug": "harvard-cmsa-ken-ono-mathematics-in-the-age-of-ai",
+    "date": "2026-11-18",
+    "title": "Harvard CMSA lists a Ken Ono seminar on AI discovery and proof verification",
+    "summary": "Harvard’s Center of Mathematical Sciences and Applications scheduled a November 18 seminar in its AI for the Working Mathematician series. Speaker Ken Ono’s published abstract outlines examples from Axiom Math, including the classification of finite simple groups and the Stacks Project.",
+    "translations": {
+      "zh": {
+        "title": "哈佛 CMSA 安排 Ken Ono 主讲 AI 数学发现与证明核验",
+        "summary": "哈佛数学科学与应用中心在「面向数学研究者的 AI」系列中安排了 11 月 18 日的研讨讲座。主讲人 Ken Ono 的公开摘要列出 Axiom Math 的案例，包括有限单群分类和 Stacks Project 的形式化。"
+      }
+    },
+    "authors": [
+      "Ken Ono"
+    ],
+    "institution": "Harvard Center of Mathematical Sciences and Applications",
+    "sourceType": "blog",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.math.harvard.edu/event/mathematics-in-the-age-of-ai-discovery-verification-and-the-future-of-proof/",
+    "eventType": "Institutions",
+    "provenance": "curated",
+    "significance": "",
+    "relatedWorks": [],
+    "createdAt": "2026-11-18T16:49:50.349Z",
+    "updatedAt": "2026-11-18T16:49:50.349Z",
+    "tracking": {
+      "eventId": "event-evt-harvard-cmsa-ken-ono-math-ai-2026-11-18",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E3",
+    "sources": [
+      {
+        "url": "https://www.math.harvard.edu/event/mathematics-in-the-age-of-ai-discovery-verification-and-the-future-of-proof/",
+        "tier": "S1",
+        "publishedAt": "2026-11-18",
+        "collectedAt": "2026-11-18T16:49:50.349Z"
+      }
+    ]
+  },
+  {
+    "id": "evt_arxiv-2611.22103",
+    "slug": "from-sorry-to-qed-refining-llm-math-proofs-via-angelic-execution",
+    "date": "2026-11-17",
+    "title": "From Sorry to QED: Refining LLM Math Proofs via Angelic Execution",
+    "summary": "MathEye repairs failing Lean proof scripts by preserving their overall structure and asking people to resolve selected proof obligations. On 30 analysis and algebra problems, the authors report a 93.3% solve rate and 55% fewer user interactions.",
+    "authors": [
+      "Yanju Chen",
+      "Hanzhi Liu",
+      "Ruizhe Qian",
+      "Jiaming Shan",
+      "Xu Yang",
+      "Yufei Ding",
+      "Osbert Bastani",
+      "Yu Feng"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.22103",
+    "paperUrl": "https://arxiv.org/abs/2611.22103",
+    "translations": {
+      "zh": {
+        "title": "MathEye：用乐观执行修复大模型生成的 Lean 证明",
+        "summary": "MathEye 保留大模型生成的 Lean 证明结构，用占位符隔离失败步骤，再请用户解决少数关键证明义务。作者在 30 道分析与代数题上报告了解题率 93.3%，所需用户交互减少了 55%。"
+      }
+    },
+    "direction": "ai4math",
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.22103",
+        "tier": "S0",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611-22103",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November 19 catch-up."
+    }
+  },
+  {
+    "id": "evt-axiom-minimal-model-program-lean",
+    "slug": "axiom-minimal-model-program-formalized-in-lean",
+    "date": "2026-11-17",
+    "title": "Axiom releases a Lean formalization of the Minimal Model Program through dimension four",
+    "summary": "Axiom released a public Lean library covering the Minimal Model Program in dimensions two through four. For its four-dimensional theorem, the repository cites OpenAI's October 6 collection paper on termination for projective log canonical fourfolds with rational boundary. Axiom reports that Lean checks the proofs and that the code is still awaiting human review.",
+    "sourceType": "blog",
+    "sourceTier": "S1",
+    "sourceUrl": "https://axiommath.ai/research/the-minimal-model-program-formalized/",
+    "githubUrl": "https://github.com/AxiomMath/MMP",
+    "authors": [
+      "Axiom Math"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "Axiom 发布二至四维极小模型纲领的 Lean 形式化",
+        "summary": "Axiom 公开了覆盖二至四维极小模型纲领的 Lean 库。仓库明确引用了 OpenAI 10 月 6 日手稿合集中关于带有理边界的射影对数典范四维对的终止性论文，作为其四维定理的依据。Axiom 表示证明已经 Lean 内核检查，代码仍待人工审阅。"
+      }
+    },
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E1",
+    "sources": [
+      {
+        "url": "https://github.com/AxiomMath/MMP",
+        "tier": "S0",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      },
+      {
+        "url": "https://axiommath.ai/research/the-minimal-model-program-formalized/",
+        "tier": "S1",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      },
+      {
+        "url": "https://github.com/openai/math/tree/main/preprints/Termination-for-projective-log-canonical-fourfolds-with-rational-boundary-September-24-2026",
+        "title": "Termination for projective log canonical fourfolds with rational boundary",
+        "tier": "S0"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt-axiom-minimal-model-program-lean",
+      "kind": "initial",
+      "relation": "related-event",
+      "matchedBy": "curated",
+      "relatedTo": {
+        "eventId": "event-evt-openai-math-release",
+        "kind": "related",
+        "reason": "Axiom cites OpenAI’s paper on termination for projective log canonical fourfolds with rational boundary as the basis for its four-dimensional theorem."
+      },
+      "reason": "Axiom released a separate Lean library with results in dimensions two through four."
+    }
+  },
+  {
+    "id": "evt-humanise-yang-mills-pr-482",
+    "slug": "humanise-yang-mills-humanizeym-v2-working-manuscript",
+    "date": "2026-11-17",
+    "title": "Humanise Yang–Mills adds a 306-page working manuscript",
+    "summary": "The Humanise Yang–Mills project merged a standalone working manuscript by Trishen Gunaratnam, developed with Codex assistance. The draft makes local changes to the argument and identifies estimates that still need to be proved. The pull request records a LaTeX build but no new Lean build or whole-proof verification.",
+    "sourceType": "github",
+    "sourceTier": "S0",
+    "sourceUrl": "https://github.com/hairer/humanise-yang-mills/pull/482",
+    "githubUrl": "https://github.com/hairer/humanise-yang-mills",
+    "authors": [
+      "Trishen Gunaratnam"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "translations": {
+      "zh": {
+        "title": "Humanise Yang–Mills 项目加入 306 页工作草稿",
+        "summary": "项目合并了 Trishen Gunaratnam 借助 Codex 编写的独立工作稿，修订了部分论证并列出仍需证明的估计。合并请求记录了 LaTeX 构建结果，未包含新的 Lean 构建或全证明核验。"
+      }
+    },
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E1",
+    "sources": [
+      {
+        "url": "https://github.com/hairer/humanise-yang-mills",
+        "tier": "S0",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      },
+      {
+        "url": "https://github.com/hairer/humanise-yang-mills/pull/482",
+        "tier": "S0",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt-humanise-yang-mills-pr-482",
+      "kind": "initial",
+      "relation": "related-event",
+      "matchedBy": "curated",
+      "relatedTo": {
+        "eventId": "event-evt-openai-math-release",
+        "kind": "related",
+        "reason": "Working manuscript in the project producing a human-readable account of the Yang–Mills work discussed in the October 26 announcement."
+      },
+      "reason": "The draft leaves essential estimates open and the PR reports no new Lean build or whole-proof verification."
+    }
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.22301",
+    "slug": "mcts-is-counting-the-wrong-thing-learning-exploration-counts-for-llm-reasoning",
+    "date": "2026-11-17",
+    "title": "MCTS Is Counting the Wrong Thing: Learning Exploration Counts for LLM Reasoning",
+    "summary": "Learned Pseudo-Count MCTS estimates exploration coverage from model representations so differently phrased branches can share evidence. With training held fixed, replacing visit counts at inference raised mean@16 accuracy across five math benchmarks by 3.79 percentage points on Qwen2.5-7B and 2.71 on Qwen3-4B in the authors’ experiments.",
+    "authors": [
+      "Xuan Zhang",
+      "Zhijian Zhou",
+      "Zicheng Hu",
+      "Yan Feng",
+      "Hongyan Hao",
+      "Yuan Qi",
+      "Chao Qu"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.22301",
+    "paperUrl": "https://arxiv.org/abs/2611.22301",
+    "sourceTier": "S0",
+    "direction": "math4ai",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Prompting & decoding",
+    "translations": {
+      "zh": {
+        "title": "用学习型伪计数改进大模型数学推理的树搜索",
+        "summary": "论文在蒙特卡洛树搜索中用模型内部表示估计探索覆盖度，使同一策略的不同表述共享探索信息。在训练后的模型固定时，仅替换推理阶段的计数方式，就在五项数学推理基准上将 Qwen2.5-7B 和 Qwen3-4B 的平均 mean@16 准确率分别提高 3.79 和 2.71 个百分点。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.22301",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.22301",
+        "tier": "S0",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "blog",
+    "eventType": "Research",
+    "id": "evt-epoch-frontiermath-erdos-gpt-6-2-astra",
+    "slug": "epoch-frontiermath-erdos-gpt-6-2-astra-seven-lean-solutions",
+    "date": "2026-11-17",
+    "title": "Epoch AI reports seven Lean solutions by GPT-6.2 Astra on FrontierMath Erdős",
+    "summary": "Epoch AI evaluated GPT-6.2 Astra on 68 selected Erdős problems. The evaluation reports seven Lean solutions, compared with three for the previous best run. The score refers to the benchmark’s selected problem set.",
+    "sourceTier": "S0",
+    "sourceUrl": "https://epoch.ai/models/gpt-6-2-astra",
+    "authors": [
+      "Epoch AI"
+    ],
+    "researchArea": "Benchmarks & Datasets",
+    "subArea": "Formal proving benchmarks",
+    "direction": "ai4math",
+    "benchmark": [
+      "FrontierMath Erdős"
+    ],
+    "model": [
+      "GPT-6.2 Astra"
+    ],
+    "evidenceLevel": "E2",
+    "translations": {
+      "zh": {
+        "title": "Epoch AI：GPT-6.2 Astra 解出 FrontierMath Erdős 中 68 道题里的 7 道",
+        "summary": "Epoch AI 用 68 道选出的 Erdős 问题评测 GPT-6.2 Astra，报告该模型产出 7 个 Lean 解答，超过此前最好结果的 3 个。这个成绩对应本次评测选取的题集。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt-epoch-frontiermath-erdos-gpt-6-2-astra",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "sources": [
+      {
+        "url": "https://epoch.ai/models/gpt-6-2-astra",
+        "tier": "S0",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      },
+      {
+        "url": "https://epoch.ai/benchmarks/frontiermath-erdos",
+        "tier": "S0",
+        "title": "FrontierMath Erdős leaderboard",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      },
+      {
+        "url": "https://deploymentsafety.openai.com/gpt-6-2-astra-sol/additional-informational-assessments-1",
+        "tier": "S1",
+        "title": "OpenAI system card: external evaluations",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "blog",
+    "eventType": "Funding",
+    "id": "evt-empire-ai-simons-fellows-2026",
+    "slug": "empire-ai-70-million-fellowships-for-ai-enabled-science",
+    "date": "2026-11-17",
+    "title": "Simons and partners announce $70 million in Empire AI fellowships",
+    "summary": "A $70 million initiative will support more than 120 early-career research positions in New York. Simons funds 58 faculty positions across 18 institutions, with mathematics, basic science and AI among the stated areas. Partner foundations support more than 60 computational postdoctoral fellowships.",
+    "sourceTier": "S1",
+    "sourceUrl": "https://www.simonsfoundation.org/news/new-70m-philanthropic-effort-creates-120-research-positions-across-new-york-to-advance-ai-enabled-scientific-discovery/",
+    "authors": [
+      "Simons Foundation",
+      "Simons Foundation International",
+      "Secunda Family Foundation",
+      "Bloomberg Philanthropies"
+    ],
+    "translations": {
+      "zh": {
+        "title": "Simons 等基金会为 Empire AI 研究岗位投入 7000 万美元",
+        "summary": "联合计划将在纽约州支持 120 多个早期科研岗位。Simons 资助 18 家机构的 58 个教研岗位，公布的方向包括数学、基础科学和人工智能；合作基金会另支持 60 多个以计算研究为重点的博士后岗位。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt-empire-ai-simons-fellows-2026",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E3",
+    "sources": [
+      {
+        "url": "https://www.simonsfoundation.org/news/new-70m-philanthropic-effort-creates-120-research-positions-across-new-york-to-advance-ai-enabled-scientific-discovery/",
+        "tier": "S1",
+        "publishedAt": "2026-11-17",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "id": "evt_arxiv-2611.21299",
+    "slug": "turing-agent-agentic-formal-verification-for-mathematical-research",
+    "date": "2026-11-16",
+    "title": "Turing Agent: Agentic Formal Verification for Mathematical Research",
+    "summary": "The preprint presents an agent for formalizing statements and proofs. The authors report machine verification of three previously unresolved theoretical computer science tasks from OpenAI's October 2026 collection. Their reported faithful formalization rate on Formal TCS Bench is about 57–62%.",
+    "authors": [
+      "Yang Chen",
+      "Qianyi Wang",
+      "Ronghui Yang",
+      "Zhanhao Li",
+      "Yu Cong",
+      "Chen Zhang",
+      "Hangfan Zhang",
+      "Shao Zhang",
+      "Shuai Li",
+      "Toru Takisaka",
+      "Chao Xu",
+      "Yi Zhou",
+      "Zhihao Tang",
+      "Xiao Wang",
+      "Bo Zhang",
+      "Shuyue Hu"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.21299",
+    "paperUrl": "https://arxiv.org/abs/2611.21299",
+    "translations": {
+      "zh": {
+        "title": "Turing Agent 报告完成 OpenAI 十月合集中的三项形式化核验",
+        "summary": "这篇预印本提出将研究级数学命题和证明转成形式化代码的 Turing Agent。作者报告对 OpenAI 2026 年 10 月合集中的三项理论计算机科学任务完成了机器核验，在 Formal TCS Bench 上报告的忠实形式化成功率约为 57% 至 62%。"
+      }
+    },
+    "direction": "ai4math",
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.21299",
+        "tier": "S0",
+        "publishedAt": "2026-11-16",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt-openai-math-release",
+      "kind": "verification",
+      "relation": "same-event",
+      "matchedBy": "curated",
+      "matchedToSlug": "openai-math-manuscript-collection-release",
+      "reason": "The preprint reports formalizing three identified TCS tasks from the October collection. The verification applies to those tasks."
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.21516",
+    "slug": "crossing-numbers-of-complete-graphs-the-independent-odd-crossing-number",
+    "date": "2026-11-16",
+    "title": "Crossing Numbers of Complete Graphs: the independent odd crossing number",
+    "summary": "Marcus Schaefer and Daniel Štefankovič extend the Harary–Hill and Zarankiewicz bounds recently established by OpenAI to independent odd crossing numbers. The paper concerns an extension of the original bounds to other crossing-number notions.",
+    "authors": [
+      "Marcus Schaefer",
+      "Daniel Štefankovič"
+    ],
+    "researchArea": "Mathematical Discovery & Symbolic Computation",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.21516",
+    "paperUrl": "https://arxiv.org/abs/2611.21516",
+    "translations": {
+      "zh": {
+        "title": "一篇独立论文将 OpenAI 的两项交叉数界推广到独立奇交叉数",
+        "summary": "Marcus Schaefer 与 Daniel Štefankovič 将 OpenAI 此前得到的 Harary–Hill 和 Zarankiewicz 界推广到独立奇交叉数，由此也能推出若干其他交叉数变体的界。这是一项针对原结果的独立推广。"
+      }
+    },
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.21516",
+        "tier": "S0",
+        "publishedAt": "2026-11-16",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611-21516",
+      "kind": "initial",
+      "relation": "related-event",
+      "matchedBy": "curated",
+      "relatedTo": {
+        "eventId": "event-evt-openai-math-release",
+        "kind": "related",
+        "reason": "Extends two crossing-number bounds cited from OpenAI to a different crossing-number notion."
+      },
+      "reason": "An independent mathematical extension of bounds from the collection."
+    }
+  },
+  {
+    "id": "evt-lean-4-36-0-release",
+    "slug": "lean-4-36-0-release-notes",
+    "date": "2026-11-16",
+    "title": "Lean 4.36.0 improves proof automation and Mathlib build times",
+    "summary": "Lean 4.36.0 broadens what the grind and bv_decide tactics can handle and ships Lean Beam for language-server access. The official release notes report that Mathlib builds roughly 12% faster with the new version.",
+    "sourceType": "github",
+    "sourceTier": "S0",
+    "sourceUrl": "https://lean-lang.org/doc/reference/latest/releases/v4.36.0/",
+    "githubUrl": "https://github.com/leanprover/lean4/releases/tag/v4.36.0",
+    "authors": [
+      "Lean developers"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Proof assistant tooling",
+    "translations": {
+      "zh": {
+        "title": "Lean 4.36.0 改进证明自动化与 Mathlib 构建速度",
+        "summary": "Lean 4.36.0 扩展了 grind 和 bv_decide 策略可处理的问题，并提供借助语言服务器访问 Lean 项目的 Lean Beam。官方发布说明称 Mathlib 的构建速度约提高 12%。"
+      }
+    },
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E1",
+    "sources": [
+      {
+        "url": "https://github.com/leanprover/lean4/releases/tag/v4.36.0",
+        "tier": "S0",
+        "publishedAt": "2026-11-16",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      },
+      {
+        "url": "https://lean-lang.org/doc/reference/latest/releases/v4.36.0/",
+        "tier": "S0",
+        "publishedAt": "2026-11-16",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt-lean-4-36-0-release",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November 19 catch-up."
+    }
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.20687",
+    "slug": "rethinking-supervision-scaling-in-on-policy-distillation-from-dense-supervision-to-stochastic-horizons",
+    "date": "2026-11-16",
+    "title": "Rethinking Supervision Scaling in On-Policy Distillation: From Dense Supervision to Stochastic Horizons",
+    "summary": "Stochastic Horizons On-Policy Distillation varies rollout length across training batches to reduce redundant supervision while still reaching deeper states. The authors report slightly higher math accuracy at about 45% of standard on-policy distillation’s per-update compute cost.",
+    "authors": [
+      "Xinhao Yao",
+      "Zhenxing Dou",
+      "Yong Liu"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.20687",
+    "paperUrl": "https://arxiv.org/abs/2611.20687",
+    "sourceTier": "S0",
+    "direction": "math4ai",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Reasoning & self-improvement",
+    "translations": {
+      "zh": {
+        "title": "随机采样推理长度，降低在策略蒸馏的训练成本",
+        "summary": "论文在不同训练批次随机采样生成长度，减少冗余的逐词元监督，同时保留接触较深推理状态的机会。作者报告，在数学推理实验中，单次更新成本约为标准在策略蒸馏的 45%，准确率略有提升。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.20687",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.20687",
+        "tier": "S0",
+        "publishedAt": "2026-11-16",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "id": "evt_arxiv-2611.21791",
+    "slug": "regularized-score-centering",
+    "date": "2026-11-16",
+    "title": "Regularized Score Centering",
+    "summary": "Regularized Score Centering adds a reverse KL penalty to score centering for asynchronous policy optimization. It limits the gap between the learner and the policy that generated training data. The authors derive improved convergence guarantees and evaluate the method on mathematical reasoning and agent tasks.",
+    "translations": {
+      "zh": {
+        "title": "正则化得分中心化：缓解异步强化学习的策略偏差",
+        "summary": "论文提出在得分中心化上加入反向 KL 惩罚，限制学习中的模型与生成训练样本的策略之间的偏离。作者给出改进的收敛保证，并在数学推理和智能体任务上评估该方法。"
+      }
+    },
+    "authors": [
+      "Hao Bai",
+      "Chenlu Ye",
+      "Xuanchang Zhang",
+      "Aviral Kumar",
+      "Tong Zhang"
+    ],
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.21791",
+    "paperUrl": "https://arxiv.org/abs/2611.21791",
+    "direction": "math4ai",
+    "eventType": "Research",
+    "provenance": "curated",
+    "significance": "",
+    "relatedWorks": [],
+    "createdAt": "2026-11-18T16:49:50.349Z",
+    "updatedAt": "2026-11-18T16:49:50.349Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.21791",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.21791",
+        "tier": "S0",
+        "publishedAt": "2026-11-16",
+        "collectedAt": "2026-11-18T16:49:50.349Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.19925",
+    "slug": "learning-when-to-continue-and-when-to-stop-termination-aware-opsd",
+    "date": "2026-11-15",
+    "title": "Learning When to Continue and When to Stop: Termination-Aware OPSD",
+    "summary": "Termination-Aware On-Policy Self-Distillation trains models to continue unfinished reasoning and discourages repetition in failed attempts. The authors report improvements over their self-distillation baseline on math tasks across three Qwen3 model sizes.",
+    "authors": [
+      "Chaoqun He",
+      "Wannian Yi",
+      "Changyi Sun",
+      "Chaojun Xiao",
+      "Lijie Wen"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.19925",
+    "paperUrl": "https://arxiv.org/abs/2611.19925",
+    "sourceTier": "S0",
+    "direction": "math4ai",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Reasoning & self-improvement",
+    "translations": {
+      "zh": {
+        "title": "让数学推理模型学会何时继续、何时停止",
+        "summary": "终止感知的在策略自蒸馏训练模型继续尚未完成的推理，同时抑制失败样本中的重复生成。作者在三种规模的 Qwen3 上测试数学推理任务，报告其表现均优于原有自蒸馏基线。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.19925",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.19925",
+        "tier": "S0",
+        "publishedAt": "2026-11-15",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "blog",
+    "eventType": "Research",
+    "id": "evt-kumori-lean-proof-repair-no-model-control",
+    "slug": "kumori-lean-proof-repair-no-model-control",
+    "date": "2026-11-15",
+    "title": "Kumori re-evaluates Lean proof repair with a no-model control",
+    "summary": "Kumori reports that 83% of the proofs it had credited to models came from problems Lean tactics could solve without a model. After adding this control, the team tested a deterministic repair chain on previously unseen attempts. It repaired 145 of 2,197 rejected submissions into proofs accepted by Lean.",
+    "sourceTier": "S1",
+    "sourceUrl": "https://kumori.ai/whats-new/no-model-control",
+    "authors": [
+      "Kumori"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Prover tooling & interaction",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "Kumori 加入无模型对照，重新评估 Lean 证明修复效果",
+        "summary": "Kumori 发现，此前归功于模型的证明中有 83% 对应的题目可由 Lean 策略在不调用模型时解出。团队补做对照，并用确定性的修复流程测试此前未见过的提交，其中 2,197 份被拒绝的提交有 145 份在修复后通过 Lean 检查。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:49:50.349Z",
+    "tracking": {
+      "eventId": "event-evt-kumori-lean-proof-repair-no-model-control",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E1",
+    "sources": [
+      {
+        "url": "https://kumori.ai/whats-new/no-model-control",
+        "tier": "S1",
+        "publishedAt": "2026-11-14",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      },
+      {
+        "url": "https://github.com/kumori-ai/sparebrains/blob/main/ledger/replay/README.md",
+        "tier": "S0",
+        "title": "Public experimental ledger and replay files",
+        "collectedAt": "2026-11-18T16:49:50.349Z"
+      }
+    ],
+    "githubUrl": "https://github.com/kumori-ai/sparebrains/blob/main/ledger/replay/README.md"
+  },
+  {
+    "id": "evt_arxiv-2611.19122",
+    "slug": "agent-guided-process-verification-for-mathematical-self-correction",
+    "date": "2026-11-14",
+    "title": "Agent-Guided Process Verification for Mathematical Self-Correction",
+    "summary": "AGPV checks the key claims of a proposed solution, then resumes solving at the first error and checks for missing branches. In experiments with four models on five datasets, the paper reports 63.8% average accuracy versus 50.3% for its strongest representative baseline.",
+    "authors": [
+      "Rui Zou",
+      "Mengqi Wei",
+      "Xin Zhao",
+      "Ji-Rong Wen"
+    ],
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.19122",
+    "paperUrl": "https://arxiv.org/abs/2611.19122",
+    "translations": {
+      "zh": {
+        "title": "AGPV：用逐步核验和局部修复改善数学推理",
+        "summary": "AGPV 逐项检查解答的关键断言，从首个出错处开始修复，并检查是否遗漏解题分支。论文在五套数据集上评测四个模型，报告平均准确率为 63.8%，其对照中表现最好的基线为 50.3%。"
+      }
+    },
+    "direction": "ai4math",
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.19122",
+        "tier": "S0",
+        "publishedAt": "2026-11-14",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611-19122",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November 19 catch-up."
+    }
+  },
+  {
+    "id": "evt_arxiv-2611.19108",
+    "slug": "guiding-ai-agents-to-generate-conjectures-by-encoding-how-theorems-build-on-one-another",
+    "date": "2026-11-14",
+    "title": "Guiding AI Agents to Generate Conjectures by Encoding How Theorems Build on One Another",
+    "summary": "The authors guide conjecture generation by extracting how later theorems change hypotheses, strengthen conclusions, or extend the scope of earlier results. Model judges and one expert mathematician preferred these conjectures to an unconstrained baseline, while model judges rated the baseline as more plausible.",
+    "authors": [
+      "Hita Kambhamettu",
+      "Daniel Krashen",
+      "Lyle Ungar"
+    ],
+    "researchArea": "Mathematical Discovery & Symbolic Computation",
+    "sourceType": "arxiv",
+    "sourceTier": "S0",
+    "sourceUrl": "https://arxiv.org/abs/2611.19108",
+    "paperUrl": "https://arxiv.org/abs/2611.19108",
+    "translations": {
+      "zh": {
+        "title": "用定理演化图引导 AI 智能体提出猜想",
+        "summary": "研究用定理演化图记录后续定理如何修改假设、增强结论或扩大适用范围，并据此生成猜想。模型评审与一名数学专家整体更偏好这种方法生成的猜想；模型评审则认为无约束基线的猜想更可能成立。"
+      }
+    },
+    "direction": "ai4math",
+    "eventType": "Research",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:20:49.404Z",
+    "createdAt": "2026-11-18T16:20:49.404Z",
+    "updatedAt": "2026-11-18T16:20:49.404Z",
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.19108",
+        "tier": "S0",
+        "publishedAt": "2026-11-14",
+        "collectedAt": "2026-11-18T16:20:49.404Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611-19108",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November 19 catch-up."
+    }
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.19059",
+    "slug": "high-dimensional-limit-theorems-for-adaptive-variants-of-sgd-i-ballistic-limits",
+    "date": "2026-11-14",
+    "title": "High-dimensional limit theorems for adaptive variants of SGD I: Ballistic limits",
+    "summary": "The authors derive effective high-dimensional dynamics for momentum and adaptive variants of stochastic gradient descent, including Adam and Muon. Their analysis gives quantitative comparisons in specific learning models, including an example where online SGD generalizes better early in training before Adam overtakes it.",
+    "authors": [
+      "Aukosh Jagannath",
+      "Varnan Sarangian"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.19059",
+    "paperUrl": "https://arxiv.org/abs/2611.19059",
+    "sourceTier": "S0",
+    "direction": "math4ai",
+    "translations": {
+      "zh": {
+        "title": "自适应随机梯度下降的高维极限定理：Adam 与 Muon",
+        "summary": "作者为 Adam、Muon 等带动量或自适应机制的随机梯度下降变体推导了高维有效动力学。在特定学习模型中，该理论可以定量比较优化器，例如刻画在线 SGD 早期泛化较好、随后被 Adam 反超的现象。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.19059",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.19059",
+        "tier": "S0",
+        "publishedAt": "2026-11-14",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "id": "evt-mathhelm-launch",
+    "slug": "introducing-mathhelm-a-place-to-discuss-ai-generated-papers",
+    "date": "2026-11-13",
+    "title": "MathHelm opens a forum for discussing AI-generated mathematics",
+    "summary": "The MathHelm scientific committee announced a forum for commenting on AI-generated mathematics, including the 722 OpenAI manuscripts. Researchers can discuss individual claims, ask questions about proofs, and share references or notes.",
+    "authors": [
+      "MathHelm Scientific Committee"
+    ],
+    "sourceType": "blog",
+    "sourceTier": "S1",
+    "sourceUrl": "https://terrytao.wordpress.com/2026/11/13/introducing-mathhelm-a-place-to-discuss-ai-generated-papers/",
+    "translations": {
+      "zh": {
+        "title": "MathHelm 开设 AI 生成数学论文讨论区，收录 OpenAI 722 篇手稿",
+        "summary": "MathHelm 科学委员会宣布开设讨论区，邀请数学研究者讨论 AI 生成的数学论文，包括 OpenAI 公开的 722 篇手稿。参与者可就具体结论和证明步骤提问，分享参考文献或上传讨论笔记。"
+      }
+    },
+    "eventType": "PolicyCommunity",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "significance": "",
+    "lastSyncedAt": "2026-11-18T16:25:37.343Z",
+    "createdAt": "2026-11-18T16:25:37.343Z",
+    "updatedAt": "2026-11-18T16:25:37.343Z",
+    "tracking": {
+      "eventId": "event-evt-mathhelm-launch",
+      "kind": "initial",
+      "relation": "related-event",
+      "matchedBy": "curated",
+      "relatedTo": {
+        "eventId": "event-evt-openai-math-release",
+        "kind": "related",
+        "reason": "MathHelm launched in response to the 722-manuscript release and explicitly hosts discussion of that collection."
+      },
+      "reason": "The announcement launches a community discussion forum."
+    },
+    "evidenceLevel": "E3",
+    "sources": [
+      {
+        "url": "https://terrytao.wordpress.com/2026/11/13/introducing-mathhelm-a-place-to-discuss-ai-generated-papers/",
+        "tier": "S1",
+        "publishedAt": "2026-11-13",
+        "collectedAt": "2026-11-18T16:25:37.343Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.18494",
+    "slug": "archer-from-rationale-imitation-to-executable-reasoning-in-small-language-models",
+    "date": "2026-11-13",
+    "title": "ARCHER: From Rationale Imitation to Executable Reasoning in Small Language Models",
+    "summary": "ARCHER trains small language models to produce executable math reasoning traces with calculator calls and verification steps. Across five sub-10B models, the authors report an average gain of 5.51 percentage points over the strongest tool-augmented baseline in their study.",
+    "authors": [
+      "Dhruv Dixit",
+      "Khushi Patel",
+      "Congcong Xu",
+      "Min Song"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.18494",
+    "paperUrl": "https://arxiv.org/abs/2611.18494",
+    "sourceTier": "S0",
+    "direction": "ai4math",
+    "researchArea": "Mathematical Reasoning & LLMs",
+    "subArea": "Tool & code integration",
+    "translations": {
+      "zh": {
+        "title": "ARCHER：训练小模型生成可执行的数学推理过程",
+        "summary": "ARCHER 把自然语言解题过程整理为包含计算器调用、运行结果和核验步骤的动作序列，再用强化学习训练小模型。论文报告，在五个参数量低于百亿的模型上，相比研究中最强的工具增强基线，基准准确率平均提高 5.51 个百分点。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.18494",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.18494",
+        "tier": "S0",
+        "publishedAt": "2026-11-13",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.18124",
+    "slug": "muon-attains-mathcal-o-varepsilon-3-iteration-complexity-under-shuffling",
+    "date": "2026-11-13",
+    "title": "Muon attains O(ε⁻³) iteration complexity under shuffling",
+    "summary": "For smooth nonconvex finite-sum optimization, the authors prove that Muon finds an ε-stationary point in O(ε⁻³) iterations under sampling without replacement, with a problem-dependent momentum coefficient. They construct examples showing why a fixed coefficient cannot give a general guarantee.",
+    "authors": [
+      "Kun Huang",
+      "Shi Pu",
+      "Karl Henrik Johansson"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.18124",
+    "paperUrl": "https://arxiv.org/abs/2611.18124",
+    "sourceTier": "S0",
+    "direction": "math4ai",
+    "translations": {
+      "zh": {
+        "title": "论文证明无放回抽样下 Muon 的迭代复杂度为 O(ε⁻³)",
+        "summary": "作者证明，在光滑非凸有限和优化中，如果动量系数随问题大小调整，采用无放回抽样的 Muon 可在 O(ε⁻³) 次迭代内找到 ε-驻点。论文还构造了反例，说明固定动量系数无法在所有问题规模上给出同类保证。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.18124",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.18124",
+        "tier": "S0",
+        "publishedAt": "2026-11-13",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.17876",
+    "slug": "delayed-effects-of-temporary-weight-decay-in-muon-pretraining",
+    "date": "2026-11-13",
+    "title": "Delayed Effects of Temporary Weight Decay in Muon Pretraining",
+    "summary": "The paper studies temporary weight decay in Transformers trained with the Muon optimizer. One schedule transferred from 162M to 1.4B parameters underperformed when decay ended, then overtook the no-decay baseline after 73% of training. A norm-dynamics model and reset experiments connect the delayed gain to smaller weight norms and larger relative updates.",
+    "authors": [
+      "Md Rifat Arefin",
+      "Ravid Shwartz-Ziv",
+      "Ernie Chang",
+      "Chinnadhurai Sankar",
+      "Rylan Conway",
+      "Aristide Baratin",
+      "Irina Rish",
+      "Adithya Sagar",
+      "Patrick Huber"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.17876",
+    "paperUrl": "https://arxiv.org/abs/2611.17876",
+    "sourceTier": "S0",
+    "direction": "math4ai",
+    "translations": {
+      "zh": {
+        "title": "Muon 预训练中，临时权重衰减的效果可能延后出现",
+        "summary": "研究在使用 Muon 的 Transformer 上测试只在部分训练阶段开启权重衰减。一种从 1.62 亿参数模型迁移到 14 亿参数模型的方案在停止衰减时表现较差，到训练进度约 73% 时才反超无衰减基线。论文用范数动态模型和重置实验解释这种延后效应。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.17876",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.17876",
+        "tier": "S0",
+        "publishedAt": "2026-11-13",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "blog",
+    "eventType": "Research",
+    "id": "evt-yang-mills-informalization-third-draft",
+    "slug": "yang-mills-informalization-second-and-third-drafts",
+    "date": "2026-11-13",
+    "title": "Yang–Mills informalization project publishes its second and third manuscript drafts",
+    "summary": "The project posted new drafts explaining a Lean construction in four-dimensional quantum field theory: 265 pages on November 12 and 278 on November 13. The second draft corrected an explanatory step to match the Lean source. The third clarified the statement and made explicit that the construction does not establish a positive mass gap.",
+    "sourceTier": "S1",
+    "sourceUrl": "https://mgubi.org/yang-mills-informalization/CHANGELOG.html",
+    "authors": [
+      "Scott Armstrong",
+      "Yang–Mills informalization project"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Formal corpora & libraries",
+    "direction": "ai4math",
+    "evidenceLevel": "E1",
+    "translations": {
+      "zh": {
+        "title": "杨–米尔斯解读项目更新第二、第三版工作稿",
+        "summary": "团队为四维量子场论中的 Lean 构造更新了文字解读，11 月 12 日发布 265 页的第二稿，13 日发布 278 页的第三稿。第二稿按 Lean 源代码修正了文字证明中的一步，第三稿澄清了定理的表述，明确现有构造尚未给出正质量间隙。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt-yang-mills-informalization-third-draft",
+      "kind": "initial",
+      "relation": "related-event",
+      "matchedBy": "curated",
+      "relatedTo": {
+        "eventId": "event-evt-openai-math-release",
+        "kind": "related",
+        "reason": "The drafts explain the separate Yang–Mills result discussed in OpenAI’s October 26 announcement."
+      },
+      "reason": "The drafts explain the separate Yang–Mills result discussed in OpenAI’s October 26 announcement."
+    },
+    "sources": [
+      {
+        "url": "https://mgubi.org/yang-mills-informalization/CHANGELOG.html",
+        "tier": "S1",
+        "publishedAt": "2026-11-13",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      },
+      {
+        "url": "https://mgubi.org/yang-mills-informalization/manuscript/main.html",
+        "tier": "S0",
+        "title": "Working manuscript",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      },
+      {
+        "url": "https://github.com/scottnarmstrong/yang-mills-informalization",
+        "tier": "S0",
+        "title": "Manuscript and Lean source references",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "id": "evt-ternary-goldbach-lean-first-full-build",
+    "slug": "ternary-goldbach-in-lean-first-full-build",
+    "date": "2026-11-13",
+    "title": "The ternary Goldbach Lean project documents its first full build",
+    "summary": "Charlie Reams’s project, with Harald Helfgott’s participation, records a full Lean 4 build of a formal development of the ternary Goldbach theorem. The repository states two published numerical results as explicit hypotheses. It credits Claude Code for most Lean code under the maintainer’s direction.",
+    "significance": "",
+    "authors": [
+      "Charlie Reams",
+      "Harald Andrés Helfgott"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "direction": "ai4math",
+    "sourceType": "github",
+    "sourceTier": "S0",
+    "sourceUrl": "https://github.com/calr3/ternary-goldbach",
+    "githubUrl": "https://github.com/calr3/ternary-goldbach",
+    "eventType": "Research",
+    "aiRole": {
+      "level": "assisted",
+      "description": "Claude Code generated much of the Lean code under the maintainer’s direction."
+    },
+    "translations": {
+      "zh": {
+        "title": "三元哥德巴赫定理的 Lean 项目记录首次完整构建",
+        "summary": "Charlie Reams 的项目在 Harald Helfgott 参与下，记录了三元哥德巴赫定理形式化的首次完整 Lean 4 构建。仓库把两项已发表的数值结果列为显式假设，并说明大部分 Lean 代码由 Claude Code 在维护者指导下编写。",
+        "aiRoleDescription": "Claude Code 在维护者指导下编写了大部分 Lean 代码。"
+      }
+    },
+    "provenance": "curated",
+    "relatedWorks": [],
+    "sources": [
+      {
+        "url": "https://github.com/calr3/ternary-goldbach",
+        "tier": "S0",
+        "publishedAt": "2026-11-13",
+        "collectedAt": "2026-11-18T16:54:27.993Z"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/calr3/ternary-goldbach/main/formalization.yaml",
+        "title": "Formalization metadata and hypotheses",
+        "tier": "S0",
+        "collectedAt": "2026-11-18T16:54:27.993Z"
+      }
+    ],
+    "tracking": {
+      "eventId": "event-evt-ternary-goldbach-lean-first-full-build",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "The November 13 upstream commit records the first full build of this formalization."
+    },
+    "createdAt": "2026-11-18T16:54:27.993Z",
+    "updatedAt": "2026-11-18T16:54:27.993Z",
+    "evidenceLevel": "E1"
+  },
+  {
     "id": "evt_http://terrytao.wordpress.com/?p=18701",
     "title": "Lean Grimoire",
     "slug": "lean-grimoire",
@@ -198,6 +1384,160 @@
         "summary": "论文证明，整数集是有理数中的丢番图子集：存在总次数不超过 4 的整数系数多项式，可用有理数解的存在性判定一个有理数是否为整数。由此，有理数幂空间中的递归可枚举集合均为丢番图集合，Mazur 关于有理点拓扑的猜想也不成立。证明受到 OpenAI 关于有理数域希尔伯特第十问题研究的启发，但没有使用其宣布的 2-converse 或 2-adic Fontaine–Mazur 结果。"
       }
     }
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.18787",
+    "slug": "the-cop-number-of-the-flower-snarks-and-the-generalized-petersen-graphs-with-cop-number-two",
+    "date": "2026-11-12",
+    "title": "The cop number of the flower snarks, and the generalized Petersen graphs with cop number two",
+    "summary": "In this graph theory preprint, Aarav Ghai determines the cop number of flower snarks and classifies generalized Petersen graphs with cop number two. The paper reports Lean 4 verification for the flower-snark result and the new lower bounds. Ghai credits Claude with assisting strategy exploration, drafting, computational checks and formalization.",
+    "authors": [
+      "Aarav Ghai"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.18787",
+    "paperUrl": "https://arxiv.org/abs/2611.18787",
+    "sourceTier": "S0",
+    "direction": "ai4math",
+    "researchArea": "Mathematical Discovery & Symbolic Computation",
+    "subArea": "AI-proved results & conjectures",
+    "aiRole": {
+      "level": "assisted"
+    },
+    "translations": {
+      "zh": {
+        "title": "警察与小偷博弈：花形 snark 图的警察数及其 Lean 核验",
+        "summary": "Aarav Ghai 确定了花形 snark 图的警察数，并分类了警察数为 2 的广义 Petersen 图。预印本报告花形 snark 图的结论和新下界已在 Lean 4 中核验，并说明 Claude 辅助了策略探索、写作、计算检查和形式化。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.18787",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E2",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.18787",
+        "tier": "S0",
+        "publishedAt": "2026-11-12",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "arxiv",
+    "eventType": "Research",
+    "id": "evt_arxiv-2611.16905",
+    "slug": "factored-one-sided-adam-moment-for-practical-and-scalable-soap",
+    "date": "2026-11-12",
+    "title": "Factored One-sided Adam-Moment for Practical and Scalable SOAP",
+    "summary": "FOAM modifies the SOAP optimizer with input-side preconditioning and a factored estimate of the rotated Adam moment. The authors report validation loss comparable to SOAP and Muon in their language-model pretraining experiments while using half of SOAP’s optimizer-state memory.",
+    "authors": [
+      "Jaemyung Yu",
+      "Byeongho Heo",
+      "Sangdoo Yun",
+      "Dongyoon Han"
+    ],
+    "sourceUrl": "https://arxiv.org/abs/2611.16905",
+    "paperUrl": "https://arxiv.org/abs/2611.16905",
+    "githubUrl": "https://github.com/naver-ai/foam",
+    "sourceTier": "S0",
+    "direction": "math4ai",
+    "translations": {
+      "zh": {
+        "title": "FOAM 用单侧预条件和因子化估计降低 SOAP 的开销",
+        "summary": "FOAM 仅对输入侧做预条件处理，并对旋转后的 Adam 矩估计作因子化。作者在语言模型预训练实验中报告，其最终验证损失与 SOAP、Muon 相近，优化器状态内存约为 SOAP 的一半。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt_arxiv-2611.16905",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E1",
+    "publicationStatus": "preprint",
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2611.16905",
+        "tier": "S0",
+        "publishedAt": "2026-11-12",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      },
+      {
+        "url": "https://github.com/naver-ai/foam",
+        "tier": "S0",
+        "publishedAt": "2026-11-12",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
+  },
+  {
+    "sourceType": "blog",
+    "eventType": "Research",
+    "id": "evt-axiom-faltings-theorem-lean",
+    "slug": "axiom-faltings-theorem-formalized-in-lean",
+    "date": "2026-11-12",
+    "title": "Axiom releases a Lean formalization of Faltings’ theorem",
+    "summary": "Axiom publishes a Lean development of the Bombieri–Vojta proof of the Mordell conjecture, a central result in number theory. The main theorem states that a smooth projective geometrically integral curve of genus at least two over a number field has finitely many rational points. The repository lists the dependencies and reports kernel checks for every proof.",
+    "sourceTier": "S1",
+    "sourceUrl": "https://axiommath.ai/research/faltings-theorem-formalized/",
+    "githubUrl": "https://github.com/AxiomMath/Mordell",
+    "authors": [
+      "Axiom Math"
+    ],
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Autoformalization",
+    "direction": "ai4math",
+    "translations": {
+      "zh": {
+        "title": "Axiom 发布费尔廷斯定理的 Lean 形式化",
+        "summary": "Axiom 公开了费尔廷斯定理（莫德尔猜想）的 Lean 形式化，采用 Bombieri 简化后的 Vojta 证明。主定理指出，数域上亏格至少为 2 的光滑射影几何整曲线只有有限多个有理点。仓库列出证明依赖，并报告所有证明均由 Lean 内核检查。"
+      }
+    },
+    "significance": "",
+    "relatedWorks": [],
+    "provenance": "curated",
+    "createdAt": "2026-11-18T16:48:18.054Z",
+    "updatedAt": "2026-11-18T16:48:18.054Z",
+    "tracking": {
+      "eventId": "event-evt-axiom-faltings-theorem-lean",
+      "kind": "initial",
+      "relation": "independent",
+      "matchedBy": "curated",
+      "reason": "Source-reviewed record from the November catch-up."
+    },
+    "evidenceLevel": "E1",
+    "sources": [
+      {
+        "url": "https://github.com/AxiomMath/Mordell",
+        "tier": "S0",
+        "publishedAt": "2026-11-12",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      },
+      {
+        "url": "https://axiommath.ai/research/faltings-theorem-formalized/",
+        "tier": "S1",
+        "publishedAt": "2026-11-12",
+        "collectedAt": "2026-11-18T16:48:18.054Z"
+      }
+    ]
   },
   {
     "id": "evt_arxiv-2611.16104",
@@ -4639,6 +5979,50 @@
       "reason": "no candidate event"
     },
     "publicationStatus": "preprint"
+  },
+  {
+    "id": "evt_watch_openai-math-history-96c4bb80a9f96ff7",
+    "slug": "watch-openai-math-history-96c4bb80a9f96ff7",
+    "title": "OpenAI math corrects the Comparator configuration for a Hodge conjecture formalization",
+    "summary": "The October 29 repository log records a configuration fix for the formalization of the rational Hodge conjecture for CM abelian varieties. OpenAI aligned the namespaces used by the Comparator challenge and solution.",
+    "significance": "",
+    "date": "2026-10-29",
+    "eventType": "Research",
+    "researchArea": "Theorem Proving & Formal Mathematics",
+    "subArea": "Formal corpora & libraries",
+    "direction": "ai4math",
+    "sourceType": "github",
+    "sourceTier": "S0",
+    "sourceUrl": "https://github.com/openai/math/blob/main/history.md#october-29-2026",
+    "authors": [],
+    "relatedWorks": [],
+    "tracking": {
+      "eventId": "event-evt-openai-math-release",
+      "kind": "correction",
+      "relation": "same-event",
+      "matchedBy": "curated",
+      "reason": "Source-grounded backfill from the October 29 repository log.",
+      "matchedToSlug": "openai-math-manuscript-collection-release"
+    },
+    "provenance": "curated",
+    "translations": {
+      "zh": {
+        "title": "OpenAI 修正一项霍奇猜想形式化的 Comparator 配置",
+        "summary": "仓库 10 月 29 日的日志记录了一项配置更正，涉及 CM 阿贝尔簇有理霍奇猜想的形式化。OpenAI 统一了 Comparator 挑战与解答使用的命名空间。"
+      }
+    },
+    "lastSyncedAt": "2026-11-18T14:13:16.635Z",
+    "createdAt": "2026-11-18T14:13:16.635Z",
+    "updatedAt": "2026-11-18T14:13:16.635Z",
+    "evidenceLevel": "E3",
+    "sources": [
+      {
+        "url": "https://github.com/openai/math/blob/main/history.md#october-29-2026",
+        "tier": "S0",
+        "publishedAt": "2026-10-29",
+        "collectedAt": "2026-11-18T14:13:16.635Z"
+      }
+    ]
   },
   {
     "id": "evt_mathematics-in-lean:https://leanprover-community.github.io/mathematics_in_lean/",

@@ -4,51 +4,17 @@
 
 /* Mathematical task archive: a focused editorial surface inside the site. */
 .labs-page {
-  --labs-ink: #161c28;
-  --labs-muted: #707c93;
-  --labs-rule: #dfe3ea;
-  --labs-paper: #ffffff;
-  background: var(--labs-paper);
-  color: var(--labs-ink);
+  background: var(--paper);
+  color: var(--text);
   min-height: 100vh;
 }
 
 .labs-hero {
-  position: relative;
-  overflow: hidden;
-  background: #ffffff;
-  color: #161c28;
-  border-bottom: 1px solid #dfe3ea;
-  isolation: isolate;
-}
-
-.labs-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(90deg, rgb(59 91 219 / .045) 1px, transparent 1px),
-    linear-gradient(rgb(59 91 219 / .045) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(90deg, transparent 4%, #000 74%);
-}
-
-.labs-hero::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  width: 42rem;
-  height: 42rem;
-  right: -9rem;
-  top: -16rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgb(198 205 255 / .42), transparent 66%);
-  pointer-events: none;
+  border-bottom: 1px solid var(--rule);
 }
 
 .labs-hero-inner {
-  min-height: 20rem;
+  min-height: 15rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(15rem, .38fr);
   align-items: stretch;
@@ -58,7 +24,7 @@
 .labs-hero-copy {
   display: flex;
   flex-direction: column;
-  padding: 3.4rem 0 2.1rem;
+  padding: 2.6rem 0 1.7rem;
 }
 
 .labs-hero-kicker,
@@ -78,7 +44,7 @@
   display: flex;
   align-items: center;
   gap: .7rem;
-  color: #3b5bdb;
+  color: var(--cobalt);
   font-size: .7rem;
   font-weight: 600;
   letter-spacing: .19em;
@@ -87,16 +53,16 @@
 .labs-signal {
   width: .45rem;
   height: .45rem;
-  background: #3b5bdb;
-  border-radius: 50%;
-  box-shadow: 0 0 0 .25rem rgb(59 91 219 / .12);
+  background: var(--cobalt);
+  border-radius: 1px;
 }
 
 .labs-hero h1 {
   max-width: 13ch;
-  margin: 2.25rem 0 0;
-  font-size: clamp(2.6rem, 5.2vw, 4.8rem);
-  font-weight: 600;
+  margin: 1.2rem 0 0;
+  font-family: var(--display-font);
+  font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+  font-weight: 700;
   line-height: 1.12;
   letter-spacing: -.045em;
 }
@@ -104,7 +70,7 @@
 .labs-hero-copy > p {
   max-width: 38rem;
   margin-top: 1.3rem;
-  color: #566075;
+  color: var(--muted);
   font-size: .94rem;
   line-height: 1.85;
 }
@@ -114,8 +80,8 @@
   flex-wrap: wrap;
   gap: .75rem 2.5rem;
   margin-top: auto;
-  padding-top: 2.6rem;
-  color: #707c93;
+  padding-top: 1.6rem;
+  color: var(--muted);
   font-size: .65rem;
   letter-spacing: .12em;
 }
@@ -126,55 +92,28 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 20rem;
-  border-left: 1px solid #dfe3ea;
-}
-
-.labs-hero-figure::before,
-.labs-hero-figure::after {
-  content: "";
-  position: absolute;
-  width: min(19rem, 90%);
-  aspect-ratio: 1;
-  border: 1px solid #c6cdff;
-  border-radius: 50%;
-}
-
-.labs-hero-figure::after {
-  width: min(15rem, 72%);
-  border-color: #e2e6ff;
-}
-
-.labs-figure-coordinate {
-  position: absolute;
-  top: 2.2rem;
-  right: 0;
-  color: #98a2b6;
-  font: .65rem ui-monospace, monospace;
-  letter-spacing: .16em;
+  border-left: 1px solid var(--rule);
 }
 
 .labs-figure-number {
   position: relative;
   z-index: 1;
-  color: #3b5bdb;
-  font-size: clamp(6.5rem, 13vw, 10.5rem);
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -.1em;
-  transform: translateX(-.05em);
+  color: var(--cobalt);
+  font: 400 clamp(3.75rem, 8vw, 6.5rem)/1.15 var(--display-font);
+  letter-spacing: -.06em;
 }
 
 .labs-figure-caption {
   position: relative;
   z-index: 1;
-  color: #566075;
+  margin-top: .35rem;
+  color: var(--muted);
   font: .7rem ui-monospace, monospace;
   letter-spacing: .22em;
 }
 
 .labs-content {
-  padding-top: 3.6rem;
+  padding-top: 2.3rem;
   padding-bottom: 6rem;
 }
 
@@ -249,13 +188,13 @@
 }
 
 .labs-filter:hover {
-  background: #f0f2ff;
-  color: var(--labs-ink);
+  background: theme(colors.accent.50);
+  color: var(--text);
 }
 
 .labs-filter-active,
 .labs-filter-active:hover {
-  background: #3b5bdb;
+  background: var(--cobalt);
   color: #fff;
 }
 
@@ -268,56 +207,56 @@
   width: min(100%, 18rem);
   height: 2.55rem;
   padding: 0 .75rem;
-  border: 1px solid #c2c9d6;
+  border: 1px solid var(--rule);
   border-radius: .2rem;
-  background: #fff;
-  color: #6c7784;
+  background: var(--sheet);
+  color: var(--muted);
 }
 
 .labs-search:focus-within {
-  border-color: #3b5bdb;
-  box-shadow: 0 0 0 2px rgb(59 91 219 / .13);
+  border-color: var(--cobalt);
+  box-shadow: 0 0 0 2px theme(colors.accent.100);
 }
 
 .labs-search svg { width: 1rem; height: 1rem; flex: 0 0 auto; }
-.labs-search input { width: 100%; min-width: 0; outline: 0; color: var(--labs-ink); background: transparent; font-size: .8rem; }
+.labs-search input { width: 100%; min-width: 0; outline: 0; color: var(--text); background: transparent; font-size: .8rem; }
 .labs-search input::placeholder { color: #8a95a0; }
 
 .labs-list-head {
   display: flex;
   justify-content: space-between;
   padding: .7rem 1.1rem;
-  border-top: 2px solid var(--labs-ink);
+  border-top: 1px solid var(--text);
   color: #647184;
   font-size: .65rem;
   letter-spacing: .13em;
 }
 
-.labs-ledger { border-bottom: 1px solid var(--labs-rule); }
+.labs-ledger { border-bottom: 1px solid var(--rule); }
 
 .labs-case {
   position: relative;
-  border-top: 1px solid var(--labs-rule);
+  border-top: 1px solid var(--rule);
   background: transparent;
 }
 
-.labs-case--prepared { background: #f0f2ff; }
-.labs-case--prepared::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: #4f5bd5; }
-.labs-case[open] { background: #fff; box-shadow: 0 16px 40px rgb(18 35 54 / .07); z-index: 1; }
+.labs-case--prepared { background: theme(colors.accent.50); }
+.labs-case--prepared::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--cobalt); }
+.labs-case[open] { background: var(--sheet); }
 
 .labs-case-summary {
   display: grid;
   grid-template-columns: 3.3rem minmax(0, 1fr) minmax(7rem, auto) 2rem;
   align-items: center;
   gap: 1.2rem;
-  min-height: 7.25rem;
-  padding: 1.3rem 1.3rem;
+  min-height: 5.5rem;
+  padding: 1rem 1.1rem;
   cursor: pointer;
   transition: background 140ms;
 }
 
-.labs-case-summary:hover { background: #f7f8fa; }
-.labs-case[open] > .labs-case-summary { border-bottom: 1px solid #dfe3ea; }
+.labs-case-summary:hover { background: theme(colors.ink.50); }
+.labs-case[open] > .labs-case-summary { border-bottom: 1px solid var(--rule); }
 .labs-case-index { align-self: start; padding-top: .25rem; color: #9aa4ab; font-size: .84rem; }
 .labs-case-main { display: flex; min-width: 0; flex-direction: column; gap: .55rem; }
 .labs-case-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; color: #7f8a96; font-size: .66rem; letter-spacing: .075em; }
@@ -328,7 +267,7 @@
 .labs-lab--independent { color: #5e7470; }
 
 .labs-case-title {
-  color: var(--labs-ink);
+  color: var(--text);
   font-size: clamp(1rem, 1.5vw, 1.18rem);
   font-weight: 550;
   line-height: 1.5;
@@ -356,8 +295,8 @@
   transition: transform 160ms, background 160ms, color 160ms;
 }
 
-.labs-case-summary:hover .labs-case-arrow { background: #3b5bdb; color: #fff; }
-.labs-case[open] > .labs-case-summary .labs-case-arrow { transform: rotate(90deg); background: #3b5bdb; color: #fff; }
+.labs-case-summary:hover .labs-case-arrow { background: var(--cobalt); color: #fff; }
+.labs-case[open] > .labs-case-summary .labs-case-arrow { transform: rotate(90deg); background: var(--cobalt); color: #fff; }
 
 .labs-case-content { padding: 2rem 2.5rem 2.2rem 5.8rem; }
 .labs-task-facts { display: grid; gap: 1.05rem; max-width: 58rem; }
@@ -367,15 +306,15 @@
 .labs-result-panel {
   margin-top: 2rem;
   padding: 1.4rem 1.4rem .85rem;
-  border: 1px solid #dfe3ea;
-  background: #f7f8fa;
+  border: 1px solid var(--rule);
+  background: var(--paper);
 }
 
-.labs-table-head { background: #eef0f4; }
+.labs-table-head { background: theme(colors.ink.100); }
 .labs-table-head th { color: #526577; }
-.labs-result-panel tbody tr { border-top-color: #dfe3ea; }
-.labs-source-foot { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #dfe3ea; }
-.labs-source-foot a { color: #3149b8; text-decoration: none; }
+.labs-result-panel tbody tr { border-top-color: var(--rule); }
+.labs-source-foot { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
+.labs-source-foot a { color: var(--cobalt); text-decoration: none; }
 .labs-source-foot a:hover { text-decoration: underline; }
 
 .labs-source-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
@@ -385,28 +324,25 @@
 .labs-attribution { color: #68788a; font-size: .76rem; }
 .labs-scope { max-width: 60rem; margin-top: .55rem; color: #71808e; font-size: .74rem; line-height: 1.75; }
 .labs-source-links { display: flex; flex-wrap: wrap; gap: .55rem 1.5rem; margin-top: 1.15rem; }
-.labs-source-links a { display: inline-flex; gap: .55rem; font-size: .75rem; }
+.labs-source-links a { display: inline-flex; align-items: baseline; gap: .55rem; font-size: .75rem; }
 .labs-source-links a span { color: #8995a0; font: .64rem ui-monospace, monospace; }
 .labs-source-note { margin-top: 1.5rem; color: #75808a; font-size: .74rem; line-height: 1.7; }
 
-.labs-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 15rem; border-top: 1px solid var(--labs-rule); color: #647184; }
+.labs-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 15rem; border-top: 1px solid var(--rule); color: var(--muted); }
 .labs-empty-mark { color: #9fa9fb; font-size: 3.5rem; font-weight: 300; }
 .labs-empty button { margin-top: .9rem; color: #3149b8; font-size: .8rem; text-decoration: underline; }
 
 .labs-filter:focus-visible,
 .labs-case-summary:focus-visible,
-.labs-empty button:focus-visible { outline: 2px solid #3b5bdb; outline-offset: 2px; }
+.labs-empty button:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 
 @media (max-width: 760px) {
   .labs-hero-inner { grid-template-columns: 1fr; gap: 0; }
   .labs-hero-copy { padding: 2.8rem 0 2.2rem; }
   .labs-hero h1 { margin-top: 1.7rem; }
-  .labs-hero-figure { min-height: 7rem; flex-direction: row; justify-content: flex-start; gap: .9rem; border-left: 0; border-top: 1px solid #dfe3ea; }
-  .labs-hero-figure::before,
-  .labs-hero-figure::after,
-  .labs-figure-coordinate { display: none; }
+  .labs-hero-figure { min-height: 6rem; flex-direction: row; justify-content: flex-start; gap: .9rem; border-left: 0; border-top: 1px solid var(--rule); }
   .labs-figure-number { font-size: 4.5rem; }
-  .labs-figure-caption { align-self: center; }
+  .labs-figure-caption { align-self: center; margin-top: 0; }
   .labs-content { padding-top: 2.6rem; }
   .labs-section-heading { align-items: start; flex-direction: column; gap: .35rem; }
   .labs-section-intro { margin-bottom: 1.7rem; }
@@ -427,20 +363,27 @@
 
 :root {
   color-scheme: light;
+  --display-font: Georgia, "Noto Serif CJK SC", "Songti SC", SimSun, serif;
+  --paper: theme(colors.paper);
+  --sheet: theme(colors.sheet);
+  --rule: theme(colors.ink.200);
+  --text: theme(colors.ink.900);
+  --muted: theme(colors.ink.600);
+  --cobalt: theme(colors.accent.600);
   /* Fallback class theme. Any element carrying [data-type] overrides these
      for itself and its descendants, so a card colours its own marks without
      each child needing to know the event class. */
   --type: #98a2b6;
-  --type-ink: #566075;
-  --type-soft: #f7f8fa;
-  --type-line: #dfe3ea;
+  --type-ink: var(--muted);
+  --type-soft: var(--paper);
+  --type-line: var(--rule);
 }
 
 /* --- Direction-axis palette ---------------------------------------------
    The same three hues as .direction-dot, exposed as variables so an area's
    "axis mix" bar can be built from plain [data-axis] segments. `none` is a
    missing mark, not a fourth side, so it stays graphite. */
-[data-axis="ai4math"] { --axis: #3b5bdb; }
+[data-axis="ai4math"] { --axis: var(--cobalt); }
 [data-axis="math4ai"] { --axis: #7c5cc4; }
 [data-axis="both"] { --axis: #c07a1a; }
 [data-axis="none"] { --axis: #c2c9d6; }
@@ -503,7 +446,7 @@ html {
 }
 
 body {
-  @apply bg-white text-ink-900 antialiased;
+  @apply bg-paper text-ink-900 antialiased;
   font-family:
     ui-sans-serif,
     system-ui,
@@ -517,7 +460,7 @@ body {
 }
 
 ::selection {
-  background: #dfe4ff;
+  background: theme(colors.accent.100);
 }
 
 @layer components {
@@ -528,46 +471,30 @@ body {
   /* One type scale for the whole site. Titles no longer rely on weight alone:
      display / section / item have distinct size, leading and tracking. */
   .h-display {
-    @apply text-[34px] font-semibold leading-[1.14] tracking-[-0.028em] text-ink-900 sm:text-[46px];
+    font-family: var(--display-font);
+    @apply text-[32px] font-bold leading-[1.16] tracking-[-0.025em] text-ink-900 sm:text-[44px];
   }
 
-  /* Home cover. A masthead rule, a two-register bilingual title and a faint
-     coordinate grid: the grid is decorative and fades before it reaches the
-     reading column, so it never competes with the headline or the data rail. */
-  .cover-grid {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .cover-grid::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-image:
-      linear-gradient(to right, rgb(15 23 42 / 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(15 23 42 / 0.04) 1px, transparent 1px);
-    background-size: 56px 56px;
-    -webkit-mask-image: radial-gradient(85% 95% at 100% 0%, #000 0%, transparent 70%);
-    mask-image: radial-gradient(85% 95% at 100% 0%, #000 0%, transparent 70%);
+  .cover-title,
+  .cover-feature-title {
+    font-family: var(--display-font);
   }
 
   .cover-title-lead {
     display: block;
-    font-size: clamp(2rem, 5.4vw, 4.25rem);
-    line-height: 0.98;
-    letter-spacing: -0.038em;
-    @apply font-semibold text-ink-900;
+    font-size: clamp(2.5rem, 5.2vw, 4.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    @apply font-bold text-ink-900;
   }
 
   .cover-title-tail {
     display: block;
-    margin-top: 0.45em;
-    font-size: clamp(1.4rem, 2.4vw, 2rem);
-    line-height: 1.25;
-    letter-spacing: 0.02em;
-    @apply font-medium text-ink-600;
+    margin-top: 0.12em;
+    font-size: clamp(1.9rem, 4.2vw, 3.8rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    @apply font-bold text-accent-600;
   }
 
   .h-section {
@@ -579,7 +506,7 @@ body {
   }
 
   .mono-label {
-    @apply font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-ink-500;
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.09em] text-ink-500;
   }
 
   .lede {
@@ -591,38 +518,25 @@ body {
   }
 
   .card {
-    @apply rounded-md border border-ink-200 bg-white transition-colors;
+    @apply rounded-md border border-ink-200 bg-sheet transition-colors;
   }
 
   .card-hover {
     @apply hover:border-ink-300 hover:bg-ink-50;
   }
 
-  /* Event class colour lives in the heading and class label. Evidence and
-     source marks stay neutral so colour never implies reliability. */
+  /* The class chip carries the category colour across both feed views. */
   .event-card {
-    @apply relative rounded-md border border-ink-200;
-    background-color: #fff;
-    border-top: 4px solid var(--type);
-    transition:
-      border-color 150ms ease,
-      box-shadow 150ms ease;
+    @apply relative rounded-md border border-ink-200 bg-sheet transition-colors;
   }
 
-  .event-card-heading {
-    background: linear-gradient(110deg, var(--type-soft) 0%, #fff 88%);
-    border-bottom: 1px solid var(--type-line);
-  }
-
-  .event-card:hover {
-    border-color: var(--type-line);
-    border-top-color: var(--type);
-    box-shadow: 0 8px 24px rgb(22 28 40 / 0.08);
+  .event-card:hover,
+  .event-card:focus-within {
+    @apply border-ink-300;
   }
 
   .card-footer {
-    background: #fafbfc;
-    border-top-color: #dfe3ea;
+    @apply border-ink-100;
   }
 
   .card-title {
@@ -631,12 +545,6 @@ body {
 
   .event-card:hover .card-title {
     color: var(--type-ink);
-  }
-
-  /* Keep short body copy readable while letting titles take their natural
-     height. Long summaries without an editorial note may use four lines. */
-  .card-clamp-body {
-    min-height: 3.25em;
   }
 
   /* Class label reads as a tinted tag; the small vertical bar inside keeps
@@ -680,13 +588,13 @@ body {
   /* Editorial interpretation stays neutral beside the category colour. */
   .note-block {
     @apply mt-4 rounded-r-sm border-l-2 px-3 py-2;
-    background: #f7f8fa;
-    border-left-color: #c2c9d6;
+    background: var(--paper);
+    border-left-color: var(--rule);
   }
 
   .note-label {
     @apply mb-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.16em];
-    color: #566075;
+    color: var(--muted);
   }
 
   /* Two-column event card: a body column plus a narrow meta rail. Driven by a
@@ -726,7 +634,7 @@ body {
      metadata, which flattened the hierarchy; full rounding is reserved for
      the compact status dots below. */
   .chip {
-    @apply inline-flex items-center rounded border border-ink-200 bg-white px-2 py-0.5 text-xs text-ink-600;
+    @apply inline-flex items-center rounded border border-ink-200 bg-sheet px-2 py-0.5 text-xs text-ink-600;
   }
 
   .chip-active {
@@ -734,7 +642,7 @@ body {
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-md bg-ink-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink-700;
+    @apply inline-flex items-center justify-center rounded-md bg-accent-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-800;
   }
 
   .btn-ghost {
@@ -744,7 +652,7 @@ body {
   /* Compact filter select: native arrow replaced by a slim chevron pinned
      close to the right edge, so narrow boxes keep label + arrow together. */
   .select-control {
-    @apply cursor-pointer rounded-md border border-ink-200 bg-white py-1.5 pl-2.5 text-xs text-ink-700 focus:border-accent-500 focus:outline-none;
+    @apply cursor-pointer rounded-md border border-ink-200 bg-sheet py-1.5 pl-2.5 text-xs text-ink-700 focus:border-accent-500 focus:outline-none;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23707c93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -764,7 +672,7 @@ body {
     width: 14px;
     height: 14px;
     border-radius: 9999px;
-    background: #3b5bdb;
+    background: var(--cobalt);
     border: 2px solid #ffffff;
     box-shadow: 0 0 0 1px #c6cdff;
     transition: background-color 120ms ease;
@@ -776,7 +684,7 @@ body {
     width: 14px;
     height: 14px;
     border-radius: 9999px;
-    background: #3b5bdb;
+    background: var(--cobalt);
     border: 2px solid #ffffff;
     box-shadow: 0 0 0 1px #c6cdff;
   }
@@ -855,12 +763,12 @@ body {
      event page. Shape (filled / hollow / ringed) still carries the meaning. */
   .direction-dot {
     @apply inline-block h-2 w-2 shrink-0 rounded-full border;
-    border-color: var(--dir, #3b5bdb);
+    border-color: var(--dir, var(--cobalt));
     background: transparent;
   }
 
   .direction-dot[data-direction="ai4math"] {
-    --dir: #3b5bdb;
+    --dir: var(--cobalt);
     background: var(--dir);
   }
 

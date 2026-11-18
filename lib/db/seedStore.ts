@@ -44,17 +44,23 @@ export function mergeEvents(
   for (const event of ingested) bySlug.set(event.slug, event);
 
   const byUrl = new Map<string, ResearchEvent>();
-  const withoutUrl: ResearchEvent[] = [];
+  const byRecord: ResearchEvent[] = [];
   for (const event of bySlug.values()) {
+    // A watched revision has its own identity even when several revisions
+    // cite the same changelog. Its stable slug was deduplicated above.
+    if (event.id.startsWith("evt_watch_")) {
+      byRecord.push(event);
+      continue;
+    }
     const key = sourceKey(event.sourceUrl);
     if (!key) {
-      withoutUrl.push(event);
+      byRecord.push(event);
       continue;
     }
     const existing = byUrl.get(key);
     byUrl.set(key, existing ? preferEvent(existing, event) : event);
   }
-  return dedupePersonStories([...byUrl.values(), ...withoutUrl]);
+  return dedupePersonStories([...byUrl.values(), ...byRecord]);
 }
 
 /**

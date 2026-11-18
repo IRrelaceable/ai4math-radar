@@ -64,7 +64,7 @@ const COLORS: Record<ScatterAxis, Record<string, string>> = {
     optimization: "#c0496f",
     "mathematical-physics": "#14807f",
   },
-  direction: { ai4math: "#3b5bdb", math4ai: "#7c5cc4", both: "#c07a1a" },
+  direction: { ai4math: "#2949aa", math4ai: "#7c5cc4", both: "#c07a1a" },
   type: {
     Research: "#4f5bd5",
     People: "#c0496f",
@@ -538,7 +538,7 @@ export function ScatterMap({
 
   return (
     <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_16rem]">
-      <div ref={wrapRef} className="relative min-w-0 overflow-hidden rounded-md border border-ink-200 bg-white">
+      <div ref={wrapRef} className="relative min-w-0 overflow-hidden rounded-md border border-ink-200 bg-sheet">
         <svg
           ref={svgRef}
           viewBox={`0 0 ${W} ${H}`}
@@ -553,7 +553,7 @@ export function ScatterMap({
         >
           <defs>
             <pattern id="scatter-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#eef0f4" strokeWidth="1" />
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#eae7df" strokeWidth="1" />
             </pattern>
             {presentIds.map((id, ci) => (
               <radialGradient key={id} id={`halo-${ci}`}>
@@ -619,7 +619,7 @@ export function ScatterMap({
 
         {tip && (
           <div
-            className="pointer-events-none absolute z-20 w-[15rem] rounded-md border border-ink-200 bg-white/95 px-3 py-2 shadow-lg"
+            className="pointer-events-none absolute z-20 w-[15rem] rounded-md border border-ink-200 bg-sheet/95 px-3 py-2 shadow-lg"
             style={{
               left: Math.max(
                 6,
@@ -666,7 +666,7 @@ export function ScatterMap({
       </div>
 
       {/* Put interpretation controls first; geometry tuning stays optional. */}
-      <aside className="flex flex-col gap-5 rounded-md border border-ink-200 bg-ink-50 p-4">
+      <aside className="flex flex-col gap-5 rounded-md border border-ink-200 bg-sheet p-4">
         <label className="block">
           <span className="mono-label mb-1 block">{copy.colorBy}</span>
           <select

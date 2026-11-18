@@ -10,13 +10,8 @@ import { DimensionChips } from "@/components/research/DimensionChips";
  * The standard Research Event card.
  *
  * Answers "What happened?" and "Why does it matter?" before anything else.
- * The tinted heading carries the event class and the neutral footer carries
- * evidence, source, tracking and navigation.
- *
- * `data-type` on the <article> sets the class hue for its heading and label;
- * trust marks intentionally stay graphite so colour never doubles as a
- * reliability verdict. Title height follows its content; summaries with no
- * editorial note can use the space to show more of the source text.
+ * The category label carries the class colour. The title and summary sit
+ * together, and the footer holds evidence, source and tracking links.
  *
  * Rendered on the server: the feed shows hundreds of these, so keeping them
  * out of the client bundle avoids hydrating a card grid on every navigation.
@@ -41,7 +36,7 @@ export function EventCard({ event }: { event: ListEvent }) {
       className="event-card group flex flex-col overflow-hidden"
       data-type={event.eventType ?? ""}
     >
-      <div className="event-card-heading px-5 py-4">
+      <div className="px-4 pt-4 sm:px-5">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] text-ink-500">
           {event.eventType && (
             <span title={pagesDict[lang].methodology.typeDesc[event.eventType]} className="type-chip">
@@ -65,31 +60,26 @@ export function EventCard({ event }: { event: ListEvent }) {
           </time>
         </div>
 
-        <h3 className="mt-3 line-clamp-2 text-[17px] font-semibold leading-snug tracking-tight text-ink-900">
+        <h3 className="mt-2.5 line-clamp-2 break-words text-[18px] font-semibold leading-snug tracking-tight text-ink-900">
           <Link href={`/research/${event.slug}`} className="card-title">{event.title}</Link>
         </h3>
       </div>
 
-      <div className="flex flex-1 flex-col px-5 pb-4 pt-4">
-        <p className={`card-clamp-body text-[13px] leading-relaxed text-ink-600 ${hasSignificance ? "line-clamp-2" : "line-clamp-4"}`}>
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-2 sm:px-5">
+        <p className={`break-words text-sm leading-relaxed text-ink-600 ${hasSignificance ? "line-clamp-2" : "line-clamp-3"}`}>
           {event.summary}
         </p>
         {hasSignificance && (
           <div className="note-block">
             <div className="note-label">{t.common.whyItMatters}</div>
-            <p className="card-clamp-body line-clamp-2 text-[13px] leading-relaxed text-ink-600">
+            <p className="line-clamp-2 break-words text-[13px] leading-relaxed text-ink-600">
               {event.significance}
             </p>
           </div>
         )}
-        {hasMath && (
-          <div className="mt-auto pt-4">
-            <DimensionChips event={event} lang={lang} variant="card" />
-          </div>
-        )}
       </div>
 
-      <div className="card-footer mt-auto flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-t px-5 py-3 text-xs">
+      <div className="card-footer mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t px-4 py-2.5 text-xs sm:px-5">
         <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
           {event.evidenceLevel && (
             <span
@@ -105,18 +95,10 @@ export function EventCard({ event }: { event: ListEvent }) {
               {event.sourceTier}
             </span>
           )}
-          {event.trackingSummary.count > 1 && (
-            <Link
-              href={`/research/${event.slug}#tracking`}
-              title={t.common.viewTimeline}
-              className="link-quiet whitespace-nowrap font-medium text-accent-700"
-            >
-              {t.common.lineRecords.replace("{n}", String(event.trackingSummary.count))}
-            </Link>
-          )}
+          {hasMath && <DimensionChips event={event} lang={lang} variant="card" />}
         </div>
 
-        <span className="flex shrink-0 items-center gap-4">
+        <span className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {primaryLink && (
             <a
               href={primaryLink.url}

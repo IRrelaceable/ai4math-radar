@@ -1,0 +1,17 @@
+{
+  "targets": [
+    {
+      "id": "openai-math-history",
+      "label": "OpenAI math repository revision log (history.md)",
+      "eventId": "event-evt-openai-math-release",
+      "sourceUrl": "https://github.com/openai/math/blob/main/history.md",
+      "fetchUrl": "https://raw.githubusercontent.com/openai/math/main/history.md",
+      "backfillAfter": "2026-10-26",
+      "sourceTier": "S0",
+      "researchArea": "Theorem Proving & Formal Mathematics",
+      "subArea": "Formal corpora & libraries",
+      "direction": "ai4math",
+      "enabled": true
+    }
+  ]
+}

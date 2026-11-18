@@ -7,7 +7,7 @@ import { TrendPanel } from "@/components/topics/TrendPanel";
 import { EVENT_TYPES } from "@/types";
 import { CAPABILITIES, capabilityOf, facetsOf } from "@/lib/dimensions";
 import { toListEvent } from "@/lib/staticData";
-import { trackingSummaryBySlug } from "@/lib/tracking";
+import { eventLinkOf, trackingSummaryBySlug } from "@/lib/tracking";
 import { getLang, t } from "@/lib/i18n/server";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 import { componentsDict } from "@/lib/i18n/dict.components";
@@ -44,6 +44,10 @@ export default async function HomePage() {
   const researchRail = researchLatest.slice(0, HOME_RAIL_COUNT);
   const ecosystemRail = ecosystemLatest.slice(0, HOME_RAIL_COUNT);
   const summaries = trackingSummaryBySlug(all);
+  const featuredRecord = researchLatest.find((event) =>
+    eventLinkOf(event)?.kind === "initial" && (summaries.get(event.slug)?.count ?? 0) > 1
+  ) ?? researchLatest[0];
+  const featured = featuredRecord ? localizeEvents([featuredRecord], lang)[0] : undefined;
   const rails = [
     {
       key: "research",
@@ -65,28 +69,25 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero — a cover-style masthead over two columns. The left column is the
-          pitch and search; the right column holds only the two headline counts,
-          since the full class breakdown sits directly below the fold. */}
       <section className="border-b border-ink-200">
-        <div className="cover-grid container-page py-10 sm:py-14">
-          <div className="mb-8 flex items-baseline justify-between gap-6 border-b border-ink-200 pb-3">
-            <span className="mono-label">{d.home.heroLabel}</span>
+        <div className="container-page py-8 sm:py-11">
+          <div className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-ink-800 pb-3 sm:mb-9">
+            <span className="mono-label text-accent-700">{d.home.heroLabel}</span>
             {latest[0] && (
               <span className="whitespace-nowrap font-mono text-[10px] tracking-[0.08em] text-ink-500">
                 {p.timeline.overview.updated} {formatDate(latest[0].date, lang)}
               </span>
             )}
           </div>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
+          <div className="grid gap-7 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] lg:gap-12">
             <div className="max-w-2xl">
-              <h1 aria-label={d.home.heroTitle}>
+              <h1 className="cover-title" aria-label={d.home.heroTitle}>
                 <span className="cover-title-lead">{d.home.heroTitleLead}</span>
                 <span className="cover-title-tail">{d.home.heroTitleTail}</span>
               </h1>
-              <p className="lede mt-5 max-w-prose">{d.home.heroSubtitle}</p>
+              <p className="lede mt-4 max-w-[34rem]">{d.home.heroSubtitle}</p>
 
-              <div className="mt-7 max-w-xl">
+              <div className="mt-5 max-w-lg">
                 <SearchBox variant="hero" />
               </div>
 
@@ -96,7 +97,7 @@ export default async function HomePage() {
                   <Link
                     key={cap.id}
                     href={`/latest?cap=${encodeURIComponent(cap.id)}`}
-                    className="chip bg-white hover:border-ink-300 hover:text-ink-900"
+                    className="chip hover:border-ink-300 hover:text-ink-900"
                   >
                     {cap[lang]}
                   </Link>
@@ -104,29 +105,25 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <aside className="lg:border-l lg:border-ink-200 lg:bg-white lg:pl-8">
-              <dl className="grid grid-cols-2 gap-x-6 border-y border-ink-200 lg:block lg:divide-y lg:divide-ink-100">
-                <div className="py-4 lg:flex lg:items-baseline lg:justify-between lg:gap-4">
-                  <dd className="font-mono text-[38px] font-semibold leading-none tracking-[-0.04em] text-ink-900 lg:text-[48px]">
-                    {all.length}
-                  </dd>
-                  <dt className="mono-label mt-2 lg:mt-0 lg:text-right">{d.home.statsEvents}</dt>
-                </div>
-                <div className="border-l border-ink-100 py-4 pl-6 lg:flex lg:items-baseline lg:justify-between lg:gap-4 lg:border-l-0 lg:pl-0">
-                  <dd className="font-mono text-[38px] font-semibold leading-none tracking-[-0.04em] text-ink-900 lg:text-[48px]">
-                    {capStats.length}
-                  </dd>
-                  <dt className="mono-label mt-2 lg:mt-0 lg:text-right">{d.home.statsAreas}</dt>
-                </div>
-              </dl>
-
-              {latest[0] && (
-                <div className="mt-5 text-right text-[11px] text-ink-500">
-                  <Link href="/about#sources" className="link-quiet">
-                    {d.nav.sources} →
+            <aside className="flex min-w-0 flex-col justify-center border-t border-ink-200 pt-5 lg:border-l lg:border-t-0 lg:pl-9 lg:pt-0">
+              {featured && (
+                <>
+                  <span className="mono-label text-accent-700">{d.home.featured}</span>
+                  <h2 className="cover-feature-title mt-2.5 break-words text-[25px] font-bold leading-tight text-ink-900 sm:text-[32px]">
+                    <Link href={`/research/${featured.slug}`} className="hover:text-accent-700">
+                      {featured.title}
+                    </Link>
+                  </h2>
+                  <p className="mt-2.5 line-clamp-3 max-w-md text-sm leading-relaxed text-ink-600">{featured.summary}</p>
+                  <Link href={`/research/${featured.slug}`} className="mt-3 w-fit text-sm font-medium text-accent-700 hover:underline">
+                    {d.common.viewDetails} →
                   </Link>
-                </div>
+                </>
               )}
+              <dl className="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-ink-200 pt-3">
+                <div className="flex items-baseline gap-2"><dd className="font-mono font-semibold">{all.length}</dd><dt className="mono-label">{d.home.statsEvents}</dt></div>
+                <div className="flex items-baseline gap-2"><dd className="font-mono font-semibold">{capStats.length}</dd><dt className="mono-label">{d.home.statsAreas}</dt></div>
+              </dl>
             </aside>
           </div>
         </div>
@@ -188,7 +185,7 @@ export default async function HomePage() {
               </div>
               {/* EventRow owns its own separators; the outer divide-y was
                   removed so compact rows no longer draw a double rule. */}
-              <div className="overflow-hidden rounded-md border border-ink-200">
+              <div className="border-y border-ink-200">
                 {rail.events.map((event) => (
                   <EventRow key={event.slug} event={event} />
                 ))}

@@ -33,19 +33,9 @@ export function Footer() {
   ];
 
   return (
-    <footer className="mt-16 border-t border-ink-200 bg-white">
+    <footer className="mt-16 border-t border-ink-200 bg-sheet">
       <div className="container-page py-10 text-sm text-ink-600">
-        <div className="grid gap-8 sm:grid-cols-2">
-          <div>
-            <div className="mb-2 text-[13px] font-semibold text-ink-900">{t.nav.brand}</div>
-            <p className="max-w-prose text-[13px] leading-relaxed">{t.footer.tagline}</p>
-          </div>
-          <div>
-            <div className="mono-label mb-3">{t.footer.dataNoteTitle}</div>
-            <p className="max-w-prose text-[13px] leading-relaxed">{t.footer.dataNote}</p>
-          </div>
-        </div>
-        <div className="mt-8 grid gap-8 border-t border-ink-100 pt-8 sm:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-3">
           {groups.map((group) => (
             <div key={group.title}>
               <div className="mono-label mb-3">{group.title}</div>
@@ -59,9 +49,6 @@ export function Footer() {
             </div>
           ))}
         </div>
-      </div>
-      <div className="border-t border-ink-100 py-4">
-        <div className="container-page text-xs text-ink-400">{t.footer.disclaimer}</div>
       </div>
     </footer>
   );

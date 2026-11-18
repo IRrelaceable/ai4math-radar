@@ -1,8 +1,8 @@
 {
   "arxiv": {
     "label": "arXiv (cs.LO / math.LO / cs.AI)",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:35.327Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:15:22.496Z",
     "lastSuccessAt": "2026-11-13T05:39:36.125Z",
     "accepted": 6,
     "added": 6,
@@ -10,18 +10,19 @@
     "rejected": 39,
     "id": "arxiv",
     "cursor": "2026-11-12",
-    "consecutiveFailures": 0,
-    "total": 587
+    "consecutiveFailures": 1,
+    "total": 587,
+    "lastError": "Error: Chinese translation incomplete for 16 event(s): python-code-generation-for-isabelle-hol (title, summary); path-abstraction-for-markov-reward-models-an-isabelle-formalisation-in-a-free-monoid-view (title, summary); from-constraints-to-causality-petri-net-encodings-for-explaining-binary-neural-network-inference (title, summary); from-sorry-to-qed-refining-llm-math-proofs-via-angelic-execution (title, summary); generative-ai-and-the-crisis-of-higher-education-assessments-examining-ai-proofing-strategies-for-college-level-assessments (title, summary); auxspec-learning-to-autoformalize-program-specifications-via-executable-postconditions (title, summary); turing-agent-agentic-formal-verification-for-mathematical-research (title, summary); compcert4lean-porting-a-verified-c-compiler-to-lean-in-six-weeks-with-parallel-coding-agents (title, summary); fcp-formal-context-protocol-for-verifying-llm-generated-artifacts (title, summary); trustbound-mechanized-completeness-for-payment-epochs-initiated-by-ai-agents (title, summary); agent-guided-process-verification-for-mathematical-self-correction (title, summary); guiding-ai-agents-to-generate-conjectures-by-encoding-how-theorems-build-on-one-another (title, summary); high-dimensional-limit-theorems-for-adaptive-variants-of-sgd-i-ballistic-limits (title, summary); infrastructure-for-verifiable-ai-where-proof-costs-go-and-how-hardware-can-help (title, summary); llm-assisted-verification-in-dafny (title, summary); propositional-dynamic-logic-without-tests-does-not-have-craig-interpolation (title, summary)"
   },
   "github": {
     "label": "GitHub (watched repositories)",
     "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:36.126Z",
-    "lastSuccessAt": "2026-11-13T05:39:39.538Z",
+    "lastAttemptAt": "2026-11-18T16:15:29.571Z",
+    "lastSuccessAt": "2026-11-18T16:15:34.095Z",
     "accepted": 0,
     "added": 0,
     "updated": 0,
-    "rejected": 1,
+    "rejected": 0,
     "cursor": "2026-10-13",
     "id": "github",
     "consecutiveFailures": 0
@@ -29,21 +30,21 @@
   "openai-news": {
     "label": "OpenAI News",
     "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:39.539Z",
-    "lastSuccessAt": "2026-11-13T05:39:39.644Z",
+    "lastAttemptAt": "2026-11-18T16:15:34.097Z",
+    "lastSuccessAt": "2026-11-18T16:15:36.573Z",
     "accepted": 0,
     "added": 0,
     "updated": 0,
-    "rejected": 5,
+    "rejected": 26,
     "id": "openai-news",
-    "cursor": "2026-11-12",
+    "cursor": "2026-11-18",
     "consecutiveFailures": 0
   },
   "deepmind-blog": {
     "label": "Google DeepMind Blog",
     "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:39.645Z",
-    "lastSuccessAt": "2026-11-13T05:39:39.806Z",
+    "lastAttemptAt": "2026-11-18T16:15:36.575Z",
+    "lastSuccessAt": "2026-11-18T16:15:38.331Z",
     "accepted": 0,
     "added": 0,
     "updated": 0,
@@ -55,13 +56,13 @@
   "google-ai-blog": {
     "label": "Google AI Blog",
     "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:39.806Z",
-    "lastSuccessAt": "2026-11-13T05:39:40.066Z",
+    "lastAttemptAt": "2026-11-18T16:15:38.334Z",
+    "lastSuccessAt": "2026-11-18T16:15:39.436Z",
     "accepted": 0,
     "added": 0,
     "updated": 0,
-    "rejected": 1,
-    "cursor": "2026-11-12",
+    "rejected": 3,
+    "cursor": "2026-11-17",
     "id": "google-ai-blog",
     "consecutiveFailures": 0
   },
@@ -285,8 +286,8 @@
   },
   "mit-news-math": {
     "label": "MIT News — Mathematics",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:42.024Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:15:49.870Z",
     "lastSuccessAt": "2026-11-13T05:39:42.119Z",
     "accepted": 0,
     "added": 0,
@@ -294,13 +295,14 @@
     "rejected": 0,
     "cursor": "2026-10-30",
     "id": "mit-news-math",
-    "consecutiveFailures": 0
+    "consecutiveFailures": 1,
+    "lastError": "Error: Chinese translation incomplete for 2 event(s): q-and-a-why-building-math-muscles-remains-important-in-the-ai-era (title, summary); mit-affiliates-named-2026-schmidt-sciences-ai2050-fellows (title, summary)"
   },
   "newton-institute": {
     "label": "Isaac Newton Institute for Mathematical Sciences",
     "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:42.120Z",
-    "lastSuccessAt": "2026-11-13T05:39:42.664Z",
+    "lastAttemptAt": "2026-11-18T16:16:01.289Z",
+    "lastSuccessAt": "2026-11-18T16:16:03.094Z",
     "accepted": 0,
     "added": 0,
     "updated": 0,
@@ -311,8 +313,8 @@
   },
   "ipam-ai-math": {
     "label": "IPAM — AI & mathematics",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:42.664Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:16:03.096Z",
     "lastSuccessAt": "2026-11-13T05:39:43.112Z",
     "accepted": 0,
     "added": 0,
@@ -320,7 +322,8 @@
     "rejected": 0,
     "cursor": "2026-10-16",
     "id": "ipam-ai-math",
-    "consecutiveFailures": 0
+    "consecutiveFailures": 1,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): johnny-guzm-n-awarded-2026-blackwell-tapia-prize-for-research-and-mentoring-in-the-mathematical-sciences (title, summary)"
   },
   "simons-foundation-news": {
     "label": "Simons Foundation News",
@@ -337,8 +340,8 @@
   },
   "clay-math-news": {
     "label": "Clay Mathematics Institute",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:43.113Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:16:05.508Z",
     "lastSuccessAt": "2026-11-13T05:39:43.498Z",
     "accepted": 0,
     "added": 0,
@@ -346,12 +349,13 @@
     "rejected": 0,
     "cursor": "2026-09-11",
     "id": "clay-math-news",
-    "consecutiveFailures": 0
+    "consecutiveFailures": 1,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): navier-stokes-announcement (title, summary)"
   },
   "austms-news": {
     "label": "Australian Mathematical Society",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:43.611Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:16:06.756Z",
     "lastSuccessAt": "2026-11-13T05:39:44.421Z",
     "accepted": 0,
     "added": 0,
@@ -359,12 +363,13 @@
     "rejected": 0,
     "cursor": "2026-06-02",
     "id": "austms-news",
-    "consecutiveFailures": 0
+    "consecutiveFailures": 1,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): congratulations-to-prof-jen-flegg-and-prof-enrico-valdenoci (title, summary)"
   },
   "matrix-institute": {
     "label": "MATRIX Institute",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:44.421Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:16:11.084Z",
     "lastSuccessAt": "2026-11-13T05:39:45.911Z",
     "accepted": 1,
     "added": 0,
@@ -372,13 +377,14 @@
     "rejected": 0,
     "cursor": "2026-08-31",
     "id": "matrix-institute",
-    "consecutiveFailures": 0,
-    "total": 587
+    "consecutiveFailures": 1,
+    "total": 587,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): call-for-applications-matrix-challenge-workshop-human-ai-collaboration-on-open-smmc-problems (title, summary)"
   },
   "columbia-math-news": {
     "label": "Columbia Mathematics",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:45.911Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:16:13.332Z",
     "lastSuccessAt": "2026-11-13T05:39:46.086Z",
     "accepted": 0,
     "added": 0,
@@ -386,12 +392,13 @@
     "rejected": 0,
     "cursor": "2026-08-17",
     "id": "columbia-math-news",
-    "consecutiveFailures": 0
+    "consecutiveFailures": 1,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): professor-lue-pan-won-the-2026-david-goss-prize-in-number-theory-at-jnt-biennial-conference (title, summary)"
   },
   "ucla-math-news": {
     "label": "UCLA Mathematics",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:46.087Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:16:14.776Z",
     "lastSuccessAt": "2026-11-13T05:39:46.235Z",
     "accepted": 0,
     "added": 0,
@@ -399,12 +406,13 @@
     "rejected": 0,
     "cursor": "2026-11-04",
     "id": "ucla-math-news",
-    "consecutiveFailures": 0
+    "consecutiveFailures": 1,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): professor-inwon-kim-named-2027-ams-fellow (title, summary)"
   },
   "wisc-math-news": {
     "label": "University of Wisconsin Mathematics",
-    "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:46.236Z",
+    "status": "error",
+    "lastAttemptAt": "2026-11-18T16:16:16.807Z",
     "lastSuccessAt": "2026-11-13T05:39:46.773Z",
     "accepted": 0,
     "added": 0,
@@ -412,13 +420,14 @@
     "rejected": 0,
     "cursor": "2026-11-03",
     "id": "wisc-math-news",
-    "consecutiveFailures": 0
+    "consecutiveFailures": 1,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): mariya-soskova-named-2027-ams-fellow (title, summary)"
   },
   "ubc-math-news": {
     "label": "UBC Mathematics",
     "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:46.774Z",
-    "lastSuccessAt": "2026-11-13T05:39:47.371Z",
+    "lastAttemptAt": "2026-11-18T16:16:18.834Z",
+    "lastSuccessAt": "2026-11-18T16:16:19.804Z",
     "accepted": 0,
     "added": 0,
     "updated": 0,
@@ -430,7 +439,7 @@
   "icmat-news": {
     "label": "ICMAT — Instituto de Ciencias Matemáticas",
     "status": "error",
-    "lastAttemptAt": "2026-11-12T14:50:17.393Z",
+    "lastAttemptAt": "2026-11-18T16:16:19.806Z",
     "id": "icmat-news",
     "lastSuccessAt": "2026-11-11T05:54:28.326Z",
     "accepted": 7,
@@ -439,8 +448,8 @@
     "rejected": 0,
     "total": 578,
     "cursor": "2026-10-23",
-    "consecutiveFailures": 3,
-    "lastError": "TimeoutError: The operation was aborted due to timeout"
+    "consecutiveFailures": 4,
+    "lastError": "Error: Chinese translation incomplete for 1 event(s): the-small-institute-of-mathematics-expands-its-reach-in-torrej-n-de-ardoz (title, summary)"
   },
   "crm-news": {
     "label": "CRM — Centre de Recerca Matemàtica",
@@ -496,8 +505,8 @@
   "anthropic-news": {
     "label": "Anthropic News & Research",
     "status": "success",
-    "lastAttemptAt": "2026-11-13T05:39:40.067Z",
-    "lastSuccessAt": "2026-11-13T05:39:42.023Z",
+    "lastAttemptAt": "2026-11-18T16:15:39.438Z",
+    "lastSuccessAt": "2026-11-18T16:15:49.867Z",
     "accepted": 0,
     "added": 0,
     "updated": 0,

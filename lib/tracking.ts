@@ -9,28 +9,18 @@ import type {
 } from "@/types";
 import { EVENT_RELATIONS, EVENT_UPDATE_KINDS } from "@/types";
 import { getLLMProvider, type LLMProvider } from "@/lib/llm/provider";
-import { curatedEventLinks } from "@/data/seed/event-links";
 import { mentionedProject } from "@/data/seed/projects";
+import {
+  EVENT_MATCH_LOOKBACK_DAYS,
+  defaultEventId,
+  eventIdOf,
+  eventLinkOf,
+  type EventCandidate,
+} from "@/lib/event-id";
+import { findIdentityCandidates } from "@/lib/event-identity";
 
-/** Five years covers a research programme without treating the whole archive as one candidate pool. */
-export const EVENT_MATCH_LOOKBACK_DAYS = 365 * 5;
-
-/** Stable even before an old record is explicitly migrated into event data. */
-export function defaultEventId(event: Pick<ResearchEvent, "id">): string {
-  return `event-${event.id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
-}
-
-export function eventLinkOf(event: Pick<ResearchEvent, "id" | "slug" | "tracking">): EventLink | undefined {
-  // A human-reviewed curated link is an editorial decision about Event
-  // membership and outranks a stored link. Ingested records carry a default
-  // standalone link from the pipeline; without this precedence a curated
-  // release line could never regroup them without rewriting stored data.
-  return curatedEventLinks[event.slug] ?? event.tracking;
-}
-
-export function eventIdOf(event: Pick<ResearchEvent, "id" | "slug" | "tracking">): string {
-  return eventLinkOf(event)?.eventId ?? defaultEventId(event);
-}
+// Re-exported so existing callers keep a single import surface.
+export { EVENT_MATCH_LOOKBACK_DAYS, defaultEventId, eventIdOf, eventLinkOf } from "@/lib/event-id";
 
 function mergeEntities(target: EventEntities, source: EventEntities | undefined): EventEntities {
   if (!source) return target;
@@ -254,13 +244,7 @@ function titleSimilarity(a: ResearchEvent, b: ResearchEvent): number {
   return hits / (ta.size + tb.size - hits);
 }
 
-export interface EventCandidate {
-  event: ResearchEvent;
-  score: number;
-  entityOverlap: number;
-  peopleOverlap: number;
-  keywordOverlap: number;
-}
+export type { EventCandidate } from "@/lib/event-id";
 
 /** Candidate retrieval is intentionally conservative and dependency-free. */
 export function findEventCandidates(
@@ -279,7 +263,7 @@ export function findEventCandidates(
       .filter(Boolean)
   );
   const incomingWords = keywords(incoming);
-  return existing
+  const ranked = existing
     .filter((event) => event.date >= oldest && event.slug !== incoming.slug)
     .map((event) => {
       const entityOverlap = overlap(incomingNames, names(event));
@@ -302,8 +286,69 @@ export function findEventCandidates(
       };
     })
     .filter((candidate) => candidate.entityOverlap > 0 || candidate.keywordOverlap >= 2 || candidate.score === 1)
-    .sort((a, b) => b.score - a.score || b.event.date.localeCompare(a.event.date))
-    .slice(0, limit);
+    .sort((a, b) => b.score - a.score || b.event.date.localeCompare(a.event.date));
+  return dedupeByEventId(ranked, limit);
+}
+
+/**
+ * Collapse candidates to one per Event id, keeping the highest-ranked record
+ * of each line. Applied to EVERY retrieval branch (identity and heuristic) so
+ * three records of the same Event can never occupy all top-k slots. Input is
+ * expected pre-sorted; the first record of an Event id wins.
+ */
+export function dedupeByEventId(candidates: EventCandidate[], limit: number): EventCandidate[] {
+  const seen = new Set<string>();
+  const out: EventCandidate[] = [];
+  for (const candidate of candidates) {
+    const id = eventIdOf(candidate.event);
+    if (seen.has(id)) continue;
+    seen.add(id);
+    out.push(candidate);
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
+/**
+ * Layered CANDIDATE RETRIEVAL ONLY — this function never writes a tracking
+ * link. Stable cross-source identity first (arXiv id, DOI, canonical repo,
+ * project alias, quoted URL), then the legacy heuristic as fallback. The next
+ * pipeline stage decides what a candidate means (follow-up / verification /
+ * related / independent); retrieval must not pre-empt that decision.
+ *
+ * NOTE: linkIncomingEvents() deliberately still uses findEventCandidates() for
+ * its write decisions. Its `score === 1` means "paperUrl string identical", a
+ * different semantics from the identity score; feeding identity candidates
+ * into it caused papers that merely mention openai/math to be merged as
+ * follow-ups. Keep the two layers separate until step 2 lands.
+ *
+ * Both retrieval paths are MERGED, never substituted: a paper may quote an
+ * identity anchor (so identity retrieval fires) while its own author/title
+ * still identifies a different, correct Event. Returning identity hits alone
+ * used to drop that correct Event entirely. Merging also keeps this a recall
+ * layer — the relation decision stays downstream.
+ */
+export function findCandidates(
+  incoming: ResearchEvent,
+  existing: ResearchEvent[],
+  limit = 3
+): EventCandidate[] {
+  const identity = findIdentityCandidates(incoming, existing, limit);
+  const heuristic = findEventCandidates(incoming, existing, limit);
+  // The two paths' scores are NOT one scale (identity alias=0.55 vs a
+  // keyword-only heuristic hit reaching 0.95 from a dozen shared words), and
+  // either path on its own can be blind: a paper may cite an identity anchor
+  // while its true Event is found only by author/title, and vice versa.
+  // INTERLEAVE the ranked paths so each gets representation in top-k, then
+  // dedupe by Event id. This keeps identity anchors AND keyword hits in the
+  // candidate set without letting one path crowd the other out.
+  const merged: EventCandidate[] = [];
+  const maxLen = Math.max(identity.length, heuristic.length);
+  for (let i = 0; i < maxLen && merged.length < limit * 2; i += 1) {
+    if (identity[i]) merged.push(identity[i]);
+    if (heuristic[i]) merged.push(heuristic[i]);
+  }
+  return dedupeByEventId(merged, limit);
 }
 
 /**
@@ -436,6 +481,10 @@ export async function linkIncomingEvents(
       context.push(event);
       continue;
     }
+    // Write decisions use the legacy matcher only. Identity-based retrieval
+    // (findCandidates / findIdentityCandidates) is a RECALL layer: it never
+    // feeds relation/kind assignment. Step 2 will consume those candidates
+    // with an explicit, auditable relation judgement before anything is merged.
     const candidates = findEventCandidates(event, context);
     const best = candidates[0];
     let assigned: EventLink;

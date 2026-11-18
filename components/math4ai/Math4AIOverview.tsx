@@ -132,7 +132,7 @@ export function Math4AIOverview({
           </div>
         </div>
 
-        <div className="min-w-0 rounded-md border border-ink-200 bg-white p-5 sm:p-6">
+        <div className="min-w-0 rounded-md border border-ink-200 bg-sheet p-5 sm:p-6">
           <h3 className="text-sm font-semibold text-ink-900">{labels.byYear}</h3>
           <div className="mt-5 overflow-x-auto pb-1">
             <div className="grid min-w-[28rem] items-end gap-2" style={{ gridTemplateColumns: `repeat(${Math.max(1, yearRows.length)}, minmax(0, 1fr))` }}>
@@ -151,12 +151,12 @@ export function Math4AIOverview({
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-md border border-ink-200 bg-white p-5 sm:p-6">
+        <div className="rounded-md border border-ink-200 bg-sheet p-5 sm:p-6">
           <div className="mono-label mb-2">01 / {labels.eyebrow}</div>
           <h3 className="mb-4 text-[16px] font-semibold text-ink-900">{labels.byTheme}</h3>
           <Distribution rows={themeRows} total={events.length} unassigned={labels.unassigned} facetKey="cap" />
         </div>
-        <div className="rounded-md border border-ink-200 bg-white p-5 sm:p-6">
+        <div className="rounded-md border border-ink-200 bg-sheet p-5 sm:p-6">
           <div className="mono-label mb-2">02 / {labels.eyebrow}</div>
           <h3 className="mb-4 text-[16px] font-semibold text-ink-900">{labels.byField}</h3>
           <Distribution rows={fieldRows} total={events.length} unassigned={labels.unassigned} facetKey="math" />

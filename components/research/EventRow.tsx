@@ -41,7 +41,7 @@ export function EventRow({ event }: { event: ListEvent }) {
 
       <div className="min-w-0 flex-1">
         <div className="row-title h-item line-clamp-1 transition-colors">{event.title}</div>
-        <div className="mt-0.5 flex items-center gap-2 text-[11px] text-ink-500">
+        <div className="mt-0.5 flex items-center gap-2 overflow-hidden text-[11px] text-ink-500">
           {event.direction && (
             <span className="inline-flex shrink-0 items-center gap-1">
               <span className="direction-dot" data-direction={event.direction} aria-hidden="true" />
@@ -49,7 +49,7 @@ export function EventRow({ event }: { event: ListEvent }) {
             </span>
           )}
           {math.map((id) => (
-            <span key={id} className="chip shrink-0 px-1.5 py-0 text-[10px] leading-4">
+            <span key={id} className="chip hidden shrink-0 px-1.5 py-0 text-[10px] leading-4 sm:inline-flex">
               {facetLabel(MATH_TOPICS, id, lang)}
             </span>
           ))}

@@ -168,15 +168,14 @@ export function LatestFeed({ presetDirection }: { presetDirection?: EventDirecti
       />
 
       {!presetDirection && (
-        <div className="mb-4 mt-8 border-b border-ink-200 pb-3">
-          <div className="mono-label mb-1">{p.latest.listEyebrow}</div>
+        <div className="mb-4 mt-6">
           <h2 className="h-section">{p.latest.listTitle}</h2>
         </div>
       )}
 
       <div className={presetDirection ? "mt-6" : "mt-4"}>
         {compact ? (
-          <div className="overflow-hidden rounded-md border border-ink-200">
+          <div className="border-y border-ink-200">
             {pageEvents.map((event) => (
               <EventRow key={event.slug} event={event} />
             ))}

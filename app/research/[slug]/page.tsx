@@ -20,7 +20,7 @@ import { BackToTop } from "@/components/ui/BackToTop";
 import { getLang, t } from "@/lib/i18n/server";
 import { localizeEvent, localizeEvents, displayArea, displaySubArea } from "@/lib/i18n/localize";
 import { pagesDict } from "@/lib/i18n/dict.pages";
-import { buildTrackedEvents, eventIdOf, eventLinkOf, updatesOf } from "@/lib/tracking";
+import { buildTrackedEvents, eventLinkOf, updatesOf } from "@/lib/tracking";
 import { projectById } from "@/data/seed/projects";
 import { DimensionChips } from "@/components/research/DimensionChips";
 import type { TrackedEvent } from "@/types";
@@ -37,10 +37,11 @@ async function getAllEvents(): Promise<ResearchEvent[]> {
 let cachedTrackedBySlug: Map<string, TrackedEvent> | null = null;
 async function getTrackedBySlug(): Promise<Map<string, TrackedEvent>> {
   if (!cachedTrackedBySlug) {
-    cachedTrackedBySlug = new Map();
+    const bySlug = new Map<string, TrackedEvent>();
     for (const tracked of buildTrackedEvents(await getAllEvents())) {
-      for (const step of tracked.progress) cachedTrackedBySlug.set(step.eventSlug, tracked);
+      for (const step of tracked.progress) bySlug.set(step.eventSlug, tracked);
     }
+    cachedTrackedBySlug = bySlug;
   }
   return cachedTrackedBySlug;
 }
@@ -48,7 +49,13 @@ async function getTrackedBySlug(): Promise<Map<string, TrackedEvent>> {
 let cachedSlugByEventId: Map<string, string> | null = null;
 async function getSlugByEventId(): Promise<Map<string, string>> {
   if (!cachedSlugByEventId) {
-    cachedSlugByEventId = new Map((await getAllEvents()).map((event) => [eventIdOf(event), event.slug]));
+    const trackedBySlug = await getTrackedBySlug();
+    const byId = new Map<string, string>();
+    for (const event of new Set(trackedBySlug.values())) {
+      const headline = event.progress.find((step) => step.kind === "initial") ?? event.progress[0];
+      if (headline) byId.set(event.id, headline.eventSlug);
+    }
+    cachedSlugByEventId = byId;
   }
   return cachedSlugByEventId;
 }
@@ -315,13 +322,13 @@ export default async function ResearchDetailPage({
           )}
         </div>
 
-        <h1 className="mt-3 text-[28px] font-semibold leading-[1.2] tracking-[-0.025em] text-ink-900 sm:text-[34px]">
+        <h1 className="h-display mt-4 break-words">
           {event.title}
         </h1>
 
         {/* Compact trust line — evidence and tier — plus the page's
             primary action, so the original paper is one click from the title. */}
-        <div className="mt-3 flex flex-wrap items-center gap-2 border-b border-ink-100 pb-4">
+        <div className="mt-4 flex flex-wrap items-center gap-2 border-b border-ink-300 pb-5">
           {event.evidenceLevel && <EvidenceLevelPill level={event.evidenceLevel} />}
           {event.sourceTier && <SourceTierPill tier={event.sourceTier} />}
           {event.publicationStatus && (
@@ -354,7 +361,7 @@ export default async function ResearchDetailPage({
             </span>
           )}
 
-          <span className="ml-auto flex items-center gap-2">
+          <span className="flex flex-wrap items-center gap-2 sm:ml-auto">
             {primaryUrl && (
               <a
                 href={primaryUrl}
@@ -383,7 +390,7 @@ export default async function ResearchDetailPage({
         {/* What happened */}
         <section id="what" className="mt-7 scroll-mt-24">
           <SectionTitle>{d.detail.whatHappened}</SectionTitle>
-          <p className="mt-2 text-[15px] leading-relaxed text-ink-700">{event.summary}</p>
+          <p className="mt-2 max-w-prose break-words text-base leading-[1.8] text-ink-700">{event.summary}</p>
           {event.problem && (
             <div className="mt-4 rounded-md border border-ink-200 bg-ink-50 p-4">
               <div className="mono-label mb-1">{d.detail.problemAddressed}</div>

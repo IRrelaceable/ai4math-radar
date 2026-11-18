@@ -1,4 +1,6 @@
 import { loadEnv } from "./env";
+import fs from "node:fs";
+import path from "node:path";
 import { runPipeline } from "@/agents/researchTracker/tracker";
 import { getStore } from "@/lib/db";
 import {
@@ -11,6 +13,7 @@ import { getLiveResearchSources, type ResearchSource } from "@/lib/sources";
 import { writeStaticData } from "@/lib/buildDataset";
 import { linkIncomingEvents } from "@/lib/tracking";
 import { missingChineseCardFields } from "@/lib/i18n/quality";
+import { observeTrackingRelations } from "@/lib/relation-shadow";
 
 /**
  * Run the ingest pipeline outside Next.
@@ -24,6 +27,8 @@ import { missingChineseCardFields } from "@/lib/i18n/quality";
  *   npm run sync -- --source=arxiv --since=2026-09-01 --limit=100
  *   npm run sync -- --dry                 # fetch + classify, persist nothing
  *   npm run sync -- --all --force        # ignore failure backoff, retry all sources
+ *   npm run sync:shadow                   # sync all sources and log rule-only comparisons
+ *   npm run sync -- --source=arxiv --shadow --dry  # write the observation report only
  *
  * Without `--since`, each source resumes from the cursor stored by its last
  * successful run.
@@ -43,14 +48,16 @@ interface Options {
   limit: number;
   dry: boolean;
   force: boolean;
+  shadow: boolean;
 }
 
 function parseArgs(argv: string[]): Options {
-  const options: Options = { all: false, sources: [], limit: DEFAULT_LIMIT, dry: false, force: false };
+  const options: Options = { all: false, sources: [], limit: DEFAULT_LIMIT, dry: false, force: false, shadow: false };
   for (const arg of argv) {
     if (arg === "--all") options.all = true;
     else if (arg === "--dry") options.dry = true;
     else if (arg === "--force") options.force = true;
+    else if (arg === "--shadow") options.shadow = true;
     else if (arg.startsWith("--source=")) options.sources.push(arg.slice("--source=".length));
     else if (arg.startsWith("--since=")) options.since = arg.slice("--since=".length);
     else if (arg.startsWith("--limit=")) {
@@ -84,10 +91,25 @@ async function main() {
       });
 
   if (selected.length === 0) {
-    console.log(`Usage: npm run sync -- [--all | --source=<id> ...] [--since=YYYY-MM-DD] [--limit=N] [--dry] [--force]`);
+    console.log(`Usage: npm run sync -- [--all | --source=<id> ...] [--since=YYYY-MM-DD] [--limit=N] [--dry] [--force] [--shadow]`);
     console.log(`Available sources: ${Object.keys(registry).join(", ")}`);
     return;
   }
+
+  const shadowPath = options.shadow
+    ? path.join(".cache", "relation-shadow", `${new Date().toISOString().replace(/[:.]/g, "-")}-${process.pid}.jsonl`)
+    : undefined;
+  function logShadow(entry: object) {
+    if (!shadowPath) return;
+    try {
+      fs.mkdirSync(path.dirname(shadowPath), { recursive: true });
+      fs.appendFileSync(shadowPath, JSON.stringify(entry) + "\n", "utf8");
+    } catch (error) {
+      console.warn(`[shadow] report write failed: ${String(error)}`);
+    }
+  }
+  if (shadowPath) console.log(`[shadow] rule-only report: ${path.resolve(shadowPath)}`);
+  logShadow({ type: "run", date: new Date().toISOString(), mode: "rules-only", dry: options.dry, sources: selected.map((source) => source.id) });
 
   const statuses = readSourceStatuses();
   // Seed/stored events already own their slugs; a record that shares a headline
@@ -120,6 +142,7 @@ async function main() {
         : Number.POSITIVE_INFINITY;
       if (waitMs > 0 && elapsedMs < waitMs) {
         skipped += 1;
+        logShadow({ type: "source", source: source.id, status: "cooldown", since });
         console.log(
           `[${index + 1}/${selected.length}] ${source.id} skipped: ${failures} consecutive ` +
             `failure(s), retry in ${Math.ceil((waitMs - elapsedMs) / 60_000)} min (--force overrides)`
@@ -132,11 +155,13 @@ async function main() {
       `[${index + 1}/${selected.length}] ${source.id}${since ? ` since ${since}` : ""}`
     );
 
+    let observations: Awaited<ReturnType<typeof observeTrackingRelations>> | undefined;
+    let untranslated: { slug: string; fields: string[] }[] | undefined;
     try {
       const result = await runPipeline(undefined, [source], {
         limit: options.limit,
         since,
-        existingFingerprints: options.dry ? undefined : readIngestedFingerprints(),
+        existingFingerprints: options.dry && !options.shadow ? undefined : readIngestedFingerprints(),
         existingUrls,
       });
 
@@ -148,8 +173,16 @@ async function main() {
         result.accepted.length > 0
           ? await linkIncomingEvents(result.accepted, existingRecords)
           : result.accepted;
+      if (options.shadow && result.accepted.length > 0) {
+        try {
+          observations = await observeTrackingRelations(result.accepted, eventLinked, existingRecords);
+        } catch (error) {
+          logShadow({ type: "observation-error", source: source.id });
+          console.warn(`[shadow] evaluation failed for ${source.id}: ${String(error)}`);
+        }
+      }
       if (!options.dry) {
-        const untranslated = eventLinked
+        untranslated = eventLinked
           .map((event) => ({ slug: event.slug, fields: missingChineseCardFields(event) }))
           .filter((entry) => entry.fields.length > 0);
         if (untranslated.length > 0) {
@@ -188,6 +221,9 @@ async function main() {
 
       added += persisted?.added ?? 0;
       updated += persisted?.updated ?? 0;
+      logShadow({ type: "source", source: source.id, status: options.dry ? "dry" : "success",
+        since, accepted: result.accepted.length, rejected: result.rejected.length,
+        added: persisted?.added ?? 0, updated: persisted?.updated ?? 0, observations });
       console.log(
         `  accepted ${result.accepted.length}, rejected ${result.rejected.length}` +
           (persisted
@@ -198,6 +234,8 @@ async function main() {
       );
     } catch (error) {
       failed += 1;
+      logShadow({ type: "source", source: source.id, status: "error", since,
+        ...((untranslated?.length ?? 0) > 0 && { untranslated }), observations });
       console.error(`  failed: ${String(error)}`);
       if (!options.dry) {
         updateSourceStatus(source.id, {
@@ -213,6 +251,7 @@ async function main() {
   console.log(
     `\nDone: +${added} new, ~${updated} updated, ${failed} source(s) failed, ${skipped} cooled down.`
   );
+  logShadow({ type: "summary", added, updated, failed, skipped });
 
   if (!options.dry) {
     const rows = await writeStaticData();

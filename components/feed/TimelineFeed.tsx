@@ -344,7 +344,7 @@ export function TimelineFeed() {
           <h2 className="h-section">{p.timeline.archiveTitle}</h2>
           <p className="mt-2 text-[13px] leading-relaxed text-ink-600">{p.timeline.archiveIntro}</p>
         </div>
-        <div className="mt-5 rounded-md border border-ink-200 bg-white p-4 sm:p-5">
+        <div className="mt-5 rounded-md border border-ink-200 bg-sheet p-4 sm:p-5">
           <TimelineControls presentTypes={presentTypes} />
         </div>
       </section>
@@ -352,7 +352,7 @@ export function TimelineFeed() {
       {years.length > 0 && (
         <nav
           aria-label={p.timeline.decadeNav}
-          className="sticky top-16 z-10 mt-5 flex flex-nowrap items-center gap-1 overflow-x-auto rounded-md border border-ink-200 bg-white/95 px-2 py-2 backdrop-blur [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="sticky top-16 z-10 mt-5 flex flex-nowrap items-center gap-1 overflow-x-auto rounded-md border border-ink-200 bg-sheet/95 px-2 py-2 backdrop-blur [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {jumps.map(({ label, count, anchor }) => (
             <a
@@ -441,7 +441,7 @@ export function TimelineFeed() {
                       key={month}
                       href={`#month-${month}`}
                       onClick={() => openMonth(month)}
-                      className="inline-flex items-center gap-1.5 rounded border border-ink-200 bg-white px-2 py-1 font-mono text-[11px] text-ink-600 hover:border-accent-300 hover:bg-accent-50"
+                      className="inline-flex items-center gap-1.5 rounded border border-ink-200 bg-sheet px-2 py-1 font-mono text-[11px] text-ink-600 hover:border-accent-300 hover:bg-accent-50"
                     >
                       <span>{formatMonthShort(month, lang)}</span>
                       <span className="text-ink-400">{items.length}</span>

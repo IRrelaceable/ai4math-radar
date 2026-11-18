@@ -65,13 +65,27 @@ jobs:
           echo "site base: ${BASE:-(root)}  site url: $SITE_URL"
 
       - name: Ingest new events
+        id: ingest
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync)
         env:
           LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
           LLM_API_URL: ${{ secrets.LLM_API_URL }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_MODEL: ${{ secrets.LLM_MODEL }}
-        run: npm run sync:all
+        run: |
+          npm run sync:shadow
+          npm run sync:watch
+
+      - name: Save matching observations
+        if: always() && (steps.ingest.outcome == 'success' || steps.ingest.outcome == 'failure')
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: relation-shadow
+          path: .cache/relation-shadow/*.jsonl
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 30
 
       - name: Commit refreshed data
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync)

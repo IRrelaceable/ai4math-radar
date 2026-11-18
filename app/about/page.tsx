@@ -24,7 +24,7 @@ export default function AboutPage() {
     <div className="container-page py-10 lg:py-14">
       <header className="grid gap-10 border-b border-ink-200 pb-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16 lg:pb-14">
         <div className="max-w-3xl">
-          <div className="mono-label mb-3">{p.label} / {p.hubIntroTitle}</div>
+          <div className="mono-label mb-3 text-accent-700">{p.label} / {p.hubIntroTitle}</div>
           <h1 className="h-display max-w-2xl">{p.title}</h1>
           <p className="mt-5 max-w-2xl text-[16px] leading-[1.85] text-ink-600">
             {p.introA}

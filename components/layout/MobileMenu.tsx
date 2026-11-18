@@ -83,7 +83,7 @@ export function MobileMenu({ groups }: { groups: NavGroup[] }) {
             className="absolute inset-0 bg-ink-900/40 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <nav className="absolute right-0 top-0 h-full w-72 max-w-[80vw] overflow-y-auto bg-white p-5 shadow-xl">
+          <nav className="absolute right-0 top-0 h-full w-72 max-w-[80vw] overflow-y-auto bg-sheet p-5 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
               <span className="text-sm font-semibold text-ink-900">{t.nav.menu}</span>
               <button

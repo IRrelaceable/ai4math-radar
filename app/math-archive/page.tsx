@@ -27,7 +27,6 @@ export default function MathArchivePage() {
             </div>
           </div>
           <div className="labs-hero-figure" aria-label={lang === "zh" ? `共 ${FOREIGN_TASK_CASES.length} 条来源案例` : `${FOREIGN_TASK_CASES.length} source cases`}>
-            <span className="labs-figure-coordinate" aria-hidden="true">MATH / 01</span>
             <span className="labs-figure-number">{FOREIGN_TASK_CASES.length}</span>
             <span className="labs-figure-caption">{lang === "zh" ? "条来源案例" : "SOURCE CASES"}</span>
           </div>

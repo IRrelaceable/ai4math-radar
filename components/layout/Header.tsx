@@ -68,7 +68,7 @@ export function Header() {
   const siteActive = siteItems.some((item) => isActive(item.href));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-ink-200 bg-sheet/95 backdrop-blur">
       <div className="container-page flex h-16 items-center gap-4 sm:gap-6">
         <Link
           href="/"
@@ -76,7 +76,7 @@ export function Header() {
           aria-label={t.nav.brand}
           className="flex min-w-0 shrink-0 items-center gap-2.5"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-ink-900 font-mono text-sm text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-accent-700 font-serif text-lg text-white" aria-hidden="true">
             ∑
           </span>
           {/* Phones show only the wordmark; the descriptive half of the name
@@ -97,7 +97,8 @@ export function Header() {
               key={item.href}
               href={item.href}
               prefetch
-              className={`flex h-full items-center border-b-2 px-2 text-[13px] transition-colors ${
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={`flex h-full items-center whitespace-nowrap border-b-2 px-2 text-[13px] transition-colors ${
                 isActive(item.href)
                   ? "border-accent-600 font-medium text-ink-900"
                   : "border-transparent text-ink-500 hover:text-ink-900"
@@ -113,7 +114,7 @@ export function Header() {
               aria-expanded={siteOpen}
               aria-controls="site-menu"
               onClick={() => setSiteOpen((open) => !open)}
-              className={`flex h-full items-center gap-1 border-b-2 px-2 text-[13px] transition-colors ${
+              className={`flex h-full items-center gap-1 whitespace-nowrap border-b-2 px-2 text-[13px] transition-colors ${
                 siteOpen || siteActive
                   ? "border-accent-600 font-medium text-ink-900"
                   : "border-transparent text-ink-500 hover:text-ink-900"
@@ -139,7 +140,7 @@ export function Header() {
             {siteOpen && (
               <div
                 id="site-menu"
-                className="absolute left-0 top-full z-50 mt-1 w-52 rounded-lg border border-ink-200 bg-white p-1.5 shadow-lg"
+                className="absolute left-0 top-full z-50 mt-1 w-52 rounded-md border border-ink-200 bg-sheet p-1.5 shadow-lg"
               >
                 {siteItems.map((item) => (
                   <Link

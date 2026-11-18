@@ -47,7 +47,6 @@ export default async function GraphPage() {
       />
       <section aria-labelledby="scatter-title">
         <div className="mb-5 border-b border-ink-200 pb-4">
-          <div className="mono-label mb-2">01 / {p.graph.label}</div>
           <h2 id="scatter-title" className="h-section">{p.graph.viewScatter}</h2>
           <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-ink-600">{p.graph.scatterSub}</p>
         </div>
@@ -65,7 +64,7 @@ export default async function GraphPage() {
       <section id="matrix" className="mt-14 scroll-mt-24 border-t border-ink-200 pt-8">
         <div className="mb-6 grid gap-6 border-b border-ink-200 pb-6 lg:grid-cols-[minmax(0,1fr)_14rem] lg:items-end">
           <div>
-            <div className="mono-label mb-2">02 / {p.graph.themeAxis} × {p.graph.domainAxis}</div>
+            <div className="mono-label mb-2">{p.graph.themeAxis} × {p.graph.domainAxis}</div>
             <h2 className="h-section">{p.graph.viewMatrix}</h2>
             <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-ink-600">{p.graph.matrixSub}</p>
           </div>
@@ -74,7 +73,7 @@ export default async function GraphPage() {
             <span className="text-xs leading-relaxed text-ink-500">{p.graph.activePairs}</span>
           </div>
         </div>
-        <div className="rounded-md border border-ink-200 bg-white p-4 sm:p-6">
+        <div className="rounded-md border border-ink-200 bg-sheet p-4 sm:p-6">
           <ResearchHeatmap matrix={matrix} lang={lang} copy={p.graph} />
         </div>
       </section>

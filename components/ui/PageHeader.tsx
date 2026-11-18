@@ -19,10 +19,10 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="mb-7 flex flex-wrap items-end justify-between gap-4 border-b border-ink-200 pb-5">
+    <header className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-ink-300 pb-5">
       <div className="max-w-2xl">
-        {label && <div className="mono-label mb-2">{label}</div>}
-        <h1 className="h-display text-[30px] sm:text-[36px]">{title}</h1>
+        {label && <div className="mono-label mb-2 text-accent-700">{label}</div>}
+        <h1 className="h-display">{title}</h1>
         {description && (
           <p className="lede mt-3">{description}</p>
         )}
@@ -33,6 +33,6 @@ export function PageHeader({
         )}
       </div>
       {action && <div className="shrink-0">{action}</div>}
-    </div>
+    </header>
   );
 }

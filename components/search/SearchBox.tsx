@@ -59,7 +59,7 @@ export function SearchBox({ variant = "header", autoFocus, initialQuery = "" }: 
         }}
         className="w-full"
       >
-        <div className="flex items-center gap-2 rounded-lg border border-ink-300 bg-white px-3 py-2.5 shadow-sm focus-within:border-accent-500 focus-within:ring-2 focus-within:ring-accent-100">
+        <div className="flex items-center gap-2 rounded-md border border-ink-300 bg-sheet px-3 py-2 focus-within:border-accent-500 focus-within:ring-2 focus-within:ring-accent-100">
           <SearchIcon />
           <input
             value={q}
@@ -83,7 +83,7 @@ export function SearchBox({ variant = "header", autoFocus, initialQuery = "" }: 
         e.preventDefault();
         submit();
       }}
-      className="hidden sm:flex items-center gap-1.5 rounded-md border border-ink-200 bg-ink-50 px-2.5 py-1.5 focus-within:border-accent-400 focus-within:bg-white"
+      className="hidden items-center gap-1.5 rounded-md border border-ink-200 bg-paper px-2.5 py-1.5 focus-within:border-accent-400 focus-within:bg-sheet sm:flex"
       role="search"
     >
       <SearchIcon />
@@ -93,11 +93,11 @@ export function SearchBox({ variant = "header", autoFocus, initialQuery = "" }: 
         onChange={(e) => setQ(e.target.value)}
         placeholder={c.search.headerPlaceholder}
         aria-label={c.search.headerAria}
-        className="w-32 bg-transparent text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none lg:w-40"
+        className="w-32 bg-transparent text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none lg:w-24 xl:w-36"
       />
       <kbd
         title={c.search.kbdHint}
-        className="hidden xl:block rounded border border-ink-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-ink-500"
+        className="hidden rounded border border-ink-200 bg-sheet px-1.5 py-0.5 font-mono text-[10px] text-ink-500 xl:block"
       >
         /
       </kbd>

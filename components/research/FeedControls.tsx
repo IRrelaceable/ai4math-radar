@@ -43,7 +43,7 @@ function FilterSelect({
         value={value}
         title={selected ? selected.label : all}
         onChange={(e) => onChange(e.target.value === allValue ? undefined : e.target.value)}
-        className="select-control w-full !py-2 text-[13px]"
+        className="select-control h-10 w-full text-[13px]"
       >
         <option value={allValue}>{all}</option>
         {options.map((o) => (
@@ -159,7 +159,7 @@ export function FeedControls({
   }
 
   return (
-    <div className="rounded-md border border-ink-200 bg-white p-4 sm:p-5">
+    <div className="border-b border-ink-200 pb-4">
       {/* 1. Primary axis: event classes as underline tabs. */}
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-ink-200">
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-1" aria-label={c.feed.classLabel}>
@@ -172,6 +172,7 @@ export function FeedControls({
                 type="button"
                 data-type={type === "All" ? "" : type}
                 onClick={() => update({ type: type === "All" ? undefined : type })}
+                aria-pressed={active}
                 className={`-mb-px border-b-2 pb-2.5 pt-1 text-[13px] transition-colors ${
                   active
                     ? type === "All"
@@ -209,7 +210,7 @@ export function FeedControls({
                 aria-pressed={active}
                 className={`rounded px-2 py-0.5 text-xs transition-colors ${
                   active
-                    ? "bg-ink-100 font-medium text-ink-900"
+                    ? "bg-accent-50 font-medium text-accent-700"
                     : "text-ink-500 hover:text-ink-800"
                 }`}
               >
@@ -225,7 +226,7 @@ export function FeedControls({
         <div className="min-w-0 sm:col-span-2 lg:col-span-1">
           <label className="mono-label mb-1.5 block" htmlFor="feed-search">{c.feed.searchAria}</label>
           <form
-            className="flex items-center gap-2 rounded-md border border-ink-200 px-3 py-2 focus-within:border-accent-500"
+            className="flex h-10 items-center gap-2 rounded-md border border-ink-200 bg-sheet px-3 focus-within:border-accent-500"
             onSubmit={(e) => {
               e.preventDefault();
               const value = new FormData(e.currentTarget).get("q");

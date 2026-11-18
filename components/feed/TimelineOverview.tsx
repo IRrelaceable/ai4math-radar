@@ -68,11 +68,11 @@ export function TimelineOverview({
   const span = `${earliest.slice(0, 4)}–${latest.slice(0, 4)}`;
 
   return (
-    <section className="grid gap-7 rounded-md border border-ink-200 bg-white p-5 sm:p-7 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-9">
-      <div className="border-b border-ink-200 pb-5 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-7">
+    <section className="grid gap-5 rounded-md border border-ink-200 bg-sheet p-4 sm:p-5 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-7">
+      <div className="border-b border-ink-200 pb-4 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-5">
         <div className="mono-label">{labels.total}</div>
-        <div className="mt-2 font-mono text-[46px] font-medium leading-none tracking-tight text-ink-900">{total}</div>
-        <dl className="mt-6 grid grid-cols-2 gap-x-5 gap-y-5 lg:grid-cols-1">
+        <div className="mt-2 font-mono text-[38px] font-medium leading-none tracking-tight text-ink-900">{total}</div>
+        <dl className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3 lg:grid-cols-1">
           <Metric label={labels.span} value={span} />
           <Metric label={labels.years} value={String(years.length)} />
           <Metric label={labels.updated} value={formatDate(latest, lang)} />
@@ -103,7 +103,8 @@ export function TimelineOverview({
                   className="block w-full rounded-t-sm transition-all group-hover:ring-2 group-hover:ring-ink-700"
                   style={{
                     height: `${Math.max(4, Math.round(100 * ratio))}px`,
-                    background: `rgb(59 91 219 / ${(0.28 + 0.72 * ratio).toFixed(2)})`,
+                    background: "var(--cobalt)",
+                    opacity: 0.28 + 0.72 * ratio,
                   }}
                 />
               </a>

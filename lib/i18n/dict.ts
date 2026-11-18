@@ -50,13 +50,13 @@ export const dict = {
       searchEvents: "搜索事件…",
       evidenceShort: "证据",
       lineRecords: "事件线 · {n} 条记录",
-      viewTimeline: "查看事件线",
     },
     home: {
       heroLabel: "AI4Math 生态雷达",
-      heroTitle: "AI for Mathematics 的进展与生态",
-      heroTitleLead: "AI for Mathematics",
-      heroTitleTail: "的进展与生态",
+      heroTitle: "AI 与数学研究进展",
+      heroTitleLead: "AI 与数学",
+      heroTitleTail: "研究进展",
+      featured: "事件选读",
       heroSubtitle: "追踪 AI for Mathematics 的研究、人物、机构、资助、教育与政策共同体动态。",
       latestHeading: "最新动态",
       latestHeadingSub: "科研与生态两条线并行更新，先看发生了什么，再顺着实体进入脉络。",
@@ -198,12 +198,7 @@ export const dict = {
       sourceTierLabel: "来源",
     },
     footer: {
-      tagline:
-        "面向 AI for Mathematics 的研究情报平台：发生了什么、为什么重要、与既有工作如何衔接。",
       navigate: "导航",
-      dataNoteTitle: "可核查",
-      dataNote:
-        "每条事件都保留原始来源链接；证据等级与来源类型分开标注，方便回到原文自行判断。",
       explore: "浏览",
       project: "项目",
       topics: "专题",
@@ -213,8 +208,6 @@ export const dict = {
       methodology: "标签释义",
       sources: "数据来源",
       about: "关于",
-      disclaimer:
-        "本站是生态追踪工具，不是期刊。证据与来源类型分别标注，保持客观可核查。",
     },
     notFound: {
       title: "页面不存在",
@@ -263,13 +256,13 @@ export const dict = {
       searchEvents: "Search events...",
       evidenceShort: "Evidence",
       lineRecords: "Event line · {n} records",
-      viewTimeline: "View event line",
     },
     home: {
       heroLabel: "AI4Math Ecosystem Radar",
       heroTitle: "AI for Mathematics: progress and ecosystem",
       heroTitleLead: "AI for Mathematics",
       heroTitleTail: "progress and ecosystem",
+      featured: "Featured record",
       heroSubtitle: "Track research, people, institutions, funding, education and policy across AI for Mathematics.",
       latestHeading: "Latest activity",
       latestHeadingSub:
@@ -414,12 +407,7 @@ export const dict = {
       sourceTierLabel: "Source",
     },
     footer: {
-      tagline:
-        "A research intelligence platform for AI for Mathematics: what happened, why it matters, and how it connects to prior work.",
       navigate: "Navigate",
-      dataNoteTitle: "Verifiability",
-      dataNote:
-        "Every event keeps its original source link; evidence levels and source tiers are labelled separately so you can judge a record against the original.",
       explore: "Explore",
       project: "Project",
       topics: "Topics",
@@ -429,8 +417,6 @@ export const dict = {
       methodology: "Glossary",
       sources: "Data sources",
       about: "About",
-      disclaimer:
-        "This site is an ecosystem tracker, not a journal. Evidence and source tier stay separate and objective.",
     },
     notFound: {
       title: "Page not found",
