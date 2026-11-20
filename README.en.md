@@ -31,8 +31,11 @@ formats and rhythms.
 
 **AI4Math Ecosystem Radar** puts research progress and five classes of ecosystem events
 into a single dataset. Every event keeps its original source link, evidence level and
-verification record. Filter by class, classification dimension, time or evidence level, or follow a field on
-the timeline to see how it got here.
+verification record. You can:
+
+- Filter events by class, theme, math topic, evidence level and date
+- Follow a field on the timeline to see how it got here
+- Open any event to trace its sources, evidence and follow-ups
 
 ## Design principles
 
@@ -42,15 +45,35 @@ the timeline to see how it got here.
 ### Events, not papers
 
 Papers, models, benchmarks and datasets are **properties of an event**, never a top-level
-class. The five ecosystem classes sit side by side: Research, People, Institutions &
-Education, Funding, Policy & Community.
+class. Five ecosystem classes sit side by side: Research, People, Institutions & Education,
+Funding and Policy & Community; one record can belong to several topics at once, instead of
+being filed under a single folder.
 
 </td><td width="50%" valign="top">
 
-### Automated and traceable
+### Traceable to the source
 
-Ingested events go straight into the stream. Unverifiable fields stay empty;
-items without a confirmable source URL are dropped.
+Ingested events go straight into the stream. Unverifiable fields stay empty; items without a
+confirmable source URL are dropped. Every record keeps its original link — 826 sources in
+total, 77 events carrying more than one — so you can always get back to the origin.
+
+</td></tr>
+<tr><td width="50%" valign="top">
+
+### Evidence is labelled, not blended
+
+Evidence level and source type are marked separately (E0–E3 / S0–S4), so you can tell a
+testable artifact from a research record or a single-party claim — instead of collapsing
+every source into one vague "credibility" score.
+
+</td><td width="50%" valign="top">
+
+### Following change, not snapshots
+
+16 events carry follow-ups, verifications and corrections; changes stay attached to the
+original event rather than scattering into isolated new records. Related but distinct
+coverage is flagged separately instead of being force-merged, so you can read how one story
+developed.
 
 </td></tr>
 </table>
@@ -61,33 +84,33 @@ The site offers seven modules, each answering a different question:
 
 | Module | What it does |
 | --- | --- |
-| Latest | Browse all events in time order, filter by class, theme, math topic, evidence level and date, with keyword search |
-| Timeline | Look back by year and month, see yearly counts and class mix, and jump to any year |
-| Research Graph | Explore event distribution in a scatter view and math-topic × research-theme counts in a matrix, with click-through to records |
-| Math Archive | Review published math problems and evaluation cases, comparing model answers, status and resource use across models |
-| Math4AI | See the distribution of "math improving AI" research, filtering by year, theme or topic |
-| Search | Search events, papers, models and benchmarks across all records, in both Chinese and English |
-| Event Detail & Tracking | Follow a single event's background, follow-ups, verifications and corrections, and related coverage |
+| **Latest** | Browse all events in time order, filter by class, theme, math topic, evidence level and date, with keyword search |
+| **Timeline** | Look back by year and month, see yearly counts and class mix, and jump to any year |
+| **Research Graph** | Explore event distribution in a scatter view and math-topic × research-theme counts in a matrix, with click-through to records |
+| **Math Archive** | Review published math problems and evaluation cases, comparing model answers, status and resource use across models |
+| **Math4AI** | See the distribution of "math improving AI" research, filtering by year, theme or topic |
+| **Search** | Search events, papers, models and benchmarks across all records, in both Chinese and English |
+| **Event Detail & Tracking** | Follow a single event's background, follow-ups, verifications and corrections, and related coverage |
 
-**Citation links and related events**: the detail page keeps the two relations apart.
-"Citation links" lists works in this event's reference list and later works citing it,
-each with a link to the original paper; a citation is a documented link, not a claim that
-conclusions carry over. "Related events" groups co-occurring people, institutions, projects
-and models into timelines — co-occurrence signals association, not causation. Short chains
-collapse to one line, remaining threads stay expandable and long chains mark the current
-position.
+### Citation links and related events
 
-**Trust model**: evidence levels E0–E3 (independent replication / testable artifact /
-research record / originator claim) and source types S0–S4 are labelled separately;
-each event may carry multiple sources. Publication status is a separate, fully automatic
-axis: an arXiv link derives a preprint and a proceedings/publisher DOI derives `published`,
-with no manual annotation step; errata are appended independently. Label definitions live at
-[`/methodology`](app/methodology/page.tsx).
+The detail page keeps the two relations apart:
+
+- **Citation links**: works in this event's reference list and later works citing it, each with a link to the original paper. A citation is a documented link, not a claim that conclusions carry over.
+- **Related events**: co-occurring people, institutions, projects and models grouped into timelines. Co-occurrence signals association, not causation. Short chains collapse to one line, remaining threads stay expandable and long chains mark the current position.
+
+### Trust model
+
+- **Evidence levels E0–E3**: independent replication / testable artifact / research record / originator claim.
+- **Source types S0–S4**: labelled separately from evidence level; each event may carry multiple sources.
+- **Publication status**: derived fully automatically — an arXiv link yields a preprint, a proceedings/publisher DOI yields `published`, with no manual annotation step; errata are appended independently.
+
+Label definitions live at [`/methodology`](app/methodology/page.tsx).
 
 | Timeline | Event detail |
 | --- | --- |
 | ![Timeline page](https://raw.githubusercontent.com/IRrelaceable/ai4math-radar/main/docs/screenshots/timeline.png) | ![Event detail page](https://raw.githubusercontent.com/IRrelaceable/ai4math-radar/main/docs/screenshots/detail.png) |
-| Timeline: yearly density, three newest months open by default, month folding | Event detail: facts, evidence and original source |
+| *Timeline: yearly density, three newest months open by default, month folding* | *Event detail: facts, evidence and original source* |
 
 ## Running locally
 
