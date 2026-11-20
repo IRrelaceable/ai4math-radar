@@ -19,6 +19,7 @@
 
 - 一级导航定型为五个入口，站点信息改为信息中枢并补上功能模块说明
 - 研究图谱合并为单页散点图 + 下方交叉矩阵
+- 界面改为暖纸色主题，重新设计导航字体、卡片与页脚，并修复多处布局与显示问题
 - 事件详情建立持续追踪链路，可在离线回放里核对后续、核验与更正
 - 全站分类规则定稿，九个维度的存量标签逐条重筛
 - 采集从四次模型调用合并为一次，实际效果待实测
@@ -30,14 +31,18 @@
 
 - 一级导航重建为五个入口：最新进展、时间线、研究图谱、公开数学任务、Math4AI 方向 [3085e9c](https://github.com/IRrelaceable/ai4math-radar/commit/3085e9c)
 - 原「关于」页改为信息中枢，集中放记录说明、标签释义与数据来源 [3085e9c](https://github.com/IRrelaceable/ai4math-radar/commit/3085e9c)
-- 事件卡片精简：删掉「事件线 · N 条记录」，数学分类移到卡片底部 [8a9e89d](https://github.com/IRrelaceable/ai4math-radar/commit/8a9e89d)
-- 页脚精简：去掉标语、可核查右栏与免责声明 [8a9e89d](https://github.com/IRrelaceable/ai4math-radar/commit/8a9e89d)
-- 导航字体改为衬线体并加粗加深；修复在 Math4AI 页展开站点信息时两条下划线连成一条线 [f3bebf8](https://github.com/IRrelaceable/ai4math-radar/commit/f3bebf8)
+- 全站检查修复真实死链、空目录书签与文案口径，保留空模块并统一面向用户的表述 [8a9e89d](https://github.com/IRrelaceable/ai4math-radar/commit/8a9e89d)
 
 ### 研究图谱
 
 - 新增按数学领域与研究主题划分图形的规则，用散点图与交叉矩阵展示，点选可回到对应记录 [3085e9c](https://github.com/IRrelaceable/ai4math-radar/commit/3085e9c)
 - 图谱与交叉矩阵由两页合并到一页，去掉散点间的可见连线 [8a9e89d](https://github.com/IRrelaceable/ai4math-radar/commit/8a9e89d)
+
+### 界面与视觉设计
+
+- 全站配色从冷灰蓝改为暖纸色主题，衬线标题、chip 承载分类色，首页 hero 改为 featured 卡片 [3085e9c](https://github.com/IRrelaceable/ai4math-radar/commit/3085e9c)
+- 导航字体先加大加深、再改为衬线体，并修复 Math4AI 页展开站点信息时下划线连成一条的问题 [f3bebf8](https://github.com/IRrelaceable/ai4math-radar/commit/f3bebf8)
+- 修复数学档案来源链接基线、封面数字压字、移动端横向溢出与 Math4AI 进度条口径等显示问题；事件卡片与页脚精简 [3085e9c](https://github.com/IRrelaceable/ai4math-radar/commit/3085e9c) · [519950d](https://github.com/IRrelaceable/ai4math-radar/commit/519950d) · [8a9e89d](https://github.com/IRrelaceable/ai4math-radar/commit/8a9e89d)
 
 ### 事件详情与持续追踪
 
@@ -71,7 +76,7 @@
 
 ## 三、按成员
 
-- **雷（IRrelaceable）**：9 笔提交，完成五个一级入口与导航重构、研究图谱单页合并、事件持续追踪链路、分类规则定稿、采集四次合一，以及站点信息、README 与截图等文档工作。
+- **雷（IRrelaceable）**：9 笔提交，完成五个一级入口与导航重构、研究图谱单页合并、暖纸色主题的界面与视觉设计、事件持续追踪链路、分类规则定稿、采集四次合一，以及站点信息、README 与截图等文档工作。
 - **成家旭**：本周做 TAG 截断恢复与同题数学对照，成果见第四节；这部分在本仓库之外，无仓库提交记录。
 
 ## 四、TAG 截断恢复与同题数学对照（成家旭）
@@ -94,17 +99,3 @@
 | 整理前期结果和材料 | 成家旭 | 归并上下文压缩、裸 API、TAG 续跑和核验记录，统一状态、判定、token、耗时和费用口径，补齐结论到原始证据的索引。 |
 | 交叉复查答卷与中间结果 | 成家旭 | 用 Claude 逐份复查五份裸 API 答卷，用 GPT 和 Claude 核验 TAG 子任务候选与 T11 片段，记录分歧。 |
 | 完成报告与汇报 PPT | 成家旭 | 整合前期工作和两项复核，形成文章式研究报告，并制作配套 PPT；数字和结论与报告逐项核对。 |
-
-## 附：本周提交清单
-
-| 日期 | 成员 | 提交 | 说明 |
-| --- | --- | --- | --- |
-| 11-20 | 雷（IRrelaceable） | [c10e298](https://github.com/IRrelaceable/ai4math-radar/commit/c10e298) | docs: expand core design and refine README layout |
-| 11-20 | 雷（IRrelaceable） | [e5b23f9](https://github.com/IRrelaceable/ai4math-radar/commit/e5b23f9) | docs: host README screenshots on GitHub raw |
-| 11-20 | 雷（IRrelaceable） | [489aec8](https://github.com/IRrelaceable/ai4math-radar/commit/489aec8) | docs: use absolute image URLs for Gitee README |
-| 11-20 | 雷（IRrelaceable） | [80d19ac](https://github.com/IRrelaceable/ai4math-radar/commit/80d19ac) | docs: streamline changelog and fix README images on Gitee |
-| 11-20 | 雷（IRrelaceable） | [f3bebf8](https://github.com/IRrelaceable/ai4math-radar/commit/f3bebf8) | docs: add site modules guide and polish header typography |
-| 11-20 | 雷（IRrelaceable） | [519950d](https://github.com/IRrelaceable/ai4math-radar/commit/519950d) | docs: add weekly report 2026-11-20 and refine site details |
-| 11-19 | 雷（IRrelaceable） | [8a9e89d](https://github.com/IRrelaceable/ai4math-radar/commit/8a9e89d) | feat: add event tracking chain and polish user-facing UI |
-| 11-18 | 雷（IRrelaceable） | [ba04695](https://github.com/IRrelaceable/ai4math-radar/commit/ba04695) | ci: disable scheduled auto-ingest, keep push/dispatch deploy |
-| 11-18 | 雷（IRrelaceable） | [3085e9c](https://github.com/IRrelaceable/ai4math-radar/commit/3085e9c) | feat: rebuild navigation, research graph and user-facing content |
