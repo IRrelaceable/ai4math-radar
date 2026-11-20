@@ -25,6 +25,7 @@ export function Footer() {
     {
       title: t.footer.site,
       links: [
+        { href: "/about#modules", label: t.footer.modules },
         { href: "/about", label: t.footer.about },
         { href: "/methodology", label: t.footer.methodology },
         { href: "/about#sources", label: t.footer.sources },

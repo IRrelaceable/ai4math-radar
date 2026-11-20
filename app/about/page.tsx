@@ -17,8 +17,9 @@ export default function AboutPage() {
   const { boards } = loadSourceOverview();
   const chapters = [
     { number: "01", title: p.recordTitle, body: p.recordBody, href: "#records" },
-    { number: "02", title: p.trustTitle, body: p.hubLabels, href: "#trust" },
-    { number: "03", title: s.title, body: p.hubSources, href: "#sources" },
+    { number: "02", title: p.modulesTitle, body: p.modulesToc, href: "#modules" },
+    { number: "03", title: p.trustTitle, body: p.hubLabels, href: "#trust" },
+    { number: "04", title: s.title, body: p.hubSources, href: "#sources" },
   ];
 
   return (
@@ -72,9 +73,26 @@ export default function AboutPage() {
         </ol>
       </section>
 
+      <section id="modules" className="grid scroll-mt-24 gap-7 border-b border-ink-200 py-11 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12 lg:py-14">
+        <div>
+          <div className="mono-label mb-2">02 / {p.modulesTitle}</div>
+          <h2 className="h-section">{p.modulesTitle}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-ink-600">{p.modulesBody}</p>
+        </div>
+        <ol className="border-t border-ink-300">
+          {p.modules.map((mod, index) => (
+            <li key={mod.name} className="grid gap-1 border-b border-ink-200 py-4 sm:grid-cols-[2.5rem_11rem_minmax(0,1fr)] sm:gap-4">
+              <span className="font-mono text-[11px] text-ink-400">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="text-[14px] font-medium text-ink-900">{mod.name}</h3>
+              <p className="text-[13px] leading-relaxed text-ink-600">{mod.desc}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <section id="trust" className="grid scroll-mt-24 gap-7 border-b border-ink-200 py-11 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12 lg:py-14">
         <div>
-          <div className="mono-label mb-2">02 / {p.trustTitle}</div>
+          <div className="mono-label mb-2">03 / {p.trustTitle}</div>
           <h2 className="h-section">{p.trustTitle}</h2>
         </div>
         <div className="grid gap-6 rounded-lg bg-ink-900 p-6 text-white sm:p-8 md:grid-cols-[minmax(0,1fr)_12rem] md:items-end">
@@ -94,7 +112,7 @@ export default function AboutPage() {
       <section id="sources" className="scroll-mt-24 pt-11 lg:pt-14">
         <div className="grid gap-4 pb-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
           <div>
-            <div className="mono-label mb-2">03 / {s.title}</div>
+            <div className="mono-label mb-2">04 / {s.title}</div>
             <h2 className="h-section">{s.title}</h2>
           </div>
           <p className="max-w-2xl text-sm leading-relaxed text-ink-600">{s.subtitle}</p>

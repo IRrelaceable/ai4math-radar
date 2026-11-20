@@ -26,6 +26,7 @@ export function Header() {
     { href: "/math4ai", label: t.nav.math4ai },
   ];
   const siteItems: NavItem[] = [
+    { href: "/about#modules", label: t.footer.modules },
     { href: "/about", label: t.footer.about },
     { href: "/methodology", label: t.footer.methodology },
     { href: "/about#sources", label: t.footer.sources },
@@ -65,7 +66,8 @@ export function Header() {
     const base = href.split("#")[0];
     return pathname === base || pathname.startsWith(`${base}/`);
   };
-  const siteActive = siteItems.some((item) => isActive(item.href));
+  const isSectionLink = (href: string) => href.includes("#");
+  const siteActive = siteItems.some((item) => !isSectionLink(item.href) && isActive(item.href));
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200 bg-sheet/95 backdrop-blur">
@@ -98,10 +100,10 @@ export function Header() {
               href={item.href}
               prefetch
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={`flex h-full items-center whitespace-nowrap border-b-2 px-2 text-[13px] transition-colors ${
+              className={`flex h-full items-center whitespace-nowrap border-b-2 px-2 font-serif text-[15px] tracking-[0.01em] transition-colors ${
                 isActive(item.href)
-                  ? "border-accent-600 font-medium text-ink-900"
-                  : "border-transparent text-ink-500 hover:text-ink-900"
+                  ? "border-accent-600 font-semibold text-ink-900"
+                  : "border-transparent font-medium text-ink-800 hover:text-ink-900"
               }`}
             >
               {item.label}
@@ -114,10 +116,12 @@ export function Header() {
               aria-expanded={siteOpen}
               aria-controls="site-menu"
               onClick={() => setSiteOpen((open) => !open)}
-              className={`flex h-full items-center gap-1 whitespace-nowrap border-b-2 px-2 text-[13px] transition-colors ${
-                siteOpen || siteActive
-                  ? "border-accent-600 font-medium text-ink-900"
-                  : "border-transparent text-ink-500 hover:text-ink-900"
+              className={`flex h-full items-center gap-1 whitespace-nowrap border-b-2 px-2 font-serif text-[15px] tracking-[0.01em] transition-colors ${
+                siteActive
+                  ? "border-accent-600 font-semibold text-ink-900"
+                  : siteOpen
+                    ? "border-transparent font-semibold text-ink-900"
+                    : "border-transparent font-medium text-ink-800 hover:text-ink-900"
               }`}
             >
               {t.footer.site}
@@ -148,10 +152,12 @@ export function Header() {
                     href={item.href}
                     prefetch
                     onClick={() => setSiteOpen(false)}
-                    className={`block rounded-md px-3 py-2 text-[13px] transition-colors ${
-                      isActive(item.href)
-                        ? "bg-ink-100 font-medium text-ink-900"
-                        : "text-ink-700 hover:bg-ink-50 hover:text-ink-900"
+                    className={`block rounded-md px-3 py-2 font-serif text-[14px] transition-colors ${
+                      isSectionLink(item.href)
+                        ? "text-ink-700 hover:bg-ink-50 hover:text-ink-900"
+                        : isActive(item.href)
+                          ? "bg-ink-100 font-medium text-ink-900"
+                          : "text-ink-700 hover:bg-ink-50 hover:text-ink-900"
                     }`}
                   >
                     {item.label}

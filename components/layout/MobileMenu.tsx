@@ -41,7 +41,7 @@ export function MobileMenu({ groups }: { groups: NavGroup[] }) {
   }, [pathname]);
 
   const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
+    !href.includes("#") && (pathname === href || pathname.startsWith(`${href}/`));
 
   return (
     <>

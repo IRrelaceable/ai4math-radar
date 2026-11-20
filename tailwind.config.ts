@@ -69,6 +69,13 @@ const config: Config = {
           "Liberation Mono",
           "monospace",
         ],
+        serif: [
+          "Georgia",
+          "Noto Serif CJK SC",
+          "Songti SC",
+          "SimSun",
+          "serif",
+        ],
       },
       maxWidth: {
         content: "78rem",
