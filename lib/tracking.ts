@@ -54,6 +54,7 @@ export function buildTrackedEvents(events: ResearchEvent[]): TrackedEvent[] {
       sources: event.sources,
       evidenceLevel: event.evidenceLevel,
       publicationStatus: event.publicationStatus,
+      ...(link?.note && !link.relatedTo && { note: link.note }),
     } as const;
     const existing = tracked.get(id);
     const relation =
@@ -63,6 +64,7 @@ export function buildTrackedEvents(events: ResearchEvent[]): TrackedEvent[] {
         toEventId: link.relatedTo.eventId,
         kind: link.relatedTo.kind,
         reason: link.relatedTo.reason,
+        ...(link.note && { note: link.note }),
       } satisfies EventRelationEdge);
     if (!existing) {
       tracked.set(id, {
@@ -83,8 +85,10 @@ export function buildTrackedEvents(events: ResearchEvent[]): TrackedEvent[] {
     existing.progress.push(step);
     existing.entities = mergeEntities(existing.entities, event.entities);
     existing.projectId ??= link?.projectId;
-    if (relation && !existing.relations.some((edge) => edge.toEventId === relation.toEventId && edge.kind === relation.kind)) {
-      existing.relations.push(relation);
+    if (relation) {
+      const current = existing.relations.find((edge) => edge.toEventId === relation.toEventId && edge.kind === relation.kind);
+      if (!current) existing.relations.push(relation);
+      else if (relation.note) current.note ??= relation.note;
     }
     // A re-report adds a Source but never moves dates. Audits/corrections are
     // real progress points, so they advance the dates, but they never compete

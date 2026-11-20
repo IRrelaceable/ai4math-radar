@@ -40,6 +40,37 @@ export const curatedEventLinks: Record<string, EventLink> = {
     projectId: "proj-ai-scientist",
     reason: "V2 release explicitly follows The AI Scientist",
   },
+  "openai-navier-stokes-finite-time-blow-up": {
+    eventId: "event-evt-openai-navier-stokes-blow-up",
+    kind: "initial",
+    relation: "same-event",
+    matchedBy: "curated",
+    reason: "OpenAI’s initial announcement and separate Lean repository for the Navier–Stokes proof claim",
+  },
+  "navier-stokes-lost-in-translation-lean-mismatch": {
+    eventId: "event-evt-openai-navier-stokes-blow-up",
+    kind: "verification",
+    relation: "same-event",
+    matchedBy: "curated",
+    matchedToSlug: "openai-navier-stokes-finite-time-blow-up",
+    reason: "Section 3 checks the September Navier–Stokes manuscript against the cited Lean commit",
+    note: {
+      text: {
+        zh: "作者逐项比较 9 月发布的 Navier–Stokes 论文与其 Lean 仓库的指定提交，指出引理 8.6 的估计和压力通量界存在对应差异。",
+        en: "The authors compare the September Navier–Stokes manuscript with a pinned Lean commit and report discrepancies in the estimate from Lemma 8.6 and in the pressure-flux bound.",
+      },
+      references: [
+        {
+          title: { zh: "核查预印本第 3 节", en: "Audit preprint, §3" },
+          url: "https://arxiv.org/html/2610.08144v1#S3",
+        },
+        {
+          title: { zh: "论文核查的 Lean 提交", en: "Lean commit examined in the audit" },
+          url: "https://github.com/openai/NavierStokesAndEuler/tree/f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+        },
+      ],
+    },
+  },
 };
 
 /**
@@ -74,6 +105,18 @@ Object.assign(curatedEventLinks, {
     matchedBy: "curated",
     matchedToSlug: "openai-math-manuscript-collection-release",
     reason: "First-round corrections recorded in the repository's own history.md: withdrawals, patches and coverage change the release",
+    note: {
+      text: {
+        zh: "OpenAI 在一篇关于分裂阿贝尔八维簇上 Weil 类的论文中发现符号错误，并撤回该论文及依赖它的另外两篇论文。仓库修订日志列出了撤回与修订明细。",
+        en: "A sign error in the manuscript on Weil classes on split abelian eightfolds led OpenAI to withdraw that manuscript and two papers that depended on it.",
+      },
+      references: [
+        {
+          title: { zh: "OpenAI 仓库的撤回与修订记录", en: "OpenAI repository history: withdrawals and patches" },
+          url: "https://github.com/openai/math/blob/main/history.md#october-7-2026",
+        },
+      ],
+    },
   },
   "sharing-ai-progress-in-mathematics": {
     eventId: OPENAI_MATH_EVENT,
@@ -83,14 +126,6 @@ Object.assign(curatedEventLinks, {
     matchedToSlug: "openai-math-manuscript-collection-release",
     reason: "OpenAI's own announcement of the same 2026-10-06 manuscript release; source only",
   },
-  "navier-stokes-lost-in-translation-lean-mismatch": {
-    eventId: OPENAI_MATH_EVENT,
-    kind: "verification",
-    relation: "same-event",
-    matchedBy: "curated",
-    matchedToSlug: "openai-math-manuscript-collection-release",
-    reason: "Independent preprint shows a Lean encoding of the announced Navier-Stokes proof diverges from the natural-language argument",
-  },
   "mechalign-evaluating-semantic-alignment-at-the-project-level-in-mathematical-formalization": {
     eventId: OPENAI_MATH_EVENT,
     kind: "verification",
@@ -98,6 +133,18 @@ Object.assign(curatedEventLinks, {
     matchedBy: "curated",
     matchedToSlug: "openai-math-manuscript-collection-release",
     reason: "Audits 173 OpenAI Math projects for statement fidelity; directly assesses the release's formalization claim",
+    note: {
+      text: {
+        zh: "作者初步抽查了 OpenAI Math 的 173 个项目中的 201 个主要结果，核对 Lean 陈述与原稿的对应关系。其中一个双曲群案例定位到了原稿里的二维条件在 Lean 陈述中未被显式保留。",
+        en: "The authors preliminarily compared 201 main results from 173 OpenAI Math projects with their Lean statements. In one hyperbolic-group example, the manuscript’s two-dimensionality requirement was not explicit in the Lean statement.",
+      },
+      references: [
+        {
+          title: { zh: "MechAlign §4：抽查范围与案例", en: "MechAlign §4: review scope and case study" },
+          url: "https://arxiv.org/html/2610.35269v1#S4",
+        },
+      ],
+    },
   },
   "working-with-academic-communities-to-build-scientific-understanding": {
     eventId: OPENAI_MATH_EVENT,
@@ -114,6 +161,26 @@ Object.assign(curatedEventLinks, {
     matchedBy: "curated",
     matchedToSlug: "openai-math-manuscript-collection-release",
     reason: "The preprint reports formalizing three identified TCS tasks from the October collection. The verification applies to those tasks.",
+    note: {
+      text: {
+        zh: "作者报告，Turing Agent 完成了合集里三项原先尚未完成的 Lean 核验。",
+        en: "The authors report completing Lean verification for three tasks left unfinished in the original collection.",
+      },
+      references: [
+        {
+          title: { zh: "任意正特征下的统一矩阵命中点", en: "Uniform matrix hitting points in positive characteristic" },
+          url: "https://arxiv.org/html/2611.21299v1#S5.SS1",
+        },
+        {
+          title: { zh: "超图性质的一致影响力上界", en: "A uniform influence bound for hypergraph properties" },
+          url: "https://arxiv.org/html/2611.21299v1#S5.SS2",
+        },
+        {
+          title: { zh: "随机 3-SAT 停时的线性方差界", en: "Linear variance of the random 3-SAT hitting time" },
+          url: "https://arxiv.org/html/2611.21299v1#S5.SS3",
+        },
+      ],
+    },
   },
 
   // --- related Event: independent work or public reaction, linked not merged ---
@@ -128,6 +195,22 @@ Object.assign(curatedEventLinks, {
       reason: "Axiom cites OpenAI’s paper on termination for projective log canonical fourfolds with rational boundary as the basis for its four-dimensional theorem.",
     },
     reason: "Axiom released a separate Lean library with results in dimensions two through four.",
+    note: {
+      text: {
+        zh: "Axiom 在四维定理的说明中引用了 722 合集里关于射影对数典范四维对的极小模型程序终止性的论文。",
+        en: "For the four-dimensional theorem in Axiom’s Lean library, the repository cites the OpenAI collection’s paper on termination of the minimal model program for projective log canonical fourfolds.",
+      },
+      references: [
+        {
+          title: { zh: "OpenAI 原论文：四维极小模型程序的终止性", en: "OpenAI paper: termination for projective log canonical fourfolds" },
+          url: "https://github.com/openai/math/tree/main/preprints/Termination-for-projective-log-canonical-fourfolds-with-rational-boundary-September-24-2026",
+        },
+        {
+          title: { zh: "Axiom Lean 仓库与定理说明", en: "Axiom Lean repository and theorem statement" },
+          url: "https://github.com/AxiomMath/MMP",
+        },
+      ],
+    },
   },
   "yang-mills-informalization-second-and-third-drafts": {
     eventId: "event-evt-yang-mills-informalization-third-draft",

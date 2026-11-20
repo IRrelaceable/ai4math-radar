@@ -439,6 +439,53 @@ html {
   scroll-behavior: smooth;
 }
 
+.cover-particles {
+  position: relative;
+  flex: none;
+  width: min(9rem, 40%);
+  height: 1.375rem;
+  color: var(--cobalt);
+  pointer-events: none;
+}
+
+.cover-particles::before,
+.cover-particles::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.cover-particles::before {
+  background: radial-gradient(circle at center, currentColor 0.65px, transparent 1px) 0 0 / 11px 10px;
+  mask-image: linear-gradient(90deg, transparent, #000 42%, #000 92%, transparent);
+  opacity: 0.17;
+}
+
+.cover-particles::after {
+  background:
+    radial-gradient(circle at 23% 68%, currentColor 0.7px, transparent 1.2px),
+    radial-gradient(circle at 35% 27%, currentColor 1px, transparent 1.5px),
+    radial-gradient(circle at 48% 58%, currentColor 0.8px, transparent 1.3px),
+    radial-gradient(circle at 55% 22%, currentColor 0.6px, transparent 1.1px),
+    radial-gradient(circle at 64% 78%, currentColor 1.1px, transparent 1.6px),
+    radial-gradient(circle at 73% 41%, currentColor 1.7px, transparent 2.2px),
+    radial-gradient(circle at 82% 65%, currentColor 0.8px, transparent 1.3px),
+    radial-gradient(circle at 90% 23%, currentColor 1.15px, transparent 1.65px),
+    radial-gradient(circle at 97% 54%, currentColor 0.7px, transparent 1.2px);
+  opacity: 0.48;
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .cover-particles::after {
+    animation: cover-particles-settle 1.7s ease-out both;
+  }
+}
+
+@keyframes cover-particles-settle {
+  from { opacity: 0.18; transform: translate(8px, -3px); }
+  to { opacity: 0.48; transform: translate(0, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

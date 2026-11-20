@@ -38,14 +38,20 @@ describe("tracked events", () => {
 
   it("groups an explicit follow-up without losing either source record", () => {
     const first = event({ id: "evt_one", slug: "one", date: "2026-01-01" });
+    const note = {
+      text: { zh: "补齐初版所缺的证明", en: "Completes the proof left open in the first release" },
+      references: [{ title: { zh: "证明", en: "Proof" }, url: "https://example.org/proof" }],
+    };
     const second = event({
       id: "evt_two",
       slug: "two",
       date: "2026-02-01",
-      tracking: { eventId: defaultEventId(first), kind: "followup", relation: "same-event", matchedBy: "curated" },
+      tracking: { eventId: defaultEventId(first), kind: "followup", relation: "same-event", matchedBy: "curated", note },
     });
     const [tracked] = buildTrackedEvents([first, second]);
     expect(tracked.progress.map((step) => step.eventSlug)).toEqual(["two", "one"]);
+    expect(tracked.progress[0].note).toEqual(note);
+    expect(tracked.progress[1].note).toBeUndefined();
   });
 
   it("treats a second record of the same paper as a source, not an update", async () => {
@@ -527,6 +533,26 @@ describe("bidirectional relation display", () => {
     });
     // Storage is still unidirectional: the source holds a single outgoing edge.
     expect(source.relations).toHaveLength(1);
+  });
+
+  it("retains a later source's evidence on both sides of a single related-event edge", () => {
+    const original = event({ id: "evt_original", slug: "original", date: "2026-10-06" });
+    const relatedTo = { eventId: defaultEventId(original), kind: "related" as const };
+    const tracking = { eventId: "event-project", kind: "initial", relation: "related-event", matchedBy: "curated", relatedTo } as const;
+    const first = event({ id: "evt_project", slug: "project", date: "2026-10-07", tracking });
+    const note = {
+      text: { zh: "引用了原论文中的四维定理", en: "Cites the four-dimensional result in the original paper" },
+      references: [{ title: { zh: "定理原文", en: "Original theorem" }, url: "https://example.org/theorem" }],
+    };
+    const reviewed = event({ id: "evt_review", slug: "review", date: "2026-10-08", tracking: { ...tracking, note } });
+
+    const groups = buildTrackedEvents([original, first, reviewed]);
+    expect(groups).toHaveLength(2);
+    for (const group of groups) {
+      expect(group.relations).toHaveLength(1);
+      expect(group.relations[0].note).toEqual(note);
+      expect(group.progress.every((step) => step.note === undefined)).toBe(true);
+    }
   });
 
   it("does not duplicate the backfilled edge when the source Event is processed again", () => {

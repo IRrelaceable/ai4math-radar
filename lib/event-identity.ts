@@ -14,6 +14,7 @@
  */
 
 import type { ResearchEvent } from "@/types";
+import { mentionedProject } from "@/data/seed/projects";
 import { eventIdOf, eventLinkOf } from "@/lib/event-id";
 import type { EventCandidate } from "@/lib/event-id";
 
@@ -37,6 +38,16 @@ const ARXIV_RE = /(?:arxiv\.org\/(?:abs|pdf)\/|arxiv\s*:\s*)([0-9]{4}\.[0-9]{4,5
 const DOI_RE = /\b10\.\d{4,9}\/[^\s"'<>),;]+/gi;
 const GITHUB_RE = /github\.com\/([a-z0-9_.-]+)\/([a-z0-9_.-]+)/gi;
 const URL_RE = /https?:\/\/[^\s"'<>)\],;]+/gi;
+
+// Alternate descriptions of named releases, bound to the publisher's original
+// artifact. An Event that only cites this repo does not own its aliases.
+const COLLECTION_ALIASES = new Map([
+  ["github.com/openai/math", [
+    /\bopenai\b[^.!?]{0,90}\b(?:722|719)[- ](?:\w+[- ]){0,3}manuscripts?\b/i,
+    /\b(?:722|719)\s+openai\s+(?:manuscripts?|results?|papers?)\b/i,
+    /\bopenai(?:['’]s)?\s+october\s+(?:6(?:,?\s+2026)?|2026)\s+(?:collection|release|corpus)\b/i,
+  ]],
+]);
 
 function normalizeArxiv(id: string): string {
   return id.trim().toLowerCase().replace(/v\d+$/, "");
@@ -86,9 +97,13 @@ function normalizeUrl(raw: string): string {
 
 /** Collect all text that may carry an identity reference from a record. */
 function identityTexts(event: ResearchEvent): string[] {
-  const texts: string[] = [event.sourceUrl, event.paperUrl ?? "", event.githubUrl ?? ""];
+  const texts = primaryIdentityTexts(event);
   for (const source of event.sources ?? []) texts.push(source.url ?? "");
-  for (const work of event.relatedWorks ?? []) texts.push(work.url ?? "");
+  // The archive can add a backlink years after this record was published.
+  // It is not a reference that an incoming record made to an earlier work.
+  for (const work of event.relatedWorks ?? []) {
+    if (work.relation !== "followup") texts.push(work.url ?? "");
+  }
   // URL-like strings inside prose are first-class identity evidence: a
   // verification paper usually names the object it audits in its abstract.
   texts.push(event.title, event.summary, event.significance ?? "");
@@ -98,8 +113,16 @@ function identityTexts(event: ResearchEvent): string[] {
   return texts.filter(Boolean);
 }
 
+function primaryIdentityTexts(event: ResearchEvent): string[] {
+  return [event.sourceUrl, event.paperUrl ?? "", event.githubUrl ?? ""];
+}
+
 /** Extract stable identity keys from a record, scanning URLs, prose and entities. */
 export function extractIdentityKeys(event: ResearchEvent): IdentityKeys {
+  return keysFromTexts(identityTexts(event));
+}
+
+function keysFromTexts(texts: string[]): IdentityKeys {
   const keys: IdentityKeys = {
     arxiv: new Set(),
     doi: new Set(),
@@ -108,8 +131,8 @@ export function extractIdentityKeys(event: ResearchEvent): IdentityKeys {
     urls: new Set(),
     text: "",
   };
-  keys.text = identityTexts(event).join(" \n ").toLowerCase();
-  for (const text of identityTexts(event)) {
+  keys.text = texts.join(" \n ").toLowerCase();
+  for (const text of texts) {
     for (const match of text.matchAll(ARXIV_RE)) keys.arxiv.add(normalizeArxiv(match[1]));
     for (const match of text.matchAll(DOI_RE)) keys.doi.add(normalizeDoi(match[0]));
     for (const match of text.matchAll(GITHUB_RE)) {
@@ -142,6 +165,7 @@ interface EventIdentity {
   representative: ResearchEvent;
   /** Union of identity keys across every record in the Event line. */
   keys: IdentityKeys;
+  primary: IdentityKeys;
   /** Number of source records in the line (used only as a weak tie-breaker). */
   size: number;
 }
@@ -179,12 +203,12 @@ function indexByEvent(events: ResearchEvent[]): Map<string, EventIdentity> {
     // late follow-up that happens to sort first.
     const representative =
       records.find((r) => (eventLinkOf(r)?.kind ?? "initial") === "initial") ?? records[0];
-    index.set(id, { representative, keys, size: records.length });
+    index.set(id, { representative, keys, primary: keysFromTexts(primaryIdentityTexts(representative)), size: records.length });
   }
   return index;
 }
 
-const WEIGHT = { arxiv: 1.0, doi: 1.0, repo: 0.9, url: 0.7, alias: 0.55, host: 0.12 } as const;
+const WEIGHT = { arxiv: 1.0, doi: 1.0, repo: 0.9, url: 0.7, prior: 0.25, sharedReference: 0.15, alias: 0.55, namedRelease: 0.8, host: 0.12 } as const;
 
 /**
  * Project aliases from a repository key: "openai/math" -> "openai math".
@@ -214,6 +238,21 @@ interface Scored {
   size: number;
 }
 
+const ARTIFACT_KEYS = ["arxiv", "doi", "repos", "urls"] as const;
+type ArtifactKind = (typeof ARTIFACT_KEYS)[number];
+
+function sharesArtifact(a: IdentityKeys, b: IdentityKeys): boolean {
+  return ARTIFACT_KEYS.some((kind) => intersectCount(a[kind], b[kind]) > 0);
+}
+
+function matchingArtifacts(
+  kind: ArtifactKind, incoming: IdentityKeys, primary: IdentityKeys, candidate: EventIdentity
+): string[] {
+  return [...incoming[kind]].filter((key) =>
+    candidate.keys[kind].has(key) && (primary[kind].has(key) || candidate.primary[kind].has(key))
+  );
+}
+
 /**
  * Retrieve Events that share a stable identity with the incoming record.
  * Top-k is grouped by Event id (never by source slug), so several records of
@@ -226,38 +265,56 @@ export function findIdentityCandidates(
   limit = 3
 ): EventCandidate[] {
   const incomingKeys = extractIdentityKeys(incoming);
+  const incomingPrimary = keysFromTexts(primaryIdentityTexts(incoming));
+  const incomingPrior = keysFromTexts((incoming.relatedWorks ?? [])
+    .filter((work) => work.relation === "previous").map((work) => work.url ?? ""));
+  const incomingAliases = repoAliases(incomingKeys.repos);
+  const incomingProject = mentionedProject(incoming)?.id;
   const index = indexByEvent(existing);
   const scored: Scored[] = [];
 
   for (const [eventId, entry] of index) {
     if (eventId === eventIdOf(incoming) && incoming.slug === entry.representative.slug) continue;
-    const arxiv = intersectCount(incomingKeys.arxiv, entry.keys.arxiv);
-    const doi = intersectCount(incomingKeys.doi, entry.keys.doi);
-    const repo = intersectCount(incomingKeys.repos, entry.keys.repos);
-    const url = intersectCount(incomingKeys.urls, entry.keys.urls);
+    const arxiv = matchingArtifacts("arxiv", incomingKeys, incomingPrimary, entry);
+    const doi = matchingArtifacts("doi", incomingKeys, incomingPrimary, entry);
+    const repo = matchingArtifacts("repos", incomingKeys, incomingPrimary, entry);
+    const url = matchingArtifacts("urls", incomingKeys, incomingPrimary, entry);
     const host = intersectCount(incomingKeys.hosts, entry.keys.hosts);
+    const citesPrior = sharesArtifact(incomingPrior, entry.primary);
     // Bidirectional alias: the Event's repo name in incoming prose, or the
     // incoming record's repo name in the Event line's prose.
     const eventAliases = repoAliases(entry.keys.repos);
-    const incomingAliases = repoAliases(incomingKeys.repos);
     const alias =
       aliasHit(eventAliases, incomingKeys.text) ?? aliasHit(incomingAliases, entry.keys.text);
+    const project = incomingProject && incomingProject === eventLinkOf(entry.representative)?.projectId
+      ? incomingProject
+      : undefined;
+    const primaryUrl = normalizeUrl(entry.representative.sourceUrl);
+    const collection = COLLECTION_ALIASES.get(primaryUrl)?.some((pattern) => pattern.test(incomingKeys.text))
+      ? primaryUrl
+      : undefined;
 
     const signals: string[] = [];
-    if (arxiv) signals.push(`arXiv:${[...incomingKeys.arxiv].find((k) => entry.keys.arxiv.has(k))}`);
-    if (doi) signals.push(`DOI:${[...incomingKeys.doi].find((k) => entry.keys.doi.has(k))}`);
-    if (repo) signals.push(`repo:${[...incomingKeys.repos].find((k) => entry.keys.repos.has(k))}`);
-    if (url && !arxiv && !doi && !repo) {
-      signals.push(`url:${[...incomingKeys.urls].find((k) => entry.keys.urls.has(k))}`);
-    }
-    if (alias && !arxiv && !doi && !repo && !url) signals.push(`alias:${alias}`);
+    if (arxiv.length) signals.push(`arXiv:${arxiv[0]}`);
+    if (doi.length) signals.push(`DOI:${doi[0]}`);
+    if (repo.length) signals.push(`repo:${repo[0]}`);
+    if (url.length && signals.length === 0) signals.push(`url:${url[0]}`);
+    const sharesPrimary = signals.length > 0;
+    const sharedReference = !sharesPrimary && sharesArtifact(incomingKeys, entry.keys);
+    if (sharedReference) signals.push("shared-reference");
+    if (alias && !sharesPrimary) signals.push(`alias:${alias}`);
+    if (citesPrior) signals.push("prior-artifact");
+    if (project) signals.push(`series:${project}`);
+    if (collection) signals.push(`collection:${collection}`);
     if (host && signals.length === 0) signals.push(`host:${[...incomingKeys.hosts].find((k) => entry.keys.hosts.has(k))}`);
 
     // One strong shared id dominates; weaker signals aggregate but can never
     // outrank a matching arXiv id / DOI / repository on their own.
-    const strong = arxiv * WEIGHT.arxiv + doi * WEIGHT.doi + repo * WEIGHT.repo;
-    const weak = url * WEIGHT.url + (alias ? WEIGHT.alias : 0) + host * WEIGHT.host;
-    const score = Math.min(1, strong + (strong > 0 ? weak * 0.3 : weak));
+    const strong = arxiv.length * WEIGHT.arxiv + doi.length * WEIGHT.doi + repo.length * WEIGHT.repo;
+    const nameWeight = project || collection ? WEIGHT.namedRelease : alias ? WEIGHT.alias : 0;
+    const linkWeight = url.length * WEIGHT.url + (sharedReference ? WEIGHT.sharedReference : 0);
+    const weak = linkWeight + nameWeight + host * WEIGHT.host;
+    const score = Math.min(1, strong + (strong > 0 ? weak * 0.3 : weak) + (citesPrior ? WEIGHT.prior : 0));
     if (score <= 0) continue;
 
     scored.push({

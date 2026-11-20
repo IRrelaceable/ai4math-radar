@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageParticles } from "@/components/ui/PageParticles";
 import {
   AI_ROLE_LEVELS,
   EVIDENCE_LEVELS,
@@ -113,7 +114,10 @@ export default function GlossaryPage() {
           title lines up with the header and every other page. */}
       <div className="max-w-5xl">
         <header className="max-w-3xl">
-          <div className="mono-label mb-2">{m.label}</div>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <div className="mono-label">{m.label}</div>
+            <PageParticles />
+          </div>
           <h1 className="h-display">{m.title}</h1>
           <p className="lede mt-4">{m.intro}</p>
         </header>

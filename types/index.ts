@@ -312,6 +312,12 @@ export type EventRelation = (typeof EVENT_RELATIONS)[number];
 export const RELATED_KINDS = ["reproduction", "overturn", "related"] as const;
 export type RelatedKind = (typeof RELATED_KINDS)[number];
 
+/** Editorial explanation of the specific result and the sources supporting the link. */
+export interface EventTrackingNote {
+  text: { zh: string; en: string };
+  references: { title: { zh: string; en: string }; url: string }[];
+}
+
 export interface EventLink {
   /** Stable Event id, distinct from a source record's slug. */
   eventId: string;
@@ -322,6 +328,8 @@ export interface EventLink {
   /** Candidate source record that established a non-initial match, if any. */
   matchedToSlug?: string;
   reason?: string;
+  /** Shown on the timeline step or, when relatedTo is set, on the relation. */
+  note?: EventTrackingNote;
   /** same-project: the new Event belongs to this Project. */
   projectId?: string;
   /** related-event: an explicit edge to another Event, never a merge. */
@@ -541,6 +549,7 @@ export interface EventUpdate {
   sources?: Source[];
   evidenceLevel?: EvidenceLevel;
   publicationStatus?: PublicationStatus;
+  note?: EventTrackingNote;
 }
 
 export interface EventRelationEdge {
@@ -548,6 +557,7 @@ export interface EventRelationEdge {
   toEventId: string;
   kind: RelatedKind;
   reason?: string;
+  note?: EventTrackingNote;
 }
 
 /**

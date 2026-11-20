@@ -35,7 +35,7 @@ export const PHRASE_ZH: PhraseZh = {
   "Independent venue carrying the full text": "刊载全文的独立平台",
   "Independent methodological critique of one of the announced proofs": "针对所公布证明之一的独立方法论批评",
   "Companion line on agent autonomy in research-level mathematics": "关于研究级数学中智能体自主性的配套系列",
-  "Targets the verification workflow of the October 2026 corpus": "针对 2026 年 10 月语料库的核验工作流",
+  "Section 3 compares the manuscript with declarations at this commit": "第 3 节将论文与该提交中的 Lean 声明逐项对照",
   "Earlier evidence of the semantic gap between informal and formal statements": "更早的证据：非形式陈述与形式陈述之间的语义鸿沟",
   "Adjacent 2026 event in the AI-assisted research wave": "AI 辅助研究浪潮中相邻的 2026 年事件",
   "Organized community response echoing the declaration, October 2026": "呼应宣言的有组织社区回应，2026 年 10 月",

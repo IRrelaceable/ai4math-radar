@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { PageParticles } from "@/components/ui/PageParticles";
 
 /**
  * Shared page heading used by the list surfaces. Titles were drifting between
@@ -21,7 +22,10 @@ export function PageHeader({
   return (
     <header className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-ink-300 pb-5">
       <div className="max-w-2xl">
-        {label && <div className="mono-label mb-2 text-accent-700">{label}</div>}
+        <div className="mb-2 flex items-center justify-between gap-3">
+          {label && <div className="mono-label text-accent-700">{label}</div>}
+          <PageParticles />
+        </div>
         <h1 className="h-display">{title}</h1>
         {description && (
           <p className="lede mt-3">{description}</p>

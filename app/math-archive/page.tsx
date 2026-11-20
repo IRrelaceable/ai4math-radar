@@ -1,4 +1,5 @@
 import { ChallengeBoard } from "@/components/benchmark/ChallengeBoard";
+import { PageParticles } from "@/components/ui/PageParticles";
 import { FOREIGN_TASK_CASES } from "@/data/model-benchmark/sourceTasks";
 import { getLang } from "@/lib/i18n/server";
 import { pagesDict } from "@/lib/i18n/dict.pages";
@@ -18,7 +19,12 @@ export default function MathArchivePage() {
       <header className="labs-hero">
         <div className="container-page labs-hero-inner">
           <div className="labs-hero-copy">
-            <div className="labs-hero-kicker"><span className="labs-signal" /> AI4M / {lang === "zh" ? "数学档案" : "MATH ARCHIVE"}</div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="labs-hero-kicker">
+                <span className="labs-signal" /> AI4M / {lang === "zh" ? "数学档案" : "MATH ARCHIVE"}
+              </div>
+              <PageParticles />
+            </div>
             <h1>{p.tasks.title}</h1>
             <p>{p.tasks.sub}</p>
             <div className="labs-hero-foot">

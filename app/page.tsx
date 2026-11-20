@@ -4,6 +4,7 @@ import { formatDate, sortEvents } from "@/lib/utils";
 import { SearchBox } from "@/components/search/SearchBox";
 import { EventRow } from "@/components/research/EventRow";
 import { TrendPanel } from "@/components/topics/TrendPanel";
+import { PageParticles } from "@/components/ui/PageParticles";
 import { EVENT_TYPES } from "@/types";
 import { CAPABILITIES, capabilityOf, facetsOf } from "@/lib/dimensions";
 import { toListEvent } from "@/lib/staticData";
@@ -108,7 +109,10 @@ export default async function HomePage() {
             <aside className="flex min-w-0 flex-col justify-center border-t border-ink-200 pt-5 lg:border-l lg:border-t-0 lg:pl-9 lg:pt-0">
               {featured && (
                 <>
-                  <span className="mono-label text-accent-700">{d.home.featured}</span>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="mono-label text-accent-700">{d.home.featured}</span>
+                    <PageParticles />
+                  </div>
                   <h2 className="cover-feature-title mt-2.5 break-words text-[25px] font-bold leading-tight text-ink-900 sm:text-[32px]">
                     <Link href={`/research/${featured.slug}`} className="hover:text-accent-700">
                       {featured.title}

@@ -1845,12 +1845,6 @@ const curatedEvents: ResearchEvent[] = [
     ],
     relatedWorks: [
       {
-        title: "Navier-Stokes lost in translation: why Lean verification of AI autoformalisation does not guarantee correct natural language proofs",
-        url: "https://arxiv.org/abs/2610.08144",
-        relation: "followup",
-        note: "Independent methodological critique of one of the announced proofs",
-      },
-      {
         title: "Towards Autonomous Mathematics Research (Aletheia)",
         url: "https://arxiv.org/abs/2602.10177",
         relation: "related",
@@ -1895,13 +1889,36 @@ const curatedEvents: ResearchEvent[] = [
     updatedAt: "2026-10-14T00:00:00.000Z",
   },
   {
+    id: "evt-openai-navier-stokes-blow-up",
+    slug: "openai-navier-stokes-finite-time-blow-up",
+    date: "2026-09-08",
+    title: "OpenAI publishes a claimed finite-time blow-up proof for Navier–Stokes",
+    summary:
+      "OpenAI published a manuscript and Lean formalization that it says establish finite-time breakdown for the three-dimensional Navier–Stokes equations. The accompanying repository describes claims for the periodic and whole-space settings.",
+    significance: "The release gives researchers a manuscript and a Lean artifact to compare when evaluating the claimed result.",
+    sourceType: "blog",
+    sourceTier: "S1",
+    sourceUrl: "https://openai.com/index/navier-stokes-solution/",
+    githubUrl: "https://github.com/openai/NavierStokesAndEuler",
+    researchArea: "Mathematical Discovery & Symbolic Computation",
+    subArea: "AI-proved results & conjectures",
+    direction: "ai4math",
+    authors: ["OpenAI"],
+    institution: "OpenAI",
+    evidenceLevel: "E1",
+    provenance: "curated",
+    relatedWorks: [],
+    createdAt: "2026-11-19T00:00:00.000Z",
+    updatedAt: "2026-11-19T00:00:00.000Z",
+  },
+  {
     id: "evt-navier-stokes-autoformalisation-dispute",
     title: "Bastounis, Circelli and Hansen argue Lean checks of AI autoformalisation can diverge from the natural-language proof",
     slug: "navier-stokes-lost-in-translation-lean-mismatch",
     summary:
       "A math.AP preprint (arXiv:2610.08144, 2026-10-06) argues that resolving the ambiguities of mathematical natural language is arbitrarily high in the Solvability Complexity Index hierarchy (SCI = ∞), so semantically faithful AI autoformalisation is harder than any computable problem, and gives worked examples of mistranslations — including a case where the Lean formalisation of OpenAI's announced Navier–Stokes blow-up proof does not correspond to the natural-language proof.",
     significance:
-      "Puts the field's central trust question on a formal footing: a machine-checked Lean artifact certifies the formal statement it encodes, not the informal claim people read. This is the sharpest test so far of the 'formalize-then-trust' workflow that the October 2026 releases rely on.",
+      "The study examines whether statements and estimates in a machine-checked Lean artifact faithfully correspond to those used in the mathematical manuscript.",
     problem:
       "Autoformalisation was being treated as a substitute for verifying the original mathematical argument.",
     date: "2026-10-06",
@@ -1929,10 +1946,10 @@ const curatedEvents: ResearchEvent[] = [
     ],
     relatedWorks: [
       {
-        title: "OpenAI publishes 700+ mathematical manuscripts in a public Lean repository",
-        url: "https://arxiv.org/abs/2610.08144",
-        relation: "related",
-        note: "Targets the verification workflow of the October 2026 corpus",
+        title: "OpenAI’s Navier–Stokes Lean formalization at the commit examined in the preprint",
+        url: "https://github.com/openai/NavierStokesAndEuler/tree/f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+        relation: "previous",
+        note: "Section 3 compares the manuscript with declarations at this commit",
       },
       {
         title: "Autoformalizing Euclidean Geometry (LeanEuclid benchmark)",

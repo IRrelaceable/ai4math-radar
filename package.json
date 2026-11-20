@@ -17,6 +17,7 @@
     "sync:watch": "tsx scripts/sync-watch.ts",
     "replay:matching": "tsx scripts/replay-matching.ts",
     "replay:relations": "tsx scripts/replay-relations.ts",
+    "replay:cross-event": "tsx scripts/replay-relations.ts --cross-event",
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "test": "vitest run",

@@ -17,13 +17,14 @@ import { PublicationCorrectionsSection } from "@/components/research/DetailSecti
 import { EventDiscussion } from "@/components/research/EventDiscussion";
 import { TocNav } from "@/components/layout/TocNav";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { PageParticles } from "@/components/ui/PageParticles";
 import { getLang, t } from "@/lib/i18n/server";
 import { localizeEvent, localizeEvents, displayArea, displaySubArea } from "@/lib/i18n/localize";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 import { buildTrackedEvents, eventLinkOf, updatesOf } from "@/lib/tracking";
 import { projectById } from "@/data/seed/projects";
 import { DimensionChips } from "@/components/research/DimensionChips";
-import type { TrackedEvent } from "@/types";
+import type { EventTrackingNote, TrackedEvent } from "@/types";
 
 // Module-level cache: every detail page calls listEvents() to build entity
 // threads. The store content is identical across all ~685 renders in a single
@@ -297,29 +298,31 @@ export default async function ResearchDetailPage({
           dropped rather than pushed below the article. */}
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem]">
         <div className="min-w-0 max-w-3xl">
-        {/* Header: type + area + date on one line, then title. */}
-        <div className="flex flex-wrap items-center gap-2">
-          {event.eventType && <EventTypePill type={event.eventType} />}
-          {eventLink?.kind === "verification" && (
-            <span className="chip border border-ink-200 bg-ink-50 text-ink-700">
-              {p.events.kinds.verification}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            {event.eventType && <EventTypePill type={event.eventType} />}
+            {eventLink?.kind === "verification" && (
+              <span className="chip border border-ink-200 bg-ink-50 text-ink-700">
+                {p.events.kinds.verification}
+              </span>
+            )}
+            {event.researchArea && (
+              <span className="text-xs text-ink-500">
+                {event.subArea
+                  ? `${displayArea(event.researchArea, lang)} · ${displaySubArea(event.subArea, lang)}`
+                  : displayArea(event.researchArea, lang)}
+              </span>
+            )}
+            <span className="font-mono text-xs text-ink-500">
+              {formatDateLong(event.date, lang)}
             </span>
-          )}
-          {event.researchArea && (
-            <span className="text-xs text-ink-500">
-              {event.subArea
-                ? `${displayArea(event.researchArea, lang)} · ${displaySubArea(event.subArea, lang)}`
-                : displayArea(event.researchArea, lang)}
-            </span>
-          )}
-          <span className="font-mono text-xs text-ink-500">
-            {formatDateLong(event.date, lang)}
-          </span>
-          {event.isDemo && (
-            <span className="chip border-dashed border-ink-300 text-ink-400">
-              {p.detail.demoEntry}
-            </span>
-          )}
+            {event.isDemo && (
+              <span className="chip border-dashed border-ink-300 text-ink-400">
+                {p.detail.demoEntry}
+              </span>
+            )}
+          </div>
+          <PageParticles />
         </div>
 
         <h1 className="h-display mt-4 break-words">
@@ -959,6 +962,7 @@ function TrackingSection({
               >
                 {titleBySlug.get(step.eventSlug)?.title ?? step.title}
               </Link>
+              {step.note && <TrackingNote note={step.note} lang={lang} />}
             </li>
           ))}
         </ol>
@@ -981,7 +985,7 @@ function TrackingSection({
       {tracked.relations.length > 0 && (
         <div className="mt-4">
           <div className="mono-label mb-1">{p.relationsTitle}</div>
-          <ul className="mt-2 space-y-1">
+          <ul className="mt-2 space-y-2">
             {tracked.relations.map((edge) => {
               // An edge is stored on the Event that points outward. On the
               // target page it appears as an incoming edge, so resolve the
@@ -999,6 +1003,7 @@ function TrackingSection({
                   ) : (
                     <span className="text-ink-500">{otherEventId}</span>
                   )}
+                  {edge.note && <TrackingNote note={edge.note} lang={lang} />}
                 </li>
               );
             })}
@@ -1006,6 +1011,23 @@ function TrackingSection({
         </div>
       )}
     </section>
+  );
+}
+
+function TrackingNote({ note, lang }: { note: EventTrackingNote; lang: "zh" | "en" }) {
+  return (
+    <div className="mt-1.5 max-w-prose text-sm text-ink-600">
+      <p className="leading-relaxed">{note.text[lang]}</p>
+      <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+        {note.references.map(({ title, url }) => (
+          <li key={url}>
+            <a className="link-quiet text-xs" href={url} target="_blank" rel="noreferrer">
+              {title[lang]} <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

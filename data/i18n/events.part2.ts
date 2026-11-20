@@ -115,10 +115,15 @@ export const eventsPart2: Record<string, EventZh> = {
       "新增 6 项形式化与 5 项支持结果；报告的头条结果覆盖率为 300/719（约 42%）",
     ],
   },
+  "openai-navier-stokes-finite-time-blow-up": {
+    title: "OpenAI 发布 Navier–Stokes 方程有限时间爆破的证明主张",
+    summary: "OpenAI 发布论文和配套 Lean 形式化，称其证明了三维 Navier–Stokes 方程解可在有限时间内发生爆破。配套仓库分别说明了周期情形和全空间情形中的结论主张。",
+    significance: "公开的论文和 Lean 代码为研究者核查结论、逐项比对数学论证与形式化提供了材料。",
+  },
   "navier-stokes-lost-in-translation-lean-mismatch": {
     title: "Bastounis、Circelli 和 Hansen 论证对 AI 自动形式化的 Lean 检查可能偏离自然语言证明",
     summary: "一篇 math.AP 预印本（arXiv:2610.08144，2026-10-06）论证，消解数学自然语言的歧义在 Solvability Complexity Index 层级中是任意高的（SCI = ∞），因此语义忠实的 AI 自动形式化（autoformalization）比任何可计算问题都困难，并给出了误译的具体例子——其中包括一个案例：OpenAI 宣布的 Navier–Stokes 爆破证明的 Lean 形式化与该自然语言证明并不对应。",
-    significance: "把该领域核心的信任问题置于形式化的基础之上：一个机器检查的 Lean 工件证明的是它所编码的形式陈述，而非人们阅读的非形式主张。这是对 2026 年 10 月各项发布所依赖的 “先形式化、再信任” 工作流迄今最尖锐的检验。",
+    significance: "研究核查经过机器检查的 Lean 形式化中的陈述和估计，是否忠实对应数学原稿所采用的陈述和估计。",
     problem: "自动形式化正被当作验证原始数学论证的替代品。",
     keyContributions: [
       "基于 SCI 层级的论证：忠实的自动形式化在不可计算意义上是困难的",

@@ -58,6 +58,16 @@ describe("identity extraction", () => {
     expect([...keys.doi]).toContain("10.1234/abc.def");
   });
 
+  it("uses citations to earlier work without inheriting archive backlinks", () => {
+    const keys = extractIdentityKeys(ev("e", "release", "2026-01-01", {
+      relatedWorks: [
+        { title: "Prior result", url: "https://arxiv.org/abs/2512.12345", relation: "previous" },
+        { title: "Later article", url: "https://arxiv.org/abs/2602.12345", relation: "followup" },
+      ],
+    }));
+    expect([...keys.arxiv]).toEqual(["2512.12345"]);
+  });
+
   it("keeps identity-bearing query params (/?p=3819 != /?p=4132)", () => {
     const a = extractIdentityKeys(
       ev("a", "a", "2026-01-01", { sourceUrl: "https://example.org/?p=3819" })
@@ -113,7 +123,7 @@ describe("cross-source candidate retrieval", () => {
   const canonical = ev("evt_release", "release", "2026-10-06", {
     githubUrl: "https://github.com/openai/math",
     sourceUrl: "https://github.com/openai/math",
-    relatedWorks: [{ title: "audit", url: "https://arxiv.org/abs/2610.08144", relation: "related" }],
+    paperUrl: "https://arxiv.org/abs/2610.08144",
   });
 
   it("finds a follow-up that only cites the original arXiv id in prose", () => {
@@ -143,6 +153,37 @@ describe("cross-source candidate retrieval", () => {
     const [top] = findIdentityCandidates(audit, [canonical], 3);
     expect(top.event.slug).toBe("release");
     expect(top.signals?.some((s) => s.startsWith("alias:"))).toBe(true);
+  });
+
+  it("ranks a directly cited source ahead of candidates that only share a background citation", () => {
+    const prior = ev("evt_original", "original", "2026-01-01", {
+      githubUrl: "https://github.com/lab/result",
+    });
+    const reference = { title: "Common background", url: "https://arxiv.org/abs/2501.12345", relation: "related" } as const;
+    const other = ev("evt_other", "other", "2026-01-02", { relatedWorks: [reference] });
+    const audit = ev("evt_audit", "audit", "2026-02-01", {
+      relatedWorks: [reference, {
+        title: "Result under audit", url: "https://github.com/lab/result/tree/abc123", relation: "previous",
+      }],
+    });
+
+    const [top, secondary] = findIdentityCandidates(audit, [other, prior]);
+    expect(top.event.slug).toBe(prior.slug);
+    expect(top.signals).toContain("prior-artifact");
+    expect(secondary.signals).toEqual(["shared-reference"]);
+  });
+
+  it("uses a collection alias only for the original release", () => {
+    const citingStudy = ev("evt_study", "study", "2026-10-20", {
+      relatedWorks: [{ title: "OpenAI corpus", url: canonical.sourceUrl, relation: "previous" }],
+    });
+    const incoming = ev("evt_forum", "forum", "2026-11-01", {
+      summary: "We opened a forum to discuss the 722 OpenAI manuscripts.",
+    });
+    const hits = findIdentityCandidates(incoming, [citingStudy, canonical]);
+    expect(hits[0].event.slug).toBe(canonical.slug);
+    expect(hits[0].signals).toContain("collection:github.com/openai/math");
+    expect(hits.slice(1).every((candidate) => !candidate.signals?.some((signal) => signal.startsWith("collection:")))).toBe(true);
   });
 
   it("does NOT merge a same-institution but unrelated result (negative control)", () => {

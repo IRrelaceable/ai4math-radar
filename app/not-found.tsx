@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageParticles } from "@/components/ui/PageParticles";
 import { getLang, t } from "@/lib/i18n/server";
 import { pagesDict } from "@/lib/i18n/dict.pages";
 
@@ -9,7 +10,10 @@ export default function NotFound() {
 
   return (
     <div className="container-page py-24 text-center">
-      <div className="mono-label mb-3">404</div>
+      <div className="mb-3 flex flex-col items-center gap-2">
+        <PageParticles />
+        <div className="mono-label">404</div>
+      </div>
       <h1 className="text-2xl font-semibold tracking-tight">{d.notFound.title}</h1>
       <p className="mt-2 text-sm text-ink-600">{d.notFound.body}</p>
       <div className="mt-6 flex justify-center gap-3">

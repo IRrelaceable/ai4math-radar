@@ -1,6 +1,6 @@
 /**
- * Offline, date-ordered CANDIDATE RECALL replay of the PRODUCTION retriever
- * against the 17 confirmed non-canonical records of the 722 / OpenAI-math
+ * Offline, date-ordered CANDIDATE RECALL replay of the shadow retriever
+ * against the 16 confirmed non-canonical records of the 722 / OpenAI-math
  * release Event line (the canonical initial record is the Event itself, not a
  * record that has an "original to find", so it is excluded from the sample).
  * Includes the 2026-10-29 repository-log correction backfill.
@@ -17,7 +17,7 @@
  *   - the incoming record is stripped of tracking AND given a fresh slug so
  *     curatedEventLinks cannot hand it the answer;
  *   - retrieval goes through findCandidates() — the same layered function the
- *     production入口 uses, including its keyword fallback and Event-id
+ *     shadow workflow uses, including its keyword fallback and Event-id
  *     dedupe. There is no "--identity only" shortcut that skips the fallback.
  *
  * This is a read-only analysis tool: it never writes data.
@@ -30,12 +30,11 @@ import type { ResearchEvent } from "@/types";
 
 const CANONICAL_SLUG = "openai-math-manuscript-collection-release";
 
-/** The 17 non-initial records curated onto the 722 release Event, with role. */
+/** The non-initial records curated onto the 722 release Event, with role. */
 const TRUTH: { slug: string; role: string }[] = [
   { slug: "watch-openai-math-history-96c4bb80a9f96ff7", role: "correction" },
   { slug: "openai-math-first-corrections-722-to-719", role: "correction" },
   { slug: "sharing-ai-progress-in-mathematics", role: "report" },
-  { slug: "navier-stokes-lost-in-translation-lean-mismatch", role: "verification" },
   { slug: "mechalign-evaluating-semantic-alignment-at-the-project-level-in-mathematical-formalization", role: "verification" },
   { slug: "working-with-academic-communities-to-build-scientific-understanding", role: "followup" },
   { slug: "ahm-statement-openai-math-release", role: "related" },
@@ -88,7 +87,7 @@ async function main() {
     );
   }
 
-  console.log("\n=== 候选回放 · CANDIDATE RECALL REPLAY · production findCandidates() ===");
+  console.log("\n=== 候选回放 · CANDIDATE RECALL REPLAY · shadow findCandidates() ===");
   console.log(`sample: ${truth.length} confirmed records (canonical initial excluded; incl. 10-29 correction)`);
   console.log(`canonical event: ${canonicalEventId}`);
   console.log(`pool rule: records dated <= incoming date; self excluded; curated link stripped`);

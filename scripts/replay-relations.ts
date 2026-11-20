@@ -1,6 +1,6 @@
 /**
- * Step-2 RELATION DECISION replay — strict, end-to-end, on the 17 confirmed
- * records of the 722 / OpenAI-math release Event line.
+ * Strict relation replay for the 722 release. Use --cross-event to add other
+ * reviewed lines and record a rules-only result with no model calls.
  *
  * Companion to replay-matching.ts (candidate recall). This script walks the
  * FULL chain for each record:
@@ -15,7 +15,7 @@
  * at — Xena's methodological post was tagged `related` but hung off a different
  * Xena article — and (c) measured only over recalled records.
  *
- * Four adversarial NEGATIVE samples are replayed through the same production
+ * Four adversarial NEGATIVE samples are replayed through the same shadow
  * chain: an unrelated OpenAI voice-product launch, a compiler paper that lists
  * openai/math only as an evaluation dataset, the same voice news dated on the
  * release day (used to pass on publisher + date alone), and a compiler paper
@@ -40,16 +40,20 @@ import { classifyRelation } from "@/lib/relation-classifier";
 import { curatedEventLinks } from "@/data/seed/event-links";
 import type { RelationKind } from "@/lib/relation-classifier";
 import type { EventUpdateKind, ResearchEvent } from "@/types";
+import type { LLMProvider } from "@/lib/llm/provider";
 
 const CANONICAL_SLUG = "openai-math-manuscript-collection-release";
 const CANONICAL_EVENT = "event-evt-openai-math-release";
+const RULES_ONLY: LLMProvider = {
+  id: "mock",
+  async complete() { throw new Error("Cross-event replay must not call a model"); },
+};
 
-/** The 17 confirmed non-canonical records (same explicit list as replay-matching). */
+/** The confirmed non-canonical records (same explicit list as replay-matching). */
 const TRUTH: { slug: string; role: string }[] = [
   { slug: "watch-openai-math-history-96c4bb80a9f96ff7", role: "correction" },
   { slug: "openai-math-first-corrections-722-to-719", role: "correction" },
   { slug: "sharing-ai-progress-in-mathematics", role: "report" },
-  { slug: "navier-stokes-lost-in-translation-lean-mismatch", role: "verification" },
   { slug: "mechalign-evaluating-semantic-alignment-at-the-project-level-in-mathematical-formalization", role: "verification" },
   { slug: "working-with-academic-communities-to-build-scientific-understanding", role: "followup" },
   { slug: "ahm-statement-openai-math-release", role: "related" },
@@ -65,9 +69,27 @@ const TRUTH: { slug: string; role: string }[] = [
   { slug: "trust-but-verify-audit-and-attribute-a-human-in-the-loop-framework-for-checking-ai-produced-research-results", role: "related" },
 ];
 
+const CROSS_EVENT_TRUTH = [
+  { slug: "navier-stokes-lost-in-translation-lean-mismatch", role: "verification" },
+  { slug: "axiom-minimal-model-program-formalized-in-lean", role: "related" },
+  { slug: "introducing-mathhelm-a-place-to-discuss-ai-generated-papers", role: "related" },
+  { slug: "turing-agent-agentic-formal-verification-for-mathematical-research", role: "verification" },
+  { slug: "deepseek-prover-v1-5-rl-and-mcts", role: "followup" },
+  { slug: "ai-scientist-v2-workshop-level-agentic-tree-search", role: "followup" },
+];
+
+// A separate scientific project can cite or build on the earlier work. The
+// regression we check for these real samples is incorrect event membership.
+const SEPARATE_EVENT_CASES = [
+  "lean-4-36-0-release-notes",
+  "goedel-prover-open-source-frontier-prover",
+  "agent-laboratory-llm-agents-research-assistants",
+];
+
 interface Expected {
   kind: RelationKind;
   updateKind: EventUpdateKind;
+  relation: "same-event" | "related-event";
   target: string;
 }
 
@@ -75,19 +97,26 @@ interface Expected {
 function expectedOf(slug: string, role: string): Expected {
   const link = curatedEventLinks[slug];
   if (!link) {
-    // 2026-10-29 watch backfill: a correction on the release, not curated yet.
-    return { kind: "followup", updateKind: "correction", target: CANONICAL_EVENT };
+    // The 2026-10-29 correction is produced by the repository watcher.
+    if (slug === "watch-openai-math-history-96c4bb80a9f96ff7" && role === "correction") {
+      return { kind: "followup", updateKind: "correction", relation: "same-event", target: CANONICAL_EVENT };
+    }
+    throw new Error(`replay truth missing: ${slug}`);
   }
-  const target = link.relation === "related-event" ? link.relatedTo?.eventId ?? CANONICAL_EVENT : link.eventId;
-  if (link.kind === "report") return { kind: "report", updateKind: "report", target };
-  if (link.kind === "verification") return { kind: "verification", updateKind: "verification", target };
-  if (link.kind === "correction") return { kind: "followup", updateKind: "correction", target };
-  if (link.kind === "followup") return { kind: "followup", updateKind: "followup", target };
-  if (link.relation === "related-event") return { kind: "related", updateKind: "initial", target };
-  return { kind: "independent", updateKind: "initial", target };
+  const { relation } = link;
+  if (role === "related" && relation === "related-event" && link.relatedTo?.eventId) {
+    return { kind: "related", updateKind: "initial", relation, target: link.relatedTo.eventId };
+  }
+  if (relation === "same-event" && link.kind === role) {
+    const kind = link.kind === "correction" ? "followup" : link.kind;
+    if (kind === "report" || kind === "verification" || kind === "followup") {
+      return { kind, updateKind: link.kind, relation, target: link.eventId };
+    }
+  }
+  throw new Error(`reviewed tracking disagrees with replay role ${role}: ${slug}`);
 }
 
-/** Two P1 false-merge counterexamples, replayed as standalone incoming records. */
+/** Synthetic counterexamples with a required independent verdict. */
 function negatives(base: ResearchEvent[]): ResearchEvent[] {
   const pick = (slug: string) => {
     const e = base.find((x) => x.slug === slug);
@@ -163,25 +192,29 @@ function negatives(base: ResearchEvent[]): ResearchEvent[] {
   ];
 }
 
-async function runChain(incoming: ResearchEvent, pool: ResearchEvent[]) {
+async function runChain(incoming: ResearchEvent, pool: ResearchEvent[], target: string, provider?: LLMProvider) {
   const candidates = findCandidates(incoming, pool, 3);
-  const recalled = candidates.some((c) => eventIdOf(c.event) === CANONICAL_EVENT);
-  const decision = await classifyRelation(incoming, candidates);
-  return { candidates, recalled, decision };
+  const rank = candidates.findIndex((c) => eventIdOf(c.event) === target);
+  const decision = await classifyRelation(incoming, candidates, { provider });
+  return { rank, decision };
 }
 
 async function main() {
+  const crossEvent = process.argv.slice(2).includes("--cross-event");
+  const provider = crossEvent ? RULES_ONLY : undefined;
   const all = await new SeedStore().listEvents();
   const canonical = all.find((e) => e.slug === CANONICAL_SLUG);
   if (!canonical) throw new Error(`canonical record not found: ${CANONICAL_SLUG}`);
   if (eventIdOf(canonical) !== CANONICAL_EVENT)
     throw new Error(`canonical event id drifted: ${eventIdOf(canonical)}`);
 
-  const truth = TRUTH.map(({ slug, role }) => {
+  const truth = [...TRUTH, ...(crossEvent ? CROSS_EVENT_TRUTH : [])].map(({ slug, role }) => {
     const record = all.find((e) => e.slug === slug);
-    return record ? { slug, role, record } : undefined;
-  }).filter((x): x is { slug: string; role: string; record: ResearchEvent } => Boolean(x));
+    if (!record) throw new Error(`replay fixture missing: ${slug}`);
+    return { slug, role, record };
+  });
 
+  let top1 = 0;
   let recalled = 0;
   let fullyCorrect = 0;
   let recalledButWrong = 0;
@@ -190,18 +223,26 @@ async function main() {
   let wrongEventEdges = 0;
   let sameEventDecisions = 0;
   let quotedMerges = 0;
+  let unsafeMerges = 0;
   const rows: string[] = [];
   const wrongRows: string[] = [];
+  const byTarget = new Map<string, { total: number; top1: number; recalled: number; correct: number }>();
 
   for (const { slug, role, record } of truth) {
     const expected = expectedOf(slug, role);
     const incoming: ResearchEvent = { ...record, slug: `__replay_${slug}`, tracking: undefined };
     const pool = all.filter((e) => e.slug !== slug && e.date <= record.date);
-    const { recalled: hit, decision } = await runChain(incoming, pool);
+    const { rank, decision } = await runChain(incoming, pool, expected.target, provider);
+    const hit = rank >= 0;
+    const bucket = byTarget.get(expected.target) ?? { total: 0, top1: 0, recalled: 0, correct: 0 };
+    bucket.total += 1;
+    if (rank === 0) { top1 += 1; bucket.top1 += 1; }
+    byTarget.set(expected.target, bucket);
 
     if (decision.relation === "same-event") {
       sameEventDecisions += 1;
       if (decision.evidenceQuote) quotedMerges += 1;
+      if (expected.relation !== "same-event" || decision.targetEventId !== expected.target) unsafeMerges += 1;
     }
 
     let label: string;
@@ -227,39 +268,49 @@ async function main() {
       }
     } else {
       recalled += 1;
+      bucket.recalled += 1;
       const kindOk = decision.kind === expected.kind;
       const updateOk = decision.updateKind === expected.updateKind;
+      const relationOk = decision.relation === expected.relation;
       const targetOk = decision.targetEventId === expected.target;
-      if (kindOk && updateOk && targetOk) {
+      if (kindOk && updateOk && relationOk && targetOk) {
         fullyCorrect += 1;
+        bucket.correct += 1;
         label = "FULL-OK";
       } else {
         recalledButWrong += 1;
-        const why = [!kindOk && "kind", !updateOk && "type", !targetOk && "TARGET"].filter(Boolean).join("+");
+        const why = [!kindOk && "kind", !updateOk && "type", !relationOk && "relation", !targetOk && "TARGET"].filter(Boolean).join("+");
         label = `WRONG(${why})`;
       }
     }
     rows.push(
       `  ${label.padEnd(18)} want=${(expected.kind + "/" + expected.updateKind).padEnd(22)} ` +
       `got=${(decision.kind + "/" + decision.updateKind).padEnd(22)} ` +
-      `target=${(decision.targetEventId === CANONICAL_EVENT ? "CANON" : decision.targetEventId ?? "none").padEnd(46)} ` +
+      `target=${(decision.targetEventId === expected.target ? "EXPECTED" : decision.targetEventId ?? "none").padEnd(46)} ` +
       `${record.slug.slice(0, 38)}`
     );
   }
 
   console.log("\n=== 关系判定严格回放 · STRICT RELATION DECISION REPLAY ===");
   console.log("chain: 候选检索(findCandidates) → 关系判定(classifyRelation) → 目标事件(targetEventId)");
-  console.log(`sample: ${truth.length} curated records on the 722 Event (incl. 2026-10-29 watch correction; canonical initial excluded)`);
+  console.log(crossEvent
+    ? `sample: ${truth.length} reviewed records across ${byTarget.size} event lines; rules only`
+    : `sample: ${truth.length} curated records on the 722 Event (incl. 2026-10-29 watch correction; canonical initial excluded)`);
   console.log("pool rule: records dated <= incoming; self excluded; curated link stripped");
-  console.log("FULL-OK requires: recalled AND kind AND updateKind AND targetEventId all match curated truth");
+  console.log("FULL-OK requires: recalled AND relation AND kind AND updateKind AND targetEventId all match reviewed truth");
   console.log(rows.join("\n"));
   console.log(
-    `\nRESULT  fullyCorrect=${fullyCorrect}/${truth.length}  recalled=${recalled}/${truth.length}  ` +
+    `\nRESULT  fullyCorrect=${fullyCorrect}/${truth.length}  top1=${top1}/${truth.length}  recalled=${recalled}/${truth.length}  ` +
     `recalledButWrong=${recalledButWrong}  recallMiss=${recallMiss}  ` +
     `wrongEventMerge=${wrongEventMerges}  wrongEventEdge=${wrongEventEdges}`
   );
+  if (crossEvent) {
+    for (const [target, result] of byTarget) {
+      console.log(`  ${target} top1=${result.top1}/${result.total} top3=${result.recalled}/${result.total} full=${result.correct}/${result.total}`);
+    }
+  }
   console.log(
-    `EVIDENCE  same-event merges=${sameEventDecisions}  withOriginalQuote=${quotedMerges}`
+    `EVIDENCE  same-event decisions=${sameEventDecisions}  withRecordQuote=${quotedMerges}  unsafeMerge=${unsafeMerges}`
   );
   console.log("--- attached to a different event while the canonical Event was NOT recalled ---");
   console.log(wrongRows.length ? wrongRows.join("\n") : "  none");
@@ -270,17 +321,31 @@ async function main() {
   let negativePass = 0;
   for (const incoming of negativesList) {
     const pool = all.filter((e) => e.slug !== incoming.slug && e.date <= incoming.date);
-    const { recalled: hit, decision } = await runChain(incoming, pool);
+    const { rank, decision } = await runChain(incoming, pool, CANONICAL_EVENT, provider);
     const staysIndependent = decision.kind === "independent" && decision.relation === "independent";
     if (staysIndependent) negativePass += 1;
     negativeRows.push(
-      `  ${staysIndependent ? "PASS" : "FAIL"}  canonicalRecalled=${hit ? "Y" : "n"} ` +
+      `  ${staysIndependent ? "PASS" : "FAIL"}  canonicalRecalled=${rank >= 0 ? "Y" : "n"} ` +
       `got=${decision.kind + "/" + decision.updateKind} (${decision.decidedBy})  ${incoming.slug}`
     );
   }
   console.log("\n--- adversarial negatives (same domain / same dataset / same day / denied audit must NOT merge) ---");
   console.log(negativeRows.join("\n"));
   console.log(`NEGATIVE  independent=${negativePass}/${negativesList.length}`);
+  if (crossEvent) {
+    let separatePass = 0;
+    for (const slug of SEPARATE_EVENT_CASES) {
+      const record = all.find((item) => item.slug === slug);
+      if (!record) throw new Error(`replay fixture missing: ${slug}`);
+      const incoming = { ...record, slug: `__replay_${slug}`, tracking: undefined };
+      const pool = all.filter((item) => item.slug !== slug && item.date <= record.date);
+      const { decision } = await runChain(incoming, pool, CANONICAL_EVENT, provider);
+      const separate = decision.relation === "independent" || decision.relation === "related-event";
+      if (separate) separatePass += 1;
+      console.log(`  ${separate ? "PASS" : "FAIL"} distinct project: ${slug} → ${decision.relation}`);
+    }
+    console.log(`SEPARATE  notMerged=${separatePass}/${SEPARATE_EVENT_CASES.length}`);
+  }
   console.log(
     "\nNOTE: FULL-OK is the honest end-to-end count. RECALL-MISS is a step-1 limitation " +
     "(the canonical Event never entered top-3); a relation decision cannot create an edge " +
