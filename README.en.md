@@ -16,7 +16,7 @@ and foundation announcements into one filterable, traceable, navigable timeline.
 ![Static Export](https://img.shields.io/badge/deploy-static_export-2F855A)
 [![Tests](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 
-<img src="docs/screenshots/home.png" alt="AI4Math Ecosystem Radar home page" width="880">
+![AI4Math Ecosystem Radar home page](docs/screenshots/home.png)
 
 </div>
 
@@ -84,12 +84,10 @@ axis: an arXiv link derives a preprint and a proceedings/publisher DOI derives `
 with no manual annotation step; errata are appended independently. Label definitions live at
 [`/methodology`](app/methodology/page.tsx).
 
-<table>
-<tr>
-<td width="50%"><img src="docs/screenshots/timeline.png" alt="Timeline page"><br><sub>Timeline: yearly density, three newest months open by default, month folding</sub></td>
-<td width="50%"><img src="docs/screenshots/detail.png" alt="Event detail page"><br><sub>Event detail: facts, evidence and original source</sub></td>
-</tr>
-</table>
+| Timeline | Event detail |
+| --- | --- |
+| ![Timeline page](docs/screenshots/timeline.png) | ![Event detail page](docs/screenshots/detail.png) |
+| Timeline: yearly density, three newest months open by default, month folding | Event detail: facts, evidence and original source |
 
 ## Running locally
 

@@ -16,7 +16,7 @@
 ![Static Export](https://img.shields.io/badge/deploy-static_export-2F855A)
 [![Tests](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 
-<img src="docs/screenshots/home.png" alt="AI4Math 生态雷达首页" width="880">
+![AI4Math 生态雷达首页](docs/screenshots/home.png)
 
 </div>
 
@@ -73,12 +73,10 @@ AI4Math 的进展不只发生在论文里。新方法出现、研究者流动、
 **信任模型**：证据等级 E0–E3（独立复核 / 可检验产物 / 研究记录 / 单方声明）与来源
 类型 S0–S4 分开标注，每条事件可挂多个来源。发表状态全自动派生：arXiv 链接→预印本，会议论文集/出版商 DOI→正式发表，无人工标注环节；勘误另行留痕。标签定义见 [`/methodology`](app/methodology/page.tsx)。
 
-<table>
-<tr>
-<td width="50%"><img src="docs/screenshots/timeline.png" alt="时间线页面"><br><sub>时间线：逐年密度、默认展开近 3 个月与按月折叠</sub></td>
-<td width="50%"><img src="docs/screenshots/detail.png" alt="事件详情页面"><br><sub>事件详情：事实、证据与原始来源</sub></td>
-</tr>
-</table>
+| 时间线 | 事件详情 |
+| --- | --- |
+| ![时间线页面](docs/screenshots/timeline.png) | ![事件详情页面](docs/screenshots/detail.png) |
+| 时间线：逐年密度、默认展开近 3 个月与按月折叠 | 事件详情：事实、证据与原始来源 |
 
 ## 本地运行
 
