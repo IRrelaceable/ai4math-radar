@@ -16,7 +16,7 @@
 ![Static Export](https://img.shields.io/badge/deploy-static_export-2F855A)
 [![Tests](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 
-![AI4Math 生态雷达首页](docs/screenshots/home.png)
+![AI4Math 生态雷达首页](https://gitee.com/testimoa/ai4math-radar/raw/main/docs/screenshots/home.png)
 
 </div>
 
@@ -75,7 +75,7 @@ AI4Math 的进展不只发生在论文里。新方法出现、研究者流动、
 
 | 时间线 | 事件详情 |
 | --- | --- |
-| ![时间线页面](docs/screenshots/timeline.png) | ![事件详情页面](docs/screenshots/detail.png) |
+| ![时间线页面](https://gitee.com/testimoa/ai4math-radar/raw/main/docs/screenshots/timeline.png) | ![事件详情页面](https://gitee.com/testimoa/ai4math-radar/raw/main/docs/screenshots/detail.png) |
 | 时间线：逐年密度、默认展开近 3 个月与按月折叠 | 事件详情：事实、证据与原始来源 |
 
 ## 本地运行
