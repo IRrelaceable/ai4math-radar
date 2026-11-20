@@ -16,7 +16,7 @@ and foundation announcements into one filterable, traceable, navigable timeline.
 ![Static Export](https://img.shields.io/badge/deploy-static_export-2F855A)
 [![Tests](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 
-![AI4Math Ecosystem Radar home page](https://gitee.com/testimoa/ai4math-radar/raw/main/docs/screenshots/home.png)
+![AI4Math Ecosystem Radar home page](https://raw.githubusercontent.com/IRrelaceable/ai4math-radar/main/docs/screenshots/home.png)
 
 </div>
 
@@ -86,7 +86,7 @@ with no manual annotation step; errata are appended independently. Label definit
 
 | Timeline | Event detail |
 | --- | --- |
-| ![Timeline page](https://gitee.com/testimoa/ai4math-radar/raw/main/docs/screenshots/timeline.png) | ![Event detail page](https://gitee.com/testimoa/ai4math-radar/raw/main/docs/screenshots/detail.png) |
+| ![Timeline page](https://raw.githubusercontent.com/IRrelaceable/ai4math-radar/main/docs/screenshots/timeline.png) | ![Event detail page](https://raw.githubusercontent.com/IRrelaceable/ai4math-radar/main/docs/screenshots/detail.png) |
 | Timeline: yearly density, three newest months open by default, month folding | Event detail: facts, evidence and original source |
 
 ## Running locally
